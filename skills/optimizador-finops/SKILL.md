@@ -1,6 +1,8 @@
 ---
 name: optimizador-finops
 description: Use to audit and optimize LLM token usage, prompt engineering sizes, API call costs, caching mechanisms, and prevent infinite agent loops. Aligned with SQA & ISO 31000 standards.
+category: agent
+status: stable
 ---
 
 # FinOps Token Economy & Cost Optimizer Agent (optimizador-finops)

@@ -8,5 +8,11 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/fabianmelomaciel/OpenSkills.git"
+  },
+  "scripts": {
+    "validate": "node scripts/validate-skills.js",
+    "catalog": "node scripts/generate-catalog.js",
+    "test": "node scripts/validate-skills.js",
+    "release": "bash scripts/release.sh"
   }
 }

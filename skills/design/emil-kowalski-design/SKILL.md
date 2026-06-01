@@ -1,6 +1,8 @@
 ---
 name: emil-kowalski-design
 description: Use when building, reviewing, or auditing any UI component to apply Emil Kowalski's design engineering principles. Enforces animation quality, micro-interaction polish, perceived performance, and accessibility standards. Trigger on requests like "make this feel polished", "review my animations", "improve UX", or any frontend UI work.
+category: design
+status: stable
 ---
 
 # Emil Kowalski Design Engineering

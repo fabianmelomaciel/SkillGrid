@@ -1,6 +1,8 @@
 ---
 name: auditor-de-marketing
 description: Use to audit website growth, on-page SEO, social sharing cards (OpenGraph), readability, and CTA conversion.
+category: agent
+status: stable
 ---
 
 # Marketing & SEO Auditor Agent

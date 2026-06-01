@@ -1,6 +1,8 @@
 ---
 name: agente-devops
 description: Use to audit, generate, and manage secure Docker container configurations (Dockerfile, docker-compose.yml) and DevOps CI/CD pipelines (GitHub Actions). Aligned with SCM, IEEE 730, and ISO 27001 standards.
+category: agent
+status: stable
 ---
 
 # Docker & CI/CD Deployment Security Agent (agente-devops)

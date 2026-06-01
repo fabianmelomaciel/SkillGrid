@@ -1,6 +1,8 @@
 ---
 name: gestor-documental
 description: Use to design, audit, format, and validate technical and scientific documents according to APA (7th Edition) and software engineering requirements/testing standards (ISO 29148, ISO 29119).
+category: agent
+status: stable
 ---
 
 # Scientific & Technical Documentation Manager Agent

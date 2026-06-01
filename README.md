@@ -2,6 +2,10 @@
 
 **Skills portables para opencode y antigravity.**
 
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Skills](https://img.shields.io/badge/skills-25-green)
+![CI](https://img.shields.io/badge/CI-validation-brightgreen)
+
 OpenSkills es una colección de skills (agentes de IA) que te ayudan a desarrollar software mejor: desde brainstorming y planificación hasta testing de seguridad y revisión de código.
 
 Funciona de manera autónoma con **opencode** y **antigravity**.
@@ -48,7 +52,7 @@ Funciona de manera autónoma con **opencode** y **antigravity**.
 | `agente-devops` | Diseña y audita empaquetado seguro en contenedores Docker (Dockerfile, docker-compose.yml) y flujos de despliegue/pipelines CI/CD (GitHub Actions) |
 | `auditor-de-marketing` | Audita optimización SEO On-Page, OpenGraph en redes y CTAs de conversión en el sitio web |
 | `gestor-documental` | Diseña y valida especificaciones técnicas y académicas (Normas APA, ISO 29148, ISO 29119) |
-| `auditor-de-seguridad` | Escanea proyectos buscando vulnerabilidades, secrets, SAST, dependencias, infraestructura, DB y CI/CD |
+| `auditor-de-seguridad` | Escanea proyectos buscando vulnerabilidades en 12 categorías: secrets, dependencias, SAST (OWASP Top 10), rate limiting, autenticación, API security, encriptación, infraestructura, DB, logging, business logic y compliance |
 
 ---
 
@@ -324,10 +328,40 @@ El SKILL.md debe tener frontmatter YAML:
 ---
 name: mi-skill
 description: "Usar cuando [condiciones especificas]"
+category: core | design | agent
+status: stable | beta | experimental | deprecated
 ---
 ```
 
 Ver `skills/core/writing-skills` para la guía completa.
+
+---
+
+## Infraestructura del proyecto
+
+OpenSkills incluye tooling de calidad y automatización:
+
+| Herramienta | Propósito |
+|-------------|-----------|
+| `CHANGELOG.md` | Historial de versiones (Keep a Changelog) |
+| `catalog.json` | Catálogo machine-readable de skills |
+| `scripts/validate-skills.js` | Validación automática de frontmatter |
+| `scripts/generate-catalog.js` | Generación del catálogo |
+| `scripts/release.sh` | Script de release con tags |
+| `tests/skills.test.js` | Tests de integridad de skills |
+| `.github/workflows/validate.yml` | CI: valida skills en cada PR |
+| `.github/dependabot.yml` | Actualizaciones automáticas de dependencias |
+
+```bash
+# Validar todas las skills
+npm test          # → node scripts/validate-skills.js
+
+# Generar catálogo
+npm run catalog    # → node scripts/generate-catalog.js
+
+# Tests de integridad
+node tests/skills.test.js
+```
 
 ---
 

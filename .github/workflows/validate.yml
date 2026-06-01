@@ -1,0 +1,45 @@
+name: Validate
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate skill frontmatter
+        run: node scripts/validate-skills.js
+
+      - name: Check all SKILL.md exist
+        run: |
+          count=$(find skills -name 'SKILL.md' | wc -l)
+          echo "Found $count skills"
+          [ "$count" -ge 25 ] || { echo "FAIL: expected at least 25 skills"; exit 1; }
+
+      - name: Verify catalog is up to date
+        run: |
+          node scripts/generate-catalog.js
+          git diff --exit-code catalog.json || {
+            echo "FAIL: catalog.json is outdated. Run 'node scripts/generate-catalog.js' and commit the result."
+            exit 1
+          }
+
+      - name: Check file naming conventions (kebab-case)
+        run: |
+          for dir in skills/*/; do
+            name=$(basename "$dir")
+            echo "$name" | grep -qE '^[a-z0-9]+(-[a-z0-9]+)*$' || { echo "FAIL: '$name' is not kebab-case"; exit 1; }
+          done
+          for dir in skills/core/*/; do
+            name=$(basename "$dir")
+            echo "$name" | grep -qE '^[a-z0-9]+(-[a-z0-9]+)*$' || { echo "FAIL: '$name' is not kebab-case"; exit 1; }
+          done

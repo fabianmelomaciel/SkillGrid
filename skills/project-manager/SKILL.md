@@ -1,6 +1,8 @@
 ---
 name: project-manager
 description: "Project Manager agent. CEO gives high-level direction; Project Manager plans, delegates, reviews, and reports."
+category: agent
+status: stable
 ---
 
 # Project Manager — You Are The Project Manager
