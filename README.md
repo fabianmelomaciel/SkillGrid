@@ -43,9 +43,9 @@ Funciona de manera autónoma con **opencode** y **antigravity**.
 
 | Agente | Descripción |
 |--------|-------------|
-| `project-manager` | Escucha al CEO, planea, delega a subagentes, revisa y reporta |
-| `optimizador-finops` | Realiza auditoría de calidad SQA de consumo de tokens y APIs de IA (conforme a ISO 31000) |
-| `agente-devops` | Diseña y audita empaquetado seguro en contenedores Docker y flujos de CI/CD (conforme a IEEE 730 e ISO 27001) |
+| `project-manager` | Escucha al CEO, planea, delega tareas específicas a agentes especializados (seguridad, Docker/despliegues, optimización de costes/tokens), revisa resultados y reporta |
+| `optimizador-finops` | Optimiza costes de modelos de lenguaje (LLM), analiza el presupuesto de tokens, comprime prompts, implementa caching de APIs y mitiga bucles de llamadas infinitos |
+| `agente-devops` | Diseña y audita empaquetado seguro en contenedores Docker (Dockerfile, docker-compose.yml) y flujos de despliegue/pipelines CI/CD (GitHub Actions) |
 | `auditor-de-marketing` | Audita optimización SEO On-Page, OpenGraph en redes y CTAs de conversión en el sitio web |
 | `gestor-documental` | Diseña y valida especificaciones técnicas y académicas (Normas APA, ISO 29148, ISO 29119) |
 | `auditor-de-seguridad` | Escanea proyectos buscando vulnerabilidades, secrets, SAST, dependencias, infraestructura, DB y CI/CD |
@@ -145,15 +145,26 @@ Luego agrega las rutas a tu configuración:
 Dado que las skills de **OpenSkills** están escritas en Markdown estándar con metadatos YAML, son 100% compatibles e integrables de manera nativa o personalizada con otras herramientas líderes de IA:
 
 ### ⚙️ Automatización con el Instalador (¡Recomendado!)
-Puedes generar automáticamente la matriz de compatibilidad para tus proyectos (Cursor y GitHub Copilot) utilizando los scripts de instalación indicando la carpeta de tu proyecto. El script creará los directorios correspondientes (`.cursor/rules/` y `.github/instructions/`) y exportará todas las skills (incluidas las nested core skills) formateando y adaptando las cabeceras YAML de forma automática:
+Puedes generar automáticamente la matriz de compatibilidad para tus proyectos (Cursor y GitHub Copilot) utilizando los scripts de instalación indicando la carpeta de tu proyecto. El script creará los directorios correspondientes (`.cursor/rules/` y `.github/instructions/`) e instalará únicamente las reglas comunes y las del lenguaje del proyecto (evitando el *context flooding* de cargar todas las skills del sistema en tu editor):
+
+* **Autodetección automática:** El instalador detecta el lenguaje del proyecto buscando archivos como `composer.json`, `package.json`, `requirements.txt`, etc., o analizando las extensiones de archivos.
+* **Selección manual:** Si deseas forzar un lenguaje específico, puedes pasarlo como parámetro (ej. `php`, `typescript`, `python`, `golang`).
 
 * **En Windows (PowerShell):**
   ```powershell
+  # Autodetección automática
   .\install.ps1 -ProjectDir "C:\ruta\a\tu-proyecto"
+
+  # Selección manual de lenguaje
+  .\install.ps1 -ProjectDir "C:\ruta\a\tu-proyecto" -Language php
   ```
 * **En Linux/Mac (Bash):**
   ```bash
+  # Autodetección automática
   ./install.sh --project "/ruta/a/tu-proyecto"
+
+  # Selección manual de lenguaje
+  ./install.sh --project "/ruta/a/tu-proyecto" --language php
   ```
 
 ---

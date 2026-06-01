@@ -67,6 +67,15 @@ Task(
 )
 ```
 
+## specialized-agent-delegation
+
+When delegating tasks using the `task` tool, you must select the most relevant specialized agent to achieve optimal efficiency:
+- **Docker / CI-CD / Deployment Security**: For any task involving Dockerfiles, docker-compose configuration, containerization, deployment setup, or CI/CD pipelines (e.g., GitHub Actions), delegate to the **agente-devops** agent.
+- **Token Economy / Cost Audit / API Optimization**: For prompt tuning, prompt engineering compression, caching API queries, LLM token budget analysis, or preventing infinite agent loops, delegate to the **optimizador-finops** agent.
+- **On-Page SEO & CTA Conversion**: For auditing website layouts, web-page SEO, social OpenGraph sharing tags, and conversion funnels, delegate to the **auditor-de-marketing** agent.
+- **Academic & Specs formatting (APA)**: For creating high-quality documentation, requirements documents, specs, or formal reports, delegate to the **gestor-documental** agent.
+- **General Security Scan**: For scanning credentials, SAST audits, database/infrastructure configuration reviews, or scanning source code dependencies, delegate to the **auditor-de-seguridad** agent.
+
 ## Review Checklist
 
 After each task:

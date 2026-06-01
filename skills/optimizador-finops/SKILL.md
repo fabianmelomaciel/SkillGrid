@@ -1,9 +1,9 @@
 ---
 name: optimizador-finops
-description: Use to audit computational resource utilization, API efficiency, and token usage economy. Aligned with SQA & ISO 31000 risk management standards.
+description: Use to audit and optimize LLM token usage, prompt engineering sizes, API call costs, caching mechanisms, and prevent infinite agent loops. Aligned with SQA & ISO 31000 standards.
 ---
 
-# Token & Resource FinOps Agent
+# FinOps Token Economy & Cost Optimizer Agent (optimizador-finops)
 
 > **CODEX-FIRST:** Read `CODEX.md` (search upward or in active skills root) before starting. Apply documented environment rules, API constraints, and past optimization lessons. Log new findings when done.
 
