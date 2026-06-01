@@ -21,10 +21,16 @@ fi
 echo "Clonando/Actualizando OpenSkills en $TARGET..."
 
 if [ -d "$TARGET" ]; then
-    echo "El directorio de destino ya existe. Actualizando con git pull..."
-    cd "$TARGET"
-    git pull || echo "Advertencia: No se pudo realizar git pull. Intentando continuar..."
-    cd - > /dev/null
+    if [ -d "$TARGET/.git" ]; then
+        echo "El directorio de destino ya existe. Actualizando con git pull..."
+        cd "$TARGET"
+        git pull || echo "Advertencia: No se pudo realizar git pull. Intentando continuar..."
+        cd - > /dev/null
+    else
+        echo "El directorio de destino existe pero no es un repositorio git. Reinstalando de forma limpia..."
+        rm -rf "$TARGET"
+        git clone https://github.com/fabianmelomaciel/OpenSkills.git "$TARGET"
+    fi
 else
     git clone https://github.com/fabianmelomaciel/OpenSkills.git "$TARGET"
 fi

@@ -18,14 +18,20 @@ if (Test-Path -LiteralPath "$env:USERPROFILE\.config\antigravity") {
 Write-Host "Clonando/Actualizando OpenSkills en $targetDir..." -ForegroundColor Cyan
 
 if (Test-Path -LiteralPath $targetDir) {
-    Write-Host "El directorio de destino ya existe. Actualizando con git pull..." -ForegroundColor Yellow
-    Push-Location $targetDir
-    try {
-        git pull
-    } catch {
-        Write-Warning "No se pudo realizar git pull. Intentando continuar..."
+    if (Test-Path -LiteralPath (Join-Path -Path $targetDir -ChildPath ".git")) {
+        Write-Host "El directorio de destino ya existe. Actualizando con git pull..." -ForegroundColor Yellow
+        Push-Location $targetDir
+        try {
+            git pull
+        } catch {
+            Write-Warning "No se pudo realizar git pull. Intentando continuar..."
+        }
+        Pop-Location
+    } else {
+        Write-Host "El directorio de destino existe pero no es un repositorio git. Reinstalando de forma limpia..." -ForegroundColor Yellow
+        Remove-Item -LiteralPath $targetDir -Recurse -Force -ErrorAction SilentlyContinue
+        git clone https://github.com/fabianmelomaciel/OpenSkills.git $targetDir
     }
-    Pop-Location
 } else {
     git clone https://github.com/fabianmelomaciel/OpenSkills.git $targetDir
 }
