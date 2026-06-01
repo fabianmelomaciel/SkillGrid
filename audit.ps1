@@ -4,7 +4,13 @@ param(
     [string]$ReportPath = ""
 )
 
-$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = $PSScriptRoot
+if (-not $scriptDir -and $MyInvocation.MyCommand.Path) {
+    $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+}
+if (-not $scriptDir) {
+    $scriptDir = $pwd
+}
 $scannersDir = Join-Path -Path $scriptDir -ChildPath "skills\auditor-de-seguridad\scanners"
 
 if (-not (Test-Path -LiteralPath $scannersDir)) {

@@ -31,7 +31,13 @@ param(
     [string]$TemplatePath = ""
 )
 
-$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = $PSScriptRoot
+if (-not $scriptDir -and $MyInvocation.MyCommand.Path) {
+    $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+}
+if (-not $scriptDir) {
+    $scriptDir = $pwd
+}
 
 # Resolving paths
 if (-not (Test-Path -LiteralPath $JsonPath)) {

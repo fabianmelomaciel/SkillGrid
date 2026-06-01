@@ -304,6 +304,13 @@ fi
 
 COUNT=0
 for TARGET in "${DETECTED[@]}"; do
+    TARGET_ABS=$(cd "$TARGET" 2>/dev/null && pwd || echo "$TARGET")
+    SOURCE_ABS=$(cd "$SCRIPT_DIR" 2>/dev/null && pwd || echo "$SCRIPT_DIR")
+    if [ "$TARGET_ABS" == "$SOURCE_ABS" ]; then
+        echo -e "\nEl destino es el mismo directorio de origen: $TARGET. Omitiendo copia."
+        continue
+    fi
+
     echo -e "\nInstalando en: $TARGET"
     mkdir -p "$TARGET/skills"
     mkdir -p "$TARGET/docs"

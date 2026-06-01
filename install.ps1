@@ -5,7 +5,13 @@ param(
     [switch]$Help
 )
 
-$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scriptDir = $PSScriptRoot
+if (-not $scriptDir -and $MyInvocation.MyCommand.Path) {
+    $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+}
+if (-not $scriptDir) {
+    $scriptDir = $pwd
+}
 $skillsDir = Join-Path -Path $scriptDir -ChildPath "skills"
 
 function InstallToProject($project, $source, $lang) {
@@ -164,10 +170,19 @@ if (language !== 'common') {
 
 function InstallToDir($target, $source) {
     if (-not $source) { $source = $scriptDir }
+    $targetPath = [System.IO.Path]::GetFullPath($target).TrimEnd('\').TrimEnd('/')
+    $sourcePath = [System.IO.Path]::GetFullPath($source).TrimEnd('\').TrimEnd('/')
+    if ($targetPath -ieq $sourcePath) {
+        Write-Host "`nEl destino es el mismo directorio de origen: $target. Omitiendo copia." -ForegroundColor Yellow
+        return
+    }
     Write-Host "`nInstalando OpenSkills en: $target" -ForegroundColor Cyan
     New-Item -ItemType Directory -Path $target -Force | Out-Null
-    $skillDirs = Get-ChildItem -LiteralPath "$source\skills" -Directory
     $isClaude = $target.EndsWith(".claude\skills") -or $target.EndsWith(".claude/skills")
+    if (-not $isClaude) {
+        New-Item -ItemType Directory -Path (Join-Path -Path $target -ChildPath "skills") -Force | Out-Null
+    }
+    $skillDirs = Get-ChildItem -LiteralPath "$source\skills" -Directory
     foreach ($skill in $skillDirs) {
         if ($isClaude) {
             $destPath = Join-Path -Path $target -ChildPath $skill.Name
@@ -185,10 +200,10 @@ function InstallToDir($target, $source) {
         Copy-Item -LiteralPath "$source\package.json" -Destination "$target\" -Force -ErrorAction SilentlyContinue
         Copy-Item -LiteralPath "$source\.gitignore" -Destination "$target\" -Force -ErrorAction SilentlyContinue
     
-    # Generar CODEX.md si no existe en destino (es local-only, no está en el repo)
-    $codexDest = Join-Path -Path $target -ChildPath "CODEX.md"
-    if (-not (Test-Path -LiteralPath $codexDest)) {
-        $codexTemplate = @"
+        # Generar CODEX.md si no existe en destino (es local-only, no está en el repo)
+        $codexDest = Join-Path -Path $target -ChildPath "CODEX.md"
+        if (-not (Test-Path -LiteralPath $codexDest)) {
+            $codexTemplate = @"
 # 🧠 OpenSkills: Tactical CODEX (Learning Memory)
 
 This document is the shared, dynamically evolving persistent memory of the OpenSkills agent squad. It prevents re-explaining context, repeating solved problems, and wasting tokens on re-discovery.
@@ -237,11 +252,11 @@ This document is the shared, dynamically evolving persistent memory of the OpenS
 
 - [YYYY-MM-DD] - (Short title) — (What happened, root cause, fix, what to do differently next time.)
 "@
-        $codexTemplate | Out-File -FilePath $codexDest -Encoding utf8 -Force
-        Write-Host "  CODEX.md generado por primera vez (local-only)." -ForegroundColor Gray
-    } else {
-        Write-Host "  CODEX.md ya existe localmente (memoria de aprendizaje conservada)." -ForegroundColor Yellow
-    }
+            $codexTemplate | Out-File -FilePath $codexDest -Encoding utf8 -Force
+            Write-Host "  CODEX.md generado por primera vez (local-only)." -ForegroundColor Gray
+        } else {
+            Write-Host "  CODEX.md ya existe localmente (memoria de aprendizaje conservada)." -ForegroundColor Yellow
+        }
     }
     Write-Host "  Listo: $($skillDirs.Count) skills instaladas" -ForegroundColor Green
 }
@@ -249,6 +264,7 @@ This document is the shared, dynamically evolving persistent memory of the OpenS
 function InstallToOpendir($source) {
     $targetCore = "$env:USERPROFILE\.config\opencode\skills"
     Write-Host "`nInstalando skills directamente en opencode skills/..." -ForegroundColor Cyan
+    New-Item -ItemType Directory -Path $targetCore -Force | Out-Null
     $skillDirs = Get-ChildItem -LiteralPath "$source\skills" -Directory
     foreach ($skill in $skillDirs) {
         $destPath = Join-Path -Path $targetCore -ChildPath $skill.Name
