@@ -1,3 +1,23 @@
+# Dependencies
+node_modules/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+
+# OS garbage
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Logs
+*.log
+
+# Sync/merge artifacts (Google Drive, Dropbox, etc.)
+* conflicted copy*
+*conflicted copy*
+
 # Local learning memory
 CODEX.md
 
@@ -6,6 +26,10 @@ security-audit-report.html
 scratch/
 skills/*/reports/*.html
 !skills/*/reports/*-template.html
+
+# IDE (optional — uncomment if you want to be sure)
+# .vscode/
+# .idea/
 
 # Documentation and plans (local to environment)
 docs/
