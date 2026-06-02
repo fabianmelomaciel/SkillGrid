@@ -3,7 +3,7 @@
 **Skills portables para opencode y antigravity.**
 
 ![License](https://img.shields.io/badge/license-MIT-blue)
-![Skills](https://img.shields.io/badge/skills-25-green)
+![Skills](https://img.shields.io/badge/skills-26-green)
 ![CI](https://img.shields.io/badge/CI-validation-brightgreen)
 
 OpenSkills es una colección de skills (agentes de IA) que te ayudan a desarrollar software mejor: desde brainstorming y planificación hasta testing de seguridad y revisión de código.
@@ -47,12 +47,37 @@ Funciona de manera autónoma con **opencode** y **antigravity**.
 
 | Agente | Descripción |
 |--------|-------------|
-| `project-manager` | Escucha al CEO, planea, delega tareas específicas a agentes especializados (seguridad, Docker/despliegues, optimización de costes/tokens), revisa resultados y reporta. Incluye tabla anti-rationalization, risk assessment por criticidad, verification gate con 8 items, y progressive disclosure con references/ |
-| `optimizador-finops` | Optimiza costes de modelos de lenguaje (LLM), analiza el presupuesto de tokens, comprime prompts, implementa caching de APIs y mitiga bucles de llamadas infinitos |
-| `agente-devops` | Diseña y audita empaquetado seguro en contenedores Docker (Dockerfile, docker-compose.yml) y flujos de despliegue/pipelines CI/CD (GitHub Actions) |
+| `project-manager` | Escucha al CEO, planea, delega tareas específicas a agentes especializados (seguridad, Docker/despliegues, optimización de costes/tokens), revisa resultados y reporta. Incluye tabla anti-rationalization, risk assessment por criticidad, verification gate con evidencia concreta, y progressive disclosure con references/ |
+| `optimizador-finops` | Optimiza costes de modelos de lenguaje (LLM), analiza el presupuesto de tokens, comprime prompts, implementa caching de APIs y mitiga bucles de llamadas infinitos. Incluye progressive disclosure con references/ (cost-patterns) |
+| `agente-devops` | Diseña y audita empaquetado seguro en contenedores Docker (Dockerfile, docker-compose.yml) y flujos de despliegue/pipelines CI/CD (GitHub Actions). Incluye progressive disclosure con references/ (cicd-patterns) |
 | `auditor-de-marketing` | Audita optimización SEO On-Page, OpenGraph en redes y CTAs de conversión en el sitio web |
 | `gestor-documental` | Diseña y valida especificaciones técnicas y académicas (Normas APA, ISO 29148, ISO 29119) |
-| `auditor-de-seguridad` | Escanea proyectos buscando vulnerabilidades en 12 categorías: secrets, dependencias, SAST (OWASP Top 10), rate limiting, autenticación, API security, encriptación, infraestructura, DB, logging, business logic y compliance |
+| `auditor-de-seguridad` | Escanea proyectos buscando vulnerabilidades en 12 categorías: secrets, dependencias, SAST (OWASP Top 10), rate limiting, autenticación, API security, encriptación, infraestructura, DB, logging, business logic y compliance. Incluye progressive disclosure con references/ (OWASP Top 10) |
+
+### Bundles por rol
+
+Las skills se agrupan en bundles para instalar solo lo que necesitas:
+
+| Bundle | Skills |
+|--------|--------|
+| `core` | 17 skills de metodologías de desarrollo (brainstorming, TDD, code-review, etc.) |
+| `devops` | agente-devops, auditor-de-seguridad, optimizador-finops |
+| `design` | emil-kowalski-design, impeccable-design-taste |
+| `management` | project-manager, gestor-documental |
+| `marketing` | auditor-de-marketing |
+
+Ver `skills/bundles/index.json` para la configuración completa.
+
+### Workflows multi-skill
+
+Secuencias orquestadas que combinan skills para tareas complejas:
+
+- **Deploy seguro**: `auditor-de-seguridad → optimizador-finops → agente-devops`
+- **Feature completo**: `brainstorming → spec-driven-development → writing-plans → incremental-implementation → requesting-code-review → finishing-a-development-branch`
+- **Auditoría completa**: `auditor-de-seguridad + auditor-de-marketing + optimizador-finops` (paralelo) → `gestor-documental`
+- **Rediseño UI**: `brainstorming → impeccable-design-taste → emil-kowalski-design → incremental-implementation`
+
+Ver `skills/bundles/workflows.md` para detalles.
 
 ---
 
@@ -315,11 +340,19 @@ Generado usando la plantilla [marketing-template.html](file:///c:/laragon/www/Op
 
 Puedes crear tus propias skills en `skills/` y contribuirlas via Pull Request.
 
-Estructura de una skill:
+Usa el template incluido como punto de partida:
+
+```
+skills/template/
+  └── SKILL.md    ← Template listo para copiar
+```
+
+Estructura completa de una skill:
 
 ```
 skills/mi-skill/
-  └── SKILL.md    ← Instrucciones para el agente
+  ├── SKILL.md          ← Instrucciones para el agente
+  └── references/       ← (Opcional) Documentos profundos para progressive disclosure
 ```
 
 El SKILL.md debe tener frontmatter YAML:
@@ -329,7 +362,8 @@ El SKILL.md debe tener frontmatter YAML:
 name: mi-skill
 description: "Usar cuando [condiciones especificas]"
 category: core | design | agent
-status: stable | beta | experimental | deprecated
+status: stable | beta | experimental | deprecated | draft
+risk_level: safe | critical
 ---
 ```
 
@@ -345,7 +379,11 @@ OpenSkills incluye tooling de calidad y automatización:
 |-------------|-----------|
 | `CHANGELOG.md` | Historial de versiones (Keep a Changelog) |
 | `catalog.json` | Catálogo machine-readable de skills |
-| `scripts/validate-skills.js` | Validación automática de frontmatter |
+| `skills/bundles/index.json` | Bundles por rol (core, devops, design, management, marketing) |
+| `skills/bundles/workflows.md` | Secuencias orquestadas multi-skill |
+| `skills/template/SKILL.md` | Template estandarizado para nuevas skills |
+| `skills/*/references/` | Progressive disclosure: docs profundas cargables bajo demanda |
+| `scripts/validate-skills.js` | Validación automática de frontmatter (incluye risk_level) |
 | `scripts/generate-catalog.js` | Generación del catálogo |
 | `scripts/release.sh` | Script de release con tags |
 | `tests/skills.test.js` | Tests de integridad de skills |
