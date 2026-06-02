@@ -3,6 +3,7 @@ name: incremental-implementation
 description: Delivers changes incrementally. Use when implementing any feature or change that touches more than one file. Use when you're about to write a large amount of code at once, or when a task feels too big to land in one step.
 category: core
 status: stable
+risk_level: safe
 ---
 
 ## Overview
@@ -199,6 +200,15 @@ After each increment, verify:
 | "This refactor is small enough to include" | Refactors mixed with features make both harder to review and debug. Separate them. |
 | "Let me run the build command again just to be sure" | After a successful run, repeating the same command adds nothing unless the code has changed since. Run it again after subsequent edits, not as reassurance. |
 
+## Anti-Rationalization Table
+
+| Excusa comun | Por que no te la compro |
+|--------------|-------------------------|
+| "Escribo todo de una y despues lo parto" | Escribir todo de una es como construir sin andamios. |
+| "Son solo 3 archivos" | 3 archivos que tocan 10 modulos = 3 granadas de mano. |
+| "El refactor es parte del feature" | Refactor primero, feature despues. No mezcles. |
+| "Ya lo tengo en la cabeza, sale todo junto" | Lo que tenes en la cabeza no compila. |
+
 ## Red Flags
 - More than 100 lines of code written without running tests
 - Multiple unrelated changes in a single increment
@@ -211,10 +221,25 @@ After each increment, verify:
 - Creating new utility files for one-time operations
 - Running the same build/test command twice in a row without any intervening code change
 
-## Verification
-After completing all increments for a task:
-- [ ] Each increment was individually tested and committed
-- [ ] The full test suite passes
-- [ ] The build is clean
-- [ ] The feature works end-to-end as specified
-- [ ] No uncommitted changes remain
+## Risk Assessment
+
+| Nivel | Cuando aplica | Accion requerida |
+|-------|---------------|------------------|
+| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
+| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
+| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
+| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
+
+## Verification Gate
+
+Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
+
+- [ ] Compila / buildea sin errores
+- [ ] Sigue las convenciones del proyecto
+- [ ] No hay codigo muerto, comentado, ni console.logs
+- [ ] Maneja bordes (loading, error, empty, 404, 500)
+- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, // TODO: implement, o catch/except vacios
+- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
+- [ ] "Pinta que funciona" NO es evidencia valida
+
+**Si falta aunque sea UN item, el task NO esta completo.**

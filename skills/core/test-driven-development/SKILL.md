@@ -3,6 +3,7 @@ name: test-driven-development
 description: Use when implementing any feature or bugfix, before writing implementation code
 category: core
 status: stable
+risk_level: safe
 ---
 
 # Test-Driven Development (TDD)
@@ -255,21 +256,14 @@ Tests-first force edge case discovery before implementing. Tests-after verify yo
 
 30 minutes of tests after ≠ TDD. You get coverage, lose proof tests work.
 
-## Common Rationalizations
+## Anti-Rationalization Table
 
-| Excuse | Reality |
-|--------|---------|
-| "Too simple to test" | Simple code breaks. Test takes 30 seconds. |
-| "I'll test after" | Tests passing immediately prove nothing. |
-| "Tests after achieve same goals" | Tests-after = "what does this do?" Tests-first = "what should this do?" |
-| "Already manually tested" | Ad-hoc ≠ systematic. No record, can't re-run. |
-| "Deleting X hours is wasteful" | Sunk cost fallacy. Keeping unverified code is technical debt. |
-| "Keep as reference, write tests first" | You'll adapt it. That's testing after. Delete means delete. |
-| "Need to explore first" | Fine. Throw away exploration, start with TDD. |
-| "Test hard = design unclear" | Listen to test. Hard to test = hard to use. |
-| "TDD will slow me down" | TDD faster than debugging. Pragmatic = test-first. |
-| "Manual test faster" | Manual doesn't prove edge cases. You'll re-test every change. |
-| "Existing code has no tests" | You're improving it. Add tests for existing code. |
+| Excusa comun | Por que no te la compro |
+|--------------|-------------------------|
+| "Los tests los escribo al final" | Los tests al final son documentacion, no verificacion. |
+| "No tengo tiempo para tests" | No tenes tiempo para no tener tests. |
+| "El codigo es muy simple para tests" | El codigo simple tiene los bugs mas invisibles. |
+| "Mockear todo es mucho trabajo" | Mockear es senial de que tu codigo no es testeable. |
 
 ## Red Flags - STOP and Start Over
 
@@ -326,20 +320,19 @@ PASS
 **REFACTOR**
 Extract validation for multiple fields if needed.
 
-## Verification Checklist
+## Verification Gate
 
-Before marking work complete:
+Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
 
-- [ ] Every new function/method has a test
-- [ ] Watched each test fail before implementing
-- [ ] Each test failed for expected reason (feature missing, not typo)
-- [ ] Wrote minimal code to pass each test
-- [ ] All tests pass
-- [ ] Output pristine (no errors, warnings)
-- [ ] Tests use real code (mocks only if unavoidable)
-- [ ] Edge cases and errors covered
+- [ ] Compila / buildea sin errores
+- [ ] Sigue las convenciones del proyecto
+- [ ] No hay codigo muerto, comentado, ni console.logs
+- [ ] Maneja bordes (loading, error, empty, 404, 500)
+- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, `// TODO: implement`, o `catch`/`except` vacios
+- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
+- [ ] "Pinta que funciona" NO es evidencia valida
 
-Can't check all boxes? You skipped TDD. Start over.
+**Si falta aunque sea UN item, el task NO esta completo.**
 
 ## When Stuck
 
@@ -362,6 +355,15 @@ When adding mocks or test utilities, read @testing-anti-patterns.md to avoid com
 - Testing mock behavior instead of real behavior
 - Adding test-only methods to production classes
 - Mocking without understanding dependencies
+
+## Risk Assessment
+
+| Nivel | Cuando aplica | Accion requerida |
+|-------|---------------|------------------|
+| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
+| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
+| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
+| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
 
 ## Final Rule
 

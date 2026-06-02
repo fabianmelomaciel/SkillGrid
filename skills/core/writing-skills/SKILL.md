@@ -3,6 +3,7 @@ name: writing-skills
 description: Use when creating new skills, editing existing skills, or verifying skills work before deployment
 category: core
 status: stable
+risk_level: safe
 ---
 
 # Writing Skills
@@ -443,20 +444,14 @@ Different skill types need different test approaches:
 
 **Success criteria:** Agent finds and correctly applies reference information
 
-## Common Rationalizations for Skipping Testing
+## Anti-Rationalization Table
 
-| Excuse | Reality |
-|--------|---------|
-| "Skill is obviously clear" | Clear to you ≠ clear to other agents. Test it. |
-| "It's just a reference" | References can have gaps, unclear sections. Test retrieval. |
-| "Testing is overkill" | Untested skills have issues. Always. 15 min testing saves hours. |
-| "I'll test if problems emerge" | Problems = agents can't use skill. Test BEFORE deploying. |
-| "Too tedious to test" | Testing is less tedious than debugging bad skill in production. |
-| "I'm confident it's good" | Overconfidence guarantees issues. Test anyway. |
-| "Academic review is enough" | Reading ≠ using. Test application scenarios. |
-| "No time to test" | Deploying untested skill wastes more time fixing it later. |
-
-**All of these mean: Test before deploying. No exceptions.**
+| Excusa comun | Por que no te la compro |
+|--------------|-------------------------|
+| "Ya se como escribir una skill" | Una skill sin frontmatter, risk_level, ni verification gate no esta completa. |
+| "La skill es chica, no hace falta testing" | Las skills chicas se multiplican y crecen. |
+| "No necesito references, esta todo en la skill" | Skills de mas de 200 lineas necesitan progressive disclosure. |
+| "El template es muy estructurado" | La estructura existe para que no te olvides nada. |
 
 ## Bulletproofing Skills Against Rationalization
 
@@ -645,6 +640,29 @@ How future Claude finds your skill:
 6. **Loads example** (only when implementing)
 
 **Optimize for this flow** - put searchable terms early and often.
+
+## Risk Assessment
+
+| Nivel | Cuando aplica | Accion requerida |
+|-------|---------------|------------------|
+| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
+| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
+| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
+| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
+
+## Verification Gate
+
+Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
+
+- [ ] Compila / buildea sin errores
+- [ ] Sigue las convenciones del proyecto
+- [ ] No hay codigo muerto, comentado, ni console.logs
+- [ ] Maneja bordes (loading, error, empty, 404, 500)
+- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, `// TODO: implement`, o `catch`/`except` vacios
+- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
+- [ ] "Pinta que funciona" NO es evidencia valida
+
+**Si falta aunque sea UN item, el task NO esta completo.**
 
 ## The Bottom Line
 

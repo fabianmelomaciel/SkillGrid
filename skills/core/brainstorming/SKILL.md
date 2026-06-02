@@ -3,6 +3,7 @@ name: brainstorming
 description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation."
 category: core
 status: stable
+risk_level: safe
 ---
 
 # Brainstorming Ideas Into Designs
@@ -145,6 +146,38 @@ Wait for the user's response. If they request changes, make them and re-run the 
 - **Explore alternatives** - Always propose 2-3 approaches before settling
 - **Incremental validation** - Present design, get approval before moving on
 - **Be flexible** - Go back and clarify when something doesn't make sense
+
+## Anti-Rationalization Table
+
+| Excusa comun | Por que no te la compro |
+|--------------|-------------------------|
+| "Ya se lo que quiere el usuario" | No, no sabes. Preguntale primero. |
+| "Poneme a codear nomas" | Codear sin diseno es construir sobre arena. |
+| "Es simple, no hace falta brainstorm" | Los features simples tienen los bordes mas complicados. |
+| "Ya hay una solucion parecida" | Copiar soluciones ajenas sin entender el contexto es deuda tecnica. |
+
+## Risk Assessment
+
+| Nivel | Cuando aplica | Accion requerida |
+|-------|---------------|------------------|
+| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
+| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
+| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
+| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
+
+## Verification Gate
+
+Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
+
+- [ ] Compila / buildea sin errores
+- [ ] Sigue las convenciones del proyecto
+- [ ] No hay codigo muerto, comentado, ni console.logs
+- [ ] Maneja bordes (loading, error, empty, 404, 500)
+- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, `// TODO: implement`, o `catch`/`except` vacios
+- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
+- [ ] "Pinta que funciona" NO es evidencia valida
+
+**Si falta aunque sea UN item, el task NO esta completo.**
 
 ## Visual Companion
 

@@ -3,6 +3,7 @@ name: impeccable-design-taste
 description: Use for any frontend design work, UI generation, or design review where quality must be premium. Activates comprehensive design auditing across typography, color, spacing, motion, and accessibility. Trigger on "make this beautiful", "premium design", "review my UI quality", "this feels generic", or any design-first request.
 category: design
 status: stable
+risk_level: safe
 ---
 
 # Impeccable Design & Taste
@@ -167,6 +168,40 @@ These are the invisible rules that separate good from extraordinary:
 3. **The finger test** — On mobile, can you tap every target with a fat thumb? Min 44×44px touch target.
 4. **The squint test** — Blur your eyes. The most important element should still stand out.
 5. **The empty state** — What does the UI look like with no data? Design it. It's often the first thing users see.
+
+---
+
+## Anti-Rationalization Table
+
+| Excusa comun | Por que no te la compro |
+|--------------|-------------------------|
+| "Es minimalista, menos es mas" | Minimalista != vacio. Cada elemento debe tener proposito. |
+| "El color es cuestion de gusto" | No, el color es contraste, accesibilidad y jerarquia visual. |
+| "La tipografia no importa tanto" | La tipografia es el 90% del diseno web. |
+| "El espaciado se ajusta despues" | El espaciado ES el diseno. Ajustalo ahora. |
+
+## Risk Assessment
+
+| Nivel | Cuando aplica | Accion requerida |
+|-------|---------------|------------------|
+| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
+| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
+| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
+| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
+
+## Verification Gate
+
+Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
+
+- [ ] Compila / buildea sin errores
+- [ ] Sigue las convenciones del proyecto
+- [ ] No hay codigo muerto, comentado, ni console.logs
+- [ ] Maneja bordes (loading, error, empty, 404, 500)
+- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, `// TODO: implement`, o `catch`/`except` vacios
+- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
+- [ ] "Pinta que funciona" NO es evidencia valida
+
+**Si falta aunque sea UN item, el task NO esta completo.**
 
 ---
 

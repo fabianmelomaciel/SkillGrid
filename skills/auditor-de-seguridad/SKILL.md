@@ -3,6 +3,7 @@ name: auditor-de-seguridad
 description: Use when completing development, before deployment, after vibecoding/AI code generation, or when reviewing project security. Covers secrets, dependencies, SAST (OWASP Top 10), rate limiting, authentication, session management, API security, encryption, logging, compliance, infrastructure, database, and CI/CD.
 category: agent
 status: stable
+risk_level: critical
 ---
 
 # Security Auditor Agent
@@ -350,6 +351,28 @@ Return results in this structure:
 ## Integration with finishing-a-development-branch
 
 When loaded via finishing-a-development-branch, the security-auditor MUST run automatically before marking work as complete. If critical findings exist, the agent MUST block completion and report findings.
+
+
+## Anti-Rationalization Table
+
+| Excusa comun | Por que no te la compro |
+|--------------|-------------------------|
+| "Es solo una app interna" | Las apps internas son las que mas filtran datos. |
+| "Los tests pasan, no hay bugs" | Seguridad no es ausencia de bugs. Es presencia de controles. |
+| "Lo encryptamos en la DB" | Y en transito? Y en memoria? Y en logs? |
+| "Usamos JWT, es seguro" | JWT sin refresh rotation, sin expiry corto, sin signature verification no es seguro. |
+| "El rate limiting es para prod" | El rate limiting es para ANTES de que te DDoSeen. |
+
+## Risk Assessment
+
+| Nivel | Cuando aplica | Accion requerida |
+|-------|---------------|------------------|
+| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
+| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
+| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
+| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
+
+---
 
 ## Tools
 

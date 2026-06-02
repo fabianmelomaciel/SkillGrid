@@ -2,7 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 const VALID_CATEGORIES = ['core', 'design', 'agent'];
-const VALID_STATUSES = ['stable', 'beta', 'experimental', 'deprecated'];
+const VALID_STATUSES = ['stable', 'beta', 'experimental', 'deprecated', 'draft'];
+const VALID_RISK_LEVELS = ['safe', 'critical'];
 const ROOT = path.join(__dirname, '..');
 
 let errors = [];
@@ -18,7 +19,7 @@ function validateSkill(file) {
   }
 
   const fm = match[1];
-  const required = ['name:', 'description:', 'category:', 'status:'];
+  const required = ['name:', 'description:', 'category:', 'status:', 'risk_level:'];
 
   required.forEach(field => {
     if (!fm.includes(field)) {
@@ -41,6 +42,15 @@ function validateSkill(file) {
     const val = stMatch[1].trim();
     if (!VALID_STATUSES.includes(val)) {
       errors.push(`${rel(file)}: invalid status '${val}'. Valid: ${VALID_STATUSES.join(', ')}`);
+    }
+  }
+
+  // Validate risk_level value
+  const rlMatch = fm.match(/^risk_level:\s*(.+)$/m);
+  if (rlMatch) {
+    const val = rlMatch[1].trim();
+    if (!VALID_RISK_LEVELS.includes(val)) {
+      errors.push(`${rel(file)}: invalid risk_level '${val}'. Valid: ${VALID_RISK_LEVELS.join(', ')}`);
     }
   }
 

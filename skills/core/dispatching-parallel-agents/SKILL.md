@@ -3,6 +3,7 @@ name: dispatching-parallel-agents
 description: Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies
 category: core
 status: stable
+risk_level: safe
 ---
 
 # Dispatching Parallel Agents
@@ -173,6 +174,38 @@ After agents return:
 2. **Check for conflicts** - Did agents edit same code?
 3. **Run full suite** - Verify all fixes work together
 4. **Spot check** - Agents can make systematic errors
+
+## Anti-Rationalization Table
+
+| Excusa comun | Por que no te la compro |
+|--------------|-------------------------|
+| "Puedo hacerlo yo solo mas rapido" | Secuencial vs paralelo: el paralelo siempre gana en tareas independientes. |
+| "No se si las tareas son independientes" | Si no dependen del mismo archivo, son independientes. |
+| "Un solo agente puede con todo" | Un agente procesa secuencial. N agentes procesan en paralelo. |
+| "Coordinar agentes es mucho quilombo" | Ese es tu trabajo. Delega la ejecucion, no la coordinacion. |
+
+## Risk Assessment
+
+| Nivel | Cuando aplica | Accion requerida |
+|-------|---------------|------------------|
+| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
+| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
+| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
+| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
+
+## Verification Gate
+
+Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
+
+- [ ] Compila / buildea sin errores
+- [ ] Sigue las convenciones del proyecto
+- [ ] No hay codigo muerto, comentado, ni console.logs
+- [ ] Maneja bordes (loading, error, empty, 404, 500)
+- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, `// TODO: implement`, o `catch`/`except` vacios
+- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
+- [ ] "Pinta que funciona" NO es evidencia valida
+
+**Si falta aunque sea UN item, el task NO esta completo.**
 
 ## Real-World Impact
 

@@ -30,6 +30,7 @@ function parseFrontmatter(file) {
     description: get('description'),
     category: get('category'),
     status: get('status'),
+    risk_level: get('risk_level'),
   };
 }
 

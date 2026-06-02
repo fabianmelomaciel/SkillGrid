@@ -1,0 +1,61 @@
+{
+  "version": "1.0.0",
+  "description": "Role-based skill bundles for OpenSkills. Use these when setting up a new user or project.",
+  "bundles": {
+    "core": {
+      "label": "Core Development",
+      "description": "Essential skills for any software engineering workflow",
+      "skills": [
+        "brainstorming",
+        "code-simplification",
+        "context-engineering",
+        "dispatching-parallel-agents",
+        "executing-plans",
+        "finishing-a-development-branch",
+        "incremental-implementation",
+        "receiving-code-review",
+        "requesting-code-review",
+        "spec-driven-development",
+        "subagent-driven-development",
+        "systematic-debugging",
+        "test-driven-development",
+        "using-git-worktrees",
+        "verification-before-completion",
+        "writing-plans",
+        "writing-skills"
+      ]
+    },
+    "devops": {
+      "label": "DevOps & Security",
+      "description": "Infrastructure, security audits, and cost optimization",
+      "skills": [
+        "agente-devops",
+        "auditor-de-seguridad",
+        "optimizador-finops"
+      ]
+    },
+    "design": {
+      "label": "UI/UX Design",
+      "description": "Design systems, animation quality, and visual polish",
+      "skills": [
+        "emil-kowalski-design",
+        "impeccable-design-taste"
+      ]
+    },
+    "management": {
+      "label": "Project Management",
+      "description": "Project planning, delegation, and documentation",
+      "skills": [
+        "project-manager",
+        "gestor-documental"
+      ]
+    },
+    "marketing": {
+      "label": "Growth & Marketing",
+      "description": "SEO audits, content optimization, and conversion analysis",
+      "skills": [
+        "auditor-de-marketing"
+      ]
+    }
+  }
+}

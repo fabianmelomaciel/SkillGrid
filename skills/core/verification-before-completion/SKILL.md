@@ -3,6 +3,7 @@ name: verification-before-completion
 description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always
 category: core
 status: stable
+risk_level: safe
 ---
 
 # Verification Before Completion
@@ -77,19 +78,14 @@ Skip any step = lying, not verifying
 - Editing multiple files without running a single syntax check or test in between
 - **ANY wording implying success without having run verification**
 
-## Rationalization Prevention
+## Anti-Rationalization Table
 
-| Excuse | Reality |
-|--------|---------|
-| "Should work now" | RUN the verification |
-| "I'm confident" | Confidence ≠ evidence |
-| "Just this once" | No exceptions |
-| "Linter passed" | Linter ≠ compiler |
-| "Agent said success" | Verify independently |
-| "I'm tired" | Exhaustion ≠ excuse |
-| "Partial check is enough" | Partial proves nothing |
-| "I will test it all at the end" | Cascading errors are hard to debug and waste tokens. Verify as you go. |
-| "Different words so rule doesn't apply" | Spirit over letter |
+| Excusa comun | Por que no te la compro |
+|--------------|-------------------------|
+| "Seguro compila, toque solo CSS" | CSS tambien se rompe. Correlo. |
+| "Ya lo probe en mi cabeza" | Tu cabeza no es un entorno de testing. |
+| "Pasa en mi maquina" | Tu maquina no es el CI. Correlo en el CI. |
+| "No cambie nada que afecte los tests" | No lo sabes hasta que los corres. |
 
 ## Key Patterns
 
@@ -147,6 +143,29 @@ From 24 failure memories:
 - Paraphrases and synonyms
 - Implications of success
 - ANY communication suggesting completion/correctness
+
+## Risk Assessment
+
+| Nivel | Cuando aplica | Accion requerida |
+|-------|---------------|------------------|
+| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
+| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
+| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
+| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
+
+## Verification Gate
+
+Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
+
+- [ ] Compila / buildea sin errores
+- [ ] Sigue las convenciones del proyecto
+- [ ] No hay codigo muerto, comentado, ni console.logs
+- [ ] Maneja bordes (loading, error, empty, 404, 500)
+- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, `// TODO: implement`, o `catch`/`except` vacios
+- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
+- [ ] "Pinta que funciona" NO es evidencia valida
+
+**Si falta aunque sea UN item, el task NO esta completo.**
 
 ## The Bottom Line
 

@@ -45,6 +45,7 @@ skillDirs.forEach(dir => {
       ['description', fm.includes('description:')],
       ['category', fm.includes('category:')],
       ['status', fm.includes('status:')],
+      ['risk_level', fm.includes('risk_level:')],
     ];
 
     const missing = checks.filter(c => !c[1]).map(c => c[0]);

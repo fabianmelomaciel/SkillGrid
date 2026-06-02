@@ -1,11 +1,11 @@
 {
   "version": "1.0.0",
-  "generated": "2026-06-01",
+  "generated": "2026-06-02",
   "summary": {
-    "total": 25,
+    "total": 26,
     "categories": {
       "agent": 6,
-      "core": 17,
+      "core": 18,
       "design": 2
     }
   },
@@ -14,151 +14,183 @@
       "name": "agente-devops",
       "description": "Use to audit, generate, and manage secure Docker container configurations (Dockerfile, docker-compose.yml) and DevOps CI/CD pipelines (GitHub Actions). Aligned with SCM, IEEE 730, and ISO 27001 standards.",
       "category": "agent",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "auditor-de-marketing",
       "description": "Use to audit website growth, on-page SEO, social sharing cards (OpenGraph), readability, and CTA conversion.",
       "category": "agent",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "auditor-de-seguridad",
       "description": "Use when completing development, before deployment, after vibecoding/AI code generation, or when reviewing project security. Covers secrets, dependencies, SAST (OWASP Top 10), rate limiting, authentication, session management, API security, encryption, logging, compliance, infrastructure, database, and CI/CD.",
       "category": "agent",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "critical"
     },
     {
       "name": "brainstorming",
       "description": "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "code-simplification",
       "description": "Simplifies code for clarity. Use when refactoring code for clarity without changing behavior. Use when code works but is harder to read, maintain, or extend than it should be. Use when reviewing code that has accumulated unnecessary complexity.",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "context-engineering",
       "description": "Optimizes agent context setup. Use when starting a new session, when agent output quality degrades, when switching between tasks, or when you need to configure rules files and context for a project.",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "dispatching-parallel-agents",
       "description": "Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "emil-kowalski-design",
       "description": "Use when building, reviewing, or auditing any UI component to apply Emil Kowalski's design engineering principles. Enforces animation quality, micro-interaction polish, perceived performance, and accessibility standards. Trigger on requests like \"make this feel polished\", \"review my animations\", \"improve UX\", or any frontend UI work.",
       "category": "design",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "executing-plans",
       "description": "Use when you have a written implementation plan to execute in a separate session with review checkpoints",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "finishing-a-development-branch",
       "description": "Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, PR, or cleanup",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "gestor-documental",
       "description": "Use to design, audit, format, and validate technical and scientific documents according to APA (7th Edition) and software engineering requirements/testing standards (ISO 29148, ISO 29119).",
       "category": "agent",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "impeccable-design-taste",
       "description": "Use for any frontend design work, UI generation, or design review where quality must be premium. Activates comprehensive design auditing across typography, color, spacing, motion, and accessibility. Trigger on \"make this beautiful\", \"premium design\", \"review my UI quality\", \"this feels generic\", or any design-first request.",
       "category": "design",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "incremental-implementation",
       "description": "Delivers changes incrementally. Use when implementing any feature or change that touches more than one file. Use when you're about to write a large amount of code at once, or when a task feels too big to land in one step.",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "my-skill-name",
+      "description": "Brief description of when and why to use this skill (1-2 sentences).",
+      "category": "core",
+      "status": "draft",
+      "risk_level": "safe"
     },
     {
       "name": "optimizador-finops",
-      "description": "Use to audit and optimize LLM token usage, prompt engineering sizes, API call costs, caching mechanisms, and prevent infinite agent loops. Aligned with SQA & ISO 31000 standards.",
+      "description": "Use to audit computational resource utilization, API efficiency, and token usage economy. Aligned with SQA & ISO 31000 risk management standards.",
       "category": "agent",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "project-manager",
       "description": "Project Manager agent. CEO gives high-level direction; Project Manager plans, delegates, reviews, and reports.",
       "category": "agent",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "receiving-code-review",
       "description": "Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable - requires technical rigor and verification, not performative agreement or blind implementation",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "requesting-code-review",
       "description": "Use when completing tasks, implementing major features, or before merging to verify work meets requirements",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "spec-driven-development",
       "description": "Creates specs before coding. Use when starting a new project, feature, or significant change and no specification exists yet. Use when requirements are unclear, ambiguous, or only exist as a vague idea.",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "subagent-driven-development",
       "description": "Use when executing implementation plans with independent tasks in the current session",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "systematic-debugging",
       "description": "Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "test-driven-development",
       "description": "Use when implementing any feature or bugfix, before writing implementation code",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "using-git-worktrees",
       "description": "Use when starting feature work that needs isolation from current workspace or before executing implementation plans - ensures an isolated workspace exists via native tools or git worktree fallback",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "verification-before-completion",
       "description": "Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "writing-plans",
       "description": "Use when you have a spec or requirements for a multi-step task, before touching code",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     },
     {
       "name": "writing-skills",
       "description": "Use when creating new skills, editing existing skills, or verifying skills work before deployment",
       "category": "core",
-      "status": "stable"
+      "status": "stable",
+      "risk_level": "safe"
     }
   ]
 }

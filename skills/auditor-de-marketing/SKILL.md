@@ -3,6 +3,7 @@ name: auditor-de-marketing
 description: Use to audit website growth, on-page SEO, social sharing cards (OpenGraph), readability, and CTA conversion.
 category: agent
 status: stable
+risk_level: safe
 ---
 
 # Marketing & SEO Auditor Agent
@@ -89,6 +90,26 @@ You MUST check off every item before completing your audit:
   ]
 }
 ```
+
+
+## Anti-Rationalization Table
+
+| Excusa comun | Por que no te la compro |
+|--------------|-------------------------|
+| "El SEO es solo keywords" | SEO es technical: Core Web Vitals, structured data, mobile-first, sitemaps. |
+| "Los meta tags no importan tanto" | OpenGraph y Twitter Cards son tus tarjetas de presentacion en redes. |
+| "El contenido es bueno, no necesito revisar" | El contenido bueno sin estructura no lo lee ni Google. |
+| "La pagina carga rapido en mi conexion" | Tu conexion no es 3G en un pueblo. |
+| "El CTA tiene que ser obvio" | CTA = Call To Action. Si no es inconfundible, no existe. |
+
+## Risk Assessment
+
+| Nivel | Cuando aplica | Accion requerida |
+|-------|---------------|------------------|
+| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
+| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
+| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
+| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
 
 ---
 

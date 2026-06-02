@@ -3,6 +3,7 @@ name: spec-driven-development
 description: Creates specs before coding. Use when starting a new project, feature, or significant change and no specification exists yet. Use when requirements are unclear, ambiguous, or only exist as a vague idea.
 category: core
 status: stable
+risk_level: safe
 ---
 
 ## Overview
@@ -171,6 +172,15 @@ The spec is a living document, not a one-time artifact:
 | "Requirements will change anyway" | That's why the spec is a living document. An outdated spec is still better than no spec. |
 | "The user knows what they want" | Even clear requests have implicit assumptions. The spec surfaces those assumptions. |
 
+## Anti-Rationalization Table
+
+| Excusa comun | Por que no te la compro |
+|--------------|-------------------------|
+| "Pongamonos a codear y vemos" | Codear sin spec es construir una casa sin planos. |
+| "El cliente no sabe lo que quiere" | El spec sirve justamente para eso: para que el cliente se de cuenta. |
+| "Los specs se desactualizan" | Los specs se actualizan. Como el codigo. |
+| "Es mucho papeleo" | Es inversion. Un spec ahorra semanas de rewrite. |
+
 ## Red Flags
 - Starting to write code without any written requirements
 - Asking "should I just start building?" before clarifying what "done" means
@@ -178,10 +188,25 @@ The spec is a living document, not a one-time artifact:
 - Making architectural decisions without documenting them
 - Skipping the spec because "it's obvious what to build"
 
-## Verification
-Before proceeding to implementation, confirm:
-- [ ] The spec covers all six core areas
-- [ ] The human has reviewed and approved the spec
-- [ ] Success criteria are specific and testable
-- [ ] Boundaries (Always/Ask First/Never) are defined
-- [ ] The spec is saved to a file in the repository
+## Risk Assessment
+
+| Nivel | Cuando aplica | Accion requerida |
+|-------|---------------|------------------|
+| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
+| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
+| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
+| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
+
+## Verification Gate
+
+Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
+
+- [ ] Compila / buildea sin errores
+- [ ] Sigue las convenciones del proyecto
+- [ ] No hay codigo muerto, comentado, ni console.logs
+- [ ] Maneja bordes (loading, error, empty, 404, 500)
+- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, // TODO: implement, o catch/except vacios
+- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
+- [ ] "Pinta que funciona" NO es evidencia valida
+
+**Si falta aunque sea UN item, el task NO esta completo.**

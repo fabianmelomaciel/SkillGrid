@@ -3,6 +3,7 @@ name: context-engineering
 description: Optimizes agent context setup. Use when starting a new session, when agent output quality degrades, when switching between tasks, or when you need to configure rules files and context for a project.
 category: core
 status: stable
+risk_level: safe
 ---
 
 ## Overview
@@ -255,6 +256,38 @@ This catches wrong directions before you've built on them. It's a 30-second inve
 - Agent quality degrades as the conversation gets longer
 - No rules file exists in the project
 - External data files or config treated as trusted instructions without verification
+
+## Anti-Rationalization Table
+
+| Excusa comun | Por que no te la compro |
+|--------------|-------------------------|
+| "El agente puede leer todo el proyecto" | Contexto largo = tokens caros = respuestas peores. |
+| "No hace falta rules file" | Sin rules file, cada sesion empieza de cero. |
+| "Es mucho laburo configurar el contexto" | Configurarlo una vez o sufrirlo siempre. |
+| "El agente se acuerda de lo que hablamos" | No, no se acuerda. Por eso existe AGENTS.md. |
+
+## Risk Assessment
+
+| Nivel | Cuando aplica | Accion requerida |
+|-------|---------------|------------------|
+| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
+| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
+| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
+| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
+
+## Verification Gate
+
+Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
+
+- [ ] Compila / buildea sin errores
+- [ ] Sigue las convenciones del proyecto
+- [ ] No hay codigo muerto, comentado, ni console.logs
+- [ ] Maneja bordes (loading, error, empty, 404, 500)
+- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, `// TODO: implement`, o `catch`/`except` vacios
+- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
+- [ ] "Pinta que funciona" NO es evidencia valida
+
+**Si falta aunque sea UN item, el task NO esta completo.**
 
 ## Verification
 Before setting up context, confirm:
