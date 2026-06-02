@@ -1,0 +1,24 @@
+# Local-only files (CODEX learning memory)
+CODEX.md
+
+# Documentation directory (not committed)
+docs/
+
+# Security audit reports (local artifacts)
+security-audit-report.html
+
+# Conflicted copies from merge conflicts
+*Conflicted copy*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

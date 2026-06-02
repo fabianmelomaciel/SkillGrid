@@ -349,10 +349,15 @@ function Check-Dependencies {
             Write-Host "  [-] $($dep.Name) ($($dep.Desc)): $status" -ForegroundColor $color
             
             if ($dep.Name -eq "pip-audit" -and (Get-Command "pip" -ErrorAction SilentlyContinue)) {
-                $response = Read-Host "      ¿Deseas instalar 'pip-audit' automaticamente ahora via pip? [S/N]"
-                if ($response -eq 'S' -or $response -eq 's') {
-                    Write-Host "      Instalando pip-audit..." -ForegroundColor Cyan
-                    & pip install pip-audit
+                $isInteractive = [Environment]::UserInteractive -and $Host.UI.RawUI -and (-not [Console]::IsInputRedirected)
+                if ($isInteractive) {
+                    $response = Read-Host "      ¿Deseas instalar 'pip-audit' automaticamente ahora via pip? [S/N]"
+                    if ($response -eq 'S' -or $response -eq 's') {
+                        Write-Host "      Instalando pip-audit..." -ForegroundColor Cyan
+                        & pip install pip-audit
+                    }
+                } else {
+                    Write-Host "      Modo no interactivo. Omite pip-audit. Instalalo manualmente con: pip install pip-audit" -ForegroundColor Yellow
                 }
             }
         } else {
