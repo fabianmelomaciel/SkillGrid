@@ -275,6 +275,56 @@ function InstallToOpendir($source) {
     Write-Host "  $($skillDirs.Count) skills instaladas en opencode" -ForegroundColor Green
 }
 
+function InstallToOpendirAgents($source) {
+    $agentsDir = "$env:USERPROFILE\.config\opencode\agents"
+    Write-Host "`nGenerando agentes en opencode agents/..." -ForegroundColor Cyan
+    New-Item -ItemType Directory -Path $agentsDir -Force | Out-Null
+    $nodeCode = @'
+const fs = require('fs');
+const path = require('path');
+const scriptDir = process.argv[1];
+const agentsDir = process.argv[2];
+const skillsDir = path.join(scriptDir, 'skills');
+
+const scanForSkills = (dir) => {
+    fs.readdirSync(dir, { withFileTypes: true }).forEach(d => {
+        const fullPath = path.join(dir, d.name);
+        if (d.isDirectory()) {
+            const skillFile = path.join(fullPath, 'SKILL.md');
+            if (fs.existsSync(skillFile)) {
+                const content = fs.readFileSync(skillFile, 'utf8');
+                const lines = content.replace(/\r/g, '').split('\n');
+                let desc = d.name;
+                let body = content;
+                if (lines[0] === '---') {
+                    const endIdx = lines.indexOf('---', 1);
+                    if (endIdx > 0) {
+                        const fm = lines.slice(1, endIdx).join('\n');
+                        const m = fm.match(/description:\s*(?:["']?)([^"'\n]+)/);
+                        if (m) desc = m[1].trim();
+                        body = lines.slice(endIdx + 1).join('\n').trim();
+                    }
+                }
+                const agentContent = '---\ndescription: ' + desc + '\nmode: subagent\npermission:\n  edit: deny\n  bash: deny\n---\n\n' + body;
+                const agentFile = path.join(agentsDir, d.name + '.md');
+                fs.writeFileSync(agentFile, agentContent, 'utf8');
+                console.log('  Agente: ' + d.name + '.md');
+            } else {
+                scanForSkills(fullPath);
+            }
+        }
+    });
+};
+scanForSkills(skillsDir);
+'@
+    if (Get-Command node -ErrorAction SilentlyContinue) {
+        node -e $nodeCode $source $agentsDir
+    } else {
+        Write-Host "  [-] Error: Node.js es requerido para generar agentes." -ForegroundColor Red
+    }
+    Write-Host "  Agentes generados en opencode agents/" -ForegroundColor Green
+}
+
 function Check-Dependencies {
     Write-Host "`n=== DIAGNOSTICO DE DEPENDENCIAS ===" -ForegroundColor Cyan
     $dependencies = @(
@@ -366,6 +416,7 @@ if (-not $TargetDir) {
         Write-Host "Detectados opencode y antigravity. Instalando en ambos..." -ForegroundColor Green
         foreach ($d in $detected) { InstallToDir $d.Path $scriptDir }
         InstallToOpendir $scriptDir
+        InstallToOpendirAgents $scriptDir
         if ($ProjectDir) {
             InstallToProject $ProjectDir $scriptDir $Language
         }
