@@ -47,7 +47,7 @@ Funciona de manera autónoma con **opencode** y **antigravity**.
 
 | Agente | Descripción |
 |--------|-------------|
-| `project-manager` | Escucha al CEO, planea, delega tareas específicas a agentes especializados (seguridad, Docker/despliegues, optimización de costes/tokens), revisa resultados y reporta |
+| `project-manager` | Escucha al CEO, planea, delega tareas específicas a agentes especializados (seguridad, Docker/despliegues, optimización de costes/tokens), revisa resultados y reporta. Incluye tabla anti-rationalization, risk assessment por criticidad, verification gate con 8 items, y progressive disclosure con references/ |
 | `optimizador-finops` | Optimiza costes de modelos de lenguaje (LLM), analiza el presupuesto de tokens, comprime prompts, implementa caching de APIs y mitiga bucles de llamadas infinitos |
 | `agente-devops` | Diseña y audita empaquetado seguro en contenedores Docker (Dockerfile, docker-compose.yml) y flujos de despliegue/pipelines CI/CD (GitHub Actions) |
 | `auditor-de-marketing` | Audita optimización SEO On-Page, OpenGraph en redes y CTAs de conversión en el sitio web |
