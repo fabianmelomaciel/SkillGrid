@@ -231,79 +231,22 @@ Tools available for manual inspection:
 
 ## Remediation Playbooks
 
-### Secrets Exposed (Critical)
-1. Revoke the exposed key/token immediately (AWS console, GitHub, Stripe dashboard, etc.)
-2. Remove secret from git history: git filter-repo or BFG Repo-Cleaner
-3. Rotate to new key
-4. Add to .gitignore and use env vars
+> **Progressive disclosure:** Load `references/remediation.md` only when you need the specific fix steps for a finding. Do NOT load it preemptively.
 
-### SQL Injection (Critical)
-1. Replace string interpolation with parameterized queries / prepared statements
-2. Use ORM query builders instead of raw SQL
-3. Add input validation and sanitization
-4. Test with: ' OR 1=1 --
+| Finding type | Quick action |
+|-------------|-------------|
+| Secrets exposed | Revoke immediately → remove from git history → rotate → `.gitignore` |
+| SQL Injection | Parameterized queries / prepared statements — never string interpolation |
+| XSS | `textContent` not `innerHTML`, DOMPurify for HTML, CSP header |
+| Command Injection | Native language APIs, allowlist validation, never raw user input in shell |
+| CORS misconfiguration | Specific origins only, never `*` with credentials |
+| Missing rate limiting | nginx `limit_req` / Cloudflare + account lockout + CAPTCHA threshold |
+| Weak auth | MFA, JWT 15min TTL, session rotation, `secure+httpOnly+SameSite` cookies |
+| Race condition | DB transactions + optimistic locking + atomic ops + idempotency keys |
+| GDPR gap | Privacy policy + consent + deletion endpoint + data portability |
 
-### XSS (High)
-1. Replace innerHTML with textContent or innerText
-2. Use DOMPurify to sanitize HTML if HTML is needed
-3. Add Content-Security-Policy header
-4. Escape all user-controlled output
+**Full step-by-step playbooks** → `references/remediation.md`
 
-### Command Injection (Critical)
-1. Replace exec/system/shell_exec with language-native APIs
-2. If exec required: validate input against allowlist, escape shell args
-3. Never pass user input directly to shell commands
-
-### CORS Misconfiguration (High)
-1. Never use Access-Control-Allow-Origin: * with credentials
-2. Restrict to specific origins
-3. Validate Origin header server-side
-
-### Exposed .env in Apache (High)
-1. Add `.htaccess` to block direct access to `.env` files
-2. In `.htaccess`:
-   ```apache
-   RewriteRule ^\.env - [F,L]
-   ```
-
-### Insecure CI/CD (Critical)
-1. Remove hardcoded secrets from workflow files
-2. Add to GitHub Secrets / environment variables
-3. Pin actions to commit SHA
-4. Enable branch protection with required reviews
-
-### Missing Rate Limiting (High)
-1. Implement rate limiting on auth endpoints (login, register, password reset)
-2. Use reverse proxy rate limiting (nginx limit_req, Cloudflare)
-3. Add account lockout after N failed attempts
-4. Implement CAPTCHA after threshold
-5. Add per-IP and per-user rate limit tiers
-
-### Weak Authentication (Critical)
-1. Enforce strong password policy (min 12 chars, complexity)
-2. Implement MFA for sensitive actions
-3. Set short JWT expiration (15 min for access tokens)
-4. Implement session rotation on login
-5. Use secure+httpOnly+SameSite cookies
-
-### Race Condition (High)
-1. Use database transactions with proper isolation levels
-2. Implement optimistic locking with version fields
-3. Use atomic operations (INCREMENT, DECREMENT) instead of read-then-write
-4. Add idempotency keys for payment/order endpoints
-
-### No Audit Logging (Medium)
-1. Log all auth events (login, logout, failed attempts)
-2. Log sensitive operations (create, update, delete, role changes)
-3. Never log passwords, tokens, or PII
-4. Centralize logs with timestamps and user IDs
-
-### GDPR Non-Compliance (High)
-1. Add privacy policy and cookie consent banner
-2. Implement data deletion endpoint
-3. Document data processing activities
-4. Add data portability export
-5. Review third-party data sharing
 
 ## Verification Gate
 
