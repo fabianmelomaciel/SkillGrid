@@ -417,7 +417,7 @@ if (-not $TargetDir) {
     $detected = @()
     $opencodeDir = "$env:USERPROFILE\.config\opencode\openskills"
     $antigravityDir = "$env:USERPROFILE\.config\antigravity\openskills"
-    $antigravityGeminiDir = "$env:USERPROFILE\.gemini\config\openskills"
+    $antigravityGeminiDir = "$env:USERPROFILE\.gemini\config\skills"
 
     if (Test-Path -LiteralPath "$env:USERPROFILE\.config\opencode") {
         $detected += @{ Name = "opencode"; Path = $opencodeDir }

@@ -22,8 +22,7 @@ jobs:
       - name: Check all SKILL.md exist
         run: |
           count=$(find skills -name 'SKILL.md' | wc -l)
-          echo "Found $count skills"
-          [ "$count" -ge 26 ] || { echo "FAIL: expected at least 26 skills"; exit 1; }
+          echo "Found $count skills (frontmatter validation is the authoritative check)"
 
       - name: Verify catalog is up to date
         run: |

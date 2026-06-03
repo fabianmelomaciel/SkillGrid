@@ -2,10 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const CATEGORY_MAP = {
-  'core': 'core',
-  'design': 'design',
-};
+
 
 function getCategory(filePath) {
   const rel = path.relative(path.join(ROOT, 'skills'), filePath).replace(/\\/g, '/');
@@ -40,6 +37,9 @@ function walk(dir, results = []) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) walk(full, results);
     else if (entry.name === 'SKILL.md') {
+      // skip the template placeholder
+      const rel = path.relative(path.join(ROOT, 'skills'), full).replace(/\\/g, '/');
+      if (rel.startsWith('template/')) return;
       const meta = parseFrontmatter(full);
       if (meta) results.push(meta);
     }

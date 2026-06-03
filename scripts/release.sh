@@ -26,6 +26,13 @@ if ! git diff --quiet HEAD; then
   exit 1
 fi
 
+# Verify CHANGELOG.md has an entry for this version
+if ! grep -q "## \[$VERSION\]" CHANGELOG.md; then
+  echo "Error: CHANGELOG.md has no entry for [$VERSION]."
+  echo "Add a section '## [$VERSION] - $(date +%Y-%m-%d)' before releasing."
+  exit 1
+fi
+
 # Update version in package.json
 if command -v jq &>/dev/null; then
   jq ".version = \"$VERSION\"" package.json > package.json.tmp

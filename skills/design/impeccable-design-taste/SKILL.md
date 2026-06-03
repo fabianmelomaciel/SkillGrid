@@ -3,6 +3,7 @@ name: impeccable-design-taste
 description: Use for any frontend design work, UI generation, or design review where quality must be premium. Activates comprehensive design auditing across typography, color, spacing, motion, and accessibility. Trigger on "make this beautiful", "premium design", "review my UI quality", "this feels generic", or any design-first request.
 category: design
 status: stable
+risk_level: safe
 ---
 
 # Impeccable Design & Taste
