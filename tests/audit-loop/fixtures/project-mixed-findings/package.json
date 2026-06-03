@@ -1,0 +1,1 @@
+{"name":"project-mixed-findings","private":true,"scripts":{"test":"echo mixed ok && exit 0","build":"echo build ok && exit 0"}}

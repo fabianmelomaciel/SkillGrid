@@ -1,0 +1,4 @@
+fixture=3
+iter=1/3 | applied=0 | pending=3 | exit=
+iter=2/3 | applied=0 | pending=3 | exit=
+iter=3/3 | applied=0 | pending=3 | exit=escalated

@@ -1,0 +1,1 @@
+{"name":"project-conflicting-fixes","private":true,"scripts":{"test":"echo ok && exit 0","build":"echo build ok && exit 0"}}

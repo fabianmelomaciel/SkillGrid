@@ -1,0 +1,1 @@
+{"name":"project-type-errors","private":true,"scripts":{"test":"echo type ok && exit 0","build":"echo build ok && exit 0"}}

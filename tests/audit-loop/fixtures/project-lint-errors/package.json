@@ -1,0 +1,1 @@
+{"name":"project-lint-errors","private":true,"scripts":{"test":"echo lint ok && exit 0","build":"echo build ok && exit 0"}}

@@ -1,0 +1,1 @@
+{"name":"project-yellow-only","private":true,"scripts":{"test":"echo yellow ok && exit 0","build":"echo build ok && exit 0"}}

@@ -1,0 +1,1 @@
+{"name":"project-clean","private":true,"scripts":{"test":"echo all tests pass && exit 0","build":"echo build ok && exit 0"}}
