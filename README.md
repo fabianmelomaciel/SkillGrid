@@ -3,7 +3,7 @@
 **Skills portables para opencode y antigravity.**
 
 ![License](https://img.shields.io/badge/license-MIT-blue)
-![Skills](https://img.shields.io/badge/skills-26-green)
+![Skills](https://img.shields.io/badge/skills-27-green)
 ![CI](https://img.shields.io/badge/CI-validation-brightgreen)
 
 OpenSkills es una colección de skills (agentes de IA) que te ayudan a desarrollar software mejor: desde brainstorming y planificación hasta testing de seguridad y revisión de código.
@@ -53,6 +53,7 @@ Funciona de manera autónoma con **opencode** y **antigravity**.
 | `auditor-de-marketing` | Audita optimización SEO On-Page, OpenGraph en redes y CTAs de conversión en el sitio web |
 | `gestor-documental` | Diseña y valida especificaciones técnicas y académicas (Normas APA, ISO 29148, ISO 29119) |
 | `auditor-de-seguridad` | Escanea proyectos buscando vulnerabilidades en 12 categorías: secrets, dependencias, SAST (OWASP Top 10), rate limiting, autenticación, API security, encriptación, infraestructura, DB, logging, business logic y compliance. Incluye progressive disclosure con references/ (OWASP Top 10) |
+| `audit-loop` | Orquesta reparación automática post-auditoría: clasifica findings, aplica fixes seguros, pide OK para sensibles, re-audita, itera hasta 3 veces. Invocado como follow-up de auditorías. |
 
 ### Bundles por rol
 
@@ -61,9 +62,9 @@ Las skills se agrupan en bundles para instalar solo lo que necesitas:
 | Bundle | Skills |
 |--------|--------|
 | `core` | 17 skills de metodologías de desarrollo (brainstorming, TDD, code-review, etc.) |
-| `devops` | agente-devops, auditor-de-seguridad, optimizador-finops |
+| `devops` | agente-devops, audit-loop, auditor-de-seguridad, optimizador-finops |
 | `design` | emil-kowalski-design, impeccable-design-taste |
-| `management` | project-manager, gestor-documental |
+| `management` | project-manager, gestor-documental, audit-loop |
 | `marketing` | auditor-de-marketing |
 
 Ver `skills/bundles/index.json` para la configuración completa.
@@ -76,6 +77,8 @@ Secuencias orquestadas que combinan skills para tareas complejas:
 - **Feature completo**: `brainstorming → spec-driven-development → writing-plans → incremental-implementation → requesting-code-review → finishing-a-development-branch`
 - **Auditoría completa**: `auditor-de-seguridad + auditor-de-marketing + optimizador-finops` (paralelo) → `gestor-documental`
 - **Rediseño UI**: `brainstorming → impeccable-design-taste → emil-kowalski-design → incremental-implementation`
+- **Loop de reparación**: `auditor-de-seguridad | auditor-de-marketing | optimizador-finops → audit-loop`
+- **Pre-deploy gate**: `agente-devops → auditor-de-seguridad → audit-loop`
 
 Ver `skills/bundles/workflows.md` para detalles.
 

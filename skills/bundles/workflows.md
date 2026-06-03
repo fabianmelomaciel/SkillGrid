@@ -44,3 +44,32 @@ brainstorming → imperfectable-design-taste → emil-kowalski-design → increm
 2. **imperfectable-design-taste**: Audita tipografia, color, espaciado, accesibilidad
 3. **emil-kowalski-design**: Revisa animaciones, micro-interacciones, perceived performance
 4. **incremental-implementation**: Implementa cambios de UI en pasos revisables
+
+## Loop de reparación post-auditoría (Audit → Fix)
+
+```
+[auditor-de-seguridad | auditor-de-marketing | optimizador-finops] → audit-loop
+```
+
+1. **Audit skill** (uno o varios): corre y genera reporte con N findings
+2. **audit-loop**: CEO acepta el follow-up, loop itera hasta 3 veces aplicando fixes seguros, preguntando antes de fixes sensibles, y escalando si quedan críticos abiertos
+
+## Auditoría completa + reparación integral
+
+```
+auditor-de-seguridad + auditor-de-marketing + optimizador-finops (paralelo) → gestor-documental → audit-loop
+```
+
+1. Los 3 audit skills corren en paralelo (independientes)
+2. **gestor-documental**: compila los hallazgos en informe APA
+3. **audit-loop**: si el CEO quiere, repara todo lo encontrado
+
+## Pre-deploy gate (CI-friendly)
+
+```
+agente-devops → auditor-de-seguridad → audit-loop
+```
+
+1. **agente-devops**: valida Docker/CI configs
+2. **auditor-de-seguridad**: escanea vulnerabilidades
+3. **audit-loop**: aplica fixes seguros automáticos, pide OK para sensibles, re-audita hasta 3 iteraciones o hasta que todo esté limpio antes del push

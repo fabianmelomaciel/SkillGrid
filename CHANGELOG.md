@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- New `audit-loop` agent skill: closed-loop audit repair with bounded iterations (max 3), 3-color finding taxonomy (green auto-fix, yellow CEO-OK, red never-fix), per-batch verification, and escalation gates
+- Follow-up "¿Ejecuto el loop de reparación?" prompt in `auditor-de-seguridad`, `auditor-de-marketing`, and `optimizador-finops`
+- 3 new workflows in `skills/bundles/workflows.md`: post-audit repair loop, full audit+repair, pre-deploy gate
+- 9 fixture projects for testing the audit-loop behavior across all scenarios
+- `tests/audit-loop/audit-loop.test.js` with PowerShell-based fixture runner and snapshot validation
+
 ## [1.0.0] - 2026-05-01
 
 ### Added

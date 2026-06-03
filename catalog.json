@@ -1,10 +1,10 @@
 {
   "version": "1.0.0",
-  "generated": "2026-06-02",
+  "generated": "2026-06-03",
   "summary": {
-    "total": 26,
+    "total": 27,
     "categories": {
-      "agent": 6,
+      "agent": 7,
       "core": 18,
       "design": 2
     }
@@ -16,6 +16,13 @@
       "category": "agent",
       "status": "stable",
       "risk_level": "safe"
+    },
+    {
+      "name": "audit-loop",
+      "description": "Orquesta el ciclo cerrado: audita → repara → re-audita → itera. Activado como follow-up de auditorías (seguridad, marketing, finops).",
+      "category": "agent",
+      "status": "beta",
+      "risk_level": "critical"
     },
     {
       "name": "auditor-de-marketing",
