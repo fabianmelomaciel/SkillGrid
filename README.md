@@ -119,6 +119,12 @@ cd C:\laragon\www\OpenSkills
 .\install.ps1
 ```
 
+> Nota (Windows): `pip-audit` es recomendado para auditorías Python. Si no está disponible, instálalo con:
+>
+> ```powershell
+> python -m pip install --user pip-audit
+> ```
+
 #### En Linux/Mac (antigravity / gemini)
 
 ```bash
@@ -172,6 +178,12 @@ Luego agrega las rutas a tu configuración:
 ## Compatibilidad con otras herramientas de IA
 
 Dado que las skills de **OpenSkills** están escritas en Markdown estándar con metadatos YAML, son 100% compatibles e integrables de manera nativa o personalizada con otras herramientas líderes de IA:
+
+### ✅ Soportado por el instalador
+- **opencode**: instala en `~/.config/opencode/openskills` y también copia a `~/.config/opencode/skills/`.
+- **antigravity**: instala en `~/.config/antigravity/openskills`.
+- **antigravity (gemini)**: instala en `~/.gemini/config/openskills`.
+- **Claude Code**: instala en `~/.claude/skills/` si detecta `~/.claude`.
 
 ### ⚙️ Automatización con el Instalador (¡Recomendado!)
 Puedes generar automáticamente la matriz de compatibilidad para tus proyectos (Cursor y GitHub Copilot) utilizando los scripts de instalación indicando la carpeta de tu proyecto. El script creará los directorios correspondientes (`.cursor/rules/` y `.github/instructions/`) e instalará únicamente las reglas comunes y las del lenguaje del proyecto (evitando el *context flooding* de cargar todas las skills del sistema en tu editor):
@@ -229,7 +241,12 @@ Copilot Chat lee archivos de instrucciones del sistema en el repositorio:
   ---
   ```
 
-### 4. Aider CLI
+### 4. Trae IDE
+Trae no usa el mismo mecanismo de “instalar skills” que opencode/antigravity. La forma práctica de usar OpenSkills en Trae es:
+* Mantener este repo clonado localmente y usarlo como biblioteca de prompts (carpeta `skills/`).
+* Para reglas en el proyecto (Cursor/Copilot), usar `install.ps1 -ProjectDir ...` o `install.sh --project ...` y versionarlas dentro del repositorio del proyecto.
+
+### 5. Aider CLI
 Puedes pasar cualquier skill de OpenSkills directamente a Aider al iniciar la sesión:
 * Inicia Aider con el parámetro de instrucciones:
   ```bash

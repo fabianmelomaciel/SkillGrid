@@ -268,9 +268,14 @@ function InstallToOpendir($source) {
     $skillDirs = Get-ChildItem -LiteralPath "$source\skills" -Directory
     foreach ($skill in $skillDirs) {
         $destPath = Join-Path -Path $targetCore -ChildPath $skill.Name
-        Remove-Item -LiteralPath $destPath -Recurse -Force -ErrorAction SilentlyContinue
-        Copy-Item -LiteralPath $skill.FullName -Destination $destPath -Recurse -Force
-        Write-Host "  Instalado: $($skill.Name)" -ForegroundColor Gray
+        try {
+            New-Item -ItemType Directory -Path $destPath -Force | Out-Null
+            Remove-Item -LiteralPath (Join-Path -Path $destPath -ChildPath "*") -Recurse -Force -ErrorAction SilentlyContinue
+            Copy-Item -LiteralPath (Join-Path -Path $skill.FullName -ChildPath "*") -Destination $destPath -Recurse -Force -ErrorAction Stop
+            Write-Host "  Instalado: $($skill.Name)" -ForegroundColor Gray
+        } catch {
+            Write-Host "  [!] No se pudo instalar '$($skill.Name)' en opencode skills/. Error: $($_.Exception.Message)" -ForegroundColor Yellow
+        }
     }
     Write-Host "  $($skillDirs.Count) skills instaladas en opencode" -ForegroundColor Green
 }
@@ -338,8 +343,20 @@ function Check-Dependencies {
     foreach ($dep in $dependencies) {
         $status = "OK"
         $color = "Green"
+        $isInstalled = $false
         $check = Get-Command $dep.Name -ErrorAction SilentlyContinue
-        if (-not $check) {
+        if ($check) { $isInstalled = $true }
+        elseif ($dep.Name -eq "pip-audit") {
+            $py = Get-Command "python" -ErrorAction SilentlyContinue
+            if ($py) {
+                try {
+                    & python -m pip_audit --version *> $null
+                    if ($LASTEXITCODE -eq 0) { $isInstalled = $true }
+                } catch {}
+            }
+        }
+
+        if (-not $isInstalled) {
             $status = "FALTA (Recomendado)"
             $color = "Yellow"
             if ($dep.Severity -eq "high") {
@@ -348,16 +365,20 @@ function Check-Dependencies {
             }
             Write-Host "  [-] $($dep.Name) ($($dep.Desc)): $status" -ForegroundColor $color
             
-            if ($dep.Name -eq "pip-audit" -and (Get-Command "pip" -ErrorAction SilentlyContinue)) {
-                $isInteractive = [Environment]::UserInteractive -and $Host.UI.RawUI -and (-not [Console]::IsInputRedirected)
-                if ($isInteractive) {
-                    $response = Read-Host "      ¿Deseas instalar 'pip-audit' automaticamente ahora via pip? [S/N]"
-                    if ($response -eq 'S' -or $response -eq 's') {
-                        Write-Host "      Instalando pip-audit..." -ForegroundColor Cyan
-                        & pip install pip-audit
+            if ($dep.Name -eq "pip-audit") {
+                if (Get-Command "pip" -ErrorAction SilentlyContinue) {
+                    $isInteractive = [Environment]::UserInteractive -and $Host.UI.RawUI -and (-not [Console]::IsInputRedirected)
+                    if ($isInteractive) {
+                        $response = Read-Host "      ¿Deseas instalar 'pip-audit' automaticamente ahora via pip? [S/N]"
+                        if ($response -eq 'S' -or $response -eq 's') {
+                            Write-Host "      Instalando pip-audit..." -ForegroundColor Cyan
+                            & pip install pip-audit
+                        }
+                    } else {
+                        Write-Host "      Modo no interactivo. Omite pip-audit. Instalalo manualmente con: python -m pip install --user pip-audit" -ForegroundColor Yellow
                     }
                 } else {
-                    Write-Host "      Modo no interactivo. Omite pip-audit. Instalalo manualmente con: pip install pip-audit" -ForegroundColor Yellow
+                    Write-Host "      Para instalar: python -m pip install --user pip-audit" -ForegroundColor Yellow
                 }
             }
         } else {
