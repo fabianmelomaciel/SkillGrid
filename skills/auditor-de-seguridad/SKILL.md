@@ -400,3 +400,17 @@ When loaded via finishing-a-development-branch, the security-auditor MUST run au
 | **Load** | Read `CODEX.md` (search upward). Apply all environment rules and past lessons. |
 | **Apply** | Follow all documented gotchas strictly (DB ports, .env rules, deploy script visibility). |
 | **Write** | After task: append a log entry under `## 💻 Mission Logs` with date, title, and key learning. |
+
+---
+
+## 🔁 Follow-Up: Audit Repair Loop
+
+You found N findings. Some are auto-repairable (lint, types, AI remnants, patch deps); others require CEO approval (auth, secrets, schema, business logic).
+
+**¿Ejecuto el loop de reparación?**
+
+- **Sí**: activa `@audit-loop` con el reporte generado
+- **No**: el reporte queda como documento estático
+- **Ver plan**: muestra qué findings se repararían solos (🟢), cuáles requieren OK (🟡), cuáles nunca se tocan (🔴)
+
+> **Referencia:** `skills/audit-loop/SKILL.md` para la lógica completa del loop.

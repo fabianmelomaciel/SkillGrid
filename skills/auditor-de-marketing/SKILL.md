@@ -119,3 +119,17 @@ To ensure cumulative learning in the user's environment:
 1. **Load Memory (Read CODEX):** At startup, locate and read `CODEX.md` (searching upwards from this skill folder).
 2. **Apply Lessons:** Adhere strictly to environment brand assets, target demographics, and preferred color palettes documented.
 3. **Log Learnings (Write CODEX):** If you discover any unique conversion rules (e.g., local legal notice compliance for forms, preferred CTA patterns for opencode/antigravity users), append a short log entry under `## 💻 Mission Logs & Tactical Learnings` detailing the Date, the Marketing/SEO Challenge, and the Solution applied.
+
+---
+
+## 🔁 Follow-Up: Audit Repair Loop
+
+You found N findings. Some are auto-repairable (lint, types, AI remnants, patch deps); others require CEO approval (auth, secrets, schema, business logic).
+
+**¿Ejecuto el loop de reparación?**
+
+- **Sí**: activa `@audit-loop` con el reporte generado
+- **No**: el reporte queda como documento estático
+- **Ver plan**: muestra qué findings se repararían solos (🟢), cuáles requieren OK (🟡), cuáles nunca se tocan (🔴)
+
+> **Referencia:** `skills/audit-loop/SKILL.md` para la lógica completa del loop.
