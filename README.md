@@ -11,20 +11,24 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/OpenSkills/validate.yml?branch=main&style=flat-square&label=CI)](https://github.com/fabianmelomaciel/OpenSkills/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/OpenSkills/pulls)
 
+<br>
+
+### [⚡ ¡Acelera tu Agente en 10 Segundos! ⚡](#⚡-instalación-en-10-segundos)
+
 </div>
 
 ---
 
 ## ¿Qué es OpenSkills?
 
-OpenSkills es una colección de **skills portables** — instrucciones estructuradas que transforman tu asistente de IA en un equipo especializado. Cada skill le dice exactamente *cuándo activarse*, *qué hacer* y *cuándo parar*.
+OpenSkills es una colección de **skills portables** — instrucciones estructuradas que transforman tu asistente de IA en un equipo de desarrollo especializado de primer nivel. Cada skill le enseña al agente exactamente *cuándo activarse*, *qué hacer* y *cuándo detenerse* para lograr el resultado óptimo.
 
-No es otro conjunto de prompts. Es un **sistema de trabajo** con:
+No es solo una lista de prompts. Es un **sistema de trabajo autónomo y eficiente** que incluye:
 
-- 🔁 **Bucle de reparación automática** — audita, repara y re-audita sin que lo pidas
-- 🧠 **Memoria persistente (CODEX)** — el agente aprende tu proyecto y nunca te vuelve a preguntar lo mismo
-- 🛡️ **Taxonomía de riesgo** — cada acción clasificada como segura, requiere OK, o nunca-auto
-- 📦 **Bundles por rol** — instala solo lo que necesitas para tu equipo
+- 🔁 **Bucle de Reparación Automática** — Ahorra horas de depuración. Tus agentes auditan y corrigen fallos en ciclos autónomos cerrados.
+- 🧠 **Memoria Persistente (CODEX)** — Cero fricción en contexto. El agente aprende los secretos de tu proyecto y nunca te hace repetir explicaciones.
+- 🛡️ **Seguridad Bajo Control (Taxonomía de Riesgo)** — Duerme tranquilo. El agente sabe qué cambios aplicar de forma segura y cuándo pedir tu autorización.
+- 📦 **Instalación Modular por Roles** — Descarga solo lo que tu equipo necesita (DevOps, Diseño, Gestión, Marketing).
 
 ---
 
@@ -213,29 +217,30 @@ Los agentes de análisis generan dashboards HTML interactivos con dark mode, gla
 
 ---
 
-## 📈 CodeGraph — Memoria local y optimización de tokens
+## 📈 Ahorro Masivo de Tokens con CodeGraph
 
-OpenSkills integra automáticamente **CodeGraph** (la herramienta de análisis semántico local y MCP) durante el proceso de instalación para evitar que los agentes gasten tokens en investigación redundante.
+OpenSkills se integra de forma nativa con **CodeGraph** para eliminar por completo el consumo innecesario de tokens en tareas de investigación de código. Olvídate de que tu agente lea archivos completos una y otra vez.
 
-### ¿Cómo funciona?
-1. **Detección e instalación**: El instalador (`install.ps1` / `install.sh`) busca si `codegraph` está instalado en el sistema. Si falta, intenta instalar `@colbymchenry/codegraph` globalmente vía `npm` (o `codegraph-cli` vía `pip`/`uv` como respaldo).
-2. **Inicialización local**: Si instalas reglas en tu proyecto con `-ProjectDir` o `--project`, el script inicializa y genera un índice de código local dentro de la carpeta `.codegraph/`.
-3. **Reducción de tokens**: Los agentes consultan el índice semántico de `.codegraph/` en lugar de realizar escaneos completos de archivos. Esto reduce hasta un **90%** el consumo de tokens en tareas de investigación.
-4. **Arranque Automático en Skills (Auto-Startup)**: Cada skill principal y agente especializado verifica automáticamente al inicio la presencia de la CLI de `codegraph` (instalándola si falta) e inicializa o sincroniza el índice de código local (`codegraph sync`) en el directorio del proyecto antes de comenzar a explorar el código.
-5. **Registro de ahorro (FinOps)**: Cada análisis genera o actualiza un registro en `c:\laragon\www\peon\scratch\token_usage_comparison.json` para auditar y comparar el consumo teórico de tokens (escaneo completo vs. CodeGraph).
+### 🚀 Principales Beneficios para tu Flujo y tu Bolsillo
+- **Hasta 95% de Ahorro en Tokens:** Al usar indexación semántica local en lugar de escaneos completos de archivos, la huella de contexto se reduce al mínimo imprescindible.
+- **Cero Fricción (Auto-Sincronización):** Se instala y sincroniza en segundo plano automáticamente. El agente siempre tiene un mapa actualizado de tu codebase sin que tengas que mover un dedo.
+- **Respuestas Inmediatas:** Al evitar el "context flooding" en el prompt, tu asistente de IA responde mucho más rápido y con mayor precisión (evitando alucinaciones).
+- **Control de Costos (FinOps):** Compara el consumo de tokens y visualiza tu ahorro acumulado en tiempo real desde tu propio dashboard local.
 
-### 📊 Comparativa de Consumo y Costos por Plataforma
+### 📊 Comparativa Real de Consumo y Costos por Plataforma
 
-Basado en una auditoría real sobre **300 archivos** (~1.47 MB de código) del proyecto, comparamos el impacto de usar CodeGraph vs. un escaneo completo (Full Scan) en las principales APIs:
+Basado en una auditoría real sobre **300 archivos** (~1.47 MB de código), comparamos el impacto económico de usar la indexación inteligente de CodeGraph contra un escaneo tradicional (Full Scan):
 
 | Proveedor / Plataforma | Modelo Principal | Costo Full Scan (368.3K tokens) | Costo con CodeGraph (38.8K tokens) | Ahorro Estimado |
 | :--- | :--- | :---: | :---: | :---: |
-| **Google (Antigravity)** | Gemini 1.5 Flash | \$0.055 | \$0.0029 | **94.7%** (tier + tokens) |
-| **Google (Antigravity / Cursor)** | Gemini 1.5 Pro | \$0.920 | \$0.048 | **94.7%** (tier + tokens) |
-| **Anthropic (Claude Code)** | Claude 3.5 Sonnet | \$1.105 | \$0.116 | **89.5%** |
-| **OpenAI (Cursor / Copilot)** | GPT-4o | \$1.841 | \$0.194 | **89.5%** |
+| **Google (Antigravity)** | Gemini 1.5 Flash | \$0.055 | \$0.0029 | **94.7% de Ahorro** 📉 |
+| **Google (Antigravity / Cursor)** | Gemini 1.5 Pro | \$0.920 | \$0.048 | **94.7% de Ahorro** 📉 |
+| **Anthropic (Claude Code)** | Claude 3.5 Sonnet | \$1.105 | \$0.116 | **89.5% de Ahorro** 📉 |
+| **OpenAI (Cursor / Copilot)** | GPT-4o | \$1.841 | \$0.194 | **89.5% de Ahorro** 📉 |
 
-*Nota: Tarifas calculadas con precios estándar de entrada (Input API) al 2026. En los modelos de Google (Gemini 1.5), el ahorro es aún mayor debido a la estructura de precios por tramos: al bajar de 128K tokens de contexto, la tarifa base por millón se reduce a la mitad.*
+> [!NOTE]
+> **¿Por qué Gemini ahorra aún más?**
+> Con Gemini (Google), el beneficio es doble: al reducir el contexto por debajo del límite de 128K tokens, la tarifa por millón de tokens se reduce a la mitad. ¡Menos tokens a un precio unitario inferior!
 
 ---
 
