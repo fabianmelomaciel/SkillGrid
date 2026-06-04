@@ -15,44 +15,24 @@ if ([string]::IsNullOrWhiteSpace($userProfile)) {
     Write-Error "USERPROFILE no esta definido. Abortando por seguridad."
     exit 1
 }
-$targetDir = "$env:USERPROFILE\.config\opencode\openskills"
-if (Test-Path -LiteralPath "$env:USERPROFILE\.config\antigravity") {
-    $targetDir = "$env:USERPROFILE\.config\antigravity\openskills"
-}
 
-Write-Host "Clonando/Actualizando OpenSkills en $targetDir..." -ForegroundColor Cyan
-
-if (Test-Path -LiteralPath $targetDir) {
-    if (Test-Path -LiteralPath (Join-Path -Path $targetDir -ChildPath ".git")) {
-        Write-Host "El directorio de destino ya existe. Actualizando con git pull..." -ForegroundColor Yellow
-        Push-Location $targetDir
-        try {
-            git pull
-        } catch {
-            Write-Warning "No se pudo realizar git pull. Intentando continuar..."
-        }
-        Pop-Location
-    } else {
-        Write-Host "El directorio de destino existe pero no es un repositorio git. Reinstalando de forma limpia..." -ForegroundColor Yellow
-        $expectedSuffixes = @(
-            "\.config\opencode\openskills",
-            "\.config\antigravity\openskills"
-        )
-        $isExpectedTarget = $false
-        foreach ($suffix in $expectedSuffixes) {
-            if ($targetDir.ToLower().EndsWith($suffix.ToLower())) { $isExpectedTarget = $true; break }
-        }
-        if (-not $targetDir.ToLower().StartsWith($userProfile.ToLower()) -or -not $isExpectedTarget) {
-            Write-Error "Ruta de destino inesperada para borrado: $targetDir. Abortando por seguridad."
-            exit 1
-        }
-        Remove-Item -LiteralPath $targetDir -Recurse -Force -ErrorAction SilentlyContinue
-        git clone https://github.com/fabianmelomaciel/OpenSkills.git $targetDir
-    }
-} else {
-    git clone https://github.com/fabianmelomaciel/OpenSkills.git $targetDir
+# Clone to a TEMP folder and only install the skills to the proper tool paths.
+$tempRoot = $env:TEMP
+if ([string]::IsNullOrWhiteSpace($tempRoot)) {
+    $tempRoot = Join-Path -Path $userProfile -ChildPath "AppData\Local\Temp"
 }
+$targetDir = Join-Path -Path $tempRoot -ChildPath ("openskills-" + [guid]::NewGuid().ToString("N"))
+
+Write-Host "Clonando OpenSkills en directorio temporal: $targetDir" -ForegroundColor Cyan
+
+git clone --depth 1 https://github.com/fabianmelomaciel/OpenSkills.git $targetDir
 
 # Run the installer
-Write-Host "Ejecutando instalador local..." -ForegroundColor Cyan
-& "$targetDir\install.ps1"
+try {
+    Write-Host "Ejecutando instalador local..." -ForegroundColor Cyan
+    & "$targetDir\install.ps1"
+} finally {
+    try {
+        Remove-Item -LiteralPath $targetDir -Recurse -Force -ErrorAction SilentlyContinue
+    } catch {}
+}

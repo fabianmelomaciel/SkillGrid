@@ -12,39 +12,17 @@ if ! command -v git &> /dev/null; then
     exit 1
 fi
 
-# Determine destination directory
+# Determine temp directory
 if [ -z "$HOME" ]; then
     echo "ERROR: HOME no esta definido. Abortando por seguridad."
     exit 1
 fi
-TARGET="$HOME/.config/opencode/openskills"
-if [ -d "$HOME/.config/antigravity" ]; then
-    TARGET="$HOME/.config/antigravity/openskills"
-fi
+TARGET="$(mktemp -d 2>/dev/null || mktemp -d -t openskills)"
+trap 'rm -rf "$TARGET" 2>/dev/null || true' EXIT
 
-echo "Clonando/Actualizando OpenSkills en $TARGET..."
+echo "Clonando OpenSkills en directorio temporal: $TARGET..."
 
-if [ -d "$TARGET" ]; then
-    if [ -d "$TARGET/.git" ]; then
-        echo "El directorio de destino ya existe. Actualizando con git pull..."
-        cd "$TARGET"
-        git pull || echo "Advertencia: No se pudo realizar git pull. Intentando continuar..."
-        cd - > /dev/null
-    else
-        echo "El directorio de destino existe pero no es un repositorio git. Reinstalando de forma limpia..."
-        case "$TARGET" in
-            "$HOME"/.config/opencode/openskills|"$HOME"/.config/antigravity/openskills) ;;
-            *)
-                echo "ERROR: Ruta de destino inesperada para borrado: $TARGET. Abortando por seguridad."
-                exit 1
-                ;;
-        esac
-        rm -rf "$TARGET"
-        git clone https://github.com/fabianmelomaciel/OpenSkills.git "$TARGET"
-    fi
-else
-    git clone https://github.com/fabianmelomaciel/OpenSkills.git "$TARGET"
-fi
+git clone --depth 1 https://github.com/fabianmelomaciel/OpenSkills.git "$TARGET"
 
 # Run the installer
 echo "Ejecutando instalador local..."
