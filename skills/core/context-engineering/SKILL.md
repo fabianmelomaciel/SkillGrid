@@ -77,7 +77,7 @@ Create a rules file that persists across sessions. This is the highest-leverage 
 - `AGENTS.md` (OpenAI Codex)
 
 ### Level 2: Codebase Graph (CodeGraph)
-Before analyzing codebase architecture or searching for class/function relationships, check if the `.codegraph/` directory exists. If it is missing, you MUST automatically initialize it by running `codegraph init --yes --quiet` followed by `codegraph sync` in the project root. Once present, use the graph index or generated summary reports. This acts as a semantic memory layer to prevent reading numerous files or doing broad grep searches, saving up to 90% in token research costs.
+Before analyzing codebase architecture or searching for class/function relationships, check if the `.codegraph/` directory exists. If it is missing, you MUST automatically initialize it by running `codegraph init` followed by `codegraph sync` in the project root. Once present, use the graph index or generated summary reports. This acts as a semantic memory layer to prevent reading numerous files or doing broad grep searches, saving up to 90% in token research costs.
 
 ### Level 3: Specs and Architecture
 Load the relevant spec section when starting a feature. Don't load the entire spec if only one section applies.

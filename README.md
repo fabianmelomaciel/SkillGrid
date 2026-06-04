@@ -4,7 +4,7 @@
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*27 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
+*26 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-26-22c55e?style=flat-square)](catalog.json)
@@ -220,8 +220,9 @@ OpenSkills integra automáticamente **CodeGraph** (la herramienta de análisis s
 ### ¿Cómo funciona?
 1. **Detección e instalación**: El instalador (`install.ps1` / `install.sh`) busca si `codegraph` está instalado en el sistema. Si falta, intenta instalar `@colbymchenry/codegraph` globalmente vía `npm` (o `codegraph-cli` vía `pip`/`uv` como respaldo).
 2. **Inicialización local**: Si instalas reglas en tu proyecto con `-ProjectDir` o `--project`, el script inicializa y genera un índice de código local dentro de la carpeta `.codegraph/`.
-3. **Reducción de tokens**: Los agentes (como `project-manager` y `optimizador-finops`) consultan el índice semántico de `.codegraph/` en lugar de realizar escaneos completos de archivos. Esto reduce hasta un **90%** el consumo de tokens en tareas de investigación.
-4. **Registro de ahorro (FinOps)**: Cada análisis genera o actualiza un registro en `c:\laragon\www\peon\scratch\token_usage_comparison.json` para auditar y comparar el consumo teórico de tokens (escaneo completo vs. CodeGraph).
+3. **Reducción de tokens**: Los agentes consultan el índice semántico de `.codegraph/` en lugar de realizar escaneos completos de archivos. Esto reduce hasta un **90%** el consumo de tokens en tareas de investigación.
+4. **Arranque Automático en Skills (Auto-Startup)**: Cada skill principal y agente especializado verifica automáticamente al inicio la presencia de la CLI de `codegraph` (instalándola si falta) e inicializa o sincroniza el índice de código local (`codegraph sync`) en el directorio del proyecto antes de comenzar a explorar el código.
+5. **Registro de ahorro (FinOps)**: Cada análisis genera o actualiza un registro en `c:\laragon\www\peon\scratch\token_usage_comparison.json` para auditar y comparar el consumo teórico de tokens (escaneo completo vs. CodeGraph).
 
 ---
 

@@ -493,7 +493,7 @@ function Setup-ProjectCodeGraph($projectDir) {
         $oldPwd = $pwd
         try {
             Set-Location -Path $projectDir
-            & codegraph init --yes --quiet *>$null
+            & codegraph init *>$null
             & codegraph sync *>$null
             Write-Host "  [+] Index de CodeGraph completado y almacenado en .codegraph/" -ForegroundColor Green
         } catch {

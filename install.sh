@@ -347,7 +347,7 @@ setup_project_codegraph() {
         echo "  Inicializando/Sincronizando: codegraph en $PROJECT_DIR"
         local OLD_PWD=$(pwd)
         cd "$PROJECT_DIR"
-        if codegraph init --yes --quiet &>/dev/null; then
+        if codegraph init &>/dev/null; then
             codegraph sync &>/dev/null || true
             echo -e "  [+] Index de CodeGraph completado y almacenado en .codegraph/"
         else

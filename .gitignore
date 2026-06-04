@@ -33,4 +33,6 @@ codegraph.html
 token_comparison.json
 token_usage_comparison.json
 token_usage.json
-
+# Generated rules for Cursor and Copilot (local-only)
+.cursor/rules/
+.github/instructions/
