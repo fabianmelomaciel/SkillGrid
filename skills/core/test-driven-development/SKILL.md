@@ -256,14 +256,7 @@ Tests-first force edge case discovery before implementing. Tests-after verify yo
 
 30 minutes of tests after ≠ TDD. You get coverage, lose proof tests work.
 
-## Anti-Rationalization Table
-
-| Excusa comun | Por que no te la compro |
-|--------------|-------------------------|
-| "Los tests los escribo al final" | Los tests al final son documentacion, no verificacion. |
-| "No tengo tiempo para tests" | No tenes tiempo para no tener tests. |
-| "El codigo es muy simple para tests" | El codigo simple tiene los bugs mas invisibles. |
-| "Mockear todo es mucho trabajo" | Mockear es senial de que tu codigo no es testeable. |
+> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
 
 ## Red Flags - STOP and Start Over
 
@@ -320,19 +313,7 @@ PASS
 **REFACTOR**
 Extract validation for multiple fields if needed.
 
-## Verification Gate
-
-Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
-
-- [ ] Compila / buildea sin errores
-- [ ] Sigue las convenciones del proyecto
-- [ ] No hay codigo muerto, comentado, ni console.logs
-- [ ] Maneja bordes (loading, error, empty, 404, 500)
-- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, `// TODO: implement`, o `catch`/`except` vacios
-- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
-- [ ] "Pinta que funciona" NO es evidencia valida
-
-**Si falta aunque sea UN item, el task NO esta completo.**
+> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
 
 ## When Stuck
 
@@ -356,14 +337,7 @@ When adding mocks or test utilities, read @testing-anti-patterns.md to avoid com
 - Adding test-only methods to production classes
 - Mocking without understanding dependencies
 
-## Risk Assessment
-
-| Nivel | Cuando aplica | Accion requerida |
-|-------|---------------|------------------|
-| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
-| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
-| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
-| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
+> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
 
 ## Final Rule
 

@@ -37,6 +37,12 @@ $scanners = @(
     @{ Name = "Infrastructure"; Script = "infra-scanner.ps1"; Key = "infrastructure" }
     @{ Name = "Database"; Script = "db-scanner.ps1"; Key = "database" }
     @{ Name = "CI/CD Pipeline"; Script = "cicd-scanner.ps1"; Key = "cicd" }
+    @{ Name = "Rate Limiting"; Script = "rate-limit-scanner.ps1"; Key = "rate-limit" }
+    @{ Name = "Authentication"; Script = "auth-scanner.ps1"; Key = "auth" }
+    @{ Name = "API Security"; Script = "api-scanner.ps1"; Key = "api-security" }
+    @{ Name = "Encryption"; Script = "encryption-scanner.ps1"; Key = "encryption" }
+    @{ Name = "Logging"; Script = "logging-scanner.ps1"; Key = "logging" }
+    @{ Name = "Compliance"; Script = "compliance-scanner.ps1"; Key = "compliance" }
 )
 
 $allFindings = @()

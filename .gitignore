@@ -37,3 +37,18 @@ token_usage.json
 # Generated rules for Cursor and Copilot (local-only)
 .cursor/rules/
 .github/instructions/
+
+# Environment secrets
+.env
+.env.*
+.env.local
+.env.production
+.env.development
+.env.staging
+
+# Certificates and keys
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx

@@ -172,14 +172,7 @@ The spec is a living document, not a one-time artifact:
 | "Requirements will change anyway" | That's why the spec is a living document. An outdated spec is still better than no spec. |
 | "The user knows what they want" | Even clear requests have implicit assumptions. The spec surfaces those assumptions. |
 
-## Anti-Rationalization Table
-
-| Excusa comun | Por que no te la compro |
-|--------------|-------------------------|
-| "Pongamonos a codear y vemos" | Codear sin spec es construir una casa sin planos. |
-| "El cliente no sabe lo que quiere" | El spec sirve justamente para eso: para que el cliente se de cuenta. |
-| "Los specs se desactualizan" | Los specs se actualizan. Como el codigo. |
-| "Es mucho papeleo" | Es inversion. Un spec ahorra semanas de rewrite. |
+> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
 
 ## Red Flags
 - Starting to write code without any written requirements
@@ -188,25 +181,6 @@ The spec is a living document, not a one-time artifact:
 - Making architectural decisions without documenting them
 - Skipping the spec because "it's obvious what to build"
 
-## Risk Assessment
+> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
 
-| Nivel | Cuando aplica | Accion requerida |
-|-------|---------------|------------------|
-| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
-| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
-| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
-| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
-
-## Verification Gate
-
-Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
-
-- [ ] Compila / buildea sin errores
-- [ ] Sigue las convenciones del proyecto
-- [ ] No hay codigo muerto, comentado, ni console.logs
-- [ ] Maneja bordes (loading, error, empty, 404, 500)
-- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, // TODO: implement, o catch/except vacios
-- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
-- [ ] "Pinta que funciona" NO es evidencia valida
-
-**Si falta aunque sea UN item, el task NO esta completo.**
+> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.

@@ -176,14 +176,7 @@ State the correction factually and move on.
 | Partial implementation | Clarify all items first |
 | Can't verify, proceed anyway | State limitation, ask for direction |
 
-## Anti-Rationalization Table
-
-| Excusa comun | Por que no te la compro |
-|--------------|-------------------------|
-| "Mi codigo esta bien, el revisor no entiende" | Si el revisor no entiende, tu codigo no es claro. |
-| "Voy a discutir cada comentario" | Discuti lo que no compartis. Acepta el resto. |
-| "No tengo tiempo para esto" | No tenes tiempo para bugs en prod, entonces. |
-| "El revisor se equivoca" | Puede ser. Muestra evidencia, no actitud. |
+> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
 
 ## Real Examples
 
@@ -216,28 +209,9 @@ You understand 1,2,3,6. Unclear on 4,5.
 
 When replying to inline review comments on GitHub, reply in the comment thread (`gh api repos/{owner}/{repo}/pulls/{pr}/comments/{id}/replies`), not as a top-level PR comment.
 
-## Risk Assessment
+> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
 
-| Nivel | Cuando aplica | Accion requerida |
-|-------|---------------|------------------|
-| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
-| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
-| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
-| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
-
-## Verification Gate
-
-Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
-
-- [ ] Compila / buildea sin errores
-- [ ] Sigue las convenciones del proyecto
-- [ ] No hay codigo muerto, comentado, ni console.logs
-- [ ] Maneja bordes (loading, error, empty, 404, 500)
-- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, // TODO: implement, o catch/except vacios
-- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
-- [ ] "Pinta que funciona" NO es evidencia valida
-
-**Si falta aunque sea UN item, el task NO esta completo.**
+> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
 
 ## The Bottom Line
 

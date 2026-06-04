@@ -134,37 +134,11 @@ After writing the complete plan, look at the spec with fresh eyes and check the 
 
 If you find issues, fix them inline. No need to re-review — just fix and move on. If you find a spec requirement with no task, add the task.
 
-## Risk Assessment
+> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
 
-| Nivel | Cuando aplica | Accion requerida |
-|-------|---------------|------------------|
-| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
-| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
-| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
-| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
+> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
 
-## Verification Gate
-
-Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
-
-- [ ] Compila / buildea sin errores
-- [ ] Sigue las convenciones del proyecto
-- [ ] No hay codigo muerto, comentado, ni console.logs
-- [ ] Maneja bordes (loading, error, empty, 404, 500)
-- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, `// TODO: implement`, o `catch`/`except` vacios
-- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
-- [ ] "Pinta que funciona" NO es evidencia valida
-
-**Si falta aunque sea UN item, el task NO esta completo.**
-
-## Anti-Rationalization Table
-
-| Excusa comun | Por que no te la compro |
-|--------------|-------------------------|
-| "Ya se lo que hay que hacer" | Si lo sabes, escribilo. El papel es barato. |
-| "Los planes cambian, para que escribirlos" | Los planes cambian. El registro del cambio es valioso. |
-| "Es muy largo, nadie lo va a leer" | Entonces hacelo mas corto. Pero hacelo. |
-| "El plan es mental" | Los planes mentales no se pueden revisar ni mejorar. |
+> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
 
 ## Execution Handoff
 

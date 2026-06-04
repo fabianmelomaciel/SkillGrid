@@ -263,14 +263,7 @@ If you catch yourself thinking:
 | "I see the problem, let me fix it" | Seeing symptoms ≠ understanding root cause. |
 | "One more fix attempt" (after 2+ failures) | 3+ failures = architectural problem. Question pattern, don't fix again. |
 
-## Anti-Rationalization Table
-
-| Excusa comun | Por que no te la compro |
-|--------------|-------------------------|
-| "El error esta en la linea 42" | El error se MANIFIESTA en la linea 42. La causa raiz esta en otra parte. |
-| "Cambio esto y veo si funciona" | Eso no es debugging. Es testing al azar. |
-| "Es un bug de la libreria" | 99% de las veces es tu codigo. Empeza por ahi. |
-| "Pongo un console.log y fue" | Console.log es el comienzo. La hipotesis es el metodo. |
+> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
 
 ## Quick Reference
 
@@ -304,28 +297,9 @@ These techniques are part of systematic debugging and available in this director
 - **openskills:test-driven-development** - For creating failing test case (Phase 4, Step 1)
 - **openskills:verification-before-completion** - Verify fix worked before claiming success
 
-## Risk Assessment
+> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
 
-| Nivel | Cuando aplica | Accion requerida |
-|-------|---------------|------------------|
-| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
-| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
-| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
-| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
-
-## Verification Gate
-
-Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
-
-- [ ] Compila / buildea sin errores
-- [ ] Sigue las convenciones del proyecto
-- [ ] No hay codigo muerto, comentado, ni console.logs
-- [ ] Maneja bordes (loading, error, empty, 404, 500)
-- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, // TODO: implement, o catch/except vacios
-- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
-- [ ] "Pinta que funciona" NO es evidencia valida
-
-**Si falta aunque sea UN item, el task NO esta completo.**
+> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
 
 ## Real-World Impact
 

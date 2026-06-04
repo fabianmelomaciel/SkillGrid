@@ -150,37 +150,11 @@ When reviewing your own work, ask:
 
 ---
 
-## Anti-Rationalization Table
+> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
 
-| Excusa comun | Por que no te la compro |
-|--------------|-------------------------|
-| "La animacion queda bien en desktop" | Mobile first. Si no corre en 60fps en un telefono gama media, no corre. |
-| "Es solo un micro-interaccion" | Las micro-interacciones son las que definen la percepcion de calidad. |
-| "El diseno es subjetivo" | La performance y accesibilidad no son subjetivas. |
-| "Agrego la animacion al final" | Si la animacion no esta en el spec, no se implementa. |
+> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
 
-## Risk Assessment
-
-| Nivel | Cuando aplica | Accion requerida |
-|-------|---------------|------------------|
-| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
-| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
-| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
-| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
-
-## Verification Gate
-
-Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
-
-- [ ] Compila / buildea sin errores
-- [ ] Sigue las convenciones del proyecto
-- [ ] No hay codigo muerto, comentado, ni console.logs
-- [ ] Maneja bordes (loading, error, empty, 404, 500)
-- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, `// TODO: implement`, o `catch`/`except` vacios
-- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
-- [ ] "Pinta que funciona" NO es evidencia valida
-
-**Si falta aunque sea UN item, el task NO esta completo.**
+> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
 
 ---
 

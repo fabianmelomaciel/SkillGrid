@@ -78,14 +78,7 @@ Skip any step = lying, not verifying
 - Editing multiple files without running a single syntax check or test in between
 - **ANY wording implying success without having run verification**
 
-## Anti-Rationalization Table
-
-| Excusa comun | Por que no te la compro |
-|--------------|-------------------------|
-| "Seguro compila, toque solo CSS" | CSS tambien se rompe. Correlo. |
-| "Ya lo probe en mi cabeza" | Tu cabeza no es un entorno de testing. |
-| "Pasa en mi maquina" | Tu maquina no es el CI. Correlo en el CI. |
-| "No cambie nada que afecte los tests" | No lo sabes hasta que los corres. |
+> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
 
 ## Key Patterns
 
@@ -144,28 +137,9 @@ From 24 failure memories:
 - Implications of success
 - ANY communication suggesting completion/correctness
 
-## Risk Assessment
+> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
 
-| Nivel | Cuando aplica | Accion requerida |
-|-------|---------------|------------------|
-| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
-| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
-| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
-| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
-
-## Verification Gate
-
-Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
-
-- [ ] Compila / buildea sin errores
-- [ ] Sigue las convenciones del proyecto
-- [ ] No hay codigo muerto, comentado, ni console.logs
-- [ ] Maneja bordes (loading, error, empty, 404, 500)
-- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, `// TODO: implement`, o `catch`/`except` vacios
-- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
-- [ ] "Pinta que funciona" NO es evidencia valida
-
-**Si falta aunque sea UN item, el task NO esta completo.**
+> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
 
 ## The Bottom Line
 

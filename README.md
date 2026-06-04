@@ -1,4 +1,5 @@
 <div align="center">
+<!-- OpenGraph: https://raw.githubusercontent.com/fabianmelomaciel/OpenSkills/main/.opengraph/og-image.png -->
 
 # 🧠 OpenSkills
 
@@ -10,6 +11,9 @@
 [![Skills](https://img.shields.io/badge/skills-26-22c55e?style=flat-square)](catalog.json)
 [![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/OpenSkills/validate.yml?branch=main&style=flat-square&label=CI)](https://github.com/fabianmelomaciel/OpenSkills/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/OpenSkills/pulls)
+[![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/OpenSkills?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/OpenSkills/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/OpenSkills?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/OpenSkills/network/members)
+[![GitHub contributors](https://img.shields.io/github/contributors/fabianmelomaciel/OpenSkills?style=flat-square)](https://github.com/fabianmelomaciel/OpenSkills/graphs/contributors)
 
 <br>
 
@@ -229,14 +233,18 @@ OpenSkills se integra de forma nativa con **CodeGraph** para eliminar por comple
 
 ### 📊 Comparativa Real de Consumo y Costos por Plataforma
 
-Basado en una auditoría real sobre **300 archivos** (~1.47 MB de código), comparamos el impacto económico de usar la indexación inteligente de CodeGraph contra un escaneo tradicional (Full Scan):
+Medido el 2026-06-04 sobre **300 archivos** (~1.47 MB de código fuente):
 
-| Proveedor / Plataforma | Modelo Principal | Costo Full Scan (368.3K tokens) | Costo con CodeGraph (38.8K tokens) | Ahorro Estimado |
-| :--- | :--- | :---: | :---: | :---: |
-| **Google (Antigravity)** | Gemini 1.5 Flash | \$0.055 | \$0.0029 | **94.7% de Ahorro** 📉 |
-| **Google (Antigravity / Cursor)** | Gemini 1.5 Pro | \$0.920 | \$0.048 | **94.7% de Ahorro** 📉 |
-| **Anthropic (Claude Code)** | Claude 3.5 Sonnet | \$1.105 | \$0.116 | **89.5% de Ahorro** 📉 |
-| **OpenAI (Cursor / Copilot)** | GPT-4o | \$1.841 | \$0.194 | **89.5% de Ahorro** 📉 |
+| Métrica | Full Scan (sin CodeGraph) | Con CodeGraph | Reducción |
+|---------|:------------------------:|:-------------:|:---------:|
+| **Tokens de contexto** | 368,298 | 38,830 | **−89.5%** |
+
+| Proveedor / Plataforma | Modelo | Costo Full Scan | Costo con CodeGraph | Ahorro |
+| :--- | :--- | ---: | ---: | ---: |
+| **Google (Antigravity)** | Gemini 1.5 Flash | \$0.028 | \$0.003 | **89.5%** |
+| **Google (Antigravity / Cursor)** | Gemini 1.5 Pro | \$0.460 | \$0.049 | **89.5%** |
+| **Anthropic (Claude Code)** | Claude 3.5 Sonnet | \$1.105 | \$0.116 | **89.5%** |
+| **OpenAI (Cursor / Copilot)** | GPT-4o | \$0.921 | \$0.097 | **89.5%** |
 
 > [!NOTE]
 > **¿Por qué Gemini ahorra aún más?**

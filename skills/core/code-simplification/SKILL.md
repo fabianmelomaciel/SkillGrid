@@ -293,37 +293,11 @@ function UserBadge({ user }: Props) {
 - Batching many simplifications into one large, hard-to-review commit
 - Refactoring code outside the scope of the current task without being asked
 
-## Anti-Rationalization Table
+> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
 
-| Excusa comun | Por que no te la compro |
-|--------------|-------------------------|
-| "Funciona, para que tocarlo" | Si tocar da miedo, es porque el codigo es fragil. |
-| "Asi lo encontre" | No importa. Mejorarlo es tu trabajo. |
-| "Refactorizar va a romper algo" | Sin tests, SÍ. Con tests, no hay excusa. |
-| "Es mas corto asi" | Corto != simple. La claridad importa mas que la brevedad. |
+> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
 
-## Risk Assessment
-
-| Nivel | Cuando aplica | Accion requerida |
-|-------|---------------|------------------|
-| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
-| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
-| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
-| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
-
-## Verification Gate
-
-Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
-
-- [ ] Compila / buildea sin errores
-- [ ] Sigue las convenciones del proyecto
-- [ ] No hay codigo muerto, comentado, ni console.logs
-- [ ] Maneja bordes (loading, error, empty, 404, 500)
-- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, `// TODO: implement`, o `catch`/`except` vacios
-- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
-- [ ] "Pinta que funciona" NO es evidencia valida
-
-**Si falta aunque sea UN item, el task NO esta completo.**
+> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
 
 ## Verification
 After completing a simplification pass:

@@ -233,37 +233,11 @@ git worktree prune  # Self-healing: clean up any stale registrations
 - **Problem:** Accidentally delete work
 - **Fix:** Require typed "discard" confirmation
 
-## Anti-Rationalization Table
+> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
 
-| Excusa comun | Por que no te la compro |
-|--------------|-------------------------|
-| "Merge directo a main, total es chico" | Chico != seguro. Feature branches existen por algo. |
-| "Hago squash merge y fue" | Squash pierde historia. Cada commit deberia contar una historia. |
-| "No hace falta PR, lo revise yo" | Code review no es para encontrar bugs. Es para compartir conocimiento. |
-| "Los tests pasan, mergeo" | Tests pasan en tu branch. Que pasa en el merge con main? |
+> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
 
-## Risk Assessment
-
-| Nivel | Cuando aplica | Accion requerida |
-|-------|---------------|------------------|
-| **Critical** | Cambios en auth, pagos, datos sensibles, o DB en prod | CEO debe aprobar explicitamente |
-| **High** | APIs publicas, migraciones de schema, dependencias criticas | Code review obligatorio + tests automatizados |
-| **Medium** | Features nuevas sin tocar infraestructura critica | Review normal del proceso |
-| **Low** | Refactors cosmeticos, typos, documentacion | Implementacion directa permitida |
-
-## Verification Gate
-
-Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
-
-- [ ] Compila / buildea sin errores
-- [ ] Sigue las convenciones del proyecto
-- [ ] No hay codigo muerto, comentado, ni console.logs
-- [ ] Maneja bordes (loading, error, empty, 404, 500)
-- [ ] No hay Vibe Coding / AI Remnants: nada de placeholders, `// TODO: implement`, o `catch`/`except` vacios
-- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
-- [ ] "Pinta que funciona" NO es evidencia valida
-
-**Si falta aunque sea UN item, el task NO esta completo.**
+> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
 
 ## Red Flags
 

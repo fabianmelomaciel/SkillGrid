@@ -81,44 +81,11 @@ When delegating tasks using the `task` tool, you must select the most relevant s
 - **Academic & Specs formatting (APA)**: For creating high-quality documentation, requirements documents, specs, or formal reports, delegate to the **gestor-documental** agent.
 - **General Security Scan**: For scanning credentials, SAST audits, database/infrastructure configuration reviews, or scanning source code dependencies, delegate to the **auditor-de-seguridad** agent.
 
-## Anti-Rationalization Table
+> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
 
-El PM sabe que los subagentes van a querer skipiar pasos. Aca estan las excusas mas comunes y como responderles:
+> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
 
-| Excusa del subagente | Contraargumento del PM |
-|----------------------|------------------------|
-| "Esto es muy chico, no hace falta spec" | Si toca comportamiento visible, lleva spec. Punto. |
-| "Ya se como funciona, no necesito leer el codigo" | `read` el archivo igual. El contexto fresco evita suposiciones boludas. |
-| "Los tests pasan, ya esta" | Pasan hoy. Que pasa con el borde? con data vacia? con error 500? |
-| "Lo implemento y despues veo los bordes" | No. Los bordes se definen ANTES de implementar. |
-| "No hace falta revisar, es un cambio trivial" | Los cambios triviales son los que mas se rompen en prod. |
-| "Es muy urgente, saltemos la revision" | La urgencia es justo cuando MAS necesitas revision. |
-| "Ya hay algo parecido en otro lado, lo copio" | Copiar sin entender es como heredar bugs ajenos. |
-| "Despues lo refactorizo" | `// TODO: refactor` es el padre de la deuda tecnica. Se hace ahora o no se hace. |
-
-## Risk Assessment
-
-| Nivel | Cuando aplica | Accion requerida |
-|-------|---------------|------------------|
-| **Critical** | El plan involucra cambios en auth, pagos, datos de usuarios, o DB en prod | CEO debe aprobar explicitamente. Nada de "dale no mas". |
-| **High** | Cambios que tocan APIs publicas, migraciones de schema, o dependencias criticas | Code review obligatorio + tests automatizados |
-| **Medium** | Features nuevas que no tocan infraestructura critica | Review normal del PM |
-| **Low** | Refactors cosmeticos, cambios de estilos, typos | Implementacion directa permitida |
-
-## Verification Gate
-
-Esto NO es opcional. Cada item debe estar marcado antes de reportar "completado":
-
-- [ ] Compila / buildea sin errores
-- [ ] Sigue las convenciones del proyecto
-- [ ] No hay codigo muerto, comentado, ni console.logs
-- [ ] Maneja bordes (loading, error, empty, 404, 500)
-- [ ] **No hay Vibe Coding / AI Remnants**: nada de `// TODO: implement`, placeholders, o `catch`/`except` vacios
-- [ ] El CEO entenderia el resultado sin preguntar
-- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
-- [ ] "Pinta que funciona" NO es evidencia valida
-
-**Si falta aunque sea UN item, el task NO esta completo.** Se devuelve al subagente.
+> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
 
 ## Reporting
 
@@ -176,29 +143,7 @@ Siempre que generes o modifiques código, DEBES aplicar estas reglas para que el
 ### Regla de oro
 Las imperfecciones deben ser **creíbles** — como si un dev cansado un viernes a las 18:00 escribió el código. Nada que rompa la funcionalidad. Nada que un code review no pase. Solo pequeños detalles que hagan sentir "esto lo escribió un humano, no una IA".
 
-## 📊 Codebase Graph Memory (CodeGraph)
-
-To minimize token usage and avoid redundant exploration/research scans across the codebase, you and your agents MUST automatically perform the following steps **immediately upon starting or entering a project (at the very beginning of the skill execution)**:
-
-1. **Verify & Install CodeGraph CLI**:
-   - Check if `codegraph` is installed in the system (e.g., execute `codegraph --version` or verify the command exists).
-   - **CRITICAL DIRECTIVE**: If the `codegraph` command is missing, you MUST automatically install it by running `npm install -g @colbymchenry/codegraph`. If npm fails or is missing, try fallback commands: `uv tool install codegraph-cli` or `pip install codegraph-cli --user`.
-
-2. **Verify Graph Existence & Auto-Create / Auto-Sync**:
-   - Check if the `.codegraph/` directory exists in the active project directory.
-   - **CRITICAL DIRECTIVE**: If the `.codegraph/` directory or index is missing, you MUST automatically initialize it by executing `codegraph init` and then `codegraph sync` in the project root directory. Do NOT proceed with codebase exploration until the CodeGraph index is generated.
-   - **CRITICAL DIRECTIVE**: If the `.codegraph/` directory already exists, you MUST automatically run `codegraph sync` in the project root directory at startup to update the index and keep it up-to-date with recent changes before you start exploring.
-
-3. **Prioritize Graph Context**:
-   - Query the CodeGraph index or read generated summary reports at the beginning of any project analysis to understand module relationships, dependencies, and code structure.
-   - Do NOT recursively read multiple files or execute generic `grep` searches if the graph can answer your structural questions.
-
-4. **Re-generate/Sync Graph**:
-   - If significant architectural changes are made during your execution, run `codegraph sync` to update the local graph.
-
-5. **Log Token Savings**:
-   - Keep track of prompt token consumption and estimated savings.
-   - Update/record token usage and comparison entries in `c:\laragon\www\peon\scratch\token_usage_comparison.json` (or `token_usage.json`) under the current project's path.
+> **CodeGraph:** Follow shared startup protocol in `skills/shared/codegraph-startup.md`.
 
 
 
@@ -218,11 +163,5 @@ Este SKILL.md es la punta del iceberg. Si necesitas profundizar en patrones de d
 
 Carga solo cuando lo necesites. No satures el contexto con todo al mismo tiempo.
 
-## 🧠 CODEX Learning Loop
-
-| Step | Action |
-|------|--------|
-| **Load** | Read `CODEX.md` (search upward). Use project context, stack, and past lessons immediately. |
-| **Apply** | Follow all environment rules without asking the CEO to repeat them. |
-| **Write** | After task: append a log entry under `## 💻 Mission Logs` with date, title, and key learning. |
+> **CODEX Learning Loop:** Follow shared protocol in `skills/shared/codex-learning-loop.md`.
 

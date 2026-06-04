@@ -22,31 +22,11 @@ Description.
 ### Step 2: Header
 Description.
 
-## Anti-Rationalization Table
+> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
 
-| Excusa comun | Por que no te la compro |
-|--------------|-------------------------|
-| "..." | ... |
+> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
 
-## Risk Assessment
-
-| Nivel | Cuando aplica | Accion requerida |
-|-------|---------------|------------------|
-| **Critical** | ... | ... |
-| **High** | ... | ... |
-| **Medium** | ... | ... |
-| **Low** | ... | ... |
-
-## Verification Gate
-
-- [ ] Compila / buildea sin errores
-- [ ] Sigue las convenciones del proyecto
-- [ ] No hay codigo muerto, comentado, ni console.logs
-- [ ] Maneja bordes (loading, error, empty)
-- [ ] **Evidencia concreta**: output de compilacion, tests pasando, captura si es UI
-- [ ] "Pinta que funciona" NO es evidencia valida
-
-**Si falta aunque sea UN item, el task NO esta completo.**
+> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
 
 ## Tools
 
