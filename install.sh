@@ -425,6 +425,58 @@ EOF
     fi
 }
 
+install_to_opendir_agents() {
+    local SOURCE="$1"
+    local AGENTS_DIR="$HOME/.config/opencode/agents"
+    echo -e "\nGenerando agentes en opencode agents/..."
+    mkdir -p "$AGENTS_DIR"
+    
+    if command -v node &> /dev/null; then
+        node -e '
+const fs = require("fs");
+const path = require("path");
+const scriptDir = process.argv[1];
+const agentsDir = process.argv[2];
+const skillsDir = path.join(scriptDir, "skills");
+
+const scanForSkills = (dir) => {
+    fs.readdirSync(dir, { withFileTypes: true }).forEach(d => {
+        const fullPath = path.join(dir, d.name);
+        if (d.isDirectory()) {
+            const skillFile = path.join(fullPath, "SKILL.md");
+            if (fs.existsSync(skillFile)) {
+                const content = fs.readFileSync(skillFile, "utf8");
+                const lines = content.replace(/\r/g, "").split("\n");
+                let desc = d.name;
+                let body = content;
+                if (lines[0] === "---") {
+                    const endIdx = lines.indexOf("---", 1);
+                    if (endIdx > 0) {
+                        const fm = lines.slice(1, endIdx).join("\n");
+                        const m = fm.match(/description:\s*(?:["\x27]?)([^"\x27\n]+)/);
+                        if (m) desc = m[1].trim();
+                        body = lines.slice(endIdx + 1).join("\n").trim();
+                    }
+                }
+                const agentContent = "---\ndescription: " + desc + "\nmode: subagent\npermission:\n  edit: deny\n  bash: deny\n---\n\n" + body;
+                const agentFile = path.join(agentsDir, d.name + ".md");
+                fs.writeFileSync(agentFile, agentContent, "utf8");
+                console.log("  Agente: " + d.name + ".md");
+            } else {
+                scanForSkills(fullPath);
+            }
+        }
+    });
+};
+scanForSkills(skillsDir);
+' "$SOURCE" "$AGENTS_DIR"
+        echo -e "  Agentes generados en opencode agents/"
+    else
+        echo "  [-] Error: Node.js es requerido para generar agentes."
+    fi
+}
+
+
 
 echo "=== OpenSkills Installer ==="
 echo ""
@@ -508,6 +560,7 @@ for TARGET in "${DETECTED[@]}"; do
         cp "$SCRIPT_DIR/README.md" "$TARGET/" 2>/dev/null || true
         cp "$SCRIPT_DIR/package.json" "$TARGET/" 2>/dev/null || true
         cp "$SCRIPT_DIR/install.sh" "$TARGET/" 2>/dev/null || true
+        cp "$SCRIPT_DIR/install.ps1" "$TARGET/" 2>/dev/null || true
     fi
 
     # Generar CODEX.md si no existe (local-only)
@@ -593,6 +646,10 @@ if [ -f "$OPENCODE_CONFIG" ] && command -v jq &> /dev/null; then
     echo "Configurando opencode.json..."
     # Nota: la config manual se explica en el README
     echo "  Puedes usar: jq para actualizar skills.paths manualmente"
+fi
+
+if [ -z "$TARGET_DIR" ] && [ -d "$HOME/.config/opencode" ]; then
+    install_to_opendir_agents "$SCRIPT_DIR"
 fi
 
 if [ -n "$PROJECT_DIR" ]; then
