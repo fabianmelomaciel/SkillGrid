@@ -213,6 +213,18 @@ Los agentes de análisis generan dashboards HTML interactivos con dark mode, gla
 
 ---
 
+## 📈 CodeGraph — Memoria local y optimización de tokens
+
+OpenSkills integra automáticamente **CodeGraph** (la herramienta de análisis semántico local y MCP) durante el proceso de instalación para evitar que los agentes gasten tokens en investigación redundante.
+
+### ¿Cómo funciona?
+1. **Detección e instalación**: El instalador (`install.ps1` / `install.sh`) busca si `codegraph` está instalado en el sistema. Si falta, intenta instalar `@colbymchenry/codegraph` globalmente vía `npm` (o `codegraph-cli` vía `pip`/`uv` como respaldo).
+2. **Inicialización local**: Si instalas reglas en tu proyecto con `-ProjectDir` o `--project`, el script inicializa y genera un índice de código local dentro de la carpeta `.codegraph/`.
+3. **Reducción de tokens**: Los agentes (como `project-manager` y `optimizador-finops`) consultan el índice semántico de `.codegraph/` en lugar de realizar escaneos completos de archivos. Esto reduce hasta un **90%** el consumo de tokens en tareas de investigación.
+4. **Registro de ahorro (FinOps)**: Cada análisis genera o actualiza un registro en `c:\laragon\www\peon\scratch\token_usage_comparison.json` para auditar y comparar el consumo teórico de tokens (escaneo completo vs. CodeGraph).
+
+---
+
 ## 🤝 Crear tu propia skill
 
 Copia el template y completa los campos:

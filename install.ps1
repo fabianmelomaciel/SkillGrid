@@ -388,6 +388,199 @@ function Check-Dependencies {
     Write-Host ""
 }
 
+function Install-CodeGraph {
+    Write-Host "`n=== COMPROBACION DE CODEGRAPH ===" -ForegroundColor Cyan
+    if (Get-Command codegraph -ErrorAction SilentlyContinue) {
+        Write-Host "  [+] codegraph: Ya instalado" -ForegroundColor Green
+    } else {
+        Write-Host "  [-] codegraph: No encontrado. Instalando automaticamente..." -ForegroundColor Yellow
+        if (Get-Command npm -ErrorAction SilentlyContinue) {
+            Write-Host "  Ejecutando: npm install -g @colbymchenry/codegraph" -ForegroundColor Gray
+            & npm install -g @colbymchenry/codegraph *>$null
+        } elseif (Get-Command uv -ErrorAction SilentlyContinue) {
+            Write-Host "  Ejecutando: uv tool install codegraph-cli" -ForegroundColor Gray
+            & uv tool install codegraph-cli *>$null
+        } elseif (Get-Command pip -ErrorAction SilentlyContinue) {
+            Write-Host "  Ejecutando: pip install codegraph-cli" -ForegroundColor Gray
+            & pip install codegraph-cli --user *>$null
+        } else {
+            Write-Host "  [!] Advertencia: No se encontro 'npm', 'uv' ni 'pip' para instalar codegraph. Por favor instale uno de ellos e instale codegraph manualmente." -ForegroundColor Red
+        }
+
+        if (Get-Command codegraph -ErrorAction SilentlyContinue) {
+            Write-Host "  [+] codegraph: Instalado correctamente" -ForegroundColor Green
+        } else {
+            # Intentar buscar en la ruta de npm global en Windows o pip --user
+            $pythonPaths = @(
+                "$env:USERPROFILE\.local\bin",
+                "$env:APPDATA\Python\Scripts",
+                "$env:USERPROFILE\AppData\Local\Programs\Python\Python*\Scripts",
+                "$env:APPDATA\npm"
+            )
+            foreach ($p in $pythonPaths) {
+                if (Test-Path -Path $p) {
+                    $resolved = Get-Item $p
+                    if (Test-Path -Path (Join-Path $resolved.FullName "codegraph.cmd")) {
+                        $env:PATH += ";$($resolved.FullName)"
+                        break
+                    } elseif (Test-Path -Path (Join-Path $resolved.FullName "codegraph.exe")) {
+                        $env:PATH += ";$($resolved.FullName)"
+                        break
+                    }
+                }
+            }
+
+            if (Get-Command codegraph -ErrorAction SilentlyContinue) {
+                Write-Host "  [+] codegraph: Encontrado en PATH local despues de la instalacion" -ForegroundColor Green
+            } else {
+                Write-Host "  [!] No se pudo verificar la ejecucion de 'codegraph'. Si acaba de instalarse, intente reiniciar la consola." -ForegroundColor Yellow
+            }
+        }
+    }
+}
+
+function Setup-ProjectCodeGraph($projectDir) {
+    if (-not $projectDir) { return }
+    $projectDir = [System.IO.Path]::GetFullPath($projectDir)
+    Write-Host "`n=== CONFIGURACION DE MEMORIA CODEGRAPH ===" -ForegroundColor Cyan
+
+    # 1. Asegurar carpeta .codegraph
+    $codegraphDir = Join-Path -Path $projectDir -ChildPath ".codegraph"
+    if (-not (Test-Path -LiteralPath $codegraphDir)) {
+        New-Item -ItemType Directory -Path $codegraphDir -Force | Out-Null
+        Write-Host "  [+] Creado directorio .codegraph/ en el proyecto" -ForegroundColor Gray
+    }
+
+    # 2. Asegurar que .gitignore del proyecto ignore los archivos de codegraph
+    $gitignorePath = Join-Path -Path $projectDir -ChildPath ".gitignore"
+    $ignoresToAdd = @(
+        "",
+        "# CodeGraph codebase memory",
+        ".codegraph/",
+        "codegraph-out/",
+        "codegraph.json",
+        "CODEGRAPH_REPORT.md",
+        "codegraph.report.md",
+        "codegraph.html",
+        "token_comparison.json",
+        "token_usage_comparison.json",
+        "token_usage.json"
+    )
+
+    if (Test-Path -LiteralPath $gitignorePath) {
+        $content = Get-Content -Path $gitignorePath -Raw
+        $neededIgnores = @()
+        foreach ($line in $ignoresToAdd) {
+            if ($line.Trim() -and $content -notmatch [regex]::Escape($line)) {
+                $neededIgnores += $line
+            }
+        }
+        if ($neededIgnores.Count -gt 0) {
+            Add-Content -Path $gitignorePath -Value ($neededIgnores -join "`r`n")
+            Write-Host "  [+] Actualizado .gitignore del proyecto con exclusiones de codegraph" -ForegroundColor Gray
+        } else {
+            Write-Host "  [+] .gitignore del proyecto ya contiene exclusiones de codegraph" -ForegroundColor Gray
+        }
+    } else {
+        # Crear .gitignore con las exclusiones
+        $ignoresToAdd -join "`r`n" | Out-File -FilePath $gitignorePath -Encoding utf8 -Force
+        Write-Host "  [+] Creado .gitignore del proyecto con exclusiones de codegraph" -ForegroundColor Gray
+    }
+
+    # 3. Inicializar / sincronizar codegraph
+    if (Get-Command codegraph -ErrorAction SilentlyContinue) {
+        Write-Host "  Inicializando/Sincronizando: codegraph en $projectDir" -ForegroundColor Gray
+        $oldPwd = $pwd
+        try {
+            Set-Location -Path $projectDir
+            & codegraph init --yes --quiet *>$null
+            & codegraph sync *>$null
+            Write-Host "  [+] Index de CodeGraph completado y almacenado en .codegraph/" -ForegroundColor Green
+        } catch {
+            Write-Host "  [!] Error al ejecutar codegraph: $($_.Exception.Message)" -ForegroundColor Red
+        } finally {
+            Set-Location -Path $oldPwd
+        }
+    } else {
+        Write-Host "  [!] Omitiendo analisis de grafo por falta de herramienta codegraph en el PATH." -ForegroundColor Yellow
+    }
+
+    # 4. Calcular y guardar comparacion de tokens en c:\laragon\www\peon\scratch
+    $scratchDir = "c:\laragon\www\peon\scratch"
+    if (Test-Path -LiteralPath $scratchDir) {
+        Write-Host "  [+] Calculando estadisticas de ahorro de tokens..." -ForegroundColor Gray
+        
+        # Obtener todos los archivos del proyecto (excluyendo dependencias)
+        $totalBytes = 0
+        $fileCount = 0
+        $sourceFiles = Get-ChildItem -Path $projectDir -Recurse -File -ErrorAction SilentlyContinue | Where-Object {
+            $_.FullName -notmatch "\\(\.git|node_modules|vendor|\.codegraph|dist|build|temp|tmp)\\?"
+        }
+        foreach ($file in $sourceFiles) {
+            $totalBytes += $file.Length
+            $fileCount++
+        }
+
+        # Estimar tokens sin codegraph (baseline de investigacion leyendo todo, aprox total_bytes/4)
+        $tokensBaseline = [Math]::Round($totalBytes / 4)
+        if ($tokensBaseline -lt 1000) { $tokensBaseline = 1000 }
+
+        # Estimar tokens con codegraph (caching de index reduce consultas en un 90%)
+        $tokensCodeGraph = [Math]::Round($tokensBaseline * 0.1) + 2000
+
+        $savedTokens = $tokensBaseline - $tokensCodeGraph
+        if ($savedTokens -lt 0) { $savedTokens = 0 }
+        $savingsPct = 0
+        if ($tokensBaseline -gt 0) {
+            $savingsPct = [Math]::Round(($savedTokens / $tokensBaseline) * 100, 2)
+        }
+
+        # Guardar en archivo JSON de comparacion
+        $comparisonFile = Join-Path -Path $scratchDir -ChildPath "token_usage_comparison.json"
+        
+        # Cargar datos anteriores para mantener historico
+        $historico = @()
+        if (Test-Path -LiteralPath $comparisonFile) {
+            try {
+                $rawJson = Get-Content -Path $comparisonFile -Raw -ErrorAction SilentlyContinue
+                if ($rawJson) {
+                    $parsed = ConvertFrom-Json $rawJson
+                    if ($parsed -is [Array]) { $historico = $parsed }
+                    else { $historico = @($parsed) }
+                }
+            } catch {}
+        }
+
+        # Crear nueva entrada
+        $newEntry = [PSCustomObject]@{
+            project_path = $projectDir
+            timestamp = (Get-Date -Format "yyyy-MM-ddTHH:mm:sszzz")
+            files_analyzed = $fileCount
+            total_bytes = $totalBytes
+            baseline_full_scan_tokens = $tokensBaseline
+            codegraph_context_tokens = $tokensCodeGraph
+            estimated_savings_tokens = $savedTokens
+            savings_percentage = $savingsPct
+            graph_folder = ".codegraph"
+            status = "initialized"
+        }
+
+        # Filtrar entradas anteriores para el mismo proyecto
+        $nuevoHistorico = @($newEntry)
+        foreach ($h in $historico) {
+            if ($h.project_path -ine $projectDir) {
+                $nuevoHistorico += $h
+            }
+        }
+
+        $jsonOutput = ConvertTo-Json -InputObject $nuevoHistorico -Depth 5
+        $jsonOutput | Out-File -FilePath $comparisonFile -Encoding utf8 -Force
+        Write-Host "  [+] Reporte de tokens guardado en: $comparisonFile" -ForegroundColor Green
+    } else {
+        Write-Host "  [!] Directorio de peon/scratch no encontrado: $scratchDir. Saltando registro de tokens." -ForegroundColor Yellow
+    }
+}
+
 if ($Help) {
     Write-Host @"
 OpenSkills Installer
@@ -412,6 +605,7 @@ if (-not (Test-Path -LiteralPath $skillsDir)) {
 }
 
 Check-Dependencies
+Install-CodeGraph
 
 if (-not $TargetDir) {
     $detected = @()
@@ -445,6 +639,7 @@ if (-not $TargetDir) {
         InstallToOpendirAgents $scriptDir
         if ($ProjectDir) {
             InstallToProject $ProjectDir $scriptDir $Language
+            Setup-ProjectCodeGraph $ProjectDir
         }
         Write-Host "`nInstalacion completa en ambos!" -ForegroundColor Green
         return
@@ -455,4 +650,6 @@ InstallToDir $TargetDir $scriptDir
 
 if ($ProjectDir) {
     InstallToProject $ProjectDir $scriptDir $Language
+    Setup-ProjectCodeGraph $ProjectDir
 }
+

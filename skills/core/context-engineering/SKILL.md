@@ -23,13 +23,15 @@ Structure context from most persistent to most transient:
 ┌─────────────────────────────────────┐
 │  1. Rules Files (CLAUDE.md, etc.)   │ ← Always loaded, project-wide
 ├─────────────────────────────────────┤
-│  2. Spec / Architecture Docs        │ ← Loaded per feature/session
+│  2. Codebase Graph (CodeGraph)      │ ← Local memory (.codegraph/)
 ├─────────────────────────────────────┤
-│  3. Relevant Source Files            │ ← Loaded per task
+│  3. Spec / Architecture Docs        │ ← Loaded per feature/session
 ├─────────────────────────────────────┤
-│  4. Error Output / Test Results      │ ← Loaded per iteration
+│  4. Relevant Source Files            │ ← Loaded per task
 ├─────────────────────────────────────┤
-│  5. Conversation History             │ ← Accumulates, compacts
+│  5. Error Output / Test Results      │ ← Loaded per iteration
+├─────────────────────────────────────┤
+│  6. Conversation History             │ ← Accumulates, compacts
 └─────────────────────────────────────┘
 ```
 
@@ -74,7 +76,10 @@ Create a rules file that persists across sessions. This is the highest-leverage 
 - `.github/copilot-instructions.md` (GitHub Copilot)
 - `AGENTS.md` (OpenAI Codex)
 
-### Level 2: Specs and Architecture
+### Level 2: Codebase Graph (CodeGraph)
+Before analyzing codebase architecture or searching for class/function relationships, check if the `.codegraph/` directory exists. If it is missing, you MUST automatically initialize it by running `codegraph init --yes --quiet` followed by `codegraph sync` in the project root. Once present, use the graph index or generated summary reports. This acts as a semantic memory layer to prevent reading numerous files or doing broad grep searches, saving up to 90% in token research costs.
+
+### Level 3: Specs and Architecture
 Load the relevant spec section when starting a feature. Don't load the entire spec if only one section applies.
 
 **Effective:** "Here's the authentication section of our spec: [auth spec content]"

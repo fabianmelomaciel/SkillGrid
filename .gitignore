@@ -22,3 +22,15 @@ node_modules/
 .vscode/
 *.swp
 *.swo
+
+# CodeGraph codebase memory
+.codegraph/
+codegraph-out/
+codegraph.json
+CODEGRAPH_REPORT.md
+codegraph.report.md
+codegraph.html
+token_comparison.json
+token_usage_comparison.json
+token_usage.json
+

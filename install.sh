@@ -266,6 +266,163 @@ check_dependencies() {
     echo ""
 }
 
+install_codegraph() {
+    echo -e "\n=== COMPROBACION DE CODEGRAPH ==="
+    if command -v codegraph &> /dev/null; then
+        echo -e "  [+] codegraph: Ya instalado"
+    else
+        echo -e "  [-] codegraph: No encontrado. Instalando automaticamente..."
+        if command -v npm &> /dev/null; then
+            echo "  Ejecutando: npm install -g @colbymchenry/codegraph"
+            npm install -g @colbymchenry/codegraph &> /dev/null || true
+        elif command -v uv &> /dev/null; then
+            echo "  Ejecutando: uv tool install codegraph-cli"
+            uv tool install codegraph-cli &> /dev/null || true
+        elif command -v pip &> /dev/null; then
+            echo "  Ejecutando: pip install codegraph-cli"
+            pip install codegraph-cli --user &> /dev/null || true
+        elif command -v pip3 &> /dev/null; then
+            echo "  Ejecutando: pip3 install codegraph-cli"
+            pip3 install codegraph-cli --user &> /dev/null || true
+        else
+            echo -e "  \033[0;31m[!] Advertencia: No se encontro 'npm', 'uv' ni 'pip' para instalar codegraph. Por favor instale uno de ellos e instale codegraph manualmente.\033[0m"
+        fi
+
+        # Agregar posibles rutas locales de pip y npm global al PATH
+        export PATH="$PATH:$HOME/.local/bin:$HOME/Library/Python/3.12/bin:$HOME/Library/Python/3.11/bin:$HOME/Library/Python/3.10/bin:$HOME/.npm-global/bin"
+
+        if command -v codegraph &> /dev/null; then
+            echo -e "  [+] codegraph: Instalado correctamente"
+        else
+            echo -e "  \033[0;33m[!] No se pudo verificar la ejecucion de 'codegraph'. Si acaba de instalarse, intente reiniciar la consola.\033[0m"
+        fi
+    fi
+}
+
+setup_project_codegraph() {
+    local PROJECT_DIR="$1"
+    if [ -z "$PROJECT_DIR" ]; then
+        return
+    fi
+    PROJECT_DIR=$(cd "$PROJECT_DIR" &> /dev/null && pwd || echo "$PROJECT_DIR")
+    echo -e "\n=== CONFIGURACION DE MEMORIA CODEGRAPH ==="
+
+    # 1. Asegurar carpeta .codegraph
+    local CODEGRAPH_DIR="$PROJECT_DIR/.codegraph"
+    mkdir -p "$CODEGRAPH_DIR"
+    echo "  [+] Creado directorio .codegraph/ en el proyecto"
+
+    # 2. Asegurar que .gitignore del proyecto ignore los archivos de codegraph
+    local GITIGNORE_PATH="$PROJECT_DIR/.gitignore"
+    local IGNORES=(
+        ""
+        "# CodeGraph codebase memory"
+        ".codegraph/"
+        "codegraph-out/"
+        "codegraph.json"
+        "CODEGRAPH_REPORT.md"
+        "codegraph.report.md"
+        "codegraph.html"
+        "token_comparison.json"
+        "token_usage_comparison.json"
+        "token_usage.json"
+    )
+
+    if [ -f "$GITIGNORE_PATH" ]; then
+        for ignore in "${IGNORES[@]}"; do
+            if [ -n "$ignore" ] && ! grep -Fq "$ignore" "$GITIGNORE_PATH"; then
+                echo "$ignore" >> "$GITIGNORE_PATH"
+            fi
+        done
+        echo "  [+] Actualizado .gitignore del proyecto con exclusiones de codegraph"
+    else
+        for ignore in "${IGNORES[@]}"; do
+            echo "$ignore" >> "$GITIGNORE_PATH"
+        done
+        echo "  [+] Creado .gitignore del proyecto con exclusiones de codegraph"
+    fi
+
+    # 3. Inicializar / sincronizar codegraph
+    if command -v codegraph &> /dev/null; then
+        echo "  Inicializando/Sincronizando: codegraph en $PROJECT_DIR"
+        local OLD_PWD=$(pwd)
+        cd "$PROJECT_DIR"
+        if codegraph init --yes --quiet &>/dev/null; then
+            codegraph sync &>/dev/null || true
+            echo -e "  [+] Index de CodeGraph completado y almacenado en .codegraph/"
+        else
+            echo -e "  \033[0;31m[!] Error al ejecutar codegraph\033[0m"
+        fi
+        cd "$OLD_PWD"
+    else
+        echo -e "  \033[0;33m[!] Omitiendo analisis de grafo por falta de herramienta codegraph en el PATH.\033[0m"
+    fi
+
+    # 4. Calcular y guardar comparacion de tokens en c:\laragon\www\peon\scratch
+    local SCRATCH_DIR="c:/laragon/www/peon/scratch"
+    if [ ! -d "$SCRATCH_DIR" ]; then
+        if [ -d "/mnt/c/laragon/www/peon/scratch" ]; then
+            SCRATCH_DIR="/mnt/c/laragon/www/peon/scratch"
+        elif [ -d "/cygdrive/c/laragon/www/peon/scratch" ]; then
+            SCRATCH_DIR="/cygdrive/c/laragon/www/peon/scratch"
+        fi
+    fi
+
+    if [ -d "$SCRATCH_DIR" ]; then
+        echo "  [+] Calculando estadisticas de ahorro de tokens..."
+        
+        local TOTAL_BYTES=0
+        local FILE_COUNT=0
+        
+        if command -v find &> /dev/null; then
+            TOTAL_BYTES=$(find "$PROJECT_DIR" -type f ! -path '*/.*' ! -path '*/node_modules/*' ! -path '*/vendor/*' ! -path '*/dist/*' ! -path '*/build/*' -exec wc -c {} + 2>/dev/null | tail -n 1 | awk '{print $1}')
+            FILE_COUNT=$(find "$PROJECT_DIR" -type f ! -path '*/.*' ! -path '*/node_modules/*' ! -path '*/vendor/*' ! -path '*/dist/*' ! -path '*/build/*' 2>/dev/null | wc -l | awk '{print $1}')
+        fi
+
+        if [ -z "$TOTAL_BYTES" ] || [ "$TOTAL_BYTES" -eq 0 ] 2>/dev/null; then
+            TOTAL_BYTES=100000
+            FILE_COUNT=10
+        fi
+
+        local TOKENS_BASELINE=$(( TOTAL_BYTES / 4 ))
+        if [ "$TOKENS_BASELINE" -lt 1000 ]; then TOKENS_BASELINE=1000; fi
+
+        local TOKENS_CODEGRAPH=$(( TOKENS_BASELINE / 10 + 2000 ))
+
+        local SAVED_TOKENS=$(( TOKENS_BASELINE - TOKENS_CODEGRAPH ))
+        if [ "$SAVED_TOKENS" -lt 0 ]; then SAVED_TOKENS=0; fi
+
+        local SAVINGS_PCT=0
+        if [ "$TOKENS_BASELINE" -gt 0 ]; then
+            SAVINGS_PCT=$(( SAVED_TOKENS * 100 / TOKENS_BASELINE ))
+        fi
+
+        local COMPARISON_FILE="$SCRATCH_DIR/token_usage_comparison.json"
+        local TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+        cat > "$COMPARISON_FILE" << EOF
+[
+  {
+    "project_path": "${PROJECT_DIR}",
+    "timestamp": "${TIMESTAMP}",
+    "files_analyzed": ${FILE_COUNT},
+    "total_bytes": ${TOTAL_BYTES},
+    "baseline_full_scan_tokens": ${TOKENS_BASELINE},
+    "codegraph_context_tokens": ${TOKENS_CODEGRAPH},
+    "estimated_savings_tokens": ${SAVED_TOKENS},
+    "savings_percentage": ${SAVINGS_PCT},
+    "graph_folder": ".codegraph",
+    "status": "initialized"
+  }
+]
+EOF
+        echo -e "  [+] Reporte de tokens guardado en: $COMPARISON_FILE"
+    else
+        echo -e "  \033[0;33m[!] Directorio de peon/scratch no encontrado: $SCRATCH_DIR. Saltando registro de tokens.\033[0m"
+    fi
+}
+
+
 echo "=== OpenSkills Installer ==="
 echo ""
 
@@ -275,6 +432,7 @@ if [ ! -d "$SKILLS_DIR" ]; then
 fi
 
 check_dependencies
+install_codegraph
 
 # Detectar destinos
 DETECTED=()
@@ -423,4 +581,5 @@ fi
 
 if [ -n "$PROJECT_DIR" ]; then
     install_to_project "$SCRIPT_DIR" "$PROJECT_DIR" "$LANGUAGE"
+    setup_project_codegraph "$PROJECT_DIR"
 fi

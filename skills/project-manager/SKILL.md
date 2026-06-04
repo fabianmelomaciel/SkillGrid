@@ -174,6 +174,24 @@ Siempre que generes o modifiques código, DEBES aplicar estas reglas para que el
 ### Regla de oro
 Las imperfecciones deben ser **creíbles** — como si un dev cansado un viernes a las 18:00 escribió el código. Nada que rompa la funcionalidad. Nada que un code review no pase. Solo pequeños detalles que hagan sentir "esto lo escribió un humano, no una IA".
 
+## 📊 Codebase Graph Memory (CodeGraph)
+
+To minimize token usage and avoid redundant exploration/research scans across the codebase, you and your agents MUST verify and use the local codebase graph memory immediately upon starting or entering a project:
+
+1. **Verify Graph Existence & Auto-Create**:
+   - Check if the `.codegraph/` directory exists in the active project directory.
+   - **CRITICAL DIRECTIVE**: If the `.codegraph/` directory or index is missing, you MUST automatically initialize it by executing `codegraph init --yes --quiet` followed by `codegraph sync` in the project root directory. Do NOT proceed with codebase exploration until the CodeGraph index is generated.
+2. **Prioritize Graph Context**:
+   - Query the CodeGraph index or read generated summary reports at the beginning of any project analysis to understand module relationships, dependencies, and code structure.
+   - Do NOT recursively read multiple files or execute generic `grep` searches if the graph can answer your structural questions.
+3. **Re-generate/Sync Graph**:
+   - If significant architectural changes are made, run `codegraph sync` or `codegraph init` to update the local graph.
+4. **Log Token Savings**:
+   - Keep track of prompt token consumption and estimated savings.
+   - Update/record token usage and comparison entries in `c:\laragon\www\peon\scratch\token_usage_comparison.json` (or `token_usage.json`) under the current project's path.
+
+
+
 ## Tools
 
 - `task` — delegate to sub-agents
