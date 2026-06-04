@@ -29,10 +29,10 @@ function validateSkill(file) {
 
   // Validate category value
   const catMatch = fm.match(/^category:\s*(.+)$/m);
+  const category = catMatch ? catMatch[1].trim() : null;
   if (catMatch) {
-    const val = catMatch[1].trim();
-    if (!VALID_CATEGORIES.includes(val)) {
-      errors.push(`${rel(file)}: invalid category '${val}'. Valid: ${VALID_CATEGORIES.join(', ')}`);
+    if (!VALID_CATEGORIES.includes(category)) {
+      errors.push(`${rel(file)}: invalid category '${category}'. Valid: ${VALID_CATEGORIES.join(', ')}`);
     }
   }
 
@@ -51,6 +51,16 @@ function validateSkill(file) {
     const val = rlMatch[1].trim();
     if (!VALID_RISK_LEVELS.includes(val)) {
       errors.push(`${rel(file)}: invalid risk_level '${val}'. Valid: ${VALID_RISK_LEVELS.join(', ')}`);
+    }
+  }
+
+  if (category === 'agent') {
+    const lower = content.toLowerCase();
+    const hasCodegraphStartup =
+      lower.includes('codegraph-startup.md') ||
+      lower.includes('automatic codegraph startup');
+    if (!hasCodegraphStartup) {
+      errors.push(`${rel(file)}: category 'agent' must include CodeGraph startup protocol (reference 'skills/shared/codegraph-startup.md' or include 'AUTOMATIC CODEGRAPH STARTUP')`);
     }
   }
 

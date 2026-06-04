@@ -53,6 +53,19 @@ skillDirs.forEach(dir => {
       console.log(`  FAIL  ${name}: missing fields: ${missing.join(', ')}`);
       failed++;
     } else {
+      const catMatch = fm.match(/^category:\s*(.+)$/m);
+      const category = catMatch ? catMatch[1].trim() : null;
+      if (category === 'agent') {
+        const lower = content.toLowerCase();
+        const hasCodegraphStartup =
+          lower.includes('codegraph-startup.md') ||
+          lower.includes('automatic codegraph startup');
+        if (!hasCodegraphStartup) {
+          console.log(`  FAIL  ${name}: category 'agent' must include CodeGraph startup protocol`);
+          failed++;
+          return;
+        }
+      }
       console.log(`  OK    ${name}`);
       passed++;
     }
