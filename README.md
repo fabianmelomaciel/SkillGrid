@@ -224,6 +224,19 @@ OpenSkills integra automáticamente **CodeGraph** (la herramienta de análisis s
 4. **Arranque Automático en Skills (Auto-Startup)**: Cada skill principal y agente especializado verifica automáticamente al inicio la presencia de la CLI de `codegraph` (instalándola si falta) e inicializa o sincroniza el índice de código local (`codegraph sync`) en el directorio del proyecto antes de comenzar a explorar el código.
 5. **Registro de ahorro (FinOps)**: Cada análisis genera o actualiza un registro en `c:\laragon\www\peon\scratch\token_usage_comparison.json` para auditar y comparar el consumo teórico de tokens (escaneo completo vs. CodeGraph).
 
+### 📊 Comparativa de Consumo y Costos por Plataforma
+
+Basado en una auditoría real sobre **300 archivos** (~1.47 MB de código) del proyecto, comparamos el impacto de usar CodeGraph vs. un escaneo completo (Full Scan) en las principales APIs:
+
+| Proveedor / Plataforma | Modelo Principal | Costo Full Scan (368.3K tokens) | Costo con CodeGraph (38.8K tokens) | Ahorro Estimado |
+| :--- | :--- | :---: | :---: | :---: |
+| **Google (Antigravity)** | Gemini 1.5 Flash | \$0.055 | \$0.0029 | **94.7%** (tier + tokens) |
+| **Google (Antigravity / Cursor)** | Gemini 1.5 Pro | \$0.920 | \$0.048 | **94.7%** (tier + tokens) |
+| **Anthropic (Claude Code)** | Claude 3.5 Sonnet | \$1.105 | \$0.116 | **89.5%** |
+| **OpenAI (Cursor / Copilot)** | GPT-4o | \$1.841 | \$0.194 | **89.5%** |
+
+*Nota: Tarifas calculadas con precios estándar de entrada (Input API) al 2026. En los modelos de Google (Gemini 1.5), el ahorro es aún mayor debido a la estructura de precios por tramos: al bajar de 128K tokens de contexto, la tarifa base por millón se reduce a la mitad.*
+
 ---
 
 ## 🤝 Crear tu propia skill
