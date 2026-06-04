@@ -24,6 +24,9 @@ node_modules/
 *.swp
 *.swo
 
+# Empty scratch directory
+scratch/
+
 # CodeGraph codebase memory
 .codegraph/
 codegraph-out/
