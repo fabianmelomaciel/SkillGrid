@@ -3,6 +3,7 @@ param(
     [string]$ProjectDir = "",
     [string]$Language = "",
     [switch]$AutoInstallCodeGraph,
+    [switch]$GenerateCodex,
     [switch]$Help
 )
 
@@ -197,12 +198,12 @@ function InstallToDir($target, $source) {
         Copy-Item -LiteralPath "$source\install.sh" -Destination "$target\" -Force -ErrorAction SilentlyContinue
         Copy-Item -LiteralPath "$source\README.md" -Destination "$target\" -Force -ErrorAction SilentlyContinue
         Copy-Item -LiteralPath "$source\package.json" -Destination "$target\" -Force -ErrorAction SilentlyContinue
-        Copy-Item -LiteralPath "$source\.gitignore" -Destination "$target\" -Force -ErrorAction SilentlyContinue
     
-        # Generar CODEX.md si no existe en destino (es local-only, no está en el repo)
-        $codexDest = Join-Path -Path $target -ChildPath "CODEX.md"
-        if (-not (Test-Path -LiteralPath $codexDest)) {
-            $codexTemplate = @"
+        if ($GenerateCodex) {
+            # Generar CODEX.md si no existe en destino (local-only)
+            $codexDest = Join-Path -Path $target -ChildPath "CODEX.md"
+            if (-not (Test-Path -LiteralPath $codexDest)) {
+                $codexTemplate = @"
 # 🧠 OpenSkills: Tactical CODEX (Learning Memory)
 
 This document is the shared, dynamically evolving persistent memory of the OpenSkills agent squad. It prevents re-explaining context, repeating solved problems, and wasting tokens on re-discovery.
@@ -251,10 +252,11 @@ This document is the shared, dynamically evolving persistent memory of the OpenS
 
 - [YYYY-MM-DD] - (Short title) — (What happened, root cause, fix, what to do differently next time.)
 "@
-            $codexTemplate | Out-File -FilePath $codexDest -Encoding utf8 -Force
-            Write-Host "  CODEX.md generado por primera vez (local-only)." -ForegroundColor Gray
-        } else {
-            Write-Host "  CODEX.md ya existe localmente (memoria de aprendizaje conservada)." -ForegroundColor Yellow
+                $codexTemplate | Out-File -FilePath $codexDest -Encoding utf8 -Force
+                Write-Host "  CODEX.md generado por primera vez (local-only)." -ForegroundColor Gray
+            } else {
+                Write-Host "  CODEX.md ya existe localmente (memoria de aprendizaje conservada)." -ForegroundColor Yellow
+            }
         }
     }
     Write-Host "  Listo: $($skillDirs.Count) skills instaladas" -ForegroundColor Green
@@ -599,6 +601,7 @@ USO:
   .\install.ps1 -ProjectDir "C:\proyecto"     - Genera reglas compatibles en tu proyecto (Cursor/Copilot)
   .\install.ps1 -ProjectDir "C:\proyecto" -Language php - Instala sólo reglas comunes y de PHP
   .\install.ps1 -AutoInstallCodeGraph         - Permite instalar codegraph automaticamente si falta
+  .\install.ps1 -GenerateCodex                - Genera CODEX.md (memoria local) en instalaciones no-skill-root
   .\install.ps1 -Help                         - Muestra esta ayuda
 
 SIN PARAMETROS: Detecta opencode o antigravity y instala alli.

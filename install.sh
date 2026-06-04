@@ -11,6 +11,7 @@ TARGET_DIR=""
 PROJECT_DIR=""
 LANGUAGE=""
 AUTO_INSTALL_CODEGRAPH=0
+GENERATE_CODEX=0
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
@@ -18,6 +19,7 @@ while [[ "$#" -gt 0 ]]; do
         -p|--project) PROJECT_DIR="$2"; shift ;;
         -l|--language) LANGUAGE="$2"; shift ;;
         --install-codegraph) AUTO_INSTALL_CODEGRAPH=1 ;;
+        --generate-codex) GENERATE_CODEX=1 ;;
         -h|--help)
             echo "OpenSkills Installer"
             echo "===================="
@@ -29,6 +31,7 @@ while [[ "$#" -gt 0 ]]; do
             echo "  ./install.sh --project \"/proyecto\"       - Genera reglas compatibles en tu proyecto (Cursor/Copilot)"
             echo "  ./install.sh --project \"/proyecto\" --language php - Instala sólo reglas comunes y de PHP"
             echo "  ./install.sh --install-codegraph           - Permite instalar codegraph automaticamente si falta"
+            echo "  ./install.sh --generate-codex              - Genera CODEX.md (memoria local) en instalaciones no-skill-root"
             echo "  ./install.sh --help                       - Muestra esta ayuda"
             exit 0
             ;;
@@ -482,7 +485,6 @@ for TARGET in "${DETECTED[@]}"; do
     fi
     if [ "$IS_SKILL_ROOT" -ne 1 ]; then
         mkdir -p "$TARGET/skills"
-        mkdir -p "$TARGET/docs"
     fi
 
     # Copiar skills
@@ -505,12 +507,11 @@ for TARGET in "${DETECTED[@]}"; do
     if [ "$IS_SKILL_ROOT" -ne 1 ]; then
         cp "$SCRIPT_DIR/README.md" "$TARGET/" 2>/dev/null || true
         cp "$SCRIPT_DIR/package.json" "$TARGET/" 2>/dev/null || true
-        cp "$SCRIPT_DIR/.gitignore" "$TARGET/" 2>/dev/null || true
         cp "$SCRIPT_DIR/install.sh" "$TARGET/" 2>/dev/null || true
     fi
 
-    # Generar CODEX.md si no existe (es local-only, no está en el repo)
-    if [ "$IS_SKILL_ROOT" -ne 1 ] && [ ! -f "$TARGET/CODEX.md" ]; then
+    # Generar CODEX.md si no existe (local-only)
+    if [ "$GENERATE_CODEX" -eq 1 ] && [ "$IS_SKILL_ROOT" -ne 1 ] && [ ! -f "$TARGET/CODEX.md" ]; then
         cat > "$TARGET/CODEX.md" << 'CODEX_EOF'
 # 🧠 OpenSkills: Tactical CODEX (Learning Memory)
 
@@ -561,7 +562,7 @@ This document is the shared, dynamically evolving persistent memory of the OpenS
 - [YYYY-MM-DD] - (Short title) — (What happened, root cause, fix, what to do differently next time.)
 CODEX_EOF
         echo "  CODEX.md generado por primera vez (local-only)."
-    elif [ "$IS_SKILL_ROOT" -ne 1 ]; then
+    elif [ "$GENERATE_CODEX" -eq 1 ] && [ "$IS_SKILL_ROOT" -ne 1 ]; then
         echo "  CODEX.md ya existe localmente (memoria de aprendizaje conservada)."
     fi
     INSTALLED_TARGETS+=("$TARGET")
