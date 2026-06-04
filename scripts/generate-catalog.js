@@ -3,14 +3,6 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 
-
-function getCategory(filePath) {
-  const rel = path.relative(path.join(ROOT, 'skills'), filePath).replace(/\\/g, '/');
-  if (rel.startsWith('core/')) return 'core';
-  if (rel.startsWith('design/')) return 'design';
-  return 'agent';
-}
-
 function parseFrontmatter(file) {
   const content = fs.readFileSync(file, 'utf-8');
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);

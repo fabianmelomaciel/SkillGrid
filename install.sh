@@ -10,12 +10,14 @@ SKILLS_DIR="$SCRIPT_DIR/skills"
 TARGET_DIR=""
 PROJECT_DIR=""
 LANGUAGE=""
+AUTO_INSTALL_CODEGRAPH=0
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         -t|--target) TARGET_DIR="$2"; shift ;;
         -p|--project) PROJECT_DIR="$2"; shift ;;
         -l|--language) LANGUAGE="$2"; shift ;;
+        --install-codegraph) AUTO_INSTALL_CODEGRAPH=1 ;;
         -h|--help)
             echo "OpenSkills Installer"
             echo "===================="
@@ -26,6 +28,7 @@ while [[ "$#" -gt 0 ]]; do
             echo "  ./install.sh --target \"/ruta\"            - Instala en ruta personalizada"
             echo "  ./install.sh --project \"/proyecto\"       - Genera reglas compatibles en tu proyecto (Cursor/Copilot)"
             echo "  ./install.sh --project \"/proyecto\" --language php - Instala sólo reglas comunes y de PHP"
+            echo "  ./install.sh --install-codegraph           - Permite instalar codegraph automaticamente si falta"
             echo "  ./install.sh --help                       - Muestra esta ayuda"
             exit 0
             ;;
@@ -271,6 +274,10 @@ install_codegraph() {
     if command -v codegraph &> /dev/null; then
         echo -e "  [+] codegraph: Ya instalado"
     else
+        if [ "$AUTO_INSTALL_CODEGRAPH" -ne 1 ]; then
+            echo -e "  [-] codegraph: No encontrado. Omitiendo instalacion automatica (usa --install-codegraph si quieres que lo instale)."
+            return
+        fi
         echo -e "  [-] codegraph: No encontrado. Instalando automaticamente..."
         if command -v npm &> /dev/null; then
             echo "  Ejecutando: npm install -g @colbymchenry/codegraph"
@@ -358,15 +365,8 @@ setup_project_codegraph() {
         echo -e "  \033[0;33m[!] Omitiendo analisis de grafo por falta de herramienta codegraph en el PATH.\033[0m"
     fi
 
-    # 4. Calcular y guardar comparacion de tokens en c:\laragon\www\peon\scratch
-    local SCRATCH_DIR="c:/laragon/www/peon/scratch"
-    if [ ! -d "$SCRATCH_DIR" ]; then
-        if [ -d "/mnt/c/laragon/www/peon/scratch" ]; then
-            SCRATCH_DIR="/mnt/c/laragon/www/peon/scratch"
-        elif [ -d "/cygdrive/c/laragon/www/peon/scratch" ]; then
-            SCRATCH_DIR="/cygdrive/c/laragon/www/peon/scratch"
-        fi
-    fi
+    # 4. Calcular y guardar comparacion de tokens
+    local SCRATCH_DIR="${OPENSKILLS_SCRATCH:-$(dirname "$0")/../scratch}"
 
     if [ -d "$SCRATCH_DIR" ]; then
         echo "  [+] Calculando estadisticas de ahorro de tokens..."
@@ -418,7 +418,7 @@ setup_project_codegraph() {
 EOF
         echo -e "  [+] Reporte de tokens guardado en: $COMPARISON_FILE"
     else
-        echo -e "  \033[0;33m[!] Directorio de peon/scratch no encontrado: $SCRATCH_DIR. Saltando registro de tokens.\033[0m"
+        echo -e "  \033[0;33m[!] Directorio scratch no encontrado: $SCRATCH_DIR. Saltando registro de tokens.\033[0m"
     fi
 }
 
@@ -441,16 +441,20 @@ if [ -n "$TARGET_DIR" ]; then
     echo "Usando destino manual: $TARGET_DIR"
 else
     if [ -d "$HOME/.config/opencode" ]; then
-        DETECTED+=("$HOME/.config/opencode/openskills")
-        echo "Detectado: opencode -> $HOME/.config/opencode/openskills"
+        DETECTED+=("$HOME/.config/opencode/skills")
+        echo "Detectado: opencode -> $HOME/.config/opencode/skills"
     fi
     if [ -d "$HOME/.gemini/config" ]; then
-        DETECTED+=("$HOME/.gemini/config/openskills")
-        echo "Detectado: antigravity (gemini) -> $HOME/.gemini/config/openskills"
+        DETECTED+=("$HOME/.gemini/config/skills")
+        echo "Detectado: antigravity (gemini) -> $HOME/.gemini/config/skills"
     fi
     if [ -d "$HOME/.config/antigravity" ]; then
-        DETECTED+=("$HOME/.config/antigravity/openskills")
-        echo "Detectado: antigravity -> $HOME/.config/antigravity/openskills"
+        DETECTED+=("$HOME/.config/antigravity/skills")
+        echo "Detectado: antigravity -> $HOME/.config/antigravity/skills"
+    fi
+    if [ -d "$HOME/.claude" ]; then
+        DETECTED+=("$HOME/.claude/skills")
+        echo "Detectado: claude-code -> $HOME/.claude/skills"
     fi
 
     if [ ${#DETECTED[@]} -eq 0 ]; then
@@ -461,6 +465,7 @@ else
 fi
 
 COUNT=0
+INSTALLED_TARGETS=()
 for TARGET in "${DETECTED[@]}"; do
     TARGET_ABS=$(cd "$TARGET" 2>/dev/null && pwd || echo "$TARGET")
     SOURCE_ABS=$(cd "$SCRIPT_DIR" 2>/dev/null && pwd || echo "$SCRIPT_DIR")
@@ -470,28 +475,42 @@ for TARGET in "${DETECTED[@]}"; do
     fi
 
     echo -e "\nInstalando en: $TARGET"
-    mkdir -p "$TARGET/skills"
-    mkdir -p "$TARGET/docs"
+    mkdir -p "$TARGET"
+    IS_SKILL_ROOT=0
+    if [[ "$TARGET" == */skills ]]; then
+        IS_SKILL_ROOT=1
+    fi
+    if [ "$IS_SKILL_ROOT" -ne 1 ]; then
+        mkdir -p "$TARGET/skills"
+        mkdir -p "$TARGET/docs"
+    fi
 
     # Copiar skills
     for SKILL in "$SKILLS_DIR"/*/; do
         NAME=$(basename "$SKILL")
         echo "  Copiando: $NAME..."
-        rm -rf "$TARGET/skills/$NAME"
-        cp -rf "$SKILL" "$TARGET/skills/$NAME"
+        if [ "$IS_SKILL_ROOT" -eq 1 ]; then
+            rm -rf "$TARGET/$NAME"
+            cp -rf "$SKILL" "$TARGET/$NAME"
+        else
+            rm -rf "$TARGET/skills/$NAME"
+            cp -rf "$SKILL" "$TARGET/skills/$NAME"
+        fi
         if [ "$TARGET" == "${DETECTED[0]}" ]; then
             COUNT=$((COUNT + 1))
         fi
     done
 
     # Copiar archivos base
-    cp "$SCRIPT_DIR/README.md" "$TARGET/" 2>/dev/null || true
-    cp "$SCRIPT_DIR/package.json" "$TARGET/" 2>/dev/null || true
-    cp "$SCRIPT_DIR/.gitignore" "$TARGET/" 2>/dev/null || true
-    cp "$SCRIPT_DIR/install.sh" "$TARGET/" 2>/dev/null || true
+    if [ "$IS_SKILL_ROOT" -ne 1 ]; then
+        cp "$SCRIPT_DIR/README.md" "$TARGET/" 2>/dev/null || true
+        cp "$SCRIPT_DIR/package.json" "$TARGET/" 2>/dev/null || true
+        cp "$SCRIPT_DIR/.gitignore" "$TARGET/" 2>/dev/null || true
+        cp "$SCRIPT_DIR/install.sh" "$TARGET/" 2>/dev/null || true
+    fi
 
     # Generar CODEX.md si no existe (es local-only, no está en el repo)
-    if [ ! -f "$TARGET/CODEX.md" ]; then
+    if [ "$IS_SKILL_ROOT" -ne 1 ] && [ ! -f "$TARGET/CODEX.md" ]; then
         cat > "$TARGET/CODEX.md" << 'CODEX_EOF'
 # 🧠 OpenSkills: Tactical CODEX (Learning Memory)
 
@@ -542,21 +561,11 @@ This document is the shared, dynamically evolving persistent memory of the OpenS
 - [YYYY-MM-DD] - (Short title) — (What happened, root cause, fix, what to do differently next time.)
 CODEX_EOF
         echo "  CODEX.md generado por primera vez (local-only)."
-    else
+    elif [ "$IS_SKILL_ROOT" -ne 1 ]; then
         echo "  CODEX.md ya existe localmente (memoria de aprendizaje conservada)."
     fi
+    INSTALLED_TARGETS+=("$TARGET")
 done
-
-# Instalar a Claude Code si esta disponible
-if [ -d "$HOME/.claude" ]; then
-    echo "Detectado Claude Code. Copiando skills a: $HOME/.claude/skills/"
-    mkdir -p "$HOME/.claude/skills"
-    for SKILL in "$SKILLS_DIR"/*/; do
-        NAME=$(basename "$SKILL")
-        rm -rf "$HOME/.claude/skills/$NAME"
-        cp -rf "$SKILL" "$HOME/.claude/skills/$NAME"
-    done
-fi
 
 echo ""
 echo "Instalacion completa! $COUNT skills instaladas."
@@ -564,9 +573,15 @@ echo ""
 echo "Agrega estas rutas a tu configuracion:"
 echo ""
 echo '  "skills": { "paths": ['
-for SKILL in "$SKILLS_DIR"/*/; do
-    NAME=$(basename "$SKILL")
-    echo "    \"$TARGET/skills/$NAME\","
+for T in "${INSTALLED_TARGETS[@]}"; do
+    for SKILL in "$SKILLS_DIR"/*/; do
+        NAME=$(basename "$SKILL")
+        if [[ "$T" == */skills ]]; then
+            echo "    \"$T/$NAME\","
+        else
+            echo "    \"$T/skills/$NAME\","
+        fi
+    done
 done
 echo '  ]}'
 echo ""
