@@ -12,7 +12,7 @@
   "scripts": {
     "validate": "node scripts/validate-skills.js",
     "catalog": "node scripts/generate-catalog.js",
-    "test": "node scripts/validate-skills.js",
+    "test": "node tests/skills.test.js",
     "release": "bash scripts/release.sh"
   }
 }
