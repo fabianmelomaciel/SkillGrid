@@ -4,8 +4,9 @@ CODEX.md
 # Documentation directory (not committed)
 docs/
 
-# Security audit reports (local artifacts)
+# Security & audit reports (local artifacts)
 security-audit-report.html
+reports/
 
 # Conflicted copies from merge conflicts
 *Conflicted copy*
