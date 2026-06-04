@@ -1,6 +1,9 @@
 # Local-only files (CODEX learning memory)
 CODEX.md
 
+# Local install output (workspace artifacts)
+_installed/
+
 # Documentation directory (not committed)
 docs/
 
@@ -26,6 +29,15 @@ node_modules/
 
 # Empty scratch directory
 scratch/
+
+# Local-only files created by some installers / environments
+.well-known/
+TERMS.md
+scripts/audit-shared.psm1
+package-lock.json
+
+# OpenGraph artifacts (local-only)
+.opengraph/
 
 # CodeGraph codebase memory
 .codegraph/

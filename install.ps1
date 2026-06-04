@@ -2,6 +2,7 @@ param(
     [string]$TargetDir = "",
     [string]$ProjectDir = "",
     [string]$Language = "",
+    [switch]$AutoInstallCodeGraph,
     [switch]$Help
 )
 
@@ -178,22 +179,20 @@ function InstallToDir($target, $source) {
     }
     Write-Host "`nInstalando OpenSkills en: $target" -ForegroundColor Cyan
     New-Item -ItemType Directory -Path $target -Force | Out-Null
-    $isClaude = $target.EndsWith(".claude\skills") -or $target.EndsWith(".claude/skills")
-    if (-not $isClaude) {
+    $normalizedTarget = $targetPath.TrimEnd('\').TrimEnd('/')
+    $isSkillRoot = $normalizedTarget.ToLower().EndsWith("\skills") -or $normalizedTarget.ToLower().EndsWith("/skills")
+    if (-not $isSkillRoot) {
         New-Item -ItemType Directory -Path (Join-Path -Path $target -ChildPath "skills") -Force | Out-Null
     }
     $skillDirs = Get-ChildItem -LiteralPath "$source\skills" -Directory
     foreach ($skill in $skillDirs) {
-        if ($isClaude) {
-            $destPath = Join-Path -Path $target -ChildPath $skill.Name
-        } else {
-            $destPath = Join-Path -Path "$target\skills" -ChildPath $skill.Name
-        }
+        if ($isSkillRoot) { $destPath = Join-Path -Path $target -ChildPath $skill.Name }
+        else { $destPath = Join-Path -Path "$target\skills" -ChildPath $skill.Name }
         Write-Host "  Copiando: $($skill.Name)..." -ForegroundColor Gray
         Remove-Item -LiteralPath $destPath -Recurse -Force -ErrorAction SilentlyContinue
         Copy-Item -LiteralPath $skill.FullName -Destination $destPath -Recurse -Force
     }
-    if (-not $isClaude) {
+    if (-not $isSkillRoot) {
         Copy-Item -LiteralPath "$source\install.ps1" -Destination "$target\" -Force -ErrorAction SilentlyContinue
         Copy-Item -LiteralPath "$source\install.sh" -Destination "$target\" -Force -ErrorAction SilentlyContinue
         Copy-Item -LiteralPath "$source\README.md" -Destination "$target\" -Force -ErrorAction SilentlyContinue
@@ -389,10 +388,17 @@ function Check-Dependencies {
 }
 
 function Install-CodeGraph {
+    param(
+        [switch]$AutoInstall
+    )
     Write-Host "`n=== COMPROBACION DE CODEGRAPH ===" -ForegroundColor Cyan
     if (Get-Command codegraph -ErrorAction SilentlyContinue) {
         Write-Host "  [+] codegraph: Ya instalado" -ForegroundColor Green
     } else {
+        if (-not $AutoInstall) {
+            Write-Host "  [-] codegraph: No encontrado. Omitiendo instalacion automatica (usa -AutoInstallCodeGraph si quieres que lo instale)." -ForegroundColor Yellow
+            return
+        }
         Write-Host "  [-] codegraph: No encontrado. Instalando automaticamente..." -ForegroundColor Yellow
         if (Get-Command npm -ErrorAction SilentlyContinue) {
             Write-Host "  Ejecutando: npm install -g @colbymchenry/codegraph" -ForegroundColor Gray
@@ -505,8 +511,8 @@ function Setup-ProjectCodeGraph($projectDir) {
         Write-Host "  [!] Omitiendo analisis de grafo por falta de herramienta codegraph en el PATH." -ForegroundColor Yellow
     }
 
-    # 4. Calcular y guardar comparacion de tokens en c:\laragon\www\peon\scratch
-    $scratchDir = "c:\laragon\www\peon\scratch"
+    # 4. Calcular y guardar comparacion de tokens
+    $scratchDir = if ($env:OPENSKILLS_SCRATCH) { $env:OPENSKILLS_SCRATCH } else { Join-Path $PSScriptRoot ".." "scratch" }
     if (Test-Path -LiteralPath $scratchDir) {
         Write-Host "  [+] Calculando estadisticas de ahorro de tokens..." -ForegroundColor Gray
         
@@ -577,7 +583,7 @@ function Setup-ProjectCodeGraph($projectDir) {
         $jsonOutput | Out-File -FilePath $comparisonFile -Encoding utf8 -Force
         Write-Host "  [+] Reporte de tokens guardado en: $comparisonFile" -ForegroundColor Green
     } else {
-        Write-Host "  [!] Directorio de peon/scratch no encontrado: $scratchDir. Saltando registro de tokens." -ForegroundColor Yellow
+        Write-Host "  [!] Directorio scratch no encontrado: $scratchDir. Saltando registro de tokens." -ForegroundColor Yellow
     }
 }
 
@@ -592,6 +598,7 @@ USO:
   .\install.ps1 -TargetDir "C:\ruta"          - Instala en ruta personalizada
   .\install.ps1 -ProjectDir "C:\proyecto"     - Genera reglas compatibles en tu proyecto (Cursor/Copilot)
   .\install.ps1 -ProjectDir "C:\proyecto" -Language php - Instala sólo reglas comunes y de PHP
+  .\install.ps1 -AutoInstallCodeGraph         - Permite instalar codegraph automaticamente si falta
   .\install.ps1 -Help                         - Muestra esta ayuda
 
 SIN PARAMETROS: Detecta opencode o antigravity y instala alli.
@@ -605,12 +612,12 @@ if (-not (Test-Path -LiteralPath $skillsDir)) {
 }
 
 Check-Dependencies
-Install-CodeGraph
+Install-CodeGraph -AutoInstall:$AutoInstallCodeGraph
 
 if (-not $TargetDir) {
     $detected = @()
-    $opencodeDir = "$env:USERPROFILE\.config\opencode\openskills"
-    $antigravityDir = "$env:USERPROFILE\.config\antigravity\openskills"
+    $opencodeDir = "$env:USERPROFILE\.config\opencode\skills"
+    $antigravityDir = "$env:USERPROFILE\.config\antigravity\skills"
     $antigravityGeminiDir = "$env:USERPROFILE\.gemini\config\skills"
 
     if (Test-Path -LiteralPath "$env:USERPROFILE\.config\opencode") {
@@ -635,8 +642,9 @@ if (-not $TargetDir) {
     } else {
         Write-Host "Detectados opencode y antigravity. Instalando en ambos..." -ForegroundColor Green
         foreach ($d in $detected) { InstallToDir $d.Path $scriptDir }
-        InstallToOpendir $scriptDir
-        InstallToOpendirAgents $scriptDir
+        if (Test-Path -LiteralPath "$env:USERPROFILE\.config\opencode") {
+            InstallToOpendirAgents $scriptDir
+        }
         if ($ProjectDir) {
             InstallToProject $ProjectDir $scriptDir $Language
             Setup-ProjectCodeGraph $ProjectDir
@@ -647,6 +655,10 @@ if (-not $TargetDir) {
 }
 
 InstallToDir $TargetDir $scriptDir
+
+if (-not ($PSBoundParameters.ContainsKey('TargetDir') -and $TargetDir) -and (Test-Path -LiteralPath "$env:USERPROFILE\.config\opencode")) {
+    InstallToOpendirAgents $scriptDir
+}
 
 if ($ProjectDir) {
     InstallToProject $ProjectDir $scriptDir $Language

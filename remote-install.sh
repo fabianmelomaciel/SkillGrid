@@ -13,6 +13,10 @@ if ! command -v git &> /dev/null; then
 fi
 
 # Determine destination directory
+if [ -z "$HOME" ]; then
+    echo "ERROR: HOME no esta definido. Abortando por seguridad."
+    exit 1
+fi
 TARGET="$HOME/.config/opencode/openskills"
 if [ -d "$HOME/.config/antigravity" ]; then
     TARGET="$HOME/.config/antigravity/openskills"
@@ -28,6 +32,13 @@ if [ -d "$TARGET" ]; then
         cd - > /dev/null
     else
         echo "El directorio de destino existe pero no es un repositorio git. Reinstalando de forma limpia..."
+        case "$TARGET" in
+            "$HOME"/.config/opencode/openskills|"$HOME"/.config/antigravity/openskills) ;;
+            *)
+                echo "ERROR: Ruta de destino inesperada para borrado: $TARGET. Abortando por seguridad."
+                exit 1
+                ;;
+        esac
         rm -rf "$TARGET"
         git clone https://github.com/fabianmelomaciel/OpenSkills.git "$TARGET"
     fi

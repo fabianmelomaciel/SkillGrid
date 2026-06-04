@@ -10,6 +10,11 @@ if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
 }
 
 # Determine destination directory
+$userProfile = $env:USERPROFILE
+if ([string]::IsNullOrWhiteSpace($userProfile)) {
+    Write-Error "USERPROFILE no esta definido. Abortando por seguridad."
+    exit 1
+}
 $targetDir = "$env:USERPROFILE\.config\opencode\openskills"
 if (Test-Path -LiteralPath "$env:USERPROFILE\.config\antigravity") {
     $targetDir = "$env:USERPROFILE\.config\antigravity\openskills"
@@ -29,6 +34,18 @@ if (Test-Path -LiteralPath $targetDir) {
         Pop-Location
     } else {
         Write-Host "El directorio de destino existe pero no es un repositorio git. Reinstalando de forma limpia..." -ForegroundColor Yellow
+        $expectedSuffixes = @(
+            "\.config\opencode\openskills",
+            "\.config\antigravity\openskills"
+        )
+        $isExpectedTarget = $false
+        foreach ($suffix in $expectedSuffixes) {
+            if ($targetDir.ToLower().EndsWith($suffix.ToLower())) { $isExpectedTarget = $true; break }
+        }
+        if (-not $targetDir.ToLower().StartsWith($userProfile.ToLower()) -or -not $isExpectedTarget) {
+            Write-Error "Ruta de destino inesperada para borrado: $targetDir. Abortando por seguridad."
+            exit 1
+        }
         Remove-Item -LiteralPath $targetDir -Recurse -Force -ErrorAction SilentlyContinue
         git clone https://github.com/fabianmelomaciel/OpenSkills.git $targetDir
     }
