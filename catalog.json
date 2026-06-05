@@ -2,11 +2,11 @@
   "version": "1.0.0",
   "generated": "2026-06-05",
   "summary": {
-    "total": 26,
+    "total": 28,
     "categories": {
       "agent": 7,
-      "core": 17,
-      "design": 2
+      "core": 18,
+      "design": 3
     }
   },
   "skills": [
@@ -46,6 +46,13 @@
       "risk_level": "safe"
     },
     {
+      "name": "changelog-generator",
+      "description": "Genera notas de lanzamiento (Changelogs) automatizadas y legibles para el usuario final analizando el historial de Git (commits). Clasifica los cambios en categorías lógicas y actualiza el archivo CHANGELOG.md.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
       "name": "code-simplification",
       "description": "Simplifies code for clarity. Use when refactoring code for clarity without changing behavior. Use when code works but is harder to read, maintain, or extend than it should be. Use when reviewing code that has accumulated unnecessary complexity.",
       "category": "core",
@@ -56,6 +63,13 @@
       "name": "context-engineering",
       "description": "Optimizes agent context setup. Use when starting a new session, when agent output quality degrades, when switching between tasks, or when you need to configure rules files and context for a project.",
       "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "creativo-visual",
+      "description": "Director Creativo y Diseñador Visual para la generación y optimización de imágenes con IA. Traduce prompts básicos a especificaciones técnicas y artísticas de alta calidad, gestiona presets de marca, ratios de aspecto e integra ImageMagick para el post-procesamiento.",
+      "category": "design",
       "status": "stable",
       "risk_level": "safe"
     },

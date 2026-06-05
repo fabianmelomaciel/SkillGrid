@@ -5,10 +5,10 @@
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*26 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
+*28 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-26-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-28-22c55e?style=flat-square)](catalog.json)
 [![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/OpenSkills/validate.yml?branch=main&style=flat-square&label=CI)](https://github.com/fabianmelomaciel/OpenSkills/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/OpenSkills/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/OpenSkills?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/OpenSkills/stargazers)
@@ -117,11 +117,12 @@ Genera automáticamente `.cursor/rules/` y `.github/instructions/` con las regla
 
 ### 🔧 Core — Metodología de desarrollo
 
-Las 17 skills que convierten a tu agente en un ingeniero de software disciplinado:
+Las 18 skills que convierten a tu agente en un ingeniero de software disciplinado:
 
 | Skill | Cuándo la usas |
 |-------|----------------|
 | `brainstorming` | Antes de tocar código — diseña la feature primero |
+| `changelog-generator` | Genera notas de lanzamiento (Changelogs) automatizadas y legibles para el usuario final analizando el historial de Git (commits) |
 | `spec-driven-development` | Cuando los requerimientos son vagos o ambiguos |
 | `writing-plans` | Para planificar cambios que tocan múltiples archivos |
 | `incremental-implementation` | Para entregar en rebanadas seguras y revisables |
@@ -147,6 +148,7 @@ Las 17 skills que convierten a tu agente en un ingeniero de software disciplinad
 |-------|----------|
 | `impeccable-design-taste` | Auditoría de diseño en 6 capas: tipografía, color, espaciado, polish, motion y accesibilidad WCAG AA. Detecta y elimina los "AI tells" (glassmorphism genérico, gradients de AI, cards idénticas). |
 | `emil-kowalski-design` | Animaciones ≤300ms, micro-interacciones, perceived performance. Principios de diseño de Emil Kowalski aplicados sistemáticamente. |
+| `creativo-visual` | Director Creativo y Diseñador Visual. Traduce prompts básicos a especificaciones artísticas de 5 componentes (Subject, Action, Context, Composition, Style) e integra ImageMagick. |
 
 ---
 
@@ -172,9 +174,9 @@ Instala solo lo que necesita tu equipo:
 
 | Bundle | Qué incluye |
 |--------|-------------|
-| **`core`** | Las 17 skills de metodología de desarrollo |
+| **`core`** | Las 18 skills de metodología de desarrollo |
 | **`devops`** | agente-devops · audit-loop · auditor-de-seguridad · optimizador-finops |
-| **`design`** | impeccable-design-taste · emil-kowalski-design |
+| **`design`** | impeccable-design-taste · emil-kowalski-design · creativo-visual |
 | **`management`** | project-manager · gestor-documental · audit-loop |
 | **`marketing`** | auditor-de-marketing |
 
