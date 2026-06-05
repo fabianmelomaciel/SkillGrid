@@ -102,11 +102,15 @@ After completing a batch of work:
 
 When you receive a new request as `/Project_manager`, you MUST minimize token usage by default:
 
-1. **CodeGraph first (always):** Use the graph to map modules and find the minimal set of relevant files before reading anything.
+1. **CodeGraph first (always):** Check for `.codegraph` structure/indices or run a codegraph scan/sync command (if available) before proceeding. Use the graph to map modules and find the minimal set of relevant files/functions/interfaces, avoiding scanning the whole codebase or reading files blindly.
 2. **Working set:** Maintain a short “working set” list of files you will touch. Do not expand it unless the graph proves you must.
 3. **No full-file rereads:** Never reread entire files “just to remember”. If more context is needed, read only the missing line range.
 4. **Avoid repetitive exploration:** Prefer targeted queries and graph relationships over broad searches and recursive file reads.
-5. **Refactor for fewer future reads (when justified):** If a large file is touched repeatedly across tasks, delegate a focused refactor to extract stable helpers/modules so future work needs less context.
+5. **Token Economy Check:** Prevent unnecessary parallel tasks that request duplicate or excessive code information. Constrain prompts to subagents to exact line ranges.
+6. **Refactor for fewer future reads (when justified - Critical Rule):**
+   - If a file is longer than 300 lines or is read/written more than 2-3 times in a task sequence, the Project Manager must prioritize refactoring it.
+   - Break down long files into smaller, decoupled modules (e.g., helper functions, UI subcomponents, hooks, service files) so that future context reads can be targeted and small.
+   - After any refactoring or codebase modifications, the Project Manager must run `codegraph sync` to ensure the codebase graph is kept 100% updated.
 
 ### Token Data (verification + reporting)
 
@@ -129,12 +133,17 @@ If the input includes findings, vulnerabilities, or errors from an audit (such a
 
 ## Session Handoff (MANDATORY FINAL OUTPUT)
 
-At the end of a request (or when you must stop), output a handoff block so another IDE/agent can continue without reloading context:
+At the end of a request (or when you must stop), output a handoff block formatted clearly in Markdown so that another IDE/agent (such as Claude Code, Cursor, Open WebUI, Copilot, etc.) can read it to continue the work in the exact same state without reloading context:
 
 ```
 SESSION HANDOFF
-Goal:
-Current Status:
+Goal: [Brief description of the main task/goal]
+Current Status: [Current state of implementation, what is done and what is pending]
+
+Git Context:
+  - Branch: [Active git branch]
+  - Last Commit: [Commit hash/message, if relevant]
+  - Modified Files: [List of uncommitted files modified in current session]
 
 CodeGraph:
   - graph_folder: .codegraph
@@ -143,22 +152,27 @@ CodeGraph:
 
 Token Stats:
   - source: token_usage_comparison.json | unavailable
-  - baseline_full_scan_tokens:
-  - codegraph_context_tokens:
-  - estimated_savings_tokens:
-  - savings_percentage:
+  - baseline_full_scan_tokens: [Count]
+  - codegraph_context_tokens: [Count]
+  - estimated_savings_tokens: [Count]
+  - savings_percentage: [Percentage]
 
 Working Set (files):
+  - [List of active working set files with line ranges if relevant]
 
 Changes Made:
+  - [Bullets of changes made in this session]
 
 Verification:
-  - commands:
-  - results:
+  - commands: [Build/test/lint commands run/to run]
+  - results: [Success/failures/coverage]
 
 Open Risks / TODO:
+  - [List of things to watch out for or potential bugs]
 
 Next Actions (ordered):
+  1. [Next concrete action 1: e.g. Edit specific lines in file X]
+  2. [Next concrete action 2]
 ```
 
 > **CodeGraph:** Follow shared startup protocol in `skills/shared/codegraph-startup.md`.

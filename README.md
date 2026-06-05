@@ -221,13 +221,17 @@ Los agentes de análisis generan dashboards HTML interactivos con dark mode, gla
 
 ---
 
-## 📈 Ahorro Masivo de Tokens con CodeGraph
+## 📈 Ahorro Masivo de Tokens con CodeGraph y Refactorización
 
-OpenSkills se integra de forma nativa con **CodeGraph** para eliminar por completo el consumo innecesario de tokens en tareas de investigación de código. Olvídate de que tu agente lea archivos completos una y otra vez.
+OpenSkills se integra de forma nativa con **CodeGraph** y promueve reglas de diseño modular para eliminar por completo el consumo innecesario de tokens en tareas de desarrollo e investigación de código. Olvídate de que tu agente lea archivos completos una y otra vez.
 
-### 🚀 Principales Beneficios para tu Flujo y tu Bolsillo
+### 🚀 Principales Beneficios y Políticas de Eficiencia
 - **Hasta 95% de Ahorro en Tokens:** Al usar indexación semántica local en lugar de escaneos completos de archivos, la huella de contexto se reduce al mínimo imprescindible.
 - **Cero Fricción (Auto-Sincronización):** Se instala y sincroniza en segundo plano automáticamente. El agente siempre tiene un mapa actualizado de tu codebase sin que tengas que mover un dedo.
+- **Refactorización Inteligente de Archivos Largos (Regla Crítica):**
+  - Si un archivo supera las **300 líneas** o es modificado/leído repetidamente (más de 2-3 veces en una misma sesión), el agente tiene la directriz estricta de **refactorizar y subdividirlo** en submódulos o helpers pequeños.
+  - Esto garantiza que futuras lecturas requieran fragmentos mínimos de contexto, optimizando el presupuesto de tokens.
+  - Tras cualquier refactorización, se fuerza la auto-sincronización (`codegraph sync`) para mantener el mapa de dependencias y código actualizado.
 - **Respuestas Inmediatas:** Al evitar el "context flooding" en el prompt, tu asistente de IA responde mucho más rápido y con mayor precisión (evitando alucinaciones).
 - **Control de Costos (FinOps):** Compara el consumo de tokens y visualiza tu ahorro acumulado en tiempo real desde tu propio dashboard local.
 
@@ -252,14 +256,17 @@ Medido el 2026-06-04 sobre **300 archivos** (~1.47 MB de código fuente):
 
 ---
 
-## 🔁 Handoff de sesión (Project Manager)
+## 🔁 Handoff de sesión (Project Manager Multi-IDE)
 
-El agente `project-manager` está pensado para que puedas pausar y retomar trabajo entre IDEs (opencode, Claude Code, Cursor, Copilot) sin “recargar” contexto completo. Para eso, al finalizar una petición debe dejar un bloque **SESSION HANDOFF** con:
+El agente `project-manager` está diseñado para que puedas pausar y retomar el trabajo entre múltiples IDEs y herramientas de IA (tales como opencode, Claude Code, Cursor, Copilot, Open WebUI, etc.) sin perder el estado ni "recargar" el contexto de forma manual.
 
-- Goal, estado actual y próximos pasos ordenados
-- Working set de archivos (mínimo necesario)
-- Estado de CodeGraph (sync realizado y cuándo)
-- Datos de tokens (si están disponibles localmente)
+Al finalizar una petición o detenerse, el agente deja un bloque **SESSION HANDOFF** estructurado que cualquier intérprete de IA puede leer directamente para reanudar el trabajo:
+
+- **Git Context:** Rama activa, commits recientes y archivos modificados.
+- **Working Set:** Lista mínima de archivos de trabajo activos y rangos de líneas bajo modificación.
+- **CodeGraph Status:** Estado de sincronización del índice.
+- **Token Stats:** Ahorro acumulado a partir de `token_usage_comparison.json`.
+- **Próximos pasos ordenados:** Acciones concretas que debe realizar el siguiente agente.
 
 ### 📊 Dónde se guardan los datos de tokens
 
