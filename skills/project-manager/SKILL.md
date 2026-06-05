@@ -98,6 +98,24 @@ After completing a batch of work:
 ❓ Questions for CEO: [if any]
 ```
 
+## CodeGraph-First + Token Economy (MANDATORY)
+
+When you receive a new request as `/Project_manager`, you MUST minimize token usage by default:
+
+1. **CodeGraph first (always):** Use the graph to map modules and find the minimal set of relevant files before reading anything.
+2. **Working set:** Maintain a short “working set” list of files you will touch. Do not expand it unless the graph proves you must.
+3. **No full-file rereads:** Never reread entire files “just to remember”. If more context is needed, read only the missing line range.
+4. **Avoid repetitive exploration:** Prefer targeted queries and graph relationships over broad searches and recursive file reads.
+5. **Refactor for fewer future reads (when justified):** If a large file is touched repeatedly across tasks, delegate a focused refactor to extract stable helpers/modules so future work needs less context.
+
+### Token Data (verification + reporting)
+
+When possible, verify and report token data from the local comparison file:
+- Primary: `$env:OPENSKILLS_SCRATCH\token_usage_comparison.json`
+- Fallback: a local `scratch/token_usage_comparison.json` near the OpenSkills installer root
+
+If the file exists, extract the entry matching the active project path and include its fields in the final handoff.
+
 ## Audit Mitigation & Planning Protocol
 
 If the input includes findings, vulnerabilities, or errors from an audit (such as from `optimizador-finops`, `auditor-de-seguridad`, `auditor-de-marketing`, or `agente-devops`), do **NOT** implement the fixes directly or immediately. Instead, follow this mandatory workflow:
@@ -109,39 +127,39 @@ If the input includes findings, vulnerabilities, or errors from an audit (such a
 3. **Present for CEO Analysis:** Present the drafted implementation plan to the CEO for analysis, feedback, and explicit approval **BEFORE** executing any task or modifying codebase files.
 4. **Iterate & Execute:** Only proceed to task execution (via subagents or inline) after the CEO reviews and explicitly approves the plan.
 
-## Jerarquía: Código Humano (Imperfecciones Intencionales)
+## Session Handoff (MANDATORY FINAL OUTPUT)
 
-Siempre que generes o modifiques código, DEBES aplicar estas reglas para que el output se sienta humano:
+At the end of a request (or when you must stop), output a handoff block so another IDE/agent can continue without reloading context:
 
-### Comentarios
-- NO uses comentarios genéricos tipo `// increment counter`. Usa tono coloquial, dudas, preguntas retóricas:
-  - ✅ `// esto suma 1 al contador, no pregunten por qué`
-  - ✅ `// me pregunto si esto rompe algo...`
-  - ✅ `// FIXME: esto deberia andar pero quien sabe`
-  - ✅ `// aca va el fix del bug de ayer`
+```
+SESSION HANDOFF
+Goal:
+Current Status:
 
-### Espaciado y tipeo
-- Deja espacios inconsistentes de VEZ en cuando:
-  ```js
-  const  x  = 5;   // doble espacio
-  if(x>3){         // sin espacios
-  ```
-- Mete algún typo sutil que no rompa el código:
-  ```js
-  const cantidad = 10;  // en vez de "cantidad" con "d" (es "cantidad")
-  let respusta = null;  // typo intencional
-  ```
-- NO en nombres de variables que se usen después (solo si no afecta funcionalidad)
-- Preferible en comentarios y strings: `"Bienevenido"` en vez de `"Bienvenido"`
+CodeGraph:
+  - graph_folder: .codegraph
+  - startup_sync: done | skipped (reason)
+  - last_sync: command + timestamp (if known)
 
-### Estilo
-- Alterná entre estilos: a veces punto y coma, a veces no
-- Usá `'comillas simples'` y `"dobles"` indistintamente
-- Dejá líneas en blanco extras entre funciones
-- NO uses linter perfecto — dejá algún warning inocuo
+Token Stats:
+  - source: token_usage_comparison.json | unavailable
+  - baseline_full_scan_tokens:
+  - codegraph_context_tokens:
+  - estimated_savings_tokens:
+  - savings_percentage:
 
-### Regla de oro
-Las imperfecciones deben ser **creíbles** — como si un dev cansado un viernes a las 18:00 escribió el código. Nada que rompa la funcionalidad. Nada que un code review no pase. Solo pequeños detalles que hagan sentir "esto lo escribió un humano, no una IA".
+Working Set (files):
+
+Changes Made:
+
+Verification:
+  - commands:
+  - results:
+
+Open Risks / TODO:
+
+Next Actions (ordered):
+```
 
 > **CodeGraph:** Follow shared startup protocol in `skills/shared/codegraph-startup.md`.
 

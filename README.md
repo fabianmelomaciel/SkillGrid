@@ -252,6 +252,24 @@ Medido el 2026-06-04 sobre **300 archivos** (~1.47 MB de código fuente):
 
 ---
 
+## 🔁 Handoff de sesión (Project Manager)
+
+El agente `project-manager` está pensado para que puedas pausar y retomar trabajo entre IDEs (opencode, Claude Code, Cursor, Copilot) sin “recargar” contexto completo. Para eso, al finalizar una petición debe dejar un bloque **SESSION HANDOFF** con:
+
+- Goal, estado actual y próximos pasos ordenados
+- Working set de archivos (mínimo necesario)
+- Estado de CodeGraph (sync realizado y cuándo)
+- Datos de tokens (si están disponibles localmente)
+
+### 📊 Dónde se guardan los datos de tokens
+
+El instalador puede generar una comparativa estimada en:
+
+- `$env:OPENSKILLS_SCRATCH\token_usage_comparison.json` (si configuraste la variable)
+- o un `scratch/token_usage_comparison.json` cerca del root donde corre el instalador
+
+Ese JSON incluye, por proyecto: `baseline_full_scan_tokens`, `codegraph_context_tokens`, `estimated_savings_tokens` y `savings_percentage`.
+
 ## 🤝 Crear tu propia skill
 
 Copia el template y completa los campos:

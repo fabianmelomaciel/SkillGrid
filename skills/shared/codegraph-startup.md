@@ -20,4 +20,6 @@ To minimize token usage and avoid redundant exploration/research scans across th
 
 5. **Log Token Savings**:
    - Keep track of prompt token consumption and estimated savings.
-   - Update/record token usage and comparison entries in `c:\laragon\www\peon\scratch\token_usage_comparison.json` (or `token_usage.json`) under the current project's path.
+   - Prefer reading/updating token usage comparison in:
+     - `$env:OPENSKILLS_SCRATCH\token_usage_comparison.json` (if set)
+     - otherwise a local `scratch/token_usage_comparison.json` near the OpenSkills installer root (if present)
