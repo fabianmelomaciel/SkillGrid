@@ -322,11 +322,13 @@ setup_project_codegraph() {
     mkdir -p "$CODEGRAPH_DIR"
     echo "  [+] Creado directorio .codegraph/ en el proyecto"
 
-    # 2. Asegurar que .gitignore del proyecto ignore los archivos de codegraph
+    # 2. Asegurar exclusiones locales (NO subir a git)
+    # Preferimos .git/info/exclude para no modificar .gitignore trackeado.
+    local EXCLUDE_PATH="$PROJECT_DIR/.git/info/exclude"
     local GITIGNORE_PATH="$PROJECT_DIR/.gitignore"
     local IGNORES=(
         ""
-        "# CodeGraph codebase memory"
+        "# OpenSkills local-only (CodeGraph + generated rules)"
         ".codegraph/"
         "codegraph-out/"
         "codegraph.json"
@@ -336,20 +338,29 @@ setup_project_codegraph() {
         "token_comparison.json"
         "token_usage_comparison.json"
         "token_usage.json"
+        ".cursor/rules/"
+        ".github/instructions/"
     )
 
-    if [ -f "$GITIGNORE_PATH" ]; then
-        for ignore in "${IGNORES[@]}"; do
-            if [ -n "$ignore" ] && ! grep -Fq "$ignore" "$GITIGNORE_PATH"; then
-                echo "$ignore" >> "$GITIGNORE_PATH"
-            fi
-        done
-        echo "  [+] Actualizado .gitignore del proyecto con exclusiones de codegraph"
+    local TARGET_EXCLUDE_FILE=""
+    if [ -d "$PROJECT_DIR/.git" ]; then
+        mkdir -p "$(dirname "$EXCLUDE_PATH")"
+        touch "$EXCLUDE_PATH"
+        TARGET_EXCLUDE_FILE="$EXCLUDE_PATH"
     else
-        for ignore in "${IGNORES[@]}"; do
-            echo "$ignore" >> "$GITIGNORE_PATH"
-        done
-        echo "  [+] Creado .gitignore del proyecto con exclusiones de codegraph"
+        TARGET_EXCLUDE_FILE="$GITIGNORE_PATH"
+        touch "$TARGET_EXCLUDE_FILE"
+    fi
+
+    for ignore in "${IGNORES[@]}"; do
+        if [ -n "$ignore" ] && ! grep -Fq "$ignore" "$TARGET_EXCLUDE_FILE"; then
+            echo "$ignore" >> "$TARGET_EXCLUDE_FILE"
+        fi
+    done
+    if [ "$TARGET_EXCLUDE_FILE" = "$EXCLUDE_PATH" ]; then
+        echo "  [+] Actualizado .git/info/exclude (local-only) para ignorar CodeGraph + reglas generadas"
+    else
+        echo "  [+] Actualizado .gitignore del proyecto con exclusiones locales"
     fi
 
     # 3. Inicializar / sincronizar codegraph

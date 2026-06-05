@@ -459,11 +459,14 @@ function Setup-ProjectCodeGraph($projectDir) {
         Write-Host "  [+] Creado directorio .codegraph/ en el proyecto" -ForegroundColor Gray
     }
 
-    # 2. Asegurar que .gitignore del proyecto ignore los archivos de codegraph
+    # 2. Asegurar exclusiones locales (NO subir a git)
+    # Preferimos .git/info/exclude para no modificar .gitignore trackeado.
+    $gitDir = Join-Path -Path $projectDir -ChildPath ".git"
+    $excludePath = Join-Path -Path $gitDir -ChildPath "info\exclude"
     $gitignorePath = Join-Path -Path $projectDir -ChildPath ".gitignore"
     $ignoresToAdd = @(
         "",
-        "# CodeGraph codebase memory",
+        "# OpenSkills local-only (CodeGraph + generated rules)",
         ".codegraph/",
         "codegraph-out/",
         "codegraph.json",
@@ -472,11 +475,24 @@ function Setup-ProjectCodeGraph($projectDir) {
         "codegraph.html",
         "token_comparison.json",
         "token_usage_comparison.json",
-        "token_usage.json"
+        "token_usage.json",
+        ".cursor/rules/",
+        ".github/instructions/"
     )
 
-    if (Test-Path -LiteralPath $gitignorePath) {
-        $content = Get-Content -Path $gitignorePath -Raw
+    $targetExcludeFile = $null
+    if (Test-Path -LiteralPath $gitDir) {
+        New-Item -ItemType Directory -Path (Split-Path -Parent $excludePath) -Force | Out-Null
+        if (-not (Test-Path -LiteralPath $excludePath)) {
+            "" | Out-File -FilePath $excludePath -Encoding utf8 -Force
+        }
+        $targetExcludeFile = $excludePath
+    } else {
+        $targetExcludeFile = $gitignorePath
+    }
+
+    if (Test-Path -LiteralPath $targetExcludeFile) {
+        $content = Get-Content -Path $targetExcludeFile -Raw
         $neededIgnores = @()
         foreach ($line in $ignoresToAdd) {
             if ($line.Trim() -and $content -notmatch [regex]::Escape($line)) {
@@ -484,15 +500,22 @@ function Setup-ProjectCodeGraph($projectDir) {
             }
         }
         if ($neededIgnores.Count -gt 0) {
-            Add-Content -Path $gitignorePath -Value ($neededIgnores -join "`r`n")
-            Write-Host "  [+] Actualizado .gitignore del proyecto con exclusiones de codegraph" -ForegroundColor Gray
+            Add-Content -Path $targetExcludeFile -Value ($neededIgnores -join "`r`n")
+            if ($targetExcludeFile -ieq $excludePath) {
+                Write-Host "  [+] Actualizado .git/info/exclude (local-only) para ignorar CodeGraph + reglas generadas" -ForegroundColor Gray
+            } else {
+                Write-Host "  [+] Actualizado .gitignore del proyecto con exclusiones locales" -ForegroundColor Gray
+            }
         } else {
-            Write-Host "  [+] .gitignore del proyecto ya contiene exclusiones de codegraph" -ForegroundColor Gray
+            Write-Host "  [+] Exclusiones locales ya presentes (sin cambios)" -ForegroundColor Gray
         }
     } else {
-        # Crear .gitignore con las exclusiones
-        $ignoresToAdd -join "`r`n" | Out-File -FilePath $gitignorePath -Encoding utf8 -Force
-        Write-Host "  [+] Creado .gitignore del proyecto con exclusiones de codegraph" -ForegroundColor Gray
+        $ignoresToAdd -join "`r`n" | Out-File -FilePath $targetExcludeFile -Encoding utf8 -Force
+        if ($targetExcludeFile -ieq $excludePath) {
+            Write-Host "  [+] Creado .git/info/exclude (local-only) para ignorar CodeGraph + reglas generadas" -ForegroundColor Gray
+        } else {
+            Write-Host "  [+] Creado .gitignore del proyecto con exclusiones locales" -ForegroundColor Gray
+        }
     }
 
     # 3. Inicializar / sincronizar codegraph
