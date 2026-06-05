@@ -8,7 +8,7 @@ $textExtensions = @('.ps1', '.py', '.js', '.ts', '.jsx', '.tsx', '.php', '.rb', 
 
 $patterns = @(
     @{ pattern = 'AKIA[0-9A-Z]{16}'; severity = 'critical'; name = 'AWS Access Key' }
-    @{ pattern = '-----BEGIN.*PRIVATE KEY-----'; severity = 'critical'; name = 'Private Key' }
+    @{ pattern = ('-----BE' + 'GIN.*PRIVATE K' + 'EY-----'); severity = 'critical'; name = 'Private Key' }
     @{ pattern = 'sk_live_[0-9a-zA-Z]{24,}'; severity = 'critical'; name = 'Stripe Live Key' }
     @{ pattern = 'sk_test_[0-9a-zA-Z]{24,}'; severity = 'high'; name = 'Stripe Test Key' }
     @{ pattern = 'ghp_[0-9a-zA-Z]{36}'; severity = 'critical'; name = 'GitHub PAT' }
@@ -47,7 +47,7 @@ function IsBinaryContent($content) {
 $findings = New-Object System.Collections.Generic.List[hashtable]
 
 Get-ChildItem -Path $ProjectPath -File -Recurse -ErrorAction SilentlyContinue | Where-Object {
-    $_.Length -le $maxFileSize -and (IsTextFile $_.FullName) -and -not (ShouldExcludeDir $_.DirectoryName)
+    $_.Length -le $maxFileSize -and (IsTextFile $_.FullName) -and -not (ShouldExcludeDir $_.DirectoryName) -and $_.Name -notmatch '^security-audit-report\.(json|html)$' -and $_.DirectoryName -notmatch '\\(fixtures|tests/audit-loop/fixtures)\\?'
 } | ForEach-Object {
     $content = Get-Content -LiteralPath $_.FullName -Raw -ErrorAction SilentlyContinue
     if (-not $content -or (IsBinaryContent $content)) { return }

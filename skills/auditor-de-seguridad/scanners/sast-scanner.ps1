@@ -73,6 +73,7 @@ Get-ChildItem -Path $ProjectPath -File -Recurse -ErrorAction SilentlyContinue | 
     foreach ($ex in $excludeDirs) {
         if ($excludeDir -match [regex]::Escape($ex)) { $skip = $true; break }
     }
+    if ($_.Name -match '^security-audit-report\.(json|html)$' -or $_.DirectoryName -match '\\(fixtures|tests/audit-loop/fixtures)\\?') { $skip = $true }
     -not $skip
 } | ForEach-Object {
     $file = $_

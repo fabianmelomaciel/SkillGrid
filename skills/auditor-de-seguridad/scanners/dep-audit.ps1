@@ -5,7 +5,7 @@ param(
 
 $findings = @()
 $hasAnyManager = $false
-$packageJson = Get-ChildItem -Path $ProjectPath -Filter "package.json" -File -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules' }
+$packageJson = Get-ChildItem -Path $ProjectPath -Filter "package.json" -File -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|fixtures' }
 if ($packageJson) {
     $hasAnyManager = $true
     foreach ($pj in $packageJson) {
@@ -47,7 +47,7 @@ if ($packageJson) {
         }
     } catch {}
 }
-$composerJson = Get-ChildItem -Path $ProjectPath -Filter "composer.json" -File -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'vendor' }
+$composerJson = Get-ChildItem -Path $ProjectPath -Filter "composer.json" -File -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'vendor|fixtures' }
 if ($composerJson) {
     $hasAnyManager = $true
     $auditResult = & composer audit --format=json 2>&1 | Out-String

@@ -75,7 +75,7 @@ if ($securityTxt.Count -eq 0) {
 }
 
 # Check for license file
-$licenseFiles = Get-ChildItem -Path $ProjectPath -Include "LICENSE*","LICENCE*" -File -ErrorAction SilentlyContinue
+$licenseFiles = Get-ChildItem -Path $ProjectPath -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "LICENSE*" -or $_.Name -like "LICENCE*" }
 if ($licenseFiles.Count -eq 0) {
     AddFinding "low" "$ProjectPath" "No license file found" "Add a LICENSE file to clarify usage rights for your project"
 }
