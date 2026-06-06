@@ -129,8 +129,8 @@ Use words Claude would search for:
 **When writing documentation that references other skills:**
 
 Use skill name only, with explicit requirement markers:
-- Good: `**REQUIRED SUB-SKILL:** Use openskills:test-driven-development`
-- Good: `**REQUIRED BACKGROUND:** You MUST understand openskills:systematic-debugging`
+- Good: `**REQUIRED SUB-SKILL:** Use skillgrid:test-driven-development`
+- Good: `**REQUIRED BACKGROUND:** You MUST understand skillgrid:systematic-debugging`
 - Bad: `See skills/testing/test-driven-development` (unclear if required)
 - Bad: `@skills/testing/test-driven-development/SKILL.md` (force-loads, burns context)
 

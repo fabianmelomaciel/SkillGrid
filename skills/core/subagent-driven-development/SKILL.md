@@ -66,7 +66,7 @@ digraph process {
     "Read plan, extract all tasks with full text, note context, create TodoWrite" [shape=box];
     "More tasks remain?" [shape=diamond];
     "Dispatch final code reviewer subagent for entire implementation" [shape=box];
-    "Use openskills:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+    "Use skillgrid:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
 
     "Read plan, extract all tasks with full text, note context, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
     "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
@@ -85,7 +85,7 @@ digraph process {
     "Mark task complete in TodoWrite" -> "More tasks remain?";
     "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
     "More tasks remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no"];
-    "Dispatch final code reviewer subagent for entire implementation" -> "Use openskills:finishing-a-development-branch";
+    "Dispatch final code reviewer subagent for entire implementation" -> "Use skillgrid:finishing-a-development-branch";
 }
 ```
 
@@ -133,7 +133,7 @@ Implementer subagents report one of four statuses. Handle each appropriately:
 ```
 You: I'm using Subagent-Driven Development to execute this plan.
 
-[Read plan file once: docs/OpenSkills/plans/feature-plan.md]
+[Read plan file once: docs/SkillGrid/plans/feature-plan.md]
 [Extract all 5 tasks with full text and context]
 [Create TodoWrite with all tasks]
 
@@ -144,7 +144,7 @@ Task 1: Hook installation script
 
 Implementer: "Before I begin - should the hook be installed at user or system level?"
 
-You: "User level (~/.config/OpenSkills/hooks/)"
+You: "User level (~/.config/SkillGrid/hooks/)"
 
 Implementer: "Got it. Implementing now..."
 [Later] Implementer:
@@ -276,13 +276,13 @@ Done!
 ## Integration
 
 **Required workflow skills:**
-- **openskills:using-git-worktrees** - Ensures isolated workspace (creates one or verifies existing)
-- **openskills:writing-plans** - Creates the plan this skill executes
-- **openskills:requesting-code-review** - Code review template for reviewer subagents
-- **openskills:finishing-a-development-branch** - Complete development after all tasks
+- **skillgrid:using-git-worktrees** - Ensures isolated workspace (creates one or verifies existing)
+- **skillgrid:writing-plans** - Creates the plan this skill executes
+- **skillgrid:requesting-code-review** - Code review template for reviewer subagents
+- **skillgrid:finishing-a-development-branch** - Complete development after all tasks
 
 **Subagents should use:**
-- **openskills:test-driven-development** - Subagents follow TDD for each task
+- **skillgrid:test-driven-development** - Subagents follow TDD for each task
 
 **Alternative workflow:**
-- **openskills:executing-plans** - Use for parallel session instead of same-session execution
+- **skillgrid:executing-plans** - Use for parallel session instead of same-session execution

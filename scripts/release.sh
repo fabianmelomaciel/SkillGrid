@@ -1,5 +1,5 @@
 #!/bin/bash
-# Release script for OpenSkills
+# Release script for SkillGrid
 # Usage: bash scripts/release.sh <version>
 # Example: bash scripts/release.sh 1.1.0
 

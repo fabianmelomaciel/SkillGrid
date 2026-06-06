@@ -1,5 +1,5 @@
 #!/bin/bash
-# OpenSkills Installer for Linux/Mac
+# SkillGrid Installer for Linux/Mac
 # Soporta opencode y antigravity
 
 set -e
@@ -21,9 +21,9 @@ while [[ "$#" -gt 0 ]]; do
         --install-codegraph) AUTO_INSTALL_CODEGRAPH=1 ;;
         --generate-codex) GENERATE_CODEX=1 ;;
         -h|--help)
-            echo "OpenSkills Installer"
+            echo "SkillGrid Installer"
             echo "===================="
-            echo "Instala skills de OpenSkills en opencode o antigravity."
+            echo "Instala skills de SkillGrid en opencode o antigravity."
             echo ""
             echo "USO:"
             echo "  ./install.sh                              - Detecta e instala automaticamente"
@@ -328,7 +328,7 @@ setup_project_codegraph() {
     local GITIGNORE_PATH="$PROJECT_DIR/.gitignore"
     local IGNORES=(
         ""
-        "# OpenSkills local-only (CodeGraph + generated rules)"
+        "# SkillGrid local-only (CodeGraph + generated rules)"
         ".codegraph/"
         "codegraph-out/"
         "codegraph.json"
@@ -388,7 +388,7 @@ setup_project_codegraph() {
     fi
 
     # 4. Calcular y guardar comparacion de tokens
-    local SCRATCH_DIR="${OPENSKILLS_SCRATCH:-$(dirname "$0")/scratch}"
+    local SCRATCH_DIR="${SKILLGRID_SCRATCH:-$(dirname "$0")/scratch}"
 
     if [ -d "$SCRATCH_DIR" ]; then
         echo "  [+] Calculando estadisticas de ahorro de tokens..."
@@ -497,7 +497,7 @@ scanForSkills(skillsDir);
 
 
 
-echo "=== OpenSkills Installer ==="
+echo "=== SkillGrid Installer ==="
 echo ""
 
 if [ ! -d "$SKILLS_DIR" ]; then
@@ -532,7 +532,7 @@ else
     fi
 
     if [ ${#DETECTED[@]} -eq 0 ]; then
-        TARGET="$HOME/.openskills"
+        TARGET="$HOME/.skillgrid"
         echo "No se detecto opencode ni antigravity. Usando: $TARGET"
         DETECTED+=("$TARGET")
     fi
@@ -585,9 +585,9 @@ for TARGET in "${DETECTED[@]}"; do
     # Generar CODEX.md si no existe (local-only)
     if [ "$GENERATE_CODEX" -eq 1 ] && [ "$IS_SKILL_ROOT" -ne 1 ] && [ ! -f "$TARGET/CODEX.md" ]; then
         cat > "$TARGET/CODEX.md" << 'CODEX_EOF'
-# 🧠 OpenSkills: Tactical CODEX (Learning Memory)
+# 🧠 SkillGrid: Tactical CODEX (Learning Memory)
 
-This document is the shared, dynamically evolving persistent memory of the OpenSkills agent squad. It prevents re-explaining context, repeating solved problems, and wasting tokens on re-discovery.
+This document is the shared, dynamically evolving persistent memory of the SkillGrid agent squad. It prevents re-explaining context, repeating solved problems, and wasting tokens on re-discovery.
 
 > [!IMPORTANT]
 > **AGENT DIRECTIVE:** Read this file at the START of every task. Apply all entries. Do NOT ask the user to re-explain anything documented here. Write back learnings after completing tasks.
@@ -627,7 +627,7 @@ This document is the shared, dynamically evolving persistent memory of the OpenS
 
 - Deployment scripts must never be web-accessible. Block in .htaccess or nginx. Classify as CRITICAL in audits.
 - .env files must always be in .gitignore. In Apache: RewriteRule ^\.env - [F,L] in .htaccess.
-- OpenSkills path (Antigravity gemini): ~/.gemini/config/skills
+- SkillGrid path (Antigravity gemini): ~/.gemini/config/skills
 
 ## 💻 Mission Logs & Tactical Learnings
 

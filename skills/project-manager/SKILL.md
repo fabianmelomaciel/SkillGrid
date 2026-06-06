@@ -116,8 +116,8 @@ When you receive a new request as `/Project_manager`, you MUST minimize token us
 ### Token Data (verification + reporting)
 
 When possible, verify and report token data from the local comparison file:
-- Primary: `$env:OPENSKILLS_SCRATCH\token_usage_comparison.json`
-- Fallback: a local `scratch/token_usage_comparison.json` near the OpenSkills installer root
+- Primary: `$env:SKILLGRID_SCRATCH\token_usage_comparison.json`
+- Fallback: a local `scratch/token_usage_comparison.json` near the SkillGrid installer root
 
 If the file exists, extract the entry matching the active project path and include its fields in the final handoff.
 
@@ -127,7 +127,7 @@ If the input includes findings, vulnerabilities, or errors from an audit (such a
 
 1. **Analyze & Consolidate:** Review all findings, errors, and recommendations from the audit report.
 2. **Draft a Structured Implementation Plan:** Create a comprehensive "Implementation Plan" document (following the `writing-plans` skill structure) containing all identified errors and their proposed remediations.
-   - Save the plan to `docs/OpenSkills/plans/` or a custom user path if overridden.
+   - Save the plan to `docs/SkillGrid/plans/` or a custom user path if overridden.
    - **CRITICAL:** Do NOT stage or commit this plan (or any files in the `/docs` directory) to Git.
 3. **Present for CEO Analysis:** Present the drafted implementation plan to the CEO for analysis, feedback, and explicit approval **BEFORE** executing any task or modifying codebase files.
 4. **Iterate & Execute:** Only proceed to task execution (via subagents or inline) after the CEO reviews and explicitly approves the plan.

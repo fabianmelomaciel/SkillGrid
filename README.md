@@ -1,7 +1,7 @@
 <div align="center">
-<!-- OpenGraph: https://raw.githubusercontent.com/fabianmelomaciel/OpenSkills/main/.opengraph/og-image.png -->
+<!-- OpenGraph: https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/.opengraph/og-image.png -->
 
-# 🧠 OpenSkills
+# 🧠 SkillGrid
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
@@ -9,11 +9,11 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-30-22c55e?style=flat-square)](catalog.json)
-[![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/OpenSkills/validate.yml?branch=main&style=flat-square&label=CI)](https://github.com/fabianmelomaciel/OpenSkills/actions)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/OpenSkills/pulls)
-[![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/OpenSkills?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/OpenSkills/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/OpenSkills?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/OpenSkills/network/members)
-[![GitHub contributors](https://img.shields.io/github/contributors/fabianmelomaciel/OpenSkills?style=flat-square)](https://github.com/fabianmelomaciel/OpenSkills/graphs/contributors)
+[![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/validate.yml?branch=main&style=flat-square&label=CI)](https://github.com/fabianmelomaciel/SkillGrid/actions)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
+[![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/network/members)
+[![GitHub contributors](https://img.shields.io/github/contributors/fabianmelomaciel/SkillGrid?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/graphs/contributors)
 
 <br>
 
@@ -23,9 +23,9 @@
 
 ---
 
-## ¿Qué es OpenSkills?
+## ¿Qué es SkillGrid?
 
-OpenSkills es una colección de **skills portables** — instrucciones estructuradas que transforman tu asistente de IA en un equipo de desarrollo especializado de primer nivel. Cada skill le enseña al agente exactamente *cuándo activarse*, *qué hacer* y *cuándo detenerse* para lograr el resultado óptimo.
+SkillGrid es una colección de **skills portables** — instrucciones estructuradas que transforman tu asistente de IA en un equipo de desarrollo especializado de primer nivel. Cada skill le enseña al agente exactamente *cuándo activarse*, *qué hacer* y *cuándo detenerse* para lograr el resultado óptimo.
 
 No es solo una lista de prompts. Es un **sistema de trabajo autónomo y eficiente** que incluye:
 
@@ -43,13 +43,13 @@ No es solo una lista de prompts. Es un **sistema de trabajo autónomo y eficient
 ### Windows (PowerShell)
 
 ```powershell
-irm https://raw.githubusercontent.com/fabianmelomaciel/OpenSkills/main/remote-install.ps1 | iex
+irm https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.ps1 | iex
 ```
 
 ### Linux / macOS (bash)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/fabianmelomaciel/OpenSkills/main/remote-install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.sh | bash
 ```
 
 Eso es todo. El instalador detecta tu setup y copia las skills donde corresponde. ✅
@@ -63,15 +63,15 @@ Eso es todo. El instalador detecta tu setup y copia las skills donde corresponde
 
 ```powershell
 # Windows
-git clone https://github.com/fabianmelomaciel/OpenSkills.git C:\OpenSkills
-cd C:\OpenSkills
+git clone https://github.com/fabianmelomaciel/SkillGrid.git C:\SkillGrid
+cd C:\SkillGrid
 .\install.ps1
 ```
 
 ```bash
 # Linux / macOS
-git clone https://github.com/fabianmelomaciel/OpenSkills.git ~/openskills
-cd ~/openskills && bash install.sh
+git clone https://github.com/fabianmelomaciel/SkillGrid.git ~/skillgrid
+cd ~/skillgrid && bash install.sh
 ```
 
 </details>
@@ -227,7 +227,7 @@ Los agentes de análisis generan dashboards HTML interactivos con dark mode, gla
 
 ## 📈 Ahorro Masivo de Tokens con CodeGraph y Refactorización
 
-OpenSkills se integra de forma nativa con **CodeGraph** y promueve reglas de diseño modular para eliminar por completo el consumo innecesario de tokens en tareas de desarrollo e investigación de código. Olvídate de que tu agente lea archivos completos una y otra vez.
+SkillGrid se integra de forma nativa con **CodeGraph** y promueve reglas de diseño modular para eliminar por completo el consumo innecesario de tokens en tareas de desarrollo e investigación de código. Olvídate de que tu agente lea archivos completos una y otra vez.
 
 ### 🚀 Principales Beneficios y Políticas de Eficiencia
 - **Hasta 95% de Ahorro en Tokens:** Al usar indexación semántica local en lugar de escaneos completos de archivos, la huella de contexto se reduce al mínimo imprescindible.
@@ -276,7 +276,7 @@ Al finalizar una petición o detenerse, el agente deja un bloque **SESSION HANDO
 
 El instalador puede generar una comparativa estimada en:
 
-- `$env:OPENSKILLS_SCRATCH\token_usage_comparison.json` (si configuraste la variable)
+- `$env:SKILLGRID_SCRATCH\token_usage_comparison.json` (si configuraste la variable)
 - o un `scratch/token_usage_comparison.json` cerca del root donde corre el instalador
 
 Ese JSON incluye, por proyecto: `baseline_full_scan_tokens`, `codegraph_context_tokens`, `estimated_savings_tokens` y `savings_percentage`.

@@ -183,7 +183,7 @@ WORKTREE_PATH=$(git rev-parse --show-toplevel)
 
 **If `GIT_DIR == GIT_COMMON`:** Normal repo, no worktree to clean up. Done.
 
-**If worktree path is under `.worktrees/`, `worktrees/`, or `~/.config/OpenSkills/worktrees/`:** OpenSkills created this worktree — we own cleanup.
+**If worktree path is under `.worktrees/`, `worktrees/`, or `~/.config/SkillGrid/worktrees/`:** SkillGrid created this worktree — we own cleanup.
 
 ```bash
 MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
@@ -227,7 +227,7 @@ git worktree prune  # Self-healing: clean up any stale registrations
 
 **Cleaning up harness-owned worktrees**
 - **Problem:** Removing a worktree the harness created causes phantom state
-- **Fix:** Only clean up worktrees under `.worktrees/`, `worktrees/`, or `~/.config/OpenSkills/worktrees/`
+- **Fix:** Only clean up worktrees under `.worktrees/`, `worktrees/`, or `~/.config/SkillGrid/worktrees/`
 
 **No confirmation for discard**
 - **Problem:** Accidentally delete work

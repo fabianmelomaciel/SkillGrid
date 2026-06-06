@@ -178,7 +178,7 @@ function InstallToDir($target, $source) {
         Write-Host "`nEl destino es el mismo directorio de origen: $target. Omitiendo copia." -ForegroundColor Yellow
         return
     }
-    Write-Host "`nInstalando OpenSkills en: $target" -ForegroundColor Cyan
+    Write-Host "`nInstalando SkillGrid en: $target" -ForegroundColor Cyan
     New-Item -ItemType Directory -Path $target -Force | Out-Null
     $normalizedTarget = $targetPath.TrimEnd('\').TrimEnd('/')
     $isSkillRoot = $normalizedTarget.ToLower().EndsWith("\skills") -or $normalizedTarget.ToLower().EndsWith("/skills")
@@ -204,9 +204,9 @@ function InstallToDir($target, $source) {
             $codexDest = Join-Path -Path $target -ChildPath "CODEX.md"
             if (-not (Test-Path -LiteralPath $codexDest)) {
                 $codexTemplate = @"
-# 🧠 OpenSkills: Tactical CODEX (Learning Memory)
+# 🧠 SkillGrid: Tactical CODEX (Learning Memory)
 
-This document is the shared, dynamically evolving persistent memory of the OpenSkills agent squad. It prevents re-explaining context, repeating solved problems, and wasting tokens on re-discovery.
+This document is the shared, dynamically evolving persistent memory of the SkillGrid agent squad. It prevents re-explaining context, repeating solved problems, and wasting tokens on re-discovery.
 
 > [!IMPORTANT]
 > **AGENT DIRECTIVE:** Read this file at the START of every task. Apply all entries. Do NOT ask the user to re-explain anything documented here. Write back learnings after completing tasks.
@@ -246,7 +246,7 @@ This document is the shared, dynamically evolving persistent memory of the OpenS
 
 - Deployment scripts must never be web-accessible. Block in .htaccess. Classify as CRITICAL in audits.
 - .env files must always be in .gitignore. In Apache: RewriteRule ^\.env - [F,L] in .htaccess.
-- OpenSkills path (Windows Antigravity): %USERPROFILE%\.gemini\config\skills
+- SkillGrid path (Windows Antigravity): %USERPROFILE%\.gemini\config\skills
 
 ## 💻 Mission Logs & Tactical Learnings
 
@@ -466,7 +466,7 @@ function Setup-ProjectCodeGraph($projectDir) {
     $gitignorePath = Join-Path -Path $projectDir -ChildPath ".gitignore"
     $ignoresToAdd = @(
         "",
-        "# OpenSkills local-only (CodeGraph + generated rules)",
+        "# SkillGrid local-only (CodeGraph + generated rules)",
         ".codegraph/",
         "codegraph-out/",
         "codegraph.json",
@@ -545,7 +545,7 @@ function Setup-ProjectCodeGraph($projectDir) {
     }
 
     # 4. Calcular y guardar comparacion de tokens
-    $scratchDir = if ($env:OPENSKILLS_SCRATCH) { $env:OPENSKILLS_SCRATCH } else { Join-Path -Path $PSScriptRoot -ChildPath "scratch" }
+    $scratchDir = if ($env:SKILLGRID_SCRATCH) { $env:SKILLGRID_SCRATCH } else { Join-Path -Path $PSScriptRoot -ChildPath "scratch" }
     if ($scratchDir -and (Test-Path -LiteralPath $scratchDir)) {
         Write-Host "  [+] Calculando estadisticas de ahorro de tokens..." -ForegroundColor Gray
         
@@ -622,9 +622,9 @@ function Setup-ProjectCodeGraph($projectDir) {
 
 if ($Help) {
     Write-Host @"
-OpenSkills Installer
-====================
-Instala skills de OpenSkills en opencode o antigravity.
+SkillGrid Installer
+===================
+Instala skills de SkillGrid en opencode o antigravity.
 
 USO:
   .\install.ps1                              - Detecta e instala automaticamente
@@ -668,8 +668,8 @@ if (-not $TargetDir) {
     }
 
     if ($detected.Count -eq 0) {
-        Write-Host "No se detecto opencode ni antigravity. Usando: $env:USERPROFILE\.openskills" -ForegroundColor Yellow
-        $TargetDir = "$env:USERPROFILE\.openskills"
+        Write-Host "No se detecto opencode ni antigravity. Usando: $env:USERPROFILE\.skillgrid" -ForegroundColor Yellow
+        $TargetDir = "$env:USERPROFILE\.skillgrid"
     } elseif ($detected.Count -eq 1) {
         $TargetDir = $detected[0].Path
         Write-Host "Detectado: $($detected[0].Name) -> $TargetDir" -ForegroundColor Green

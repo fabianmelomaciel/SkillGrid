@@ -1,7 +1,7 @@
-# Remote installer for OpenSkills in Windows
+# Remote installer for SkillGrid in Windows
 $ErrorActionPreference = "Stop"
 
-Write-Host "`n=== OpenSkills Remote Installer ===" -ForegroundColor Cyan
+Write-Host "`n=== SkillGrid Remote Installer ===" -ForegroundColor Cyan
 
 # Check if git is installed
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
@@ -21,11 +21,11 @@ $tempRoot = $env:TEMP
 if ([string]::IsNullOrWhiteSpace($tempRoot)) {
     $tempRoot = Join-Path -Path $userProfile -ChildPath "AppData\Local\Temp"
 }
-$targetDir = Join-Path -Path $tempRoot -ChildPath ("openskills-" + [guid]::NewGuid().ToString("N"))
+$targetDir = Join-Path -Path $tempRoot -ChildPath ("skillgrid-" + [guid]::NewGuid().ToString("N"))
 
-Write-Host "Clonando OpenSkills en directorio temporal: $targetDir" -ForegroundColor Cyan
+Write-Host "Clonando SkillGrid en directorio temporal: $targetDir" -ForegroundColor Cyan
 
-git clone --depth 1 https://github.com/fabianmelomaciel/OpenSkills.git $targetDir
+git clone --depth 1 https://github.com/fabianmelomaciel/SkillGrid.git $targetDir
 
 # Run the installer
 try {

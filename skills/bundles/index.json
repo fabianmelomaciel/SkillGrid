@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "description": "Role-based skill bundles for OpenSkills. Use these when setting up a new user or project.",
+  "description": "Role-based skill bundles for SkillGrid. Use these when setting up a new user or project.",
   "bundles": {
     "core": {
       "label": "Core Development",

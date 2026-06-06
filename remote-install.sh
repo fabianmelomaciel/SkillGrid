@@ -1,9 +1,9 @@
 #!/bin/bash
-# Remote installer for OpenSkills in Linux/Mac
+# Remote installer for SkillGrid in Linux/Mac
 set -e
 
 echo ""
-echo "=== OpenSkills Remote Installer ==="
+echo "=== SkillGrid Remote Installer ==="
 echo ""
 
 # Check if git is installed
@@ -17,12 +17,12 @@ if [ -z "$HOME" ]; then
     echo "ERROR: HOME no esta definido. Abortando por seguridad."
     exit 1
 fi
-TARGET="$(mktemp -d 2>/dev/null || mktemp -d -t openskills)"
+TARGET="$(mktemp -d 2>/dev/null || mktemp -d -t skillgrid)"
 trap 'rm -rf "$TARGET" 2>/dev/null || true' EXIT
 
-echo "Clonando OpenSkills en directorio temporal: $TARGET..."
+echo "Clonando SkillGrid en directorio temporal: $TARGET..."
 
-git clone --depth 1 https://github.com/fabianmelomaciel/OpenSkills.git "$TARGET"
+git clone --depth 1 https://github.com/fabianmelomaciel/SkillGrid.git "$TARGET"
 
 # Run the installer
 echo "Ejecutando instalador local..."

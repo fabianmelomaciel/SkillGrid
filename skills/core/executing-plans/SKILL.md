@@ -14,7 +14,7 @@ Load plan, review critically, execute all tasks, report when complete.
 
 **Announce at start:** "I'm using the executing-plans skill to implement this plan."
 
-**Note:** Tell your human partner that OpenSkills works much better with access to subagents. The quality of its work will be significantly higher if run on a platform with subagent support (such as Claude Code or Codex). If subagents are available, use openskills:subagent-driven-development instead of this skill.
+**Note:** Tell your human partner that SkillGrid works much better with access to subagents. The quality of its work will be significantly higher if run on a platform with subagent support (such as Claude Code or Codex). If subagents are available, use skillgrid:subagent-driven-development instead of this skill.
 
 ## The Process
 
@@ -36,7 +36,7 @@ For each task:
 
 After all tasks complete and verified:
 - Announce: "I'm using the finishing-a-development-branch skill to complete this work."
-- **REQUIRED SUB-SKILL:** Use openskills:finishing-a-development-branch
+- **REQUIRED SUB-SKILL:** Use skillgrid:finishing-a-development-branch
 - Follow that skill to verify tests, present options, execute choice
 
 ## When to Stop and Ask for Help
@@ -74,6 +74,6 @@ After all tasks complete and verified:
 ## Integration
 
 **Required workflow skills:**
-- **openskills:using-git-worktrees** - Ensures isolated workspace (creates one or verifies existing)
-- **openskills:writing-plans** - Creates the plan this skill executes
-- **openskills:finishing-a-development-branch** - Complete development after all tasks
+- **skillgrid:using-git-worktrees** - Ensures isolated workspace (creates one or verifies existing)
+- **skillgrid:writing-plans** - Creates the plan this skill executes
+- **skillgrid:finishing-a-development-branch** - Complete development after all tasks

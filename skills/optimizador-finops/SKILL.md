@@ -27,7 +27,7 @@ You do NOT implement code refactoring directly; you audit, report, and provide o
 ### 1. Token Usage Economy & Prompt Auditing
 * **Input Bloat:** Scan system prompts and developer instruction files for redundant descriptions, over-verbose definitions, or unused text blocks.
 * **Instruction Efficiency:** Look for opportunities to compress prompts without losing semantic instruction value (e.g., using structural lists instead of prose, restricting output limits).
-* **Codebase Graph Memory (CodeGraph):** Verify if `.codegraph/` directory is present and active in the project. If missing, flag as a High Risk finding for research token bloat. Recommend initializing CodeGraph with `codegraph init` to establish local memory. Verify token stats via `$env:OPENSKILLS_SCRATCH\token_usage_comparison.json` or a local `scratch/token_usage_comparison.json` near the OpenSkills installer root.
+* **Codebase Graph Memory (CodeGraph):** Verify if `.codegraph/` directory is present and active in the project. If missing, flag as a High Risk finding for research token bloat. Recommend initializing CodeGraph with `codegraph init` to establish local memory. Verify token stats via `$env:SKILLGRID_SCRATCH\token_usage_comparison.json` or a local `scratch/token_usage_comparison.json` near the SkillGrid installer root.
 
 
 
