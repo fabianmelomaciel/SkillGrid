@@ -1,6 +1,6 @@
 ---
 name: db-schema-detector
-description: "Detecta bases de datos locales y genera esquemas cached en CodeGraph para ahorrar tokens y auditar inconsistencias de diseño y ciberseguridad."
+description: "Detects local databases and generates cached schemas in CodeGraph to save tokens and audit design inconsistencies, security issues, and environment drift between local and production."
 category: agent
 status: stable
 risk_level: safe
@@ -52,6 +52,15 @@ Use this skill when starting a new workspace analysis or project session where a
 > **Anti-Rationalization**: Follow shared protocol in `skills/shared/anti-rationalization.md`.
 
 > **Risk Assessment**: Follow shared protocol in `skills/shared/risk-assessment.md`.
+
+### Step 6: Environment Drift Detection (Dual-Environment Awareness)
+
+After caching the schema, compare it with the project's dual-environment setup (see `project-manager` → Dual-Environment Analysis Protocol):
+
+- Check for tables/columns that exist only locally vs in migration history
+- Flag schema elements that reference environment-specific paths, URLs, or credentials
+- Tag entities in `db_schema.json` with `environment: "local" | "production" | "shared"` when drift is detected
+- Report findings to the PM for inclusion in the Dual-Environment Report
 
 > **Verification Gate**: Follow shared protocol in `skills/shared/verification-gate.md`.
 

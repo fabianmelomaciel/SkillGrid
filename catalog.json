@@ -82,7 +82,7 @@
     },
     {
       "name": "db-schema-detector",
-      "description": "Detecta bases de datos locales y genera esquemas cached en CodeGraph para ahorrar tokens y auditar inconsistencias de diseño y ciberseguridad.",
+      "description": "Detects local databases and generates cached schemas in CodeGraph to save tokens and audit design inconsistencies, security issues, and environment drift between local and production.",
       "category": "agent",
       "status": "stable",
       "risk_level": "safe"

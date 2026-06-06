@@ -184,6 +184,81 @@ When analysis of a project identifies important database schema changes (new tab
    - A backup before execution
    - Sequential execution with verification after each step
 
+## Dual-Environment Analysis Protocol (MANDATORY)
+
+When analyzing existing projects, you MUST detect and account for differences between localhost (development) and production environments. For new projects, you MUST propose and scaffold this dual setup by default.
+
+### 1. Environment Detection (Existing Projects)
+During initial codebase analysis (via CodeGraph, file inspection, and DB schema detection), execute the following checks:
+
+- **Environment config files:** Scan for `.env`, `.env.local`, `.env.production`, `.env.development`, `.env.example`, and similar files. Detect which environment variables differ between local and production templates.
+- **Framework environment detection:** Identify the framework's environment mechanism (e.g., Laravel `.env` + `APP_ENV`, Symfony `.env.local`, Rails `credentials.yml.enc`, Node `NODE_ENV`, Docker Compose override files).
+- **Files that differ per environment:** Identify files that are present locally but excluded from deployment (`.env`, `reports/`, `scratch/`, local docker-compose overrides, IDE configs, test fixtures). Cross-reference with `.gitignore` and `.dockerignore`.
+- **DB schema drift:** Use `db-schema-detector` skill or direct DB inspection to compare the local schema with any available production schema dump or migration history. Flag tables/columns that exist only locally.
+- **Dual Docker Compose:** Detect `docker-compose.override.yml` (local) vs `docker-compose.prod.yml` (production) patterns.
+- **CodeGraph environment tagging:** During `codegraph sync`, tag files and configs with environment affinity (`local-only`, `prod-only`, `shared`) when possible.
+
+### 2. Environment Report for CEO
+After detection, present a structured environment report:
+
+```
+🌐 Dual-Environment Analysis
+────────────────────────────
+Project: <name>
+
+Environment files detected:
+  .env.example         → shared template
+  .env.local           → local-only (in .gitignore ✓)
+  .env.production      → production (not in repo)
+
+DB Schema:
+  Local: 15 tables, 3 views
+  Production: 14 tables, 2 views
+  Drift: table `payments_debug` exists only locally ⚠️
+
+Environment-specific files:
+  docker-compose.override.yml  → local-only
+  docker-compose.prod.yml      → production
+  reports/                     → local-only (excluded by scanners ✓)
+
+Files excluded from deployment (.gitignore):
+  .env, .env.local, reports/, scratch/, node_modules/
+```
+
+### 3. New Project Scaffolding (Dual Setup by Default)
+When creating a new project from scratch, you MUST scaffold a dual-environment structure:
+
+```
+.env.example              ← shared template with dummy values, committed
+.env.local                ← local overrides, in .gitignore (generated)
+.env.production           ← production values, NEVER committed
+.dockerignore             ← excludes .env.local, reports/, scratch/
+docker-compose.yml        ← base config
+docker-compose.override.yml ← local dev overrides (ports, volumes, debug), in .gitignore
+docker-compose.prod.yml   ← production overrides, NOT in .gitignore
+reports/                  ← local analysis output, in .gitignore
+  database/
+    migrations/           ← ordered migration scripts (see DB protocol)
+```
+
+- The `.env.example` MUST be committed and serve as the single source of truth for required environment variables
+- `.env.local` and `reports/` MUST be in `.gitignore` from day one
+- The README must document the dual-environment setup with setup instructions for both local and production
+
+### 4. Environment-Conscious Code Analysis
+When CodeGraph or grep detects a file or config that differs per environment:
+
+- **Do NOT propose deleting** environment-specific configs (e.g., do not say "remove debug toolbar" if it's only loaded in local env)
+- **Do NOT propose moving** local-only files to production paths
+- **Flag as informational** any production-vs-local discrepancy that could cause deployment issues (e.g., missing env vars in `.env.example`, different DB collation, different PHP/Node versions)
+
+### 5. Migration Consistency
+When generating migration scripts (per Database Change Management Protocol), always include both environment considerations:
+
+- Tag each migration with environment target: `-- Environment: all | local-only | prod-only`
+- If a migration is environment-specific (e.g., add a debug table only for local), explain why and include the conditional logic
+- For destructive operations, verify the target environment matches (never run `DROP` locally that's meant for prod or vice versa)
+
 ## Architecture Preservation, Anti-Duplication & Language Standards (MANDATORY)
 
 1. **Preserve Existing Architecture (Chesterton's Fence — OVERRIDES generic guidelines):** When working on an existing codebase or project, you MUST preserve its original architecture, file structure, naming conventions, design patterns, and libraries. Do NOT attempt to refactor, reorganize, or rewrite functioning components to match your personal preference or generic rules unless the user explicitly requests it or there is a **verified, critical security vulnerability**. Enforce Chesterton's Fence at all times. If a component is working (e.g., payment gateway config stored in a database settings table, credentials in a config file behind authentication), do NOT propose moving it to .env or refactoring it unless a live vulnerability is proven.
