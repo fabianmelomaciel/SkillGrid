@@ -20,13 +20,13 @@ function AddFinding($sev, $file, $finding, $remediation) {
 }
 
 # Check for privacy policy
-$privacyFiles = Get-ChildItem -Path $ProjectPath -Include "*privacy*","*data-protection*","*gdpr*","*lgpd*","*ccpa*" -Recurse -File -ErrorAction SilentlyContinue
+$privacyFiles = Get-ChildItem -Path $ProjectPath -Include "*privacy*","*data-protection*","*gdpr*","*lgpd*","*ccpa*" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 if ($privacyFiles.Count -eq 0) {
     AddFinding "high" "$ProjectPath" "No privacy policy or data protection docs found" "Create a privacy policy covering: what data is collected, why, how long retained, user rights"
 }
 
 # Check for cookie consent
-$cookieFiles = Get-ChildItem -Path $ProjectPath -Include $('*.php', '*.py', '*.js', '*.ts', '*.html', '*.vue', '*.jsx', '*.tsx') -Recurse -File -ErrorAction SilentlyContinue
+$cookieFiles = Get-ChildItem -Path $ProjectPath -Include $('*.php', '*.py', '*.js', '*.ts', '*.html', '*.vue', '*.jsx', '*.tsx') -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 $hasCookieConsent = $false
 foreach ($f in $cookieFiles) {
     $content = Get-Content -LiteralPath $f.FullName -Raw -ErrorAction SilentlyContinue
@@ -63,19 +63,19 @@ if (-not $hasExport) {
 }
 
 # Check for terms of service
-$termsFiles = Get-ChildItem -Path $ProjectPath -Include "*terms*","*tos*","*terms-of-service*","*terms_and*" -Recurse -File -ErrorAction SilentlyContinue
+$termsFiles = Get-ChildItem -Path $ProjectPath -Include "*terms*","*tos*","*terms-of-service*","*terms_and*" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 if ($termsFiles.Count -eq 0) {
     AddFinding "low" "$ProjectPath" "No terms of service found" "Add Terms of Service document outlining user rights, responsibilities, and limitations"
 }
 
 # Check for security.txt
-$securityTxt = Get-ChildItem -Path $ProjectPath -Include "security.txt" -Recurse -File -ErrorAction SilentlyContinue
+$securityTxt = Get-ChildItem -Path $ProjectPath -Include "security.txt" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 if ($securityTxt.Count -eq 0) {
     AddFinding "low" "$ProjectPath" "No security.txt found" "Add .well-known/security.txt with vulnerability disclosure contact info"
 }
 
 # Check for license file
-$licenseFiles = Get-ChildItem -Path $ProjectPath -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "LICENSE*" -or $_.Name -like "LICENCE*" }
+$licenseFiles = Get-ChildItem -Path $ProjectPath -File -ErrorAction SilentlyContinue | Where-Object { ($_.Name -like "LICENSE*" -or $_.Name -like "LICENCE*") -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 if ($licenseFiles.Count -eq 0) {
     AddFinding "low" "$ProjectPath" "No license file found" "Add a LICENSE file to clarify usage rights for your project"
 }

@@ -4,7 +4,7 @@ param(
 )
 
 $findings = @()
-$excludeDirs = @('node_modules', 'vendor', '.git', 'venv', '__pycache__', 'bin', 'obj', '.next', 'build', 'dist')
+$excludeDirs = @('node_modules', 'vendor', '.git', 'venv', '__pycache__', 'bin', 'obj', '.next', 'build', 'dist', 'scratch', 'reports')
 
 Get-ChildItem -Path $ProjectPath -Include "*.php", "*.py", "*.js", "*.ts", "*.env", "*.yml", "*.yaml", "*.json", "*.xml", "*.conf", "*.sql" -File -Recurse -ErrorAction SilentlyContinue |
 Where-Object {
@@ -63,7 +63,7 @@ Where-Object {
 }
 
 $sqlFiles = Get-ChildItem -Path $ProjectPath -Filter "*.sql" -File -Recurse -ErrorAction SilentlyContinue |
-    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor' }
+    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|scratch|reports' }
 if ($sqlFiles.Count -gt 10) {
     $findings += @{
         id = "DB-005"; severity = "low"; category = "database"

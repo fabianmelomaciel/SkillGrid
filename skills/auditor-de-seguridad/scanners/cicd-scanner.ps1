@@ -6,10 +6,10 @@ param(
 $findings = @()
 
 $ghaFiles = Get-ChildItem -Path $ProjectPath -Filter "*.yml" -Recurse -ErrorAction SilentlyContinue |
-    Where-Object { $_.DirectoryName -match '\.github[\\/]workflows' -and $_.DirectoryName -notmatch 'node_modules|vendor' }
+    Where-Object { $_.DirectoryName -match '\.github[\\/]workflows' -and $_.DirectoryName -notmatch 'node_modules|vendor|scratch|reports' }
 if ($ghaFiles.Count -eq 0) {
     $ghaFiles = Get-ChildItem -Path $ProjectPath -Filter "*.yaml" -Recurse -ErrorAction SilentlyContinue |
-        Where-Object { $_.DirectoryName -match '\.github[\\/]workflows' -and $_.DirectoryName -notmatch 'node_modules|vendor' }
+        Where-Object { $_.DirectoryName -match '\.github[\\/]workflows' -and $_.DirectoryName -notmatch 'node_modules|vendor|scratch|reports' }
 }
 
 if ($ghaFiles.Count -gt 0) {
@@ -73,7 +73,7 @@ if ($ghaFiles.Count -gt 0) {
 }
 
 $composeFiles = Get-ChildItem -Path $ProjectPath -Include "docker-compose*.yml", "docker-compose*.yaml" -File -Recurse -ErrorAction SilentlyContinue |
-    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor' }
+    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|scratch|reports' }
 foreach ($cf in $composeFiles) {
     $content = Get-Content -LiteralPath $cf.FullName -Raw -ErrorAction SilentlyContinue
     if ($content -match 'environment:\s*\n\s+-?\s*\w+\s*[:=]\s*["''](?!\$)') {

@@ -22,7 +22,7 @@ function AddFinding($sev, $file, $finding, $remediation) {
 $codeExtensions = @('*.php', '*.py', '*.js', '*.ts', '*.jsx', '*.tsx', '*.java', '*.cs', '*.go', '*.rb', '*.rs', '*.kt', '*.swift')
 
 # Check for JWT usage and potential issues
-$jwtFiles = Get-ChildItem -Path $ProjectPath -Include $codeExtensions -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB }
+$jwtFiles = Get-ChildItem -Path $ProjectPath -Include $codeExtensions -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 foreach ($f in $jwtFiles) {
     $content = Get-Content -LiteralPath $f.FullName -Raw -ErrorAction SilentlyContinue
     if (-not $content) { continue }
@@ -57,7 +57,7 @@ if (-not $hasBcrypt -and -not $hasArgon) {
 }
 
 # Check for session config
-$sessionFiles = Get-ChildItem -Path $ProjectPath -Include "*.php","*.py","*.js","*.ts","*.go","*.rb" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB }
+$sessionFiles = Get-ChildItem -Path $ProjectPath -Include "*.php","*.py","*.js","*.ts","*.go","*.rb" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 foreach ($f in $sessionFiles) {
     $content = Get-Content -LiteralPath $f.FullName -Raw -ErrorAction SilentlyContinue
     if (-not $content) { continue }
@@ -72,7 +72,7 @@ foreach ($f in $sessionFiles) {
 }
 
 # Check for cookie configuration
-$cookieConfigs = Get-ChildItem -Path $ProjectPath -Include "*.php","*.py","*.js","*.ts","*.go" -Recurse -File -ErrorAction SilentlyContinue
+$cookieConfigs = Get-ChildItem -Path $ProjectPath -Include "*.php","*.py","*.js","*.ts","*.go" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 foreach ($f in $cookieConfigs) {
     $content = Get-Content -LiteralPath $f.FullName -Raw -ErrorAction SilentlyContinue
     if (-not $content) { continue }

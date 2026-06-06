@@ -4,7 +4,7 @@ param(
 )
 
 $findings = @()
-$excludeDirs = @('node_modules', 'vendor', '.git', 'venv', '__pycache__', 'bin', 'obj', '.next', 'build', 'dist')
+$excludeDirs = @('node_modules', 'vendor', '.git', 'venv', '__pycache__', 'bin', 'obj', '.next', 'build', 'dist', 'scratch', 'reports')
 
 $checks = @(
     @{ name = "SQL Injection - raw queries"; severity = "critical"

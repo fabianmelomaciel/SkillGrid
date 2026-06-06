@@ -20,7 +20,7 @@ function AddFinding($sev, $file, $finding, $remediation) {
 }
 
 $codeExtensions = @('*.php', '*.py', '*.js', '*.ts', '*.java', '*.cs', '*.go', '*.rb', '*.rs', '*.kt', '*.swift')
-$codeFiles = Get-ChildItem -Path $ProjectPath -Include $codeExtensions -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB }
+$codeFiles = Get-ChildItem -Path $ProjectPath -Include $codeExtensions -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 
 $foundWeakHash = $false
 $foundBcrypt = $false
@@ -86,7 +86,7 @@ foreach ($f in $codeFiles) {
 }
 
 # Check for .env loading TLS config (optional check for cert files)
-$certFiles = Get-ChildItem -Path $ProjectPath -Include "*.pem","*.crt","*.cert","*.key" -Recurse -File -ErrorAction SilentlyContinue
+$certFiles = Get-ChildItem -Path $ProjectPath -Include "*.pem","*.crt","*.cert","*.key" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 if ($certFiles.Count -gt 0) {
     AddFinding "medium" $certFiles[0].FullName "Certificate/Key files found in project" "Ensure certificate files are not committed to git. Add *.pem, *.crt to .gitignore"
 }

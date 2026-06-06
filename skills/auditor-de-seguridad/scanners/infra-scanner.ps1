@@ -6,7 +6,7 @@ param(
 $findings = @()
 
 # Check Dockerfile
-$dockerfiles = Get-ChildItem -Path $ProjectPath -Filter "Dockerfile*" -File -Recurse -ErrorAction SilentlyContinue
+$dockerfiles = Get-ChildItem -Path $ProjectPath -Filter "Dockerfile*" -File -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 foreach ($df in $dockerfiles) {
     $content = Get-Content -LiteralPath $df.FullName -Raw -ErrorAction SilentlyContinue
     if (-not $content) { continue }
@@ -41,7 +41,7 @@ foreach ($df in $dockerfiles) {
 }
 
 $corsFiles = Get-ChildItem -Path $ProjectPath -Include "*.php", "*.py", "*.js", "*.ts", "*.json", "*.yaml", "*.yml" -File -Recurse -ErrorAction SilentlyContinue |
-    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv' }
+    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 foreach ($cf in $corsFiles) {
     $content = Get-Content -LiteralPath $cf.FullName -Raw -ErrorAction SilentlyContinue
     if (-not $content) { continue }
@@ -58,7 +58,7 @@ foreach ($cf in $corsFiles) {
 }
 
 $envFiles = Get-ChildItem -Path $ProjectPath -Filter ".env" -File -Recurse -ErrorAction SilentlyContinue |
-    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv' }
+    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 foreach ($ef in $envFiles) {
     $content = Get-Content -LiteralPath $ef.FullName -Raw -ErrorAction SilentlyContinue
     if ($content -match 'APP_DEBUG\s*=\s*true') {
@@ -84,7 +84,7 @@ foreach ($ef in $envFiles) {
 # Check that .htaccess blocks .env access if .env is present
 if ($envFiles) {
     $htaccessFiles = Get-ChildItem -Path $ProjectPath -Filter ".htaccess" -File -Recurse -ErrorAction SilentlyContinue |
-        Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv' }
+        Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
     if ($htaccessFiles) {
         foreach ($ht in $htaccessFiles) {
             $htContent = Get-Content -LiteralPath $ht.FullName -Raw -ErrorAction SilentlyContinue
@@ -105,7 +105,7 @@ if ($envFiles) {
     } else {
         # Check if project contains php files, indicating apache might be used
         $hasPhp = Get-ChildItem -Path $ProjectPath -Filter "*.php" -File -Recurse -ErrorAction SilentlyContinue |
-            Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv' } | Select-Object -First 1
+            Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' } | Select-Object -First 1
         if ($hasPhp) {
             $findings += @{
                 id = "INF-010"; severity = "high"; category = "infrastructure"
@@ -120,7 +120,7 @@ if ($envFiles) {
 
 $debugPatterns = @('/[_]?debug\b', '\bphpinfo\s*\(', '\binfo\.php\b', '\blaravel-debugbar\b', '\bwhoops\b')
 $filesWithDebug = Get-ChildItem -Path $ProjectPath -Include "*.php", "*.py", "*.js", "*.ts", "*.conf" -File -Recurse -ErrorAction SilentlyContinue |
-    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv' }
+    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 foreach ($fd in $filesWithDebug) {
     $content = Get-Content -LiteralPath $fd.FullName -Raw -ErrorAction SilentlyContinue
     if (-not $content) { continue }
@@ -141,7 +141,7 @@ foreach ($fd in $filesWithDebug) {
 $nginxConf = Get-ChildItem -Path $ProjectPath -Filter "nginx*.conf" -File -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
 $htaccess = Get-ChildItem -Path $ProjectPath -Filter ".htaccess" -File -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
 $middleware = Get-ChildItem -Path $ProjectPath -Include "*.php", "*.py", "*.js", "*.ts" -File -Recurse -ErrorAction SilentlyContinue |
-    Where-Object { $_.Name -match 'middleware|security' -and $_.DirectoryName -notmatch 'node_modules|vendor|venv' } | Select-Object -First 1
+    Where-Object { $_.Name -match 'middleware|security' -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' } | Select-Object -First 1
 
 if (-not $nginxConf -and -not $htaccess -and -not $middleware) {
     $findings += @{

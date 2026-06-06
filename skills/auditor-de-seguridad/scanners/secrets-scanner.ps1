@@ -20,7 +20,7 @@ $patterns = @(
     @{ pattern = 'connection[_ ]?string\s*[:=]\s*["''][^"'']+["'']'; severity = 'high'; name = 'Connection String' }
 )
 
-$excludeDirNames = @('node_modules', 'vendor', '.git', 'venv', '__pycache__', '.next', 'build', 'dist', '.nuget', '.idea', '.vscode')
+$excludeDirNames = @('node_modules', 'vendor', '.git', 'venv', '__pycache__', '.next', 'build', 'dist', '.nuget', '.idea', '.vscode', 'scratch', 'reports')
 
 $envPatterns = @('.env', '.env.example', '.env.local', '.env.production', '.env.development', '.env.staging')
 

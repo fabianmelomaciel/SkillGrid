@@ -22,7 +22,7 @@ function AddFinding($sev, $file, $finding, $remediation) {
 $codeExtensions = @('*.php', '*.py', '*.js', '*.ts', '*.jsx', '*.tsx', '*.java', '*.cs', '*.go', '*.rb', '*.rs', '*.kt', '*.swift')
 
 # Check for CORS configuration
-$corsFiles = Get-ChildItem -Path $ProjectPath -Include $codeExtensions -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB }
+$corsFiles = Get-ChildItem -Path $ProjectPath -Include $codeExtensions -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 $foundCorsWildcard = $false
 
 foreach ($f in $corsFiles) {
@@ -65,13 +65,13 @@ if (-not $hasValidation) {
 }
 
 # Check for GraphQL
-$gqlFiles = Get-ChildItem -Path $ProjectPath -Include "*.graphql","*.gql" -Recurse -File -ErrorAction SilentlyContinue
+$gqlFiles = Get-ChildItem -Path $ProjectPath -Include "*.graphql","*.gql" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 if ($gqlFiles.Count -gt 0) {
     AddFinding "medium" $gqlFiles[0].FullName "GraphQL detected - verify depth limiting" "Ensure GraphQL has query depth limiting and cost analysis to prevent abusive queries"
 }
 
 # Check for webhooks
-$webhookFiles = Get-ChildItem -Path $ProjectPath -Include $codeExtensions -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB }
+$webhookFiles = Get-ChildItem -Path $ProjectPath -Include $codeExtensions -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
 foreach ($f in $webhookFiles) {
     $content = Get-Content -LiteralPath $f.FullName -Raw -ErrorAction SilentlyContinue
     if ($content -and $content -match 'webhook|hook|callback.*url') {
