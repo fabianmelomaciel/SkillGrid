@@ -379,8 +379,16 @@ setup_project_codegraph() {
         echo -e "  \033[0;33m[!] Omitiendo analisis de grafo por falta de herramienta codegraph en el PATH.\033[0m"
     fi
 
+    # 3.5. Analizar y cachear esquema de base de datos
+    if command -v node &> /dev/null; then
+        local DETECTOR_SCRIPT="$(dirname "$0")/skills/core/db-schema-detector/scripts/db-detector.js"
+        if [ -f "$DETECTOR_SCRIPT" ]; then
+            node "$DETECTOR_SCRIPT" "$PROJECT_DIR"
+        fi
+    fi
+
     # 4. Calcular y guardar comparacion de tokens
-    local SCRATCH_DIR="${OPENSKILLS_SCRATCH:-$(dirname "$0")/../scratch}"
+    local SCRATCH_DIR="${OPENSKILLS_SCRATCH:-$(dirname "$0")/scratch}"
 
     if [ -d "$SCRATCH_DIR" ]; then
         echo "  [+] Calculando estadisticas de ahorro de tokens..."

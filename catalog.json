@@ -2,9 +2,9 @@
   "version": "1.0.0",
   "generated": "2026-06-06",
   "summary": {
-    "total": 29,
+    "total": 30,
     "categories": {
-      "agent": 8,
+      "agent": 9,
       "core": 18,
       "design": 3
     }
@@ -77,6 +77,13 @@
       "name": "creativo-visual",
       "description": "Director Creativo y Diseñador Visual para la generación y optimización de imágenes con IA. Traduce prompts básicos a especificaciones técnicas y artísticas de alta calidad, gestiona presets de marca, ratios de aspecto e integra ImageMagick para el post-procesamiento.",
       "category": "design",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "db-schema-detector",
+      "description": "Detecta bases de datos locales y genera esquemas cached en CodeGraph para ahorrar tokens y auditar inconsistencias de diseño y ciberseguridad.",
+      "category": "agent",
       "status": "stable",
       "risk_level": "safe"
     },

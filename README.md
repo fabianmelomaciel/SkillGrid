@@ -5,10 +5,10 @@
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*28 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
+*30 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-28-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-30-22c55e?style=flat-square)](catalog.json)
 [![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/OpenSkills/validate.yml?branch=main&style=flat-square&label=CI)](https://github.com/fabianmelomaciel/OpenSkills/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/OpenSkills/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/OpenSkills?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/OpenSkills/stargazers)
@@ -163,6 +163,7 @@ Agentes que se comportan como profesionales con roles definidos:
 | `agente-devops` | Diseña y audita Dockerfiles y pipelines CI/CD seguros. Alineado con IEEE 730 e ISO 27001 |
 | `agente-ideas` | **Deliberación y consenso.** Resuelve decisiones altamente complejas o ambiguas ejecutando un consejo de 3 etapas (propuestas en paralelo, revisión anónima cruzada y síntesis final) |
 | `auditor-de-marketing` | Audita SEO on-page, OpenGraph, readability y CTAs de conversión |
+| `db-schema-detector` | Detecta bases de datos locales y genera esquemas cached en CodeGraph para ahorrar tokens y auditar inconsistencias de diseño y ciberseguridad |
 | `optimizador-finops` | Analiza consumo de tokens, comprime prompts, detecta llamadas redundantes a APIs |
 | `project-manager` | Escucha al CEO, planifica, delega a agentes especializados, revisa resultados y reporta |
 | `gestor-documental` | Formatea documentación técnica y académica (APA 7ª ed., ISO 29148, ISO 29119) |

@@ -536,9 +536,17 @@ function Setup-ProjectCodeGraph($projectDir) {
         Write-Host "  [!] Omitiendo analisis de grafo por falta de herramienta codegraph en el PATH." -ForegroundColor Yellow
     }
 
+    # 3.5. Analizar y cachear esquema de base de datos
+    if (Get-Command node -ErrorAction SilentlyContinue) {
+        $detectorScript = Join-Path -Path $PSScriptRoot -ChildPath "skills\core\db-schema-detector\scripts\db-detector.js"
+        if (Test-Path -Path $detectorScript) {
+            & node $detectorScript $projectDir
+        }
+    }
+
     # 4. Calcular y guardar comparacion de tokens
-    $scratchDir = if ($env:OPENSKILLS_SCRATCH) { $env:OPENSKILLS_SCRATCH } else { Join-Path $PSScriptRoot ".." "scratch" }
-    if (Test-Path -LiteralPath $scratchDir) {
+    $scratchDir = if ($env:OPENSKILLS_SCRATCH) { $env:OPENSKILLS_SCRATCH } else { Join-Path -Path $PSScriptRoot -ChildPath "scratch" }
+    if ($scratchDir -and (Test-Path -LiteralPath $scratchDir)) {
         Write-Host "  [+] Calculando estadisticas de ahorro de tokens..." -ForegroundColor Gray
         
         # Obtener todos los archivos del proyecto (excluyendo dependencias)
