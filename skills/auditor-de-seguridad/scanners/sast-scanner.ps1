@@ -67,15 +67,43 @@ function MatchExtension($ext, $allowed) {
     return $false
 }
 
-Get-ChildItem -Path $ProjectPath -File -Recurse -ErrorAction SilentlyContinue | Where-Object {
-    $excludeDir = $_.DirectoryName
-    $skip = $false
-    foreach ($ex in $excludeDirs) {
-        if ($excludeDir -match [regex]::Escape($ex)) { $skip = $true; break }
+function Get-FilesToScan($startPath) {
+    $files = New-Object System.Collections.Generic.List[System.IO.FileInfo]
+    $queue = New-Object System.Collections.Generic.Queue[string]
+    $queue.Enqueue($startPath)
+    
+    while ($queue.Count -gt 0) {
+        $current = $queue.Dequeue()
+        
+        $skip = $false
+        foreach ($ex in $excludeDirs) {
+            if ($current -match [regex]::Escape($ex)) { $skip = $true; break }
+        }
+        if ($current -match '\\(fixtures|tests/audit-loop/fixtures)\\?') { $skip = $true }
+        if ($skip) { continue }
+        
+        try {
+            $dirFiles = [System.IO.Directory]::GetFiles($current)
+            foreach ($f in $dirFiles) {
+                $fInfo = New-Object System.IO.FileInfo($f)
+                if ($fInfo.Name -notmatch '^security-audit-report\.(json|html)$') {
+                    $files.Add($fInfo)
+                }
+            }
+            
+            $subDirs = [System.IO.Directory]::GetDirectories($current)
+            foreach ($d in $subDirs) {
+                $name = [System.IO.Path]::GetFileName($d)
+                if ($name -in $excludeDirs) { continue }
+                $queue.Enqueue($d)
+            }
+        } catch {}
     }
-    if ($_.Name -match '^security-audit-report\.(json|html)$' -or $_.DirectoryName -match '\\(fixtures|tests/audit-loop/fixtures)\\?') { $skip = $true }
-    -not $skip
-} | ForEach-Object {
+    return $files
+}
+
+$files = Get-FilesToScan $ProjectPath
+$files | ForEach-Object {
     $file = $_
     $ext = $_.Extension.ToLower()
     $content = Get-Content -LiteralPath $_.FullName -Raw -ErrorAction SilentlyContinue

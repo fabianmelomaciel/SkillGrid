@@ -46,11 +46,39 @@ function IsBinaryContent($content) {
 
 $findings = New-Object System.Collections.Generic.List[hashtable]
 
-Get-ChildItem -Path $ProjectPath -File -Recurse -ErrorAction SilentlyContinue | Where-Object {
-    $_.Length -le $maxFileSize -and (IsTextFile $_.FullName) -and -not (ShouldExcludeDir $_.DirectoryName) -and $_.Name -notmatch '^security-audit-report\.(json|html)$' -and $_.DirectoryName -notmatch '\\(fixtures|tests/audit-loop/fixtures)\\?'
-} | ForEach-Object {
+function Get-FilesToScan($startPath) {
+    $files = New-Object System.Collections.Generic.List[System.IO.FileInfo]
+    $queue = New-Object System.Collections.Generic.Queue[string]
+    $queue.Enqueue($startPath)
+    
+    while ($queue.Count -gt 0) {
+        $current = $queue.Dequeue()
+        if (ShouldExcludeDir $current) { continue }
+        
+        try {
+            $dirFiles = [System.IO.Directory]::GetFiles($current)
+            foreach ($f in $dirFiles) {
+                $fInfo = New-Object System.IO.FileInfo($f)
+                if ($fInfo.Length -le $maxFileSize -and (IsTextFile $fInfo.FullName) -and $fInfo.Name -notmatch '^security-audit-report\.(json|html)$' -and $current -notmatch '\\(fixtures|tests/audit-loop/fixtures)\\?') {
+                    $files.Add($fInfo)
+                }
+            }
+            
+            $subDirs = [System.IO.Directory]::GetDirectories($current)
+            foreach ($d in $subDirs) {
+                $name = [System.IO.Path]::GetFileName($d)
+                if ($name -in $excludeDirNames) { continue }
+                $queue.Enqueue($d)
+            }
+        } catch {}
+    }
+    return $files
+}
+
+$files = Get-FilesToScan $ProjectPath
+foreach ($_ in $files) {
     $content = Get-Content -LiteralPath $_.FullName -Raw -ErrorAction SilentlyContinue
-    if (-not $content -or (IsBinaryContent $content)) { return }
+    if (-not $content -or (IsBinaryContent $content)) { continue }
     foreach ($p in $patterns) {
         $matches = [regex]::Matches($content, $p.pattern)
         foreach ($m in $matches) {
