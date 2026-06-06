@@ -161,6 +161,7 @@ Agentes que se comportan como profesionales con roles definidos:
 | `auditor-de-seguridad` | Escanea 12 categorías: secrets, dependencias, SAST (OWASP Top 10), rate limiting, auth, API security, encryption, logging, compliance, infra, DB y CI/CD |
 | `audit-loop` | **Follow-up de auditorías.** Clasifica hallazgos, aplica fixes seguros automáticamente, pide OK para los sensibles, re-audita hasta 3 veces |
 | `agente-devops` | Diseña y audita Dockerfiles y pipelines CI/CD seguros. Alineado con IEEE 730 e ISO 27001 |
+| `agente-ideas` | **Deliberación y consenso.** Resuelve decisiones altamente complejas o ambiguas ejecutando un consejo de 3 etapas (propuestas en paralelo, revisión anónima cruzada y síntesis final) |
 | `auditor-de-marketing` | Audita SEO on-page, OpenGraph, readability y CTAs de conversión |
 | `optimizador-finops` | Analiza consumo de tokens, comprime prompts, detecta llamadas redundantes a APIs |
 | `project-manager` | Escucha al CEO, planifica, delega a agentes especializados, revisa resultados y reporta |
@@ -177,7 +178,7 @@ Instala solo lo que necesita tu equipo:
 | **`core`** | Las 18 skills de metodología de desarrollo |
 | **`devops`** | agente-devops · audit-loop · auditor-de-seguridad · optimizador-finops |
 | **`design`** | impeccable-design-taste · emil-kowalski-design · creativo-visual |
-| **`management`** | project-manager · gestor-documental · audit-loop |
+| **`management`** | project-manager · gestor-documental · audit-loop · agente-ideas |
 | **`marketing`** | auditor-de-marketing |
 
 ---

@@ -1,10 +1,10 @@
 {
   "version": "1.0.0",
-  "generated": "2026-06-05",
+  "generated": "2026-06-06",
   "summary": {
-    "total": 28,
+    "total": 29,
     "categories": {
-      "agent": 7,
+      "agent": 8,
       "core": 18,
       "design": 3
     }
@@ -13,6 +13,13 @@
     {
       "name": "agente-devops",
       "description": "Use to audit, generate, and manage secure Docker container configurations (Dockerfile, docker-compose.yml) and DevOps CI/CD pipelines (GitHub Actions). Aligned with SCM, IEEE 730, and ISO 27001 standards.",
+      "category": "agent",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "agente-ideas",
+      "description": "Agente experto en deliberación y consenso. Resuelve decisiones altamente complejas o ambiguas ejecutando un consejo de 3 etapas (propuestas en paralelo, revisión anónima cruzada y síntesis final).",
       "category": "agent",
       "status": "stable",
       "risk_level": "safe"
