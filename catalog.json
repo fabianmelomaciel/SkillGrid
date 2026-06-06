@@ -75,7 +75,7 @@
     },
     {
       "name": "creativo-visual",
-      "description": "Director Creativo y Diseñador Visual para la generación y optimización de imágenes con IA. Traduce prompts básicos a especificaciones técnicas y artísticas de alta calidad, gestiona presets de marca, ratios de aspecto e integra ImageMagick para el post-procesamiento.",
+      "description": "Visual Creative Director for AI image generation and optimization. Translates basic prompts into high-quality technical and artistic specifications, manages brand presets, aspect ratios, and integrates ImageMagick for post-processing.",
       "category": "design",
       "status": "stable",
       "risk_level": "safe"
