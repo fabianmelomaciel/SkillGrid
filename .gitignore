@@ -1,0 +1,24 @@
+# CodeGraph local cache (auto-generated, environment-specific)
+.codegraph/
+
+# Local analysis output, migration plans, audit reports
+reports/
+
+# Environment-specific files
+.env
+.env.local
+.env.*.local
+
+# OS and IDE
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node
+node_modules/
