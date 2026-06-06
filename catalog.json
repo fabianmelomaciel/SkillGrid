@@ -26,7 +26,7 @@
     },
     {
       "name": "audit-loop",
-      "description": "Orquesta el ciclo cerrado: audita → repara → re-audita → itera. Activado como follow-up de auditorías (seguridad, marketing, finops).",
+      "description": "Orchestrates the closed loop: audit → fix → re-audit → iterate. Activated as follow-up of audits (security, marketing, finops). Enforces Chesterton's Fence — never auto-fixes working architecture.",
       "category": "agent",
       "status": "beta",
       "risk_level": "critical"
@@ -40,7 +40,7 @@
     },
     {
       "name": "auditor-de-seguridad",
-      "description": "Use when completing development, before deployment, after vibecoding/AI code generation, or when reviewing project security. Covers secrets, dependencies, SAST (OWASP Top 10), rate limiting, authentication, session management, API security, encryption, logging, compliance, infrastructure, database, and CI/CD.",
+      "description": "Use when completing development, before deployment, after vibecoding/AI code generation, or when reviewing project security. Covers secrets, dependencies, SAST (OWASP Top 10), rate limiting, authentication, session management, API security, encryption, logging, compliance, infrastructure, database, and CI/CD. Enforces Chesterton's Fence — does NOT propose refactoring of working, securely-implemented components.",
       "category": "agent",
       "status": "stable",
       "risk_level": "critical"

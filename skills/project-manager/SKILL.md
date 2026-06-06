@@ -132,6 +132,70 @@ If the input includes findings, vulnerabilities, or errors from an audit (such a
 3. **Present for CEO Analysis:** Present the drafted implementation plan to the CEO for analysis, feedback, and explicit approval **BEFORE** executing any task or modifying codebase files.
 4. **Iterate & Execute:** Only proceed to task execution (via subagents or inline) after the CEO reviews and explicitly approves the plan.
 
+## Database Change Management Protocol (MANDATORY)
+
+When analysis of a project identifies important database schema changes (new tables, columns, indexes, migrations, data transformations, or destructive operations), **do NOT implement them directly** — even if they seem critical. Follow this protocol:
+
+1. **Generate Ordered Migration Scripts:** Create numbered SQL migration files in a dedicated staging folder:
+   ```
+   reports/database/migrations/
+   ├── 001_<description>.sql
+   ├── 002_<description>.sql
+   └── README.md
+   ```
+   - Each file must be independently runnable (idempotent where possible)
+   - Include `-- UP` and `-- DOWN` sections for rollback
+   - Files must be numbered sequentially to preserve execution order
+   - The `README.md` must list: project, date, total migrations, risks, and rollback procedure
+
+2. **Isolate from Production Code:** The `reports/` directory is a working/staging area:
+   - It MUST be added to `.gitignore` at the project root
+   - It MUST NOT be deployable — no CI/CD pipeline should ever touch this folder
+   - It MUST NOT be web-accessible (no symlinks, no public paths)
+   - Convention: `reports/database/migrations/` (customizable per project)
+
+3. **CEO Approval Required:** Before any migration file is created, present the ordered migration plan to the CEO:
+   ```
+   📋 Database Migration Plan
+   ─────────────────────────
+   Total migrations: N
+   Risk level: Critical / High / Medium / Low
+   
+   Migration 001: Add `payment_intents` table — non-destructive
+   Migration 002: Add FK from `orders` to `payment_intents` — non-destructive  
+   Migration 003: Drop legacy `paypal_token` column — destructive ⚠️
+   
+   Rollback: Each migration has DOWN script
+   Execution: Run sequentially, verify after each step
+   ```
+   Do NOT apply migrations without explicit CEO approval.
+
+4. **Verification Gate:** Each migration file must pass:
+   - [ ] Syntax-valid SQL (parseable)
+   - [ ] `UP` and `DOWN` sections present
+   - [ ] Idempotent where possible (`IF NOT EXISTS` / `IF EXISTS`)
+   - [ ] Destructive operations flagged with ⚠️ in filename
+   - [ ] Backward compatible (no data loss without documented approval)
+   - [ ] Referenced in the README manifest
+
+5. **Never Auto-Apply:** Database migrations are NEVER auto-repairable or auto-applicable. They always require:
+   - CEO approval
+   - A maintenance window (for destructive ops)
+   - A backup before execution
+   - Sequential execution with verification after each step
+
+## Architecture Preservation, Anti-Duplication & Language Standards (MANDATORY)
+
+1. **Preserve Existing Architecture (Chesterton's Fence — OVERRIDES generic guidelines):** When working on an existing codebase or project, you MUST preserve its original architecture, file structure, naming conventions, design patterns, and libraries. Do NOT attempt to refactor, reorganize, or rewrite functioning components to match your personal preference or generic rules unless the user explicitly requests it or there is a **verified, critical security vulnerability**. Enforce Chesterton's Fence at all times. If a component is working (e.g., payment gateway config stored in a database settings table, credentials in a config file behind authentication), do NOT propose moving it to .env or refactoring it unless a live vulnerability is proven.
+2. **Prevent Duplication (DRY — ENFORCED):** Before implementing ANY function, database query, helper utility, component, or API endpoint, you MUST:
+   - First search the codebase via **CodeGraph** (preferred) or **grep**
+   - Check for existing similar logic, queries, or methods
+   - Re-use and extend existing code rather than creating duplicate logic
+   - If you find existing functionality that covers >70% of the need, extend it instead of creating new code
+   - Document in your task prompt to subagents that they must perform this same check
+3. **Best Language-Specific Structure:** When creating a new application from scratch, you MUST follow the community-accepted best practices and directory structure for that language (e.g., standard Maven/Gradle layout for Java/Kotlin, standard PEP 517 structure for Python, clean MVC/DDD or framework default structures for PHP/Laravel, Next.js conventions for React/TypeScript, Gin/Chi layout for Go). Never mix up structures or put files in arbitrary locations. Consult the language-specific rules in `rules/[language]/` for detailed guidance.
+4. **Dynamic Language Adaptation (ENFORCED):** Detect the language of the user's input automatically. Respond in the SAME language the user used. If the user writes in Spanish, respond in Spanish. If English, respond in English. This applies to all responses, code comments, commit messages, and documentation generated during the session. Do NOT ask the CEO which language to use — detect it from their first message.
+
 ## Session Handoff (MANDATORY FINAL OUTPUT)
 
 At the end of a request (or when you must stop), output a handoff block formatted clearly in Markdown so that another IDE/agent (such as Claude Code, Cursor, Open WebUI, Copilot, etc.) can read it to continue the work in the exact same state without reloading context:
