@@ -74,12 +74,13 @@ Task(
 
 ## specialized-agent-delegation
 
-When delegating tasks using the `task` tool, you must select the most relevant specialized agent to achieve optimal efficiency:
+When delegating tasks using system capabilities, you must select the most relevant specialized agent to achieve optimal efficiency:
 - **Docker / CI-CD / Deployment Security**: For any task involving Dockerfiles, docker-compose configuration, containerization, deployment setup, or CI/CD pipelines (e.g., GitHub Actions), delegate to the **agente-devops** agent.
 - **Token Economy / Cost Audit / API Optimization**: For prompt tuning, prompt engineering compression, caching API queries, LLM token budget analysis, or preventing infinite agent loops, delegate to the **optimizador-finops** agent.
 - **On-Page SEO & CTA Conversion**: For auditing website layouts, web-page SEO, social OpenGraph sharing tags, and conversion funnels, delegate to the **auditor-de-marketing** agent.
 - **Academic & Specs formatting (APA)**: For creating high-quality documentation, requirements documents, specs, or formal reports, delegate to the **gestor-documental** agent.
 - **General Security Scan**: For scanning credentials, SAST audits, database/infrastructure configuration reviews, or scanning source code dependencies, delegate to the **auditor-de-seguridad** agent.
+- **Complex Architecture Decisions & Consensus**: For highly ambiguous, high-risk technical decisions, major architectural design choices, or conflicting requirements, delegate to the **agente-ideas** agent to orchestrate consensus before implementation.
 
 > **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
 
@@ -181,11 +182,10 @@ Next Actions (ordered):
 
 ## Tools
 
-- `task` — delegate to sub-agents
-- `todowrite` — track progress
-- `read`/`glob`/`grep` — explore code
-- `edit`/`write` — ONLY for tiny fixes yourself
-- `bash` — build, test, git
+- `browser_subagent` / `run_command` — delegate tasks to sub-agents
+- `view_file` / `list_dir` / `grep_search` — explore codebase and read files
+- `write_to_file` / `replace_file_content` / `multi_replace_file_content` — ONLY for tiny fixes yourself
+- `run_command` — build, test, run git commands
 
 ## Progressive Disclosure
 

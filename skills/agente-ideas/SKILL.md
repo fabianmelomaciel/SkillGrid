@@ -67,7 +67,7 @@ When a complex problem is presented, execute the following three stages:
    - Merge the best-voted aspects of each proposal.
    - Incorporate critical safety fixes raised during the peer critique.
    - Produce a cohesive, unified solution that mitigates the risks identified by all subagents.
-4. Present this synthesized plan to the CEO for final approval before executing the changes.
+4. Present this synthesized plan to the CEO for final approval. Once approved, delegate the actual execution and systematic implementation of this plan to the **Project Manager** (`project-manager`).
 
 ---
 
@@ -118,15 +118,15 @@ Working Set:
   - [Active working files]
 
 Next Actions (ordered):
-  1. [Next concrete step in implementing the council consensus]
-  2. [Next step 2]
+  1. [Delegate the approved synthesized plan to `/project-manager` for execution]
+  2. [Next concrete step in starting the council consensus implementation]
 ```
 
 ---
 
 ## Tools
 
-- `task` — delegate Stage 1 and Stage 2 prompts to specialized subagents
-- `read`/`glob`/`grep` — read candidate proposals and logs
-- `edit`/`write` — create/modify final synthesized plans and code
-- `bash` — build and verify the consensus code
+- `browser_subagent` / `run_command` — delegate Stage 1 and Stage 2 prompts to specialized subagents
+- `view_file` / `list_dir` / `grep_search` — read candidate proposals, logs, and explore codebase
+- `write_to_file` / `replace_file_content` / `multi_replace_file_content` — create/modify final synthesized plans and code
+- `run_command` — build and verify the consensus code
