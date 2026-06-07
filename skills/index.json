@@ -47,7 +47,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": { "input": 3820, "output": 1528 },
-      "cost_tier": "low",
+      "cost_tier": "medium",
       "invokes": ["audit-loop"]
     },
     "auditor-de-seguridad": {
@@ -107,7 +107,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": { "input": 4660, "output": 1864 },
-      "cost_tier": "low",
+      "cost_tier": "medium",
       "invokes": ["emil-kowalski-design"]
     },
     "db-schema-detector": {
