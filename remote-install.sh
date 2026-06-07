@@ -22,7 +22,8 @@ trap 'rm -rf "$TARGET" 2>/dev/null || true' EXIT
 
 echo "Clonando SkillGrid en directorio temporal: $TARGET..."
 
-git clone --depth 1 https://github.com/fabianmelomaciel/SkillGrid.git "$TARGET"
+# WARNING: Pinned to release tag v1.0.0 for supply chain safety. Update tag when releasing new versions.
+git clone --depth 1 --branch v1.0.0 https://github.com/fabianmelomaciel/SkillGrid.git "$TARGET"
 
 # Run the installer
 echo "Ejecutando instalador local..."

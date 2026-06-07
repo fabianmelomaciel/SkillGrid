@@ -190,7 +190,7 @@ When loaded via `finishing-a-development-branch`, run automatically before marki
 10. **VERIFY EXISTING STATE (MANDATORY):** Before drafting ANY audit finding, search the codebase to verify if the feature/protection is already implemented. If a database-based configuration settings table exists and handles credentials securely (hashed, encrypted, access-controlled), do NOT recommend moving them to `.env` as a security requirement. This applies to: webhook secrets, payment gateways configs, API keys, OAuth tokens, and any other credentials stored in application-managed storage.
 11. **NO ARCHITECTURE OPINIONS:** Do not recommend architectural changes (e.g., "move from MySQL to PostgreSQL", "switch from REST to GraphQL", "convert from monolith to microservices") unless they are directly required to fix a verified, active security vulnerability. Architecture opinions belong to the CEO and PM, not the security auditor.
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 
 ### Follow-Up: Audit Repair Loop
 

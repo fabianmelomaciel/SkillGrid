@@ -4,5 +4,4 @@ reports/
 .env
 .env.local
 .env.*.local
-.github/workflows/
 node_modules/

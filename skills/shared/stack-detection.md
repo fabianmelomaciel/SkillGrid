@@ -1,5 +1,5 @@
-# Stack Detection (Shared)
-Used by audit-loop and auditor-de-seguridad.
+## Stack Detection (Shared)
+Used by audit-loop.
 
 ## Detection Order
 1. `package.json` → node (npm/pnpm/yarn)

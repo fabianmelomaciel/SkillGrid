@@ -39,6 +39,8 @@ if (-not $scriptDir) {
     $scriptDir = $pwd
 }
 
+. (Join-Path -Path $scriptDir -ChildPath "scripts\report-common.ps1")
+
 # Resolving paths
 if (-not (Test-Path -LiteralPath $JsonPath)) {
     Write-Host "ERROR: El archivo JSON no existe: $JsonPath" -ForegroundColor Red
@@ -83,11 +85,6 @@ if (-not $ReportPath) {
 Write-Host "Proyecto: $projectName" -ForegroundColor Gray
 Write-Host "Fecha: $scanDate" -ForegroundColor Gray
 Write-Host "Hallazgos: Critical=$criticalCount, High=$highCount, Medium=$mediumCount, Low=$lowCount" -ForegroundColor Gray
-
-function Escape-Html ($str) {
-    if (-not $str) { return "" }
-    return $str.ToString().Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace('"', "&quot;").Replace("'", "&#39;")
-}
 
 # Cargar plantilla HTML
 $template = Get-Content -LiteralPath $TemplatePath -Raw -Encoding utf8

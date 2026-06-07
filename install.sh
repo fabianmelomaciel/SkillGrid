@@ -587,6 +587,10 @@ for TARGET in "${DETECTED[@]}"; do
         else
             SKILL_DEST="$TARGET/skills/$NAME"
         fi
+        if [ -z "$TARGET" ] || [ "$TARGET" = "/" ]; then
+            echo "FATAL: Refusing to rm -rf under empty or root target" >&2
+            exit 1
+        fi
         rm -rf "$SKILL_DEST"
         mkdir -p "$SKILL_DEST"
 
