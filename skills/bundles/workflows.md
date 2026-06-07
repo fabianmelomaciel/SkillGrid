@@ -37,11 +37,11 @@ auditor-de-seguridad + auditor-de-marketing + optimizador-finops → gestor-docu
 ## Rediseno UI (Design Pipeline)
 
 ```
-brainstorming → imperfectable-design-taste → emil-kowalski-design → incremental-implementation
+brainstorming → impeccable-design-taste → emil-kowalski-design → incremental-implementation
 ```
 
 1. **brainstorming**: Define objetivos de diseno con el CEO
-2. **imperfectable-design-taste**: Audita tipografia, color, espaciado, accesibilidad
+2. **impeccable-design-taste**: Audita tipografia, color, espaciado, accesibilidad
 3. **emil-kowalski-design**: Revisa animaciones, micro-interacciones, perceived performance
 4. **incremental-implementation**: Implementa cambios de UI en pasos revisables
 

@@ -327,6 +327,6 @@ Este SKILL.md es la punta del iceberg. Si necesitas profundizar en patrones de d
 
 Carga solo cuando lo necesites. No satures el contexto con todo al mismo tiempo.
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **Session Controls:** `skills/shared/session-controls.md`
 
 > Modules: `skills/shared/modules-footer.md`

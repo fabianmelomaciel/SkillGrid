@@ -2,6 +2,7 @@ param(
     [string]$TargetDir = "",
     [string]$ProjectDir = "",
     [string]$Language = "",
+    [string]$Profile = "",
     [switch]$AutoInstallCodeGraph,
     [switch]$GenerateCodex,
     [switch]$Help
@@ -19,152 +20,8 @@ $skillsDir = Join-Path -Path $scriptDir -ChildPath "skills"
 function InstallToProject($project, $source, $lang) {
     if (-not $source) { $source = $scriptDir }
     Write-Host "`nInstalando reglas compatibles con proyectos (Cursor y GitHub Copilot) en: $project" -ForegroundColor Cyan
-    $nodeCode = @'
-const fs = require('fs');
-const path = require('path');
-const scriptDir = process.argv[1];
-const projectDir = process.argv[2];
-let language = process.argv[3] ? process.argv[3].toLowerCase().trim() : '';
-
-// 1. Autodetección de lenguaje
-if (!language) {
-  console.log('  Detectando lenguaje del proyecto automáticamente...');
-  if (fs.existsSync(path.join(projectDir, 'composer.json'))) {
-    language = 'php';
-  } else if (fs.existsSync(path.join(projectDir, 'package.json'))) {
-    language = 'typescript';
-  } else if (fs.existsSync(path.join(projectDir, 'requirements.txt')) || fs.existsSync(path.join(projectDir, 'pyproject.toml'))) {
-    language = 'python';
-  } else if (fs.existsSync(path.join(projectDir, 'go.mod'))) {
-    language = 'golang';
-  } else if (fs.existsSync(path.join(projectDir, 'Cargo.toml'))) {
-    language = 'rust';
-  } else if (fs.existsSync(path.join(projectDir, 'pom.xml')) || fs.existsSync(path.join(projectDir, 'build.gradle'))) {
-    language = 'java';
-  } else if (fs.existsSync(path.join(projectDir, 'build.gradle.kts'))) {
-    language = 'kotlin';
-  } else if (fs.existsSync(path.join(projectDir, 'Package.swift'))) {
-    language = 'swift';
-  } else if (fs.existsSync(path.join(projectDir, 'Gemfile'))) {
-    language = 'ruby';
-  } else {
-    // Buscar por extensiones
-    try {
-      const files = fs.readdirSync(projectDir);
-      const extCounts = {};
-      files.forEach(file => {
-        const ext = path.extname(file).toLowerCase();
-        if (ext) {
-          extCounts[ext] = (extCounts[ext] || 0) + 1;
-        }
-      });
-      
-      let maxCount = 0;
-      let detected = 'common';
-      
-      const mapping = {
-        '.php': 'php',
-        '.ts': 'typescript', '.tsx': 'typescript', '.js': 'typescript', '.jsx': 'typescript',
-        '.py': 'python',
-        '.go': 'golang',
-        '.java': 'java',
-        '.kt': 'kotlin',
-        '.rs': 'rust',
-        '.swift': 'swift',
-        '.cs': 'csharp',
-        '.cpp': 'cpp', '.cc': 'cpp', '.c': 'cpp'
-      };
-      
-      for (const [ext, count] of Object.entries(extCounts)) {
-        const lang = mapping[ext];
-        if (lang && count > maxCount) {
-          maxCount = count;
-          detected = lang;
-        }
-      }
-      language = detected;
-    } catch (e) {
-      language = 'common';
-    }
-  }
-  console.log(`  -> Lenguaje detectado: ${language.toUpperCase()}`);
-} else {
-  console.log(`  -> Lenguaje seleccionado: ${language.toUpperCase()}`);
-}
-
-const cursorRulesDir = path.join(projectDir, '.cursor', 'rules');
-const copilotDir = path.join(projectDir, '.github', 'instructions');
-fs.mkdirSync(cursorRulesDir, { recursive: true });
-fs.mkdirSync(copilotDir, { recursive: true });
-
-const installRulesFromFolder = (folderName, prefix) => {
-  const rulesSrcDir = path.join(scriptDir, 'rules', folderName);
-  if (!fs.existsSync(rulesSrcDir)) {
-    console.log(`  [-] No se encuentra el directorio de reglas: rules/${folderName}`);
-    return;
-  }
-  
-  fs.readdirSync(rulesSrcDir).forEach(file => {
-    if (path.extname(file).toLowerCase() !== '.md') return;
-    
-    const fullPath = path.join(rulesSrcDir, file);
-    const content = fs.readFileSync(fullPath, 'utf8');
-    const baseName = path.basename(file, '.md');
-    const destName = `${prefix}-${baseName}`;
-    
-    let yamlHeader = '';
-    let markdownBody = content;
-    let paths = [];
-    
-    if (content.startsWith('---')) {
-      const parts = content.split('---');
-      if (parts.length >= 3) {
-        yamlHeader = parts[1];
-        markdownBody = parts.slice(2).join('---').trim();
-        
-        const pathsMatch = yamlHeader.match(/paths:\s*\n((\s*-\s*[^\n]+\n?)+)/);
-        if (pathsMatch) {
-          paths = pathsMatch[1].split('\n')
-            .map(line => line.replace(/^\s*-\s*/, '').trim())
-            .filter(line => line.length > 0);
-        }
-      }
-    }
-    
-    // 1. Cursor (.mdc)
-    let cursorGlobs = '*';
-    if (paths.length > 0) {
-      cursorGlobs = paths.map(p => `"${p}"`).join(', ');
-    }
-    
-    let cursorFrontmatter = `---\ndescription: Reglas de ${folderName} - ${baseName}\nglobs: [${cursorGlobs}]\nalwaysApply: false\n---`;
-    fs.writeFileSync(path.join(cursorRulesDir, destName + '.mdc'), `${cursorFrontmatter}\n\n${markdownBody}`, 'utf8');
-    console.log(`    [+] Cursor Rule: ${destName}.mdc`);
-    
-    // 2. Copilot (.instructions.md)
-    let copilotApply = '*';
-    if (paths.length > 0) {
-      copilotApply = paths.map(p => `  - ${p}`).join('\n');
-    } else {
-      copilotApply = '  - *';
-    }
-    
-    let copilotFrontmatter = `---\napplyTo:\n${copilotApply}\n---`;
-    fs.writeFileSync(path.join(copilotDir, destName + '.instructions.md'), `${copilotFrontmatter}\n\n${markdownBody}`, 'utf8');
-    console.log(`    [+] Copilot Instruction: ${destName}.instructions.md`);
-  });
-};
-
-// Instalar reglas comunes
-installRulesFromFolder('common', 'common');
-
-// Instalar reglas específicas si no es common
-if (language !== 'common') {
-  installRulesFromFolder(language, language);
-}
-'@
     if (Get-Command node -ErrorAction SilentlyContinue) {
-        node -e $nodeCode $source $project $lang
+        & node "$scriptDir\scripts\install-tasks.js" install-rules "$source" "$project" "$lang"
     } else {
         Write-Host "  [-] Error: Node.js es requerido para dar formato a las reglas de Cursor/Copilot." -ForegroundColor Red
     }
@@ -180,6 +37,24 @@ function Get-NormalizedPlatformName($name) {
     }
     if ($map.ContainsKey($name.ToLower())) { return $map[$name.ToLower()] }
     return $name
+}
+
+function Get-ProfileSkillList($profileName, $bundlesJsonPath) {
+    if (-not $profileName) { return $null }
+    try {
+        $bundles = Get-Content -LiteralPath $bundlesJsonPath -Raw -Encoding utf8 | ConvertFrom-Json
+        $validProfiles = $bundles.profiles.PSObject.Properties.Name
+        if ($profileName -notin $validProfiles) {
+            Write-Host "  [!] Perfil '$profileName' no valido. Opciones: $($validProfiles -join ', '). Usando: standard" -ForegroundColor Yellow
+            $profileName = "standard"
+        }
+        $skills = $bundles.profiles.$profileName.skills
+        Write-Host "  Perfil '$profileName': $($skills.Count) skills" -ForegroundColor Cyan
+        return $skills
+    } catch {
+        Write-Host "  [!] No se pudo leer profiles desde bundles/index.json. Instalando todas las skills." -ForegroundColor Yellow
+        return $null
+    }
 }
 
 function InstallToDir($target, $source, $platformName) {
@@ -201,8 +76,14 @@ function InstallToDir($target, $source, $platformName) {
     $mergeScript = Join-Path -Path $scriptDir -ChildPath "scripts\merge-skill.ps1"
     $useLoader = $platformName -and (Test-Path -LiteralPath $mergeScript) -and (Test-Path -LiteralPath $modelsJson)
     $normalizedPlatform = Get-NormalizedPlatformName $platformName
+    $profileSkills = Get-ProfileSkillList $Profile (Join-Path -Path $scriptDir -ChildPath "skills\bundles\index.json")
     $skillDirs = Get-ChildItem -LiteralPath "$source\skills" -Directory
+    if ($profileSkills) { Write-Host "  Perfil activo: $Profile ($($profileSkills.Count) skills)" -ForegroundColor Cyan }
     foreach ($skill in $skillDirs) {
+        if ($profileSkills -and $skill.Name -notin $profileSkills -and $skill.Name -ne "template" -and $skill.Name -ne "shared" -and $skill.Name -ne "bundles") {
+            Write-Host "  Omitiendo: $($skill.Name) (no incluido en perfil '$Profile')" -ForegroundColor DarkGray
+            continue
+        }
         if ($isSkillRoot) { $destPath = Join-Path -Path $target -ChildPath $skill.Name }
         else { $destPath = Join-Path -Path "$target\skills" -ChildPath $skill.Name }
         if ($useLoader) {
@@ -318,46 +199,8 @@ function InstallToOpendirAgents($source) {
     $agentsDir = "$env:USERPROFILE\.config\opencode\agents"
     Write-Host "`nGenerando agentes en opencode agents/..." -ForegroundColor Cyan
     New-Item -ItemType Directory -Path $agentsDir -Force | Out-Null
-    $nodeCode = @'
-const fs = require('fs');
-const path = require('path');
-const scriptDir = process.argv[1];
-const agentsDir = process.argv[2];
-const skillsDir = path.join(scriptDir, 'skills');
-
-const scanForSkills = (dir) => {
-    fs.readdirSync(dir, { withFileTypes: true }).forEach(d => {
-        const fullPath = path.join(dir, d.name);
-        if (d.isDirectory()) {
-            const skillFile = path.join(fullPath, 'SKILL.md');
-            if (fs.existsSync(skillFile)) {
-                const content = fs.readFileSync(skillFile, 'utf8');
-                const lines = content.replace(/\r/g, '').split('\n');
-                let desc = d.name;
-                let body = content;
-                if (lines[0] === '---') {
-                    const endIdx = lines.indexOf('---', 1);
-                    if (endIdx > 0) {
-                        const fm = lines.slice(1, endIdx).join('\n');
-                        const m = fm.match(/description:\s*(?:["']?)([^"'\n]+)/);
-                        if (m) desc = m[1].trim();
-                        body = lines.slice(endIdx + 1).join('\n').trim();
-                    }
-                }
-                const agentContent = '---\ndescription: ' + desc + '\nmode: subagent\npermission:\n  edit: deny\n  bash: deny\n---\n\n' + body;
-                const agentFile = path.join(agentsDir, d.name + '.md');
-                fs.writeFileSync(agentFile, agentContent, 'utf8');
-                console.log('  Agente: ' + d.name + '.md');
-            } else {
-                scanForSkills(fullPath);
-            }
-        }
-    });
-};
-scanForSkills(skillsDir);
-'@
     if (Get-Command node -ErrorAction SilentlyContinue) {
-        node -e $nodeCode $source $agentsDir
+        & node "$scriptDir\scripts\install-tasks.js" generate-agents "$source" "$agentsDir"
     } else {
         Write-Host "  [-] Error: Node.js es requerido para generar agentes." -ForegroundColor Red
     }
@@ -664,11 +507,14 @@ USO:
   .\install.ps1 -TargetDir "C:\ruta"          - Instala en ruta personalizada
   .\install.ps1 -ProjectDir "C:\proyecto"     - Genera reglas compatibles en tu proyecto (Cursor/Copilot)
   .\install.ps1 -ProjectDir "C:\proyecto" -Language php - Instala sólo reglas comunes y de PHP
-  .\install.ps1 -AutoInstallCodeGraph         - Permite instalar codegraph automaticamente si falta
-  .\install.ps1 -GenerateCodex                - Genera CODEX.md (memoria local) en instalaciones no-skill-root
-  .\install.ps1 -Help                         - Muestra esta ayuda
+   .\install.ps1 -AutoInstallCodeGraph         - Permite instalar codegraph automaticamente si falta
+   .\install.ps1 -GenerateCodex                - Genera CODEX.md (memoria local) en instalaciones no-skill-root
+   .\install.ps1 -Profile "minimal"            - Instala solo skills del perfil (minimal/standard/strict)
+   .\install.ps1 -Profile "standard"           - Perfil recomendado (~15 skills)
+   .\install.ps1 -Help                         - Muestra esta ayuda
 
 SIN PARAMETROS: Detecta opencode o antigravity y instala alli.
+PERFILES: minimal (~5 skills, ~8K tokens) | standard (~15, ~25K) | strict (~30, ~60K)
 "@ -ForegroundColor Cyan
     exit 0
 }

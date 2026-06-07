@@ -25,7 +25,8 @@ $targetDir = Join-Path -Path $tempRoot -ChildPath ("skillgrid-" + [guid]::NewGui
 
 Write-Host "Clonando SkillGrid en directorio temporal: $targetDir" -ForegroundColor Cyan
 
-git clone --depth 1 https://github.com/fabianmelomaciel/SkillGrid.git $targetDir
+    # WARNING: Pinned to release tag v1.0.0 for supply chain safety. Update tag when releasing new versions.
+    git clone --depth 1 --branch v1.0.0 https://github.com/fabianmelomaciel/SkillGrid.git "$targetDir"
 
 # Run the installer
 try {

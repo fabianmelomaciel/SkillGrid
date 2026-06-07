@@ -11,6 +11,8 @@ if (-not $scriptDir -and $MyInvocation.MyCommand.Path) {
 if (-not $scriptDir) {
     $scriptDir = $pwd
 }
+. (Join-Path -Path $scriptDir -ChildPath "scripts\report-common.ps1")
+
 $scannersDir = Join-Path -Path $scriptDir -ChildPath "skills\auditor-de-seguridad\scanners"
 
 if (-not (Test-Path -LiteralPath $scannersDir)) {
@@ -55,46 +57,40 @@ $summary = @{
     failed_categories = @()
 }
 
-function Escape-Html ($str) {
-    if (-not $str) { return "" }
-    return $str.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace('"', "&quot;").Replace("'", "&#39;")
+Write-Host "  Escaneando con $($scanners.Count) scanners en paralelo..." -ForegroundColor Cyan
+$jobs = @()
+foreach ($scanner in $scanners) {
+    $job = Start-Job -ScriptBlock {
+        param($s, $sp, $pp)
+        $scriptPath = Join-Path -Path $sp -ChildPath $s.Script
+        if (-not (Test-Path -LiteralPath $scriptPath)) { return @{ findings = @(); key = $s.Key; hasIssues = $false; skipped = $true } }
+        try {
+            $output = & $scriptPath -ProjectPath $pp 2>&1 | Out-String
+            $findings = if ([string]::IsNullOrWhiteSpace($output)) { @() } else { $output | ConvertFrom-Json }
+            $hasIssues = ($findings | Where-Object { $_.severity -in @('critical', 'high') }).Count -gt 0
+            return @{ findings = $findings; key = $s.Key; hasIssues = $hasIssues; skipped = $false }
+        } catch { return @{ findings = @(); key = $s.Key; hasIssues = $false; skipped = $true } }
+    } -ArgumentList $scanner, $scannersDir, $ProjectPath
+    $jobs += $job
 }
 
-foreach ($scanner in $scanners) {
-    $scriptPath = Join-Path -Path $scannersDir -ChildPath $scanner.Script
-    if (-not (Test-Path -LiteralPath $scriptPath)) {
-        Write-Host "  [-] Saltando $($scanner.Name): Script no encontrado" -ForegroundColor Yellow
-        continue
-    }
-    Write-Host "  [*] Ejecutando $($scanner.Name)..." -ForegroundColor Cyan
-    
-    # Ejecutar escáner y capturar salida
-    $output = & $scriptPath -ProjectPath $ProjectPath 2>&1 | Out-String
-    try {
-        if ([string]::IsNullOrWhiteSpace($output)) {
-            $findings = @()
-        } else {
-            $findings = $output | ConvertFrom-Json
-        }
-        
-        $hasIssues = $false
-        foreach ($f in $findings) {
-            $allFindings += $f
-            switch ($f.severity) {
-                "critical" { $summary.critical++ }
-                "high" { $summary.high++ }
-                "medium" { $summary.medium++ }
-                "low" { $summary.low++ }
-            }
-            if ($f.severity -in @('critical', 'high')) { $hasIssues = $true }
-        }
-        if ($hasIssues) {
-            $summary.failed_categories += $scanner.Key
-        } else {
-            $summary.passed_categories += $scanner.Key
-        }
-    } catch {
-        Write-Host "      [!] Error al ejecutar o procesar salida de $($scanner.Name)" -ForegroundColor Red
+Write-Host "  Esperando resultados..." -ForegroundColor Cyan
+$results = $jobs | Wait-Job | Receive-Job
+$jobs | Remove-Job
+
+foreach ($r in $results) {
+    foreach ($f in $r.findings) { $allFindings += $f }
+    if ($r.hasIssues) { $summary.failed_categories += $r.key }
+    elseif (-not $r.skipped) { $summary.passed_categories += $r.key }
+}
+
+# Tally severities
+foreach ($f in $allFindings) {
+    switch ($f.severity) {
+        "critical" { $summary.critical++ }
+        "high" { $summary.high++ }
+        "medium" { $summary.medium++ }
+        "low" { $summary.low++ }
     }
 }
 

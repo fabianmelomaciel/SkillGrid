@@ -37,10 +37,10 @@ You do NOT modify files blindly; you audit structure, provide formatted draft te
   3. Specific Requirements (Functional requirements, Performance, Non-functional, Design constraints, External interfaces).
 * **Requirement Clarity:** Check requirements for clarity, ambiguity, feasibility, and verifiability (ensuring no vague terms like "fast", "user-friendly", or "optimized" are used without clear thresholds).
 
-### 4. Academic Research Pipeline
+### 3. Academic Research Pipeline
 - **Academic Research Pipeline:** See `references/research-pipeline.md` for the full 10-stage workflow
 
-### 3. Software Testing Documentation (ISO/IEC/IEEE 29119)
+### 4. Software Testing Documentation (ISO/IEC/IEEE 29119)
 * **Test Plan Structure:** Validate and structure test plans including Scope, Assumptions/Constraints, Test Strategy, Test Cases, and Test Report templates.
 * **Traceability Matrix:** Audit or generate requirements-to-test traceability mappings.
 

@@ -1,14 +1,12 @@
 <div align="center">
-<!-- TODO: add OpenGraph image at .opengraph/og-image.png -->
-
 # 🧠 SkillGrid
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*30 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
+*31 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-30-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-31-22c55e?style=flat-square)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/network/members)
@@ -194,6 +192,35 @@ Combinaciones pre-diseñadas para tareas complejas:
 | **Deploy seguro** | `agente-devops` → `auditor-de-seguridad` → `audit-loop` |
 | **Rediseño UI** | `brainstorming` → `impeccable-design-taste` → `emil-kowalski-design` → `incremental-implementation` |
 | **Auditoría completa** | `auditor-de-seguridad` + `auditor-de-marketing` + `optimizador-finops` (paralelo) → `gestor-documental` |
+
+---
+
+## 🧪 v1.3 "Full Audit & Hardening" (2026-06-07)
+
+### Security Hardening
+- **Installer safety**: `remote-install.ps1` and `remote-install.sh` pinned to `--branch v1.0.0` to prevent supply-chain attacks
+- **rm -rf guard**: Added confirmation prompt in `install.sh` before any destructive operation
+- **Dependency lock**: `package-lock.json` generated to freeze dependency tree
+- **CI/CD tracking restored**: `.github/workflows/` removed from `.gitignore` — pipelines now tracked in version control
+
+### Bugfixes
+- `workflows.md`: Fixed typo `imperfectable` → `impeccable`
+- `gestor-documental/SKILL.md`: Sections 3 and 4 swapped to correct logical order
+- `auditor-de-seguridad/SKILL.md`: Added missing `verification-gate.md` to shared protocol references
+- `session-controls.md`: Now documents `SKILLGRID_SCRATCH` env var
+
+### Maintainability
+- **DRY reporting**: `scripts/report-common.ps1` created — shared `Escape-Html` function used by `audit.ps1` and `generate-report-from-json.ps1`
+- **Inline JS externalized**: `scripts/install-tasks.js` extracted from `install.ps1` (~739→~557 lines)
+- **Parallel scanners**: All 12 security scanners in `audit.ps1` now run via `Start-Job` for PowerShell 5.1
+- **Install profiles**: `minimal`/`standard`/`strict` profiles via `-Profile` flag
+- **Header normalization**: `stack-detection.md` header `#` → `##`
+
+### Content Improvements
+- **AI writing patterns**: 30 detection patterns extracted from `auditor-de-marketing/SKILL.md` to `references/ai-writing-patterns.md` — SKILL.md reduced by ~44 lines
+- **CODEX Learning Loop**: Enhanced from 7-line stub to actionable guide (when to log, quality standards, format)
+- **Chesterton's Fence deduplicated**: Cross-referenced between `anti-rationalization.md`, `code-simplification`, and `auditor-de-seguridad`
+- **Session controls referenced**: `session-controls.md` linked from `context-engineering` and `project-manager` footers
 
 ---
 
