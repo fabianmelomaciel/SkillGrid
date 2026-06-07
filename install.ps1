@@ -653,6 +653,7 @@ if (-not $TargetDir) {
     $opencodeDir = "$env:USERPROFILE\.config\opencode\skills"
     $antigravityDir = "$env:USERPROFILE\.config\antigravity\skills"
     $antigravityGeminiDir = "$env:USERPROFILE\.gemini\config\skills"
+    $antigravityIdeDir = "$env:USERPROFILE\.gemini\antigravity-ide\skills"
 
     if (Test-Path -LiteralPath "$env:USERPROFILE\.config\opencode") {
         $detected += @{ Name = "opencode"; Path = $opencodeDir }
@@ -662,6 +663,9 @@ if (-not $TargetDir) {
     }
     if (Test-Path -LiteralPath "$env:USERPROFILE\.gemini\config") {
         $detected += @{ Name = "antigravity (gemini)"; Path = $antigravityGeminiDir }
+    }
+    if (Test-Path -LiteralPath "$env:USERPROFILE\.gemini\antigravity-ide") {
+        $detected += @{ Name = "antigravity-ide"; Path = $antigravityIdeDir }
     }
     if (Test-Path -LiteralPath "$env:USERPROFILE\.claude") {
         $detected += @{ Name = "claude-code"; Path = "$env:USERPROFILE\.claude\skills" }

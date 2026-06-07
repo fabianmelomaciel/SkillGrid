@@ -6,11 +6,13 @@ status: stable
 risk_level: safe
 ---
 
-# Token & Resource FinOps Agent (optimizador-finops)
+## Core
 
 > **CODEX-FIRST:** Read `CODEX.md` (search upward or in active skills root) before starting. Apply documented environment rules, API constraints, and past optimization lessons. Log new findings when done.
 >
 > **AUTOMATIC CODEGRAPH STARTUP:** Immediately check if `codegraph` CLI is installed and install it if not, then initialize (if `.codegraph` folder is missing) or sync (if it exists) the codebase graph at startup. Do NOT explore or edit the codebase before this process completes. See the Codebase Graph Memory section for instructions.
+
+# Token & Resource FinOps Agent (optimizador-finops)
 
 ## Core Identity
 
@@ -95,21 +97,6 @@ You MUST check off every item before completing your audit:
 }
 ```
 
-
-> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
-
-> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
-
----
-
-> **CodeGraph:** Follow shared startup protocol in `skills/shared/codegraph-startup.md`.
-
----
-
-> **CODEX Learning Loop:** Follow shared protocol in `skills/shared/codex-learning-loop.md`.
-
----
-
 ## 🔁 Follow-Up: Audit Repair Loop
 
 You found N findings. Some are auto-repairable (lint, types, AI remnants, patch deps); others require CEO approval (auth, secrets, schema, business logic).
@@ -121,3 +108,27 @@ You found N findings. Some are auto-repairable (lint, types, AI remnants, patch 
 - **Ver plan**: muestra qué findings se repararían solos (🟢), cuáles requieren OK (🟡), cuáles nunca se tocan (🔴)
 
 > **Referencia:** `skills/audit-loop/SKILL.md` para la lógica completa del loop.
+
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+
+## Modules
+
+[model:gemini-1.5-flash]
+### Enhanced Anti-Loop Guardrails
+Gemini models may exhibit looping behavior. If you detect repeating the same operation with identical results, stop immediately and report current state. Do not re-execute completed operations. Enforce strict output structure.
+
+[model:gemini-1.5-pro]
+### Enhanced Anti-Loop Guardrails
+Same as gemini-1.5-flash. If you detect repeating the same operation with identical results, stop and report current state.
+
+[model:deepseek-v4-flash]
+### Tool Result Handling
+Tool results may be truncated. Request specific file sections if output is incomplete. Prefer structured JSON over markdown prose when reporting results.
+
+[platform:opencode]
+### Platform Invocation
+Invoked via tool call with skill descriptor. Return structured output matching the expected format. All file paths use forward slashes.
+
+[platform:claude-code]
+### Platform Invocation
+Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.

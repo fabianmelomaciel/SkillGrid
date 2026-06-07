@@ -25,12 +25,18 @@ Rationale: Immutable data prevents hidden side effects, makes debugging easier, 
 - Extract repeated logic into shared functions or utilities
 - Avoid copy-paste implementation drift
 - Introduce abstractions when repetition is real, not speculative
+- **Search before implementing:** Check CodeGraph or grep codebase to verify if a function, helper utility, or database query already exists before writing new code. Reuse or extend existing functions to avoid duplication.
 
 ### YAGNI (You Aren't Gonna Need It)
 
 - Do not build features or abstractions before they are needed
 - Avoid speculative generality
 - Start simple, then refactor when the pressure is real
+
+### Architecture Preservation & Chesterton's Fence
+
+- **Maintain Existing Structure:** If working in an established project, preserve its directory hierarchy, naming conventions, design patterns, and general style. Do not rewrite or reorganize functioning code or settings just to fit generic guidelines.
+- **Chesterton's Fence:** Never modify, refactor, or delete code, configuration systems, or settings (such as credentials or webhooks stored in database tables) unless you fully understand their purpose and have verified an active, proven vulnerability or bug.
 
 ## File Organization
 

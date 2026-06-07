@@ -6,6 +6,8 @@ status: stable
 risk_level: safe
 ---
 
+## Core
+
 # Test-Driven Development (TDD)
 
 ## Overview
@@ -256,8 +258,6 @@ Tests-first force edge case discovery before implementing. Tests-after verify yo
 
 30 minutes of tests after ≠ TDD. You get coverage, lose proof tests work.
 
-> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
-
 ## Red Flags - STOP and Start Over
 
 - Code before test
@@ -313,8 +313,6 @@ PASS
 **REFACTOR**
 Extract validation for multiple fields if needed.
 
-> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
-
 ## When Stuck
 
 | Problem | Solution |
@@ -337,8 +335,6 @@ When adding mocks or test utilities, read @testing-anti-patterns.md to avoid com
 - Adding test-only methods to production classes
 - Mocking without understanding dependencies
 
-> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
-
 ## Final Rule
 
 ```
@@ -347,3 +343,27 @@ Otherwise → not TDD
 ```
 
 No exceptions without your human partner's permission.
+
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+
+## Modules
+
+[model:gemini-1.5-flash]
+### Enhanced Anti-Loop Guardrails
+Gemini models may exhibit looping behavior. If you detect repeating the same operation with identical results, stop immediately and report current state. Do not re-execute completed operations. Enforce strict output structure.
+
+[model:gemini-1.5-pro]
+### Enhanced Anti-Loop Guardrails
+Same as gemini-1.5-flash. If you detect repeating the same operation with identical results, stop and report current state.
+
+[model:deepseek-v4-flash]
+### Tool Result Handling
+Tool results may be truncated. Request specific file sections if output is incomplete. Prefer structured JSON over markdown prose when reporting results.
+
+[platform:opencode]
+### Platform Invocation
+Invoked via tool call with skill descriptor. Return structured output matching the expected format. All file paths use forward slashes.
+
+[platform:claude-code]
+### Platform Invocation
+Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.

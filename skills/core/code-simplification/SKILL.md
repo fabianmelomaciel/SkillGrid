@@ -6,6 +6,8 @@ status: stable
 risk_level: safe
 ---
 
+## Core
+
 > Inspired by the [Claude Code Simplifier plugin](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/code-simplifier/agents/code-simplifier.md). Adapted here as a model-agnostic, process-driven skill for any AI coding agent.
 
 ## Overview
@@ -293,12 +295,6 @@ function UserBadge({ user }: Props) {
 - Batching many simplifications into one large, hard-to-review commit
 - Refactoring code outside the scope of the current task without being asked
 
-> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
-
-> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
-
-> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
-
 ## Verification
 After completing a simplification pass:
 - [ ] All existing tests pass without modification
@@ -310,3 +306,27 @@ After completing a simplification pass:
 - [ ] No error handling was removed or weakened
 - [ ] No dead code was left behind (unused imports, unreachable branches)
 - [ ] A teammate or review agent would approve the change as a net improvement
+
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+
+## Modules
+
+[model:gemini-1.5-flash]
+### Enhanced Anti-Loop Guardrails
+Gemini models may exhibit looping behavior. If you detect repeating the same operation with identical results, stop immediately and report current state. Do not re-execute completed operations. Enforce strict output structure.
+
+[model:gemini-1.5-pro]
+### Enhanced Anti-Loop Guardrails
+Same as gemini-1.5-flash. If you detect repeating the same operation with identical results, stop and report current state.
+
+[model:deepseek-v4-flash]
+### Tool Result Handling
+Tool results may be truncated. Request specific file sections if output is incomplete. Prefer structured JSON over markdown prose when reporting results.
+
+[platform:opencode]
+### Platform Invocation
+Invoked via tool call with skill descriptor. Return structured output matching the expected format. All file paths use forward slashes.
+
+[platform:claude-code]
+### Platform Invocation
+Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.

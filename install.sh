@@ -522,6 +522,10 @@ else
         DETECTED+=("$HOME/.gemini/config/skills")
         echo "Detectado: antigravity (gemini) -> $HOME/.gemini/config/skills"
     fi
+    if [ -d "$HOME/.gemini/antigravity-ide" ]; then
+        DETECTED+=("$HOME/.gemini/antigravity-ide/skills")
+        echo "Detectado: antigravity-ide -> $HOME/.gemini/antigravity-ide/skills"
+    fi
     if [ -d "$HOME/.config/antigravity" ]; then
         DETECTED+=("$HOME/.config/antigravity/skills")
         echo "Detectado: antigravity -> $HOME/.config/antigravity/skills"

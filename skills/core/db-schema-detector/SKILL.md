@@ -6,6 +6,8 @@ status: stable
 risk_level: safe
 ---
 
+## Core
+
 # Db Schema Detector & Auditor Agent
 
 ## When to Use
@@ -47,12 +49,6 @@ Use this skill when starting a new workspace analysis or project session where a
 
 ---
 
-## Core Protocols
-
-> **Anti-Rationalization**: Follow shared protocol in `skills/shared/anti-rationalization.md`.
-
-> **Risk Assessment**: Follow shared protocol in `skills/shared/risk-assessment.md`.
-
 ### Step 6: Environment Drift Detection (Dual-Environment Awareness)
 
 After caching the schema, compare it with the project's dual-environment setup (see `project-manager` → Dual-Environment Analysis Protocol):
@@ -62,10 +58,6 @@ After caching the schema, compare it with the project's dual-environment setup (
 - Tag entities in `db_schema.json` with `environment: "local" | "production" | "shared"` when drift is detected
 - Report findings to the PM for inclusion in the Dual-Environment Report
 
-> **Verification Gate**: Follow shared protocol in `skills/shared/verification-gate.md`.
-
-> **CodeGraph Startup**: Follow shared startup protocol in `skills/shared/codegraph-startup.md`.
-
 ---
 
 ## Tools
@@ -73,3 +65,27 @@ After caching the schema, compare it with the project's dual-environment setup (
 - `run_command` — execute the database schema detector script
 - `view_file` — read cached schema Markdown and JSON files
 - `write_to_file` / `replace_file_content` — update exclusions and installer scripts
+
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+
+## Modules
+
+[model:gemini-1.5-flash]
+### Enhanced Anti-Loop Guardrails
+Gemini models may exhibit looping behavior. If you detect repeating the same operation with identical results, stop immediately and report current state. Do not re-execute completed operations. Enforce strict output structure.
+
+[model:gemini-1.5-pro]
+### Enhanced Anti-Loop Guardrails
+Same as gemini-1.5-flash. If you detect repeating the same operation with identical results, stop and report current state.
+
+[model:deepseek-v4-flash]
+### Tool Result Handling
+Tool results may be truncated. Request specific file sections if output is incomplete. Prefer structured JSON over markdown prose when reporting results.
+
+[platform:opencode]
+### Platform Invocation
+Invoked via tool call with skill descriptor. Return structured output matching the expected format. All file paths use forward slashes.
+
+[platform:claude-code]
+### Platform Invocation
+Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.

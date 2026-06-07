@@ -6,9 +6,11 @@ status: stable
 risk_level: safe
 ---
 
-# Scientific & Technical Documentation Manager Agent
+## Core
 
 > **AUTOMATIC CODEGRAPH STARTUP:** Immediately check if `codegraph` CLI is installed and install it if not, then initialize (if `.codegraph` folder is missing) or sync (if it exists) the codebase graph at startup. Do NOT explore or edit the codebase before this process completes. See the Codebase Graph Memory section for instructions.
+
+# Scientific & Technical Documentation Manager Agent
 
 ## Core Identity
 
@@ -89,20 +91,33 @@ You MUST check off every item before completing your task:
 }
 ```
 
-
-> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
-
-> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
-
----
-
-> **CodeGraph:** Follow shared startup protocol in `skills/shared/codegraph-startup.md`.
-
----
-
 ## 🧠 Dynamic Learning Loop (CODEX System)
 
 To ensure cumulative learning in the user's environment:
 1. **Load Memory (Read CODEX):** At startup, locate and read `CODEX.md` (searching upwards from this skill folder).
 2. **Apply Lessons:** Adhere strictly to the project domain definitions, institutional layout rules, and citations conventions documented.
 3. **Log Learnings (Write CODEX):** If you discover any unique documentation rules (e.g., custom thesis guidelines for the user's university/company, or specific requirement formats preferred for opencode projects), append a short log entry under `## 💻 Mission Logs & Tactical Learnings` detailing the Date, the Documentation Challenge, and the Solution applied.
+
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+
+## Modules
+
+[model:gemini-1.5-flash]
+### Enhanced Anti-Loop Guardrails
+Gemini models may exhibit looping behavior. If you detect repeating the same operation with identical results, stop immediately and report current state. Do not re-execute completed operations. Enforce strict output structure.
+
+[model:gemini-1.5-pro]
+### Enhanced Anti-Loop Guardrails
+Same as gemini-1.5-flash. If you detect repeating the same operation with identical results, stop and report current state.
+
+[model:deepseek-v4-flash]
+### Tool Result Handling
+Tool results may be truncated. Request specific file sections if output is incomplete. Prefer structured JSON over markdown prose when reporting results.
+
+[platform:opencode]
+### Platform Invocation
+Invoked via tool call with skill descriptor. Return structured output matching the expected format. All file paths use forward slashes.
+
+[platform:claude-code]
+### Platform Invocation
+Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.

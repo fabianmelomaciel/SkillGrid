@@ -6,6 +6,8 @@ status: stable
 risk_level: safe
 ---
 
+## Core
+
 # Systematic Debugging
 
 ## Overview
@@ -263,8 +265,6 @@ If you catch yourself thinking:
 | "I see the problem, let me fix it" | Seeing symptoms ≠ understanding root cause. |
 | "One more fix attempt" (after 2+ failures) | 3+ failures = architectural problem. Question pattern, don't fix again. |
 
-> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
-
 ## Quick Reference
 
 | Phase | Key Activities | Success Criteria |
@@ -297,10 +297,6 @@ These techniques are part of systematic debugging and available in this director
 - **skillgrid:test-driven-development** - For creating failing test case (Phase 4, Step 1)
 - **skillgrid:verification-before-completion** - Verify fix worked before claiming success
 
-> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
-
-> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
-
 ## Real-World Impact
 
 From debugging sessions:
@@ -308,3 +304,27 @@ From debugging sessions:
 - Random fixes approach: 2-3 hours of thrashing
 - First-time fix rate: 95% vs 40%
 - New bugs introduced: Near zero vs common
+
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+
+## Modules
+
+[model:gemini-1.5-flash]
+### Enhanced Anti-Loop Guardrails
+Gemini models may exhibit looping behavior. If you detect repeating the same operation with identical results, stop immediately and report current state. Do not re-execute completed operations. Enforce strict output structure.
+
+[model:gemini-1.5-pro]
+### Enhanced Anti-Loop Guardrails
+Same as gemini-1.5-flash. If you detect repeating the same operation with identical results, stop and report current state.
+
+[model:deepseek-v4-flash]
+### Tool Result Handling
+Tool results may be truncated. Request specific file sections if output is incomplete. Prefer structured JSON over markdown prose when reporting results.
+
+[platform:opencode]
+### Platform Invocation
+Invoked via tool call with skill descriptor. Return structured output matching the expected format. All file paths use forward slashes.
+
+[platform:claude-code]
+### Platform Invocation
+Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.

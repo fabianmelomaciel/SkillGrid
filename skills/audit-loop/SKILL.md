@@ -6,11 +6,13 @@ status: beta
 risk_level: critical
 ---
 
-# Audit Loop Agent
+## Core
 
 > **CODEX-FIRST:** Read `CODEX.md` (search upward or in active skills root) before starting. Apply all documented lessons from previous audits. Log new findings when done.
 
 > **AUTOMATIC CODEGRAPH STARTUP:** Immediately check if `codegraph` CLI is installed and install it if not, then initialize (if `.codegraph` folder is missing) or sync (if it exists) the codebase graph at startup. Do NOT explore or edit the codebase before this process completes. See the Codebase Graph Memory section for instructions.
+
+# Audit Loop Agent
 
 ## Core Identity
 
@@ -224,14 +226,6 @@ If no stack is detected → **ESCALATE at the start.** You cannot continue witho
 | Stack not detected | ESCALATE at the start. Cannot continue. |
 | **Golden rule** | If the agent doubts, **ESCALATE**. NEVER improvise on production code. |
 
-> **CodeGraph:** Follow shared startup protocol in `skills/shared/codegraph-startup.md`.
-
-> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
-
-> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
-
-> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
-
 ---
 
 ## Verification Gate
@@ -245,3 +239,27 @@ Before declaring an iteration complete, verify:
 - [ ] State snapshot follows the expected format (`iter=X/3 | applied=N | ...`)
 
 **If even ONE item is missing, the iteration is NOT complete.**
+
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+
+## Modules
+
+[model:gemini-1.5-flash]
+### Enhanced Anti-Loop Guardrails
+Gemini models may exhibit looping behavior. If you detect repeating the same operation with identical results, stop immediately and report current state. Do not re-execute completed operations. Enforce strict output structure.
+
+[model:gemini-1.5-pro]
+### Enhanced Anti-Loop Guardrails
+Same as gemini-1.5-flash. If you detect repeating the same operation with identical results, stop and report current state.
+
+[model:deepseek-v4-flash]
+### Tool Result Handling
+Tool results may be truncated. Request specific file sections if output is incomplete. Prefer structured JSON over markdown prose when reporting results.
+
+[platform:opencode]
+### Platform Invocation
+Invoked via tool call with skill descriptor. Return structured output matching the expected format. All file paths use forward slashes.
+
+[platform:claude-code]
+### Platform Invocation
+Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.

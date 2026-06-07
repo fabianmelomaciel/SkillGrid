@@ -6,11 +6,13 @@ status: stable
 risk_level: safe
 ---
 
-# Project Manager — You Are The Project Manager
+## Core
 
 > **CODEX-FIRST:** Read `CODEX.md` (search upward or in active skills root) before starting. Use documented project context — never ask the CEO to re-explain the stack, directory structure, or deployment setup. Log learnings when done.
 >
 > **AUTOMATIC CODEGRAPH STARTUP:** Immediately check if `codegraph` CLI is installed and install it if not, then initialize (if `.codegraph` folder is missing) or sync (if it exists) the codebase graph at startup. Do NOT explore or edit the codebase before this process completes. See the Codebase Graph Memory section for instructions.
+
+# Project Manager — You Are The Project Manager
 
 ## Core Identity
 
@@ -82,12 +84,6 @@ When delegating tasks using system capabilities, you must select the most releva
 - **General Security Scan**: For scanning credentials, SAST audits, database/infrastructure configuration reviews, or scanning source code dependencies, delegate to the **auditor-de-seguridad** agent.
 - **Complex Architecture Decisions & Consensus**: For highly ambiguous, high-risk technical decisions, major architectural design choices, or conflicting requirements, delegate to the **agente-ideas** agent to orchestrate consensus before implementation.
 
-> **Anti-Rationalization:** Follow shared protocol in `skills/shared/anti-rationalization.md`.
-
-> **Risk Assessment:** Follow shared protocol in `skills/shared/risk-assessment.md`.
-
-> **Verification Gate:** Follow shared protocol in `skills/shared/verification-gate.md`.
-
 ## Reporting
 
 After completing a batch of work:
@@ -104,8 +100,8 @@ After completing a batch of work:
 When you receive a new request as `/Project_manager`, you MUST minimize token usage by default:
 
 1. **CodeGraph first (always):** Check for `.codegraph` structure/indices or run a codegraph scan/sync command (if available) before proceeding. Use the graph to map modules and find the minimal set of relevant files/functions/interfaces, avoiding scanning the whole codebase or reading files blindly.
-2. **Working set:** Maintain a short “working set” list of files you will touch. Do not expand it unless the graph proves you must.
-3. **No full-file rereads:** Never reread entire files “just to remember”. If more context is needed, read only the missing line range.
+2. **Working set:** Maintain a short "working set" list of files you will touch. Do not expand it unless the graph proves you must.
+3. **No full-file rereads:** Never reread entire files "just to remember". If more context is needed, read only the missing line range.
 4. **Avoid repetitive exploration:** Prefer targeted queries and graph relationships over broad searches and recursive file reads.
 5. **Token Economy Check:** Prevent unnecessary parallel tasks that request duplicate or excessive code information. Constrain prompts to subagents to exact line ranges.
 6. **Refactor for fewer future reads (when justified - Critical Rule):**
@@ -315,10 +311,6 @@ Next Actions (ordered):
   2. [Next concrete action 2]
 ```
 
-> **CodeGraph:** Follow shared startup protocol in `skills/shared/codegraph-startup.md`.
-
-
-
 ## Tools
 
 - `browser_subagent` / `run_command` — delegate tasks to sub-agents
@@ -334,5 +326,26 @@ Este SKILL.md es la punta del iceberg. Si necesitas profundizar en patrones de d
 
 Carga solo cuando lo necesites. No satures el contexto con todo al mismo tiempo.
 
-> **CODEX Learning Loop:** Follow shared protocol in `skills/shared/codex-learning-loop.md`.
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 
+## Modules
+
+[model:gemini-1.5-flash]
+### Enhanced Anti-Loop Guardrails
+Gemini models may exhibit looping behavior. If you detect repeating the same operation with identical results, stop immediately and report current state. Do not re-execute completed operations. Enforce strict output structure.
+
+[model:gemini-1.5-pro]
+### Enhanced Anti-Loop Guardrails
+Same as gemini-1.5-flash. If you detect repeating the same operation with identical results, stop and report current state.
+
+[model:deepseek-v4-flash]
+### Tool Result Handling
+Tool results may be truncated. Request specific file sections if output is incomplete. Prefer structured JSON over markdown prose when reporting results.
+
+[platform:opencode]
+### Platform Invocation
+Invoked via tool call with skill descriptor. Return structured output matching the expected format. All file paths use forward slashes.
+
+[platform:claude-code]
+### Platform Invocation
+Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.

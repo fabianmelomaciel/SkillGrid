@@ -1,0 +1,151 @@
+{
+  "version": "1.0.0",
+  "description": "Capability registry for AI models supported by SkillGrid. Used by the skill loader to inject model-appropriate modules and apply graceful degradation.",
+  "models": {
+    "claude-sonnet-4.6": {
+      "provider": "anthropic",
+      "platforms": ["opencode"],
+      "context_window": 200000,
+      "thinking": true,
+      "supports": ["tools", "vision", "code-execution", "parallel-tool-calls", "extended-thinking"],
+      "quirks": ["respects-xml-tags", "follows-last-instruction", "structured-output-native"],
+      "anti_patterns": ["recursive-self-eval-loops", "overly-verbose-with-open-ended-prompts"],
+      "token_cost_per_1M_input": 3.00,
+      "token_cost_per_1M_output": 15.00
+    },
+    "claude-3.5-sonnet": {
+      "provider": "anthropic",
+      "platforms": ["claude-code", "cursor"],
+      "context_window": 200000,
+      "thinking": false,
+      "supports": ["tools", "vision", "code-execution", "parallel-tool-calls"],
+      "quirks": ["respects-xml-tags", "follows-last-instruction"],
+      "anti_patterns": ["overly-cautious-with-code-changes", "verbose-error-explanations"],
+      "token_cost_per_1M_input": 3.00,
+      "token_cost_per_1M_output": 15.00
+    },
+    "claude-haiku-4.5": {
+      "provider": "anthropic",
+      "platforms": ["opencode"],
+      "context_window": 200000,
+      "thinking": false,
+      "supports": ["tools", "vision"],
+      "quirks": ["faster-but-less-thorough", "good-for-simple-tasks"],
+      "anti_patterns": ["may-skip-steps-on-complex-tasks"],
+      "token_cost_per_1M_input": 1.00,
+      "token_cost_per_1M_output": 5.00
+    },
+    "deepseek-v4-flash": {
+      "provider": "deepseek",
+      "platforms": ["opencode"],
+      "context_window": 128000,
+      "thinking": false,
+      "supports": ["tools"],
+      "quirks": ["efficient-with-concise-prompts", "good-code-generation"],
+      "anti_patterns": ["may-ignore-negative-instructions", "less-reliable-with-tool-calling"],
+      "token_cost_per_1M_input": 0.50,
+      "token_cost_per_1M_output": 2.00
+    },
+    "gemini-1.5-flash": {
+      "provider": "google",
+      "platforms": ["antigravity"],
+      "context_window": 128000,
+      "thinking": false,
+      "supports": ["tools", "vision", "code-execution"],
+      "quirks": ["length-bias-toward-verbose", "fastest-response"],
+      "anti_patterns": ["repetition-loops-with-step-by-step", "struggles-with-deeply-nested-xml"],
+      "token_cost_per_1M_input": 0.075,
+      "token_cost_per_1M_output": 0.30
+    },
+    "gemini-1.5-pro": {
+      "provider": "google",
+      "platforms": ["antigravity", "cursor"],
+      "context_window": 128000,
+      "thinking": false,
+      "supports": ["tools", "vision", "code-execution"],
+      "quirks": ["better-reasoning-than-flash", "still-verbose"],
+      "anti_patterns": ["repetition-loops", "over-explains-simple-concepts"],
+      "token_cost_per_1M_input": 1.25,
+      "token_cost_per_1M_output": 5.00
+    },
+    "gemini-2.5-pro": {
+      "provider": "google",
+      "platforms": ["antigravity-ide"],
+      "context_window": 1048576,
+      "thinking": true,
+      "supports": ["tools", "vision", "code-execution", "audio"],
+      "quirks": ["excellent-reasoning", "very-large-context", "thinking-mode-available"],
+      "anti_patterns": ["may-overthink-simple-tasks", "verbose-thinking-output"],
+      "token_cost_per_1M_input": 1.25,
+      "token_cost_per_1M_output": 10.00
+    },
+    "gpt-4o": {
+      "provider": "openai",
+      "platforms": ["cursor", "github-copilot"],
+      "context_window": 128000,
+      "thinking": false,
+      "supports": ["tools", "vision", "code-execution"],
+      "quirks": ["good-instruction-following", "structured-output-support"],
+      "anti_patterns": ["may-ignore-negative-instructions", "can-be-verbose"],
+      "token_cost_per_1M_input": 2.50,
+      "token_cost_per_1M_output": 10.00
+    },
+    "multi-model": {
+      "provider": "unknown",
+      "platforms": ["open-webui"],
+      "context_window": 128000,
+      "thinking": false,
+      "supports": ["tools"],
+      "quirks": ["varies-by-user-configuration"],
+      "anti_patterns": ["unknown-until-configured"],
+      "token_cost_per_1M_input": 0,
+      "token_cost_per_1M_output": 0
+    }
+  },
+  "platforms": {
+    "opencode": {
+      "default_model": "claude-sonnet-4.6",
+      "fallback_model": "deepseek-v4-flash",
+      "supports_skills": true,
+      "supports_agents": true
+    },
+    "antigravity": {
+      "default_model": "gemini-1.5-flash",
+      "fallback_model": "gemini-1.5-pro",
+      "supports_skills": true,
+      "supports_agents": false
+    },
+    "antigravity-ide": {
+      "default_model": "gemini-2.5-pro",
+      "fallback_model": "gemini-1.5-pro",
+      "supports_skills": true,
+      "supports_agents": false
+    },
+    "claude-code": {
+      "default_model": "claude-3.5-sonnet",
+      "fallback_model": null,
+      "supports_skills": true,
+      "supports_agents": false
+    },
+    "cursor": {
+      "default_model": "gpt-4o",
+      "fallback_model": "claude-3.5-sonnet",
+      "supports_skills": false,
+      "supports_agents": false,
+      "supports_rules": true
+    },
+    "github-copilot": {
+      "default_model": "gpt-4o",
+      "fallback_model": null,
+      "supports_skills": false,
+      "supports_agents": false,
+      "supports_instructions": true
+    },
+    "open-webui": {
+      "default_model": "multi-model",
+      "fallback_model": null,
+      "supports_skills": true,
+      "supports_agents": false
+    }
+  }
+}
