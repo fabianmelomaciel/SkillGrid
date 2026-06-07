@@ -368,9 +368,48 @@ setup_project_codegraph() {
         echo "  Inicializando/Sincronizando: codegraph en $PROJECT_DIR"
         local OLD_PWD=$(pwd)
         cd "$PROJECT_DIR"
+
+        local MARKER_FILE="$CODEGRAPH_DIR/skillgrid-sync.json"
+        local TIMESTAMPS_FILE="$CODEGRAPH_DIR/timestamps.json"
+
+        local GIT_HEAD=""
+        local GIT_CLEAN=""
+        if command -v git &> /dev/null && [ -d "$PROJECT_DIR/.git" ]; then
+            GIT_HEAD=$(git rev-parse HEAD 2>/dev/null | tr -d '\r\n' || true)
+            if [ -z "$(git status --porcelain 2>/dev/null | tr -d '\r\n')" ]; then
+                GIT_CLEAN="true"
+            else
+                GIT_CLEAN="false"
+            fi
+        fi
+
+        local SKIP_SYNC="false"
+        if [ -n "$GIT_HEAD" ] && [ "$GIT_CLEAN" = "true" ] && [ -f "$MARKER_FILE" ]; then
+            local LAST_HEAD
+            local LAST_CLEAN
+            LAST_HEAD=$(grep -o '"git_head"[ ]*:[ ]*"[^"]*"' "$MARKER_FILE" 2>/dev/null | head -n 1 | sed 's/.*"git_head"[ ]*:[ ]*"\([^"]*\)".*/\1/' || true)
+            LAST_CLEAN=$(grep -o '"git_clean"[ ]*:[ ]*\(true\|false\)' "$MARKER_FILE" 2>/dev/null | head -n 1 | sed 's/.*"git_clean"[ ]*:[ ]*\(true\|false\).*/\1/' || true)
+            if [ "$LAST_HEAD" = "$GIT_HEAD" ] && [ "$LAST_CLEAN" = "true" ]; then
+                SKIP_SYNC="true"
+            fi
+        fi
+
         if codegraph init &>/dev/null; then
-            codegraph sync &>/dev/null || true
-            echo -e "  [+] Index de CodeGraph completado y almacenado en .codegraph/"
+            if [ "$SKIP_SYNC" = "true" ]; then
+                echo "  [+] CodeGraph ya sincronizado (git limpio, HEAD sin cambios). Omitiendo sync."
+            else
+                codegraph sync &>/dev/null || true
+                echo -e "  [+] Index de CodeGraph completado y almacenado en .codegraph/"
+            fi
+
+            local NOW_UTC
+            NOW_UTC=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+            cat > "$MARKER_FILE" << EOF
+{"version":1,"project_path":"${PROJECT_DIR}","synced_at":"${NOW_UTC}","git_head":"${GIT_HEAD}","git_clean":${GIT_CLEAN:-null}}
+EOF
+            cat > "$TIMESTAMPS_FILE" << EOF
+{"version":1,"generated_at":"${NOW_UTC}","file_count":null,"max_mtime_utc":null}
+EOF
         else
             echo -e "  \033[0;31m[!] Error al ejecutar codegraph\033[0m"
         fi
