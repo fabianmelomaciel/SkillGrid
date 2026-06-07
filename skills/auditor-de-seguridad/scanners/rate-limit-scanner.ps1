@@ -5,6 +5,7 @@ param(
 
 $findings = New-Object System.Collections.Generic.List[hashtable]
 $id = 0
+$looksWebApp = $false
 
 function AddFinding($sev, $file, $finding, $remediation) {
     $id++
@@ -20,11 +21,29 @@ function AddFinding($sev, $file, $finding, $remediation) {
 }
 
 # Check for rate limiting configs
+$packageJson = Join-Path -Path $ProjectPath -ChildPath "package.json"
+if (Test-Path -LiteralPath $packageJson) {
+    try {
+        $pj = Get-Content -LiteralPath $packageJson -Raw -ErrorAction Stop
+        if ($pj -match '"express"|"fastify"|"@nestjs/|\"next\"|\"nuxt\"|\"koa\"|\"hapi\"|\"sails\"') { $looksWebApp = $true }
+    } catch {}
+}
+$composerJson = Join-Path -Path $ProjectPath -ChildPath "composer.json"
+if (-not $looksWebApp -and (Test-Path -LiteralPath $composerJson)) {
+    try {
+        $cj = Get-Content -LiteralPath $composerJson -Raw -ErrorAction Stop
+        if ($cj -match '"laravel/|"symfony/|"slim/slim"|"cakephp/"|"codeigniter"') { $looksWebApp = $true }
+    } catch {}
+}
+
 $rateLimitFiles = @()
-$rateLimitFiles += Get-ChildItem -Path $ProjectPath -Filter "*.conf" -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
-$rateLimitFiles += Get-ChildItem -Path $ProjectPath -Filter "*nginx*" -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
-$rateLimitFiles += Get-ChildItem -Path $ProjectPath -Filter "*throttle*" -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
-$rateLimitFiles += Get-ChildItem -Path $ProjectPath -Filter "*ratelimit*" -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
+$rateLimitFiles += Get-ChildItem -Path $ProjectPath -Filter "*.conf" -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
+$rateLimitFiles += Get-ChildItem -Path $ProjectPath -Filter "*nginx*" -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
+$rateLimitFiles += Get-ChildItem -Path $ProjectPath -Filter "*throttle*" -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
+$rateLimitFiles += Get-ChildItem -Path $ProjectPath -Filter "*ratelimit*" -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
+
+if (-not $looksWebApp -and $rateLimitFiles.Count -gt 0) { $looksWebApp = $true }
+if (-not $looksWebApp) { return $findings | ConvertTo-Json -Depth 3 }
 
 if ($rateLimitFiles.Count -eq 0) {
     AddFinding "high" "$ProjectPath" "No rate limiting configuration found" "Add rate limiting to API endpoints. For nginx: limit_req_zone; for Express: express-rate-limit; for Django: django-ratelimit"
@@ -32,7 +51,7 @@ if ($rateLimitFiles.Count -eq 0) {
 
 # Check for auth endpoints without rate limiting
 $authFiles = @()
-$authFiles += Get-ChildItem -Path $ProjectPath -Include "*login*","*auth*","*register*","*signup*","*password*" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -in '.php','.py','.js','.ts','.java','.cs','.go','.rb' -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
+$authFiles += Get-ChildItem -Path $ProjectPath -Include "*login*","*auth*","*register*","*signup*","*password*" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -in '.php','.py','.js','.ts','.java','.cs','.go','.rb' -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
 
 foreach ($f in $authFiles) {
     $content = Get-Content -LiteralPath $f.FullName -Raw -ErrorAction SilentlyContinue
@@ -46,9 +65,9 @@ foreach ($f in $authFiles) {
 
 # Check for missing request size limits
 $serverFiles = @()
-$serverFiles += Get-ChildItem -Path $ProjectPath -Include "nginx.conf","httpd.conf","web.config","app.conf" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
+$serverFiles += Get-ChildItem -Path $ProjectPath -Include "nginx.conf","httpd.conf","web.config","app.conf" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
 if ($serverFiles.Count -eq 0) {
-    $serverFiles += Get-ChildItem -Path $ProjectPath -Include "*.conf","*.ini" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -match 'nginx|apache|php|uwsgi|gunicorn' -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
+    $serverFiles += Get-ChildItem -Path $ProjectPath -Include "*.conf","*.ini" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -match 'nginx|apache|php|uwsgi|gunicorn' -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
 }
 
 $hasSizeLimit = $false

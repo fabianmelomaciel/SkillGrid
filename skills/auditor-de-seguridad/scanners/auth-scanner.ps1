@@ -5,6 +5,7 @@ param(
 
 $findings = New-Object System.Collections.Generic.List[hashtable]
 $id = 0
+$hasAuthSurface = $false
 
 function AddFinding($sev, $file, $finding, $remediation) {
     $id++
@@ -22,12 +23,13 @@ function AddFinding($sev, $file, $finding, $remediation) {
 $codeExtensions = @('*.php', '*.py', '*.js', '*.ts', '*.jsx', '*.tsx', '*.java', '*.cs', '*.go', '*.rb', '*.rs', '*.kt', '*.swift')
 
 # Check for JWT usage and potential issues
-$jwtFiles = Get-ChildItem -Path $ProjectPath -Include $codeExtensions -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
+$jwtFiles = Get-ChildItem -Path $ProjectPath -Include $codeExtensions -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
 foreach ($f in $jwtFiles) {
     $content = Get-Content -LiteralPath $f.FullName -Raw -ErrorAction SilentlyContinue
     if (-not $content) { continue }
 
     if ($content -match 'jsonwebtoken|JWT|jwt\.') {
+        $hasAuthSurface = $true
         if ($content -match '"none"|algorithm.*none|algorithms.*none') {
             AddFinding "critical" "$($f.FullName)" "JWT 'none' algorithm detected" "Remove 'none' algorithm support. Always validate algorithm matches expected"
         }
@@ -48,20 +50,22 @@ foreach ($f in $jwtFiles) {
     if ($content -match 'bcrypt|Bcrypt|BCRYPT') { $hasBcrypt = $true }
     if ($content -match 'argon2|Argon2') { $hasArgon = $true }
     if ($content -match 'md5|sha1|SHA1|MD5' -and $content -match 'password|passwd|pwd|hash') {
+        $hasAuthSurface = $true
         $hasWeakHash = $true
         AddFinding "critical" "$($f.FullName)" "Weak password hashing (MD5/SHA1) detected" "Use bcrypt or argon2 for password hashing. Never use MD5 or SHA1"
     }
 }
-if (-not $hasBcrypt -and -not $hasArgon) {
+if ($hasAuthSurface -and -not $hasBcrypt -and -not $hasArgon) {
     AddFinding "high" "$ProjectPath" "No bcrypt/argon2 password hashing detected" "Implement bcrypt or argon2 for password storage. These are resistant to brute force"
 }
 
 # Check for session config
-$sessionFiles = Get-ChildItem -Path $ProjectPath -Include "*.php","*.py","*.js","*.ts","*.go","*.rb" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
+$sessionFiles = Get-ChildItem -Path $ProjectPath -Include "*.php","*.py","*.js","*.ts","*.go","*.rb" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
 foreach ($f in $sessionFiles) {
     $content = Get-Content -LiteralPath $f.FullName -Raw -ErrorAction SilentlyContinue
     if (-not $content) { continue }
     if ($content -match 'session_start|session\.config|Session\(\)|session_set|session_regenerate') {
+        $hasAuthSurface = $true
         if ($content -notmatch 'httponly|http_only|HttpOnly|secure.*true') {
             AddFinding "high" "$($f.FullName)" "Session cookies without httpOnly/secure flags" "Set httpOnly and secure flags on session cookies. Add SameSite=Lax"
         }
@@ -72,11 +76,12 @@ foreach ($f in $sessionFiles) {
 }
 
 # Check for cookie configuration
-$cookieConfigs = Get-ChildItem -Path $ProjectPath -Include "*.php","*.py","*.js","*.ts","*.go" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
+$cookieConfigs = Get-ChildItem -Path $ProjectPath -Include "*.php","*.py","*.js","*.ts","*.go" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
 foreach ($f in $cookieConfigs) {
     $content = Get-Content -LiteralPath $f.FullName -Raw -ErrorAction SilentlyContinue
     if (-not $content) { continue }
     if ($content -match 'setcookie|set_cookie|Set-Cookie|cookie\.') {
+        $hasAuthSurface = $true
         if ($content -notmatch 'samesite|SameSite|same_site') {
             AddFinding "medium" "$($f.FullName)" "Cookies without SameSite attribute" "Add SameSite=Lax or SameSite=Strict to all cookies"
         }
@@ -91,7 +96,7 @@ foreach ($f in $jwtFiles) {
         $hasMfa = $true
     }
 }
-if (-not $hasMfa) {
+if ($hasAuthSurface -and -not $hasMfa) {
     AddFinding "medium" "$ProjectPath" "No MFA/2FA implementation detected" "Consider implementing multi-factor authentication for admin accounts"
 }
 

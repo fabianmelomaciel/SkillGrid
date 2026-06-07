@@ -130,21 +130,26 @@ if (Test-Path -LiteralPath $templateFile) {
     $findingsHtml = ""
     $idIndex = 1
     foreach ($f in $allFindings) {
+        $severityRaw = [string]$f.severity
+        if ([string]::IsNullOrWhiteSpace($severityRaw)) { $severityRaw = "unknown" }
+
         $badgeClass = "badge-low"
-        if ($f.severity -eq "critical") { $badgeClass = "badge-critical" }
-        elseif ($f.severity -eq "high") { $badgeClass = "badge-high" }
-        elseif ($f.severity -eq "medium") { $badgeClass = "badge-medium" }
+        if ($severityRaw -eq "critical") { $badgeClass = "badge-critical" }
+        elseif ($severityRaw -eq "high") { $badgeClass = "badge-high" }
+        elseif ($severityRaw -eq "medium") { $badgeClass = "badge-medium" }
         
-        $severityText = $f.severity.Substring(0,1).ToUpper() + $f.severity.Substring(1)
-        $escapedSnippet = Escape-Html $f.code_snippet
+        $severityText = $severityRaw.Substring(0,1).ToUpper() + $severityRaw.Substring(1)
+        $escapedSnippet = Escape-Html ([string]$f.code_snippet)
         
-        $escapedFile = Escape-Html $f.file
-        $fileHref = $f.file
-        if ($f.file -match '^(.*):(\d+)$') {
+        $escapedFile = Escape-Html ([string]$f.file)
+        $fileHref = [string]$f.file
+        if ($fileHref -match '^(.*):(\d+)$') {
             $fileHref = $Matches[1]
         }
-        $absoluteFileHref = $fileHref
-        if (-not [string]::IsNullOrEmpty($fileHref) -and -not [System.IO.Path]::IsPathRooted($fileHref)) {
+        $absoluteFileHref = $ProjectPath
+        if (-not [string]::IsNullOrWhiteSpace($fileHref) -and [System.IO.Path]::IsPathRooted($fileHref)) {
+            $absoluteFileHref = $fileHref
+        } elseif (-not [string]::IsNullOrWhiteSpace($fileHref)) {
             $absoluteFileHref = Join-Path -Path $ProjectPath -ChildPath $fileHref
         }
         $fileUri = $absoluteFileHref.Replace("\", "/")

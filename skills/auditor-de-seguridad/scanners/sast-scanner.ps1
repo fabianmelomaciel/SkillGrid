@@ -129,6 +129,9 @@ $files | ForEach-Object {
                 $contextStart = [Math]::Max(0, $m.Index - 30)
                 $contextLen = [Math]::Min(60, $content.Length - $contextStart)
                 $snippet = ($content.Substring($contextStart, $contextLen) -replace "`n", " ").Trim()
+                if ($check.name -like "SQL Injection*" -and $ext -in @('.js', '.ts', '.jsx', '.tsx')) {
+                    if ($snippet -match '\$pdo->|new\s+PDO|PDO::|phpCode\s*=') { continue }
+                }
                 $findings += @{
                     id = "SAST-$(($findings.Count + 1).ToString('D3'))"
                     severity = $check.severity; category = "sast"
