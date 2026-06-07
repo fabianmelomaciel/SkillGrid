@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-skills:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate skill frontmatter
+        run: node scripts/validate-skills.js
+
+      - name: Run skill structure tests
+        run: node tests/skills.test.js
+
+      - name: Validate models.json
+        run: node -e "const m=JSON.parse(require('fs').readFileSync('models.json','utf-8'));if(!m.models||!m.platforms)process.exit(1);console.log('models.json: ' + Object.keys(m.models).length + ' models, ' + Object.keys(m.platforms).length + ' platforms')"
+
+      - name: Test PowerShell merge loader
+        shell: pwsh
+        run: |
+          $tmp = Join-Path $env:RUNNER_TEMP "test-merged.md"
+          & .\scripts\merge-skill.ps1 -SkillPath .\skills\auditor-de-seguridad\SKILL.md -Model "deepseek-v4-flash" -OutputPath $tmp
+          if (-not (Select-String -Path $tmp -Pattern "\[model:deepseek-v4-flash\]" -SimpleMatch -Quiet)) {
+            Write-Error "Loader did not inject matching module"
+            exit 1
+          }
+          Write-Host "Loader test passed"
+
+      - name: Test merge loader stripped mode
+        shell: pwsh
+        run: |
+          $tmp = Join-Path $env:RUNNER_TEMP "test-stripped.md"
+          & .\scripts\merge-skill.ps1 -SkillPath .\skills\auditor-de-seguridad\SKILL.md -Degradation "stripped" -OutputPath $tmp
+          if (Select-String -Path $tmp -Pattern "## Modules" -SimpleMatch -Quiet) {
+            Write-Error "Stripped mode should not include ## Modules"
+            exit 1
+          }
+          Write-Host "Stripped mode test passed"
+
+      - name: Test merge loader platform resolution
+        shell: pwsh
+        run: |
+          $tmp = Join-Path $env:RUNNER_TEMP "test-platform.md"
+          & .\scripts\merge-skill.ps1 -SkillPath .\skills\auditor-de-seguridad\SKILL.md -Platform "antigravity" -ModelsJson .\models.json -OutputPath $tmp
+          if (-not (Select-String -Path $tmp -Pattern "\[model:gemini-1.5-flash\]" -SimpleMatch -Quiet)) {
+            Write-Error "Loader did not resolve antigravity -> gemini-1.5-flash"
+            exit 1
+          }
+          Write-Host "Platform resolution test passed"
+
+      - name: Verify all skills are parseable by loader
+        shell: pwsh
+        run: |
+          $errors = 0
+          Get-ChildItem -Recurse -Filter "SKILL.md" -Path .\skills | ForEach-Object {
+            $tmp = Join-Path $env:RUNNER_TEMP "verify_$($_.Name)"
+            & .\scripts\merge-skill.ps1 -SkillPath $_.FullName -OutputPath $tmp 2>&1 | Out-Null
+            if ($LASTEXITCODE -ne 0) {
+              Write-Error "Loader failed on: $($_.FullName)"
+              $errors++
+            }
+          }
+          if ($errors -gt 0) { exit 1 }
+          Write-Host "All skills parseable by loader"
+
+  validate-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate skill frontmatter
+        run: node scripts/validate-skills.js
+
+      - name: Run skill structure tests
+        run: node tests/skills.test.js
+
+      - name: Test bash merge loader
+        run: |
+          chmod +x scripts/merge-skill.sh
+          scripts/merge-skill.sh skills/auditor-de-seguridad/SKILL.md "" "claude-code" models.json /tmp/test-bash.md
+          if ! grep -q "\[platform:claude-code\]" /tmp/test-bash.md; then
+            echo "Bash loader did not inject matching module"
+            exit 1
+          fi
+          echo "Bash loader test passed"
