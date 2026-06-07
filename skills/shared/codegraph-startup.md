@@ -9,14 +9,18 @@ To minimize token usage and avoid redundant exploration/research scans across th
 2. **Verify Graph Existence & Auto-Create / Auto-Sync**:
    - Check if the `.codegraph/` directory exists in the active project directory.
    - **CRITICAL DIRECTIVE**: If the `.codegraph/` directory or index is missing, you MUST automatically initialize it by executing `codegraph init` and then `codegraph sync` in the project root directory. Do NOT proceed with codebase exploration until the CodeGraph index is generated.
-    - **CRITICAL DIRECTIVE**: If the `.codegraph/` directory already exists, you MUST keep it up-to-date, but avoid redundant rescans:
+    - **CRITICAL DIRECTIVE**: If the `.codegraph/` directory already exists, you MUST keep it up-to-date, but avoid redundant rescans (token economy):
+      - Decide using only cheap signals (filesystem + optional git metadata). Do NOT read source files just to decide.
+      - If `.codegraph/skillgrid-sync.json` exists and its `synced_at` is recent (e.g., within ~6h), skip `codegraph sync` unless there is a strong stale signal.
+      - Strong stale signals (run sync):
+        - git-clean but `git rev-parse HEAD` differs from `skillgrid-sync.json.git_head`
+        - git-dirty and last sync is older than the cooldown (avoid syncing on every single skill start while editing)
       - If `.codegraph/skillgrid-sync.json` exists AND the repo is git-clean AND the current `git rev-parse HEAD` matches `skillgrid-sync.json.git_head`, skip `codegraph sync` (0 tokens spent).
-      - Otherwise, run `codegraph sync` at startup.
 
 ### Incremental Sync Enhancement
 After the initial sync, track file timestamps to avoid full rescans:
 - If `.codegraph/timestamps.json` exists, use it as an additional local signal to decide whether to skip sync when nothing changed.
-- If no files changed (or git-clean + same HEAD), skip sync entirely (0 tokens spent).
+- If no files changed (or git-clean + same HEAD, or within cooldown), skip sync entirely (0 tokens spent).
 
 3. **Prioritize Graph Context**:
    - Query the CodeGraph index or read generated summary reports at the beginning of any project analysis to understand module relationships, dependencies, and code structure.

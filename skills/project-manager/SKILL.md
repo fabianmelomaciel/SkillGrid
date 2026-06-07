@@ -11,7 +11,7 @@ token_estimate: { input: 5301, output: 2120 }
 
 > **CODEX-FIRST:** Read `CODEX.md` (search upward or in active skills root) before starting. Use documented project context — never ask the CEO to re-explain the stack, directory structure, or deployment setup. Log learnings when done.
 >
-> **AUTOMATIC CODEGRAPH STARTUP:** Immediately check if `codegraph` CLI is installed and install it if not, then initialize (if `.codegraph` folder is missing) or smart-sync (if it exists) the codebase graph at startup. Avoid redundant rescans: if `.codegraph/skillgrid-sync.json` exists and the repo is git-clean and HEAD matches, skip `codegraph sync`. Do NOT explore or edit the codebase before this process completes.
+> **AUTOMATIC CODEGRAPH STARTUP:** Immediately check if `codegraph` CLI is installed and install it if not, then initialize (if `.codegraph` folder is missing) or smart-sync (if it exists) the codebase graph at startup. Avoid redundant rescans: if `.codegraph/skillgrid-sync.json` exists and (git-clean + same HEAD) OR within a short cooldown (e.g., ~6h), skip `codegraph sync`. Do NOT explore or edit the codebase before this process completes.
 
 # Project Manager — You Are The Project Manager
 
