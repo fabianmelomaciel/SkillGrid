@@ -400,9 +400,68 @@ function Setup-ProjectCodeGraph($projectDir) {
         $oldPwd = $pwd
         try {
             Set-Location -Path $projectDir
+            $codegraphDir = Join-Path -Path $projectDir -ChildPath ".codegraph"
+            $syncMarkerPath = Join-Path -Path $codegraphDir -ChildPath "skillgrid-sync.json"
+            $timestampsPath = Join-Path -Path $codegraphDir -ChildPath "timestamps.json"
+
+            $marker = $null
+            if (Test-Path -LiteralPath $syncMarkerPath) {
+                try {
+                    $marker = Get-Content -LiteralPath $syncMarkerPath -Raw -Encoding utf8 | ConvertFrom-Json
+                } catch {
+                    $marker = $null
+                }
+            }
+
+            $gitHead = $null
+            $gitClean = $null
+            if ((Get-Command git -ErrorAction SilentlyContinue) -and (Test-Path -LiteralPath (Join-Path -Path $projectDir -ChildPath ".git"))) {
+                try { $gitHead = (& git rev-parse HEAD 2>$null).Trim() } catch { $gitHead = $null }
+                try {
+                    $gitStatus = (& git status --porcelain 2>$null)
+                    $gitClean = [string]::IsNullOrWhiteSpace($gitStatus)
+                } catch {
+                    $gitClean = $null
+                }
+            }
+
+            $skipSync = $false
+            if ($marker -and $gitHead -and ($gitClean -eq $true) -and ($marker.git_head -eq $gitHead) -and ($marker.git_clean -eq $true)) {
+                $skipSync = $true
+            }
+
             & codegraph init *>$null
-            & codegraph sync *>$null
-            Write-Host "  [+] Index de CodeGraph completado y almacenado en .codegraph/" -ForegroundColor Green
+            if ($skipSync) {
+                Write-Host "  [+] CodeGraph ya sincronizado (git limpio, HEAD sin cambios). Omitiendo sync." -ForegroundColor Gray
+            } else {
+                & codegraph sync *>$null
+                Write-Host "  [+] Index de CodeGraph completado y almacenado en .codegraph/" -ForegroundColor Green
+            }
+
+            $files = Get-ChildItem -Path $projectDir -Recurse -File -ErrorAction SilentlyContinue | Where-Object {
+                $_.FullName -notmatch "\\(\.git|node_modules|vendor|\.codegraph|dist|build|temp|tmp)\\?"
+            }
+            $maxMtimeUtc = $null
+            if ($files -and $files.Count -gt 0) {
+                $maxMtimeUtc = ($files | Measure-Object -Property LastWriteTimeUtc -Maximum).Maximum
+            }
+
+            $markerOut = [PSCustomObject]@{
+                version = 1
+                project_path = $projectDir
+                synced_at = (Get-Date -Format "yyyy-MM-ddTHH:mm:sszzz")
+                git_head = $gitHead
+                git_clean = $gitClean
+            }
+            ($markerOut | ConvertTo-Json -Depth 5) | Out-File -FilePath $syncMarkerPath -Encoding utf8 -Force
+
+            $timestampsOut = [PSCustomObject]@{
+                version = 1
+                generated_at = (Get-Date -Format "yyyy-MM-ddTHH:mm:sszzz")
+                file_count = if ($files) { $files.Count } else { 0 }
+                max_mtime_utc = if ($maxMtimeUtc) { $maxMtimeUtc.ToString("o") } else { $null }
+            }
+            ($timestampsOut | ConvertTo-Json -Depth 5) | Out-File -FilePath $timestampsPath -Encoding utf8 -Force
         } catch {
             Write-Host "  [!] Error al ejecutar codegraph: $($_.Exception.Message)" -ForegroundColor Red
         } finally {
@@ -428,8 +487,11 @@ function Setup-ProjectCodeGraph($projectDir) {
         # Obtener todos los archivos del proyecto (excluyendo dependencias)
         $totalBytes = 0
         $fileCount = 0
-        $sourceFiles = Get-ChildItem -Path $projectDir -Recurse -File -ErrorAction SilentlyContinue | Where-Object {
-            $_.FullName -notmatch "\\(\.git|node_modules|vendor|\.codegraph|dist|build|temp|tmp)\\?"
+        $sourceFiles = $files
+        if (-not $sourceFiles) {
+            $sourceFiles = Get-ChildItem -Path $projectDir -Recurse -File -ErrorAction SilentlyContinue | Where-Object {
+                $_.FullName -notmatch "\\(\.git|node_modules|vendor|\.codegraph|dist|build|temp|tmp)\\?"
+            }
         }
         foreach ($file in $sourceFiles) {
             $totalBytes += $file.Length

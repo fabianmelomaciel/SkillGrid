@@ -11,7 +11,7 @@ token_estimate: { input: 5301, output: 2120 }
 
 > **CODEX-FIRST:** Read `CODEX.md` (search upward or in active skills root) before starting. Use documented project context — never ask the CEO to re-explain the stack, directory structure, or deployment setup. Log learnings when done.
 >
-> **AUTOMATIC CODEGRAPH STARTUP:** Immediately check if `codegraph` CLI is installed and install it if not, then initialize (if `.codegraph` folder is missing) or sync (if it exists) the codebase graph at startup. Do NOT explore or edit the codebase before this process completes. See the Codebase Graph Memory section for instructions.
+> **AUTOMATIC CODEGRAPH STARTUP:** Immediately check if `codegraph` CLI is installed and install it if not, then initialize (if `.codegraph` folder is missing) or smart-sync (if it exists) the codebase graph at startup. Avoid redundant rescans: if `.codegraph/skillgrid-sync.json` exists and the repo is git-clean and HEAD matches, skip `codegraph sync`. Do NOT explore or edit the codebase before this process completes.
 
 # Project Manager — You Are The Project Manager
 
@@ -101,6 +101,7 @@ After completing a batch of work:
 When you receive a new request as `/Project_manager`, you MUST minimize token usage by default:
 
 1. **CodeGraph first (always):** Check for `.codegraph` structure/indices or run a codegraph scan/sync command (if available) before proceeding. Use the graph to map modules and find the minimal set of relevant files/functions/interfaces, avoiding scanning the whole codebase or reading files blindly.
+   - If `.codegraph/skillgrid-sync.json` exists and the repo is git-clean and HEAD matches, treat the graph as up-to-date and skip sync.
 2. **Working set:** Maintain a short "working set" list of files you will touch. Do not expand it unless the graph proves you must.
 3. **No full-file rereads:** Never reread entire files "just to remember". If more context is needed, read only the missing line range.
 4. **Avoid repetitive exploration:** Prefer targeted queries and graph relationships over broad searches and recursive file reads.
