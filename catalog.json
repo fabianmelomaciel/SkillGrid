@@ -33,7 +33,7 @@
     },
     {
       "name": "auditor-de-marketing",
-      "description": "Use to audit website growth, on-page SEO, schema markup, AI search optimization (AEO/GEO), programmatic SEO, social sharing cards (OpenGraph), readability, copy quality, CRO, and CTA conversion.",
+      "description": "Use to audit website growth, on-page SEO, schema markup, AI search optimization (AEO/GEO), programmatic SEO, social sharing cards (OpenGraph), readability, copy quality, AI writing detection (30 patterns), CRO, and CTA conversion.",
       "category": "agent",
       "status": "stable",
       "risk_level": "safe"

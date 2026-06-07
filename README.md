@@ -162,7 +162,7 @@ Agentes que se comportan como profesionales con roles definidos:
 | `audit-loop` | **Follow-up de auditorías.** Clasifica hallazgos, aplica fixes seguros automáticamente, pide OK para los sensibles, re-audita hasta 3 veces |
 | `agente-devops` | Diseña y audita Dockerfiles y pipelines CI/CD seguros. Alineado con IEEE 730 e ISO 27001 |
 | `agente-ideas` | **Deliberación y consenso.** Resuelve decisiones altamente complejas o ambiguas ejecutando un consejo de 3 etapas (propuestas en paralelo, revisión anónima cruzada y síntesis final) |
-| `auditor-de-marketing` | Audita SEO on-page, OpenGraph, readability y CTAs de conversión |
+| `auditor-de-marketing` | Audita SEO on-page, schema markup, AEO/GEO, programmatic SEO, AI writing (30 patrones), copy quality, OpenGraph, readability y CRO |
 | `optimizador-finops` | Analiza consumo de tokens, comprime prompts, detecta llamadas redundantes a APIs |
 | `project-manager` | Escucha al CEO, planifica, delega a agentes especializados, revisa resultados y reporta |
 | `gestor-documental` | Formatea documentación técnica y académica (APA 7ª ed., ISO 29148, ISO 29119) |
@@ -227,8 +227,8 @@ Tú: "Audita la seguridad del proyecto"
 
 ```
 Tú: "Audita el SEO y marketing del sitio"
-  → auditor-de-marketing → 8 categorías: schema, AEO/GEO, programmatic SEO,
-    copy quality, CRO, OpenGraph, readability, competitor landscape
+  → auditor-de-marketing → 9 categorías: schema, AEO/GEO, programmatic SEO,
+    AI writing (30 patrones), copy quality, CRO, OpenGraph, readability
   → audit-loop → repara meta tags, schemas, OpenGraph automáticamente
   → Genera dashboard HTML interactivo con scores y recomendaciones
 ```

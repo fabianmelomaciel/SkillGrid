@@ -42,12 +42,12 @@
     },
     "auditor-de-marketing": {
       "name": "auditor-de-marketing",
-      "description": "Use to audit website growth, on-page SEO, schema markup, AI search optimization (AEO/GEO), programmatic SEO, social sharing cards (OpenGraph), readability, copy quality, CRO, and CTA conversion.",
+      "description": "Use to audit website growth, on-page SEO, schema markup, AI search optimization (AEO/GEO), programmatic SEO, social sharing cards (OpenGraph), readability, copy quality, AI writing detection (30 patterns), CRO, and CTA conversion.",
       "category": "agent",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 3820, "output": 1528 },
-      "cost_tier": "medium",
+      "token_estimate": { "input": 5320, "output": 2128 },
+      "cost_tier": "high",
       "invokes": ["audit-loop"]
     },
     "auditor-de-seguridad": {
