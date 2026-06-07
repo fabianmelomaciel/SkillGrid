@@ -1,7 +1,0 @@
-.codegraph/
-.cursor/
-reports/
-.env
-.env.local
-.env.*.local
-node_modules/
