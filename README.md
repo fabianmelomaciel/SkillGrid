@@ -197,6 +197,63 @@ Combinaciones pre-diseñadas para tareas complejas:
 
 ---
 
+## 🚀 Quick Start Examples
+
+Ejemplos de conversaciones reales con tu agente usando SkillGrid:
+
+### Feature completa (de principio a fin)
+
+```
+Tú: "Agrega un modo oscuro a mi app React"
+  → brainstorming activa → define alcance, trade-offs, UX
+  → spec-driven-development → documenta requerimientos
+  → writing-plans → descompone en tareas verticales
+  → incremental-implementation → implementa slice por slice
+  → requesting-code-review → checklist antes de mergear
+  → finishing-a-development-branch → decide merge/PR/cleanup
+```
+
+### Auditoría de seguridad + reparación automática
+
+```
+Tú: "Audita la seguridad del proyecto"
+  → auditor-de-seguridad → escanea 12 categorías (secrets, SAST, OWASP, etc.)
+  → audit-loop → clasifica findings: 🟢 auto-fix, 🟡 requiere OK, 🔴 no tocar
+  → CEO revisa plan → audit-loop ejecuta fixes seguros
+  → Re-audita hasta 3 iteraciones o hasta que pase
+```
+
+### Marketing + SEO completo
+
+```
+Tú: "Audita el SEO y marketing del sitio"
+  → auditor-de-marketing → 8 categorías: schema, AEO/GEO, programmatic SEO,
+    copy quality, CRO, OpenGraph, readability, competitor landscape
+  → audit-loop → repara meta tags, schemas, OpenGraph automáticamente
+  → Genera dashboard HTML interactivo con scores y recomendaciones
+```
+
+### Assets visuales + diseño UI
+
+```
+Tú: "Necesito favicon, OG image y rediseñar la landing"
+  → creativo-visual → genera favicon multi-resolución, OG 1200×630,
+    PWA manifest, emoji suggestions, auto-integración con framework
+  → impeccable-design-taste → audita tipografía, color, espaciado, WCAG
+  → emil-kowalski-design → animaciones ≤300ms, micro-interacciones
+```
+
+### Decisión arquitectónica compleja
+
+```
+Tú: "¿Debo migrar de REST a GraphQL?"
+  → agente-ideas → Fan-out (Pragmatic, Security, Performance)
+  → Peer Review anónimo → Chairman sintetiza
+  → project-manager ejecuta el plan aprobado por CEO
+```
+
+---
+
 ## 🧠 Sistema CODEX — Memoria persistente del agente
 
 Cada instalación genera un archivo `CODEX.md` **local y privado** (en `.gitignore`). Es la memoria de largo plazo del agente:
