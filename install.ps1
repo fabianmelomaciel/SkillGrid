@@ -170,7 +170,19 @@ if (language !== 'common') {
     }
 }
 
-function InstallToDir($target, $source) {
+function Get-NormalizedPlatformName($name) {
+    $map = @{
+        "opencode" = "opencode"
+        "antigravity" = "antigravity"
+        "antigravity (gemini)" = "antigravity"
+        "antigravity-ide" = "antigravity-ide"
+        "claude-code" = "claude-code"
+    }
+    if ($map.ContainsKey($name.ToLower())) { return $map[$name.ToLower()] }
+    return $name
+}
+
+function InstallToDir($target, $source, $platformName) {
     if (-not $source) { $source = $scriptDir }
     $targetPath = [System.IO.Path]::GetFullPath($target).TrimEnd('\').TrimEnd('/')
     $sourcePath = [System.IO.Path]::GetFullPath($source).TrimEnd('\').TrimEnd('/')
@@ -185,13 +197,34 @@ function InstallToDir($target, $source) {
     if (-not $isSkillRoot) {
         New-Item -ItemType Directory -Path (Join-Path -Path $target -ChildPath "skills") -Force | Out-Null
     }
+    $modelsJson = Join-Path -Path $scriptDir -ChildPath "models.json"
+    $mergeScript = Join-Path -Path $scriptDir -ChildPath "scripts\merge-skill.ps1"
+    $useLoader = $platformName -and (Test-Path -LiteralPath $mergeScript) -and (Test-Path -LiteralPath $modelsJson)
+    $normalizedPlatform = Get-NormalizedPlatformName $platformName
     $skillDirs = Get-ChildItem -LiteralPath "$source\skills" -Directory
     foreach ($skill in $skillDirs) {
         if ($isSkillRoot) { $destPath = Join-Path -Path $target -ChildPath $skill.Name }
         else { $destPath = Join-Path -Path "$target\skills" -ChildPath $skill.Name }
-        Write-Host "  Copiando: $($skill.Name)..." -ForegroundColor Gray
-        Remove-Item -LiteralPath $destPath -Recurse -Force -ErrorAction SilentlyContinue
-        Copy-Item -LiteralPath $skill.FullName -Destination $destPath -Recurse -Force
+        if ($useLoader) {
+            Write-Host "  Procesando: $($skill.Name) (para $normalizedPlatform)..." -ForegroundColor Gray
+            Remove-Item -LiteralPath $destPath -Recurse -Force -ErrorAction SilentlyContinue
+            New-Item -ItemType Directory -Path $destPath -Force | Out-Null
+            Get-ChildItem -LiteralPath $skill.FullName -Recurse -File | ForEach-Object {
+                $relPath = $_.FullName.Substring($skill.FullName.Length + 1)
+                $destFile = Join-Path -Path $destPath -ChildPath $relPath
+                $destFileDir = Split-Path $destFile -Parent
+                if (-not (Test-Path -LiteralPath $destFileDir)) { New-Item -ItemType Directory -Path $destFileDir -Force | Out-Null }
+                if ($_.Name -eq "SKILL.md") {
+                    & $mergeScript -SkillPath $_.FullName -Platform $normalizedPlatform -ModelsJson $modelsJson -OutputPath $destFile | Out-Null
+                } else {
+                    Copy-Item -LiteralPath $_.FullName -Destination $destFile -Force
+                }
+            }
+        } else {
+            Write-Host "  Copiando: $($skill.Name)..." -ForegroundColor Gray
+            Remove-Item -LiteralPath $destPath -Recurse -Force -ErrorAction SilentlyContinue
+            Copy-Item -LiteralPath $skill.FullName -Destination $destPath -Recurse -Force
+        }
     }
     if (-not $isSkillRoot) {
         Copy-Item -LiteralPath "$source\install.ps1" -Destination "$target\" -Force -ErrorAction SilentlyContinue
@@ -676,10 +709,11 @@ if (-not $TargetDir) {
         $TargetDir = "$env:USERPROFILE\.skillgrid"
     } elseif ($detected.Count -eq 1) {
         $TargetDir = $detected[0].Path
-        Write-Host "Detectado: $($detected[0].Name) -> $TargetDir" -ForegroundColor Green
+        $PlatformName = $detected[0].Name
+        Write-Host "Detectado: $PlatformName -> $TargetDir" -ForegroundColor Green
     } else {
         Write-Host "Detectados opencode y antigravity. Instalando en ambos..." -ForegroundColor Green
-        foreach ($d in $detected) { InstallToDir $d.Path $scriptDir }
+        foreach ($d in $detected) { InstallToDir $d.Path $scriptDir $d.Name }
         if (Test-Path -LiteralPath "$env:USERPROFILE\.config\opencode") {
             InstallToOpendirAgents $scriptDir
         }
@@ -692,7 +726,7 @@ if (-not $TargetDir) {
     }
 }
 
-InstallToDir $TargetDir $scriptDir
+InstallToDir $TargetDir $scriptDir $PlatformName
 
 if (-not ($PSBoundParameters.ContainsKey('TargetDir') -and $TargetDir) -and (Test-Path -LiteralPath "$env:USERPROFILE\.config\opencode")) {
     InstallToOpendirAgents $scriptDir

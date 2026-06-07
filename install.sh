@@ -542,6 +542,19 @@ else
     fi
 fi
 
+# Map target path to platform name for skill merging
+get_platform_name() {
+    local target_path="$1"
+    case "$target_path" in
+        *".config/opencode/skills"*) echo "opencode" ;;
+        *".config/antigravity/skills"*) echo "antigravity" ;;
+        *".gemini/config/skills"*) echo "antigravity" ;;
+        *".gemini/antigravity-ide/skills"*) echo "antigravity-ide" ;;
+        *".claude/skills"*) echo "claude-code" ;;
+        *) echo "" ;;
+    esac
+}
+
 COUNT=0
 INSTALLED_TARGETS=()
 for TARGET in "${DETECTED[@]}"; do
@@ -562,16 +575,38 @@ for TARGET in "${DETECTED[@]}"; do
         mkdir -p "$TARGET/skills"
     fi
 
-    # Copiar skills
+    PLATFORM=$(get_platform_name "$TARGET")
+    MERGE_SCRIPT="$SCRIPT_DIR/scripts/merge-skill.sh"
+    MODELS_JSON="$SCRIPT_DIR/models.json"
+
+    # Copiar skills (with optional platform-specific merging)
     for SKILL in "$SKILLS_DIR"/*/; do
         NAME=$(basename "$SKILL")
-        echo "  Copiando: $NAME..."
         if [ "$IS_SKILL_ROOT" -eq 1 ]; then
-            rm -rf "$TARGET/$NAME"
-            cp -rf "$SKILL" "$TARGET/$NAME"
+            SKILL_DEST="$TARGET/$NAME"
         else
-            rm -rf "$TARGET/skills/$NAME"
-            cp -rf "$SKILL" "$TARGET/skills/$NAME"
+            SKILL_DEST="$TARGET/skills/$NAME"
+        fi
+        rm -rf "$SKILL_DEST"
+        mkdir -p "$SKILL_DEST"
+
+        if [ -n "$PLATFORM" ] && [ -f "$MERGE_SCRIPT" ] && [ -f "$MODELS_JSON" ]; then
+            echo "  Procesando: $NAME (para $PLATFORM)..."
+            find "$SKILL" -type f | while read -r FILE; do
+                REL_PATH="${FILE#$SKILL}"
+                REL_PATH="${REL_PATH#/}"
+                DEST_FILE="$SKILL_DEST/$REL_PATH"
+                DEST_DIR=$(dirname "$DEST_FILE")
+                mkdir -p "$DEST_DIR"
+                if [ "$(basename "$FILE")" = "SKILL.md" ]; then
+                    bash "$MERGE_SCRIPT" "$FILE" "" "$PLATFORM" "$MODELS_JSON" "$DEST_FILE" 2>/dev/null
+                else
+                    cp "$FILE" "$DEST_FILE"
+                fi
+            done
+        else
+            echo "  Copiando: $NAME..."
+            cp -rf "$SKILL"/* "$SKILL_DEST/"
         fi
         if [ "$TARGET" == "${DETECTED[0]}" ]; then
             COUNT=$((COUNT + 1))
