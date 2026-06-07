@@ -7,8 +7,10 @@
       "description": "Essential skills for any software engineering workflow",
       "skills": [
         "brainstorming",
+        "changelog-generator",
         "code-simplification",
         "context-engineering",
+        "db-schema-detector",
         "dispatching-parallel-agents",
         "executing-plans",
         "finishing-a-development-branch",
@@ -39,6 +41,7 @@
       "label": "UI/UX Design",
       "description": "Design systems, animation quality, and visual polish",
       "skills": [
+        "creativo-visual",
         "emil-kowalski-design",
         "impeccable-design-taste"
       ]
@@ -47,7 +50,6 @@
       "label": "Project Management",
       "description": "Project planning, delegation, and documentation",
       "skills": [
-        "audit-loop",
         "project-manager",
         "gestor-documental",
         "agente-ideas"

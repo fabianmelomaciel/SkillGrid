@@ -1,5 +1,5 @@
 <div align="center">
-<!-- OpenGraph: https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/.opengraph/og-image.png -->
+<!-- TODO: add OpenGraph image at .opengraph/og-image.png -->
 
 # 🧠 SkillGrid
 
@@ -9,7 +9,6 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-30-22c55e?style=flat-square)](catalog.json)
-[![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/validate.yml?branch=main&style=flat-square&label=CI)](https://github.com/fabianmelomaciel/SkillGrid/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/network/members)
@@ -117,12 +116,12 @@ Genera automáticamente `.cursor/rules/` y `.github/instructions/` con las regla
 
 ### 🔧 Core — Metodología de desarrollo
 
-Las 18 skills que convierten a tu agente en un ingeniero de software disciplinado:
+Las 19 skills que convierten a tu agente en un ingeniero de software disciplinado:
 
 | Skill | Cuándo la usas |
 |-------|----------------|
 | `brainstorming` | Antes de tocar código — diseña la feature primero |
-| `changelog-generator` | Genera notas de lanzamiento (Changelogs) automatizadas y legibles para el usuario final analizando el historial de Git (commits) |
+| `changelog-generator` | Genera notas de lanzamiento automatizadas analizando el historial de Git |
 | `spec-driven-development` | Cuando los requerimientos son vagos o ambiguos |
 | `writing-plans` | Para planificar cambios que tocan múltiples archivos |
 | `incremental-implementation` | Para entregar en rebanadas seguras y revisables |
@@ -131,6 +130,7 @@ Las 18 skills que convierten a tu agente en un ingeniero de software disciplinad
 | `code-simplification` | Refactorizar sin cambiar comportamiento |
 | `verification-before-completion` | Antes de decir "está listo" — evidencia concreta |
 | `context-engineering` | Cuando el agente empieza a alucinar por context flooding |
+| `db-schema-detector` | Detecta bases de datos locales y genera esquemas cached en CodeGraph para ahorrar tokens |
 | `dispatching-parallel-agents` | 2+ tareas independientes — lanzalas en paralelo |
 | `subagent-driven-development` | Ejecutar planes grandes con subagentes especializados |
 | `requesting-code-review` | Antes de mergear — checklist + evidencia |
@@ -176,7 +176,7 @@ Instala solo lo que necesita tu equipo:
 
 | Bundle | Qué incluye |
 |--------|-------------|
-| **`core`** | Las 18 skills de metodología de desarrollo |
+| **`core`** | Las 19 skills de metodología de desarrollo |
 | **`devops`** | agente-devops · audit-loop · auditor-de-seguridad · optimizador-finops |
 | **`design`** | impeccable-design-taste · emil-kowalski-design · creativo-visual |
 | **`management`** | project-manager · gestor-documental · audit-loop · agente-ideas |
