@@ -4,6 +4,7 @@ description: Orchestrates the closed loop: audit → fix → re-audit → iterat
 category: agent
 status: beta
 risk_level: critical
+token_estimate: { input: 2730, output: 1092 }
 ---
 
 ## Core
@@ -156,31 +157,7 @@ You are activated as a follow-up of:
 
 ---
 
-## Stack Detection
-
-### Detection order
-
-1. `package.json` → node (npm/pnpm/yarn)
-2. `composer.json` → php (composer)
-3. `requirements.txt` / `pyproject.toml` → python (pip/poetry/uv)
-4. `go.mod` → go
-5. `Cargo.toml` → rust
-6. `Gemfile` → ruby
-7. `*.csproj` → dotnet
-
-### Per-stack command mapping
-
-| Stack | Test | Build | Lint | Format | Type-check |
-|-------|------|-------|------|--------|------------|
-| **Node** | `npm test` | `npm run build` | `npm run lint` | `npx biome check --write` | `tsc --noEmit` |
-| **PHP** | `composer test` | `composer build` | `composer audit` | `vendor/bin/pint` | `vendor/bin/phpstan` |
-| **Python** | `pytest` | — | `ruff check --fix` | `ruff format` | `mypy` |
-| **Go** | `go test ./...` | `go build ./...` | `go vet` | `gofmt -w` | — |
-| **Rust** | `cargo test` | `cargo build` | `cargo clippy --fix` | `cargo fmt` | — |
-| **Ruby** | `bundle exec rspec` | — | `rubocop -A` | `rubocop -A` | — |
-| **Dotnet** | `dotnet test` | `dotnet build` | `dotnet format` | `dotnet format` | — |
-
-If no stack is detected → **ESCALATE at the start.** You cannot continue without knowing which commands to use.
+> Stack detection: Load `skills/shared/stack-detection.md`
 
 ---
 
@@ -242,24 +219,4 @@ Before declaring an iteration complete, verify:
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 
-## Modules
-
-[model:gemini-1.5-flash]
-### Enhanced Anti-Loop Guardrails
-Gemini models may exhibit looping behavior. If you detect repeating the same operation with identical results, stop immediately and report current state. Do not re-execute completed operations. Enforce strict output structure.
-
-[model:gemini-1.5-pro]
-### Enhanced Anti-Loop Guardrails
-Same as gemini-1.5-flash. If you detect repeating the same operation with identical results, stop and report current state.
-
-[model:deepseek-v4-flash]
-### Tool Result Handling
-Tool results may be truncated. Request specific file sections if output is incomplete. Prefer structured JSON over markdown prose when reporting results.
-
-[platform:opencode]
-### Platform Invocation
-Invoked via tool call with skill descriptor. Return structured output matching the expected format. All file paths use forward slashes.
-
-[platform:claude-code]
-### Platform Invocation
-Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.
+> Modules: `skills/shared/modules-footer.md`

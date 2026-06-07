@@ -48,10 +48,11 @@
     },
     "management": {
       "label": "Project Management",
-      "description": "Project planning, delegation, and documentation",
+      "description": "Project planning, delegation, audit loop, and documentation",
       "skills": [
         "project-manager",
         "gestor-documental",
+        "audit-loop",
         "agente-ideas"
       ]
     },
@@ -61,6 +62,23 @@
       "skills": [
         "auditor-de-marketing"
       ]
+    }
+  },
+  "profiles": {
+    "minimal": {
+      "label": "Minimal Safety Gates",
+      "description": "Only essential safety gates (~5 skills, ~8K tokens)",
+      "skills": ["brainstorming", "verification-before-completion", "writing-plans", "systematic-debugging", "context-engineering"]
+    },
+    "standard": {
+      "label": "Full Development Workflow",
+      "description": "Standard development workflow (~15 skills, ~25K tokens)",
+      "skills": ["brainstorming", "verification-before-completion", "writing-plans", "systematic-debugging", "context-engineering", "test-driven-development", "requesting-code-review", "receiving-code-review", "spec-driven-development", "incremental-implementation", "code-simplification", "finishing-a-development-branch", "dispatching-parallel-agents", "subagent-driven-development", "executing-plans"]
+    },
+    "strict": {
+      "label": "Full Suite + Auditors",
+      "description": "Everything including all agents (~30 skills, ~60K tokens)",
+      "skills": ["brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "incremental-implementation", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "gestor-documental", "optimizador-finops", "project-manager", "creativo-visual", "emil-kowalski-design", "impeccable-design-taste"]
     }
   }
 }

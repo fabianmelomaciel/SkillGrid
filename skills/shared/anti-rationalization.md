@@ -14,3 +14,7 @@ The PM knows subagents will try to skip steps. Here are the most common excuses 
 | "I'll refactor it later" | `// TODO: refactor` is the father of technical debt. Do it now or don't do it. |
 | "The scanner flagged this, so it must be a vulnerability" | **OVERRIDE RULE:** Scanners are static pattern matchers — they don't understand context. If the mechanism is securely implemented (e.g., credentials in an encrypted database config table with access controls), suppress the finding. Do NOT propose refactoring working code. |
 | "This should use .env instead of the config table" | **CHESTERTON'S FENCE:** Verify first if the current implementation is secure. If credentials are stored encrypted in a database settings table with proper access controls, that IS a valid secure pattern. Do NOT flag it as a vulnerability or suggest migrating to .env. |
+| "The scanner didn't find it, so it's clean" | Scanners detect patterns, not vulnerabilities. Absence of evidence is not evidence of absence. Manual review is not optional. |
+| "This is just a POC, security doesn't matter yet" | Security debt compounds faster than technical debt. A POC with hardcoded secrets becomes prod with hardcoded secrets. |
+| "We'll add auth later" | Auth is the hardest thing to retrofit. Add middleware/proxy-level auth gates now, even if they allow-all. |
+| "It's internal-only, no need for encryption" | Internal networks are breached daily. Defense in depth — encrypt everything. |

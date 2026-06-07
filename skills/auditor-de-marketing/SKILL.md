@@ -1,9 +1,10 @@
 ---
 name: auditor-de-marketing
-description: Use to audit website growth, on-page SEO, social sharing cards (OpenGraph), readability, and CTA conversion.
+description: Use to audit website growth, on-page SEO, schema markup, AI search optimization (AEO/GEO), programmatic SEO, social sharing cards (OpenGraph), readability, copy quality, CRO, and CTA conversion.
 category: agent
 status: stable
 risk_level: safe
+token_estimate: { input: 3820, output: 1528 }
 ---
 
 ## Core
@@ -44,16 +45,38 @@ You do NOT modify the codebase directly; you scan, review, and report actionable
 * **Competitor/Alternative Pages:** Review head-to-head comparison pages, positioning grids vs. incumbents, and social proof placement.
 * **Email Lifecycle Hooks:** Check if lead-capture magnets hook to email sequences (welcome drip, onboarding flows, churn prevention triggers).
 
----
+### 5. Schema Markup & Structured Data Deep Audit
+* **JSON-LD Type Audit:** Verify presence and correctness of `Organization`, `WebSite`, `WebPage`, `Article`, `Product`, `BreadcrumbList`, `FAQPage`, `Review`, `LocalBusiness`, `Event`, `VideoObject`, `SoftwareApplication`, and `HowTo` schemas where applicable.
+* **Property Validation:** Check required vs recommended properties per schema.org type. Flag missing `@id`, `url`, `name`, `description`, `image`, `sameAs`, `potentialAction` (SiteSearchAction), `mainEntity` (for FAQ/HowTo), and `author/publisher` (for Article).
+* **Google Rich Results Eligibility:** Cross-reference schema types against Google Search Gallery requirements (e.g., `FAQPage` requires `mainEntity` with `acceptedAnswer`; `Product` requires `offers` with `price`+`priceCurrency`; `Recipe` requires `cookTime`+`nutrition.calories`). Suggest Google Rich Results Test for dynamic content.
+* **Structured Data Integrity:** Check for conflicting schemas (multiple `Organization` with different `@id`), circular references, and syntactically invalid JSON (trailing commas, missing quotes). Flag schemas rendered via JS that Google may not parse.
+* **Breadcrumb & Sitelinks:** Verify `BreadcrumbList` ordering, `position` integer continuity, and `item` → `@id` referential integrity. Check `SearchAction.target` for sitelinks searchbox eligibility.
 
-## Severity Assessment Matrix
+### 6. AI Search Optimization (AEO / GEO / LLMO)
+* **LLM Citation Readiness:** Audit content for extractability by LLMs — check for concise, self-contained definitions within the first 60 words of each section. Flag content that requires multi-context understanding beyond a single paragraph.
+* **Structured Data for AI Consumption:** Verify presence of `SpeakableSpecification` (for Google Assistant / Siri answers), `FAQPage` (for direct answer extraction), and `HowTo` (for step-by-step LLM consumption). Check `table` and `list` elements for semantic `<thead>`, `<th scope>`, and `aria-label` attributes that improve LLM parsing.
+* **Featured Snippet Compatibility:** Audit content for "position zero" eligibility — check question/heading alignment (H2 as natural questions), direct answer paragraphs (40-60 words immediately after the heading), and list/table formatting for list-type snippets.
+* **Entity Recognition Signals:** Verify `schema.org/Article` `about` and `mentions` properties with Wikidata/Wikipedia URLs to strengthen entity association. Check `sameAs` links to authoritative external sources for entity disambiguation.
+
+### 7. Programmatic SEO Audit
+* **Template Scalability Check:** For sites with template-generated pages (city pages, category pages, review pages), audit canonical tag correctness, `meta` uniqueness (title/description must vary per page, not templated), and heading distinctiveness across 5+ sample pages.
+* **Content Depth Threshold:** Flag thin-content template pages under 300 words. Verify that programmatic pages include unique intro paragraphs (not boilerplate), dynamic H2 sections per entity, and at least one `FAQPage` schema with entity-specific Q&A.
+* **Index Bloat Detection:** Estimate total indexable URL count via sitemap analysis. Flag pages with no organic traffic after 90 days for noindex. Suggest `noindex, follow` for filter/sort/parameter URLs and paginated pages beyond page 2.
+* **Internal Linking Structure:** Verify programmatic pages link to each other via contextual links (not just nav/menu). Check pillar page depth — programmatic pages should link upward to category hubs and downward to entity-specific detail pages.
+
+### 8. Copy Quality & Messaging Audit
+* **Value Proposition Clarity:** Scan above-the-fold copy for clear articulation of the unique value proposition within 5 seconds. Flag vague headlines (e.g., "Next-Gen Platform"), jargon-heavy copy, and missing social proof near primary CTAs.
+* **Conversion Copy Patterns:** Audit for presence of proven conversion patterns: problem-agitation-solution (PAS), before-after-bridge (BAB), feature-advantage-benefit (FAB). Flag copy that only lists features without translating them into user benefits.
+* **Emotional Triggers & Urgency:** Check for urgency mechanisms (limited-time, scarcity, FOMO) aligned with brand voice. Flag overused trigger words ("revolutionary", "game-changing", "disruptive") typical of low-credibility copy.
+* **Trust Signals Placement:** Audit testimonial positioning relative to CTAs, authority badges placement, guarantee visibility, and case study link accessibility within 2 scrolls.
+* **Segmentation Detection:** For multi-audience pages, check if copy addresses all segments (e.g., "For Freelancers" + "For Teams" sections) with distinct messaging per segment. Flag single-message pages targeting diverse ICPs.
 
 | Level | Criteria | Risk Impact |
 |-------|----------|-------------|
-| Critical | Missing primary CTA, duplicate/missing `<h1>`, broken international `hreflang` links, or completely missing metadata | Fatal conversion and SEO loss |
-| High | Missing OpenGraph/social tags, images without `alt` tags, signup forms with >5 fields without social auth, or meta limits exceeded | Weak sharing and high drop-off |
-| Medium | Poor heading hierarchy, walls of text, paywall pricing transparency issues, or missing schema markup | High bounce rates and user confusion |
-| Low | Typo suggestions, minor micro-copy adjustments, or minor color contrast advice | Best practice improvement |
+| Critical | Missing primary CTA, duplicate/missing `<h1>`, broken international `hreflang` links, completely missing metadata, conflicting entity schemas blocking rich results, or template pages with duplicate canonicals/meta causing index bloat | Fatal conversion, SEO loss, and search suppression |
+| High | Missing OpenGraph/social tags, images without `alt` tags, signup forms with >5 fields without social auth, meta limits exceeded, LLM-unextractable content (no concise definitions), programmatic pages under 300 words, or missing `FAQPage`/`SpeakableSpecification` schema for AI surfaces | Weak sharing, high drop-off, zero LLM citation |
+| Medium | Poor heading hierarchy, walls of text, paywall pricing transparency issues, missing schema markup, boilerplate template content across pages, AEO-unfriendly heading structure, or copy with no value proposition clarity | High bounce rates, user confusion, missed AI discovery |
+| Low | Typo suggestions, minor micro-copy adjustments, minor color contrast advice, missing `sameAs`/`about` entity properties, or suboptimal emotional trigger placement | Best practice improvement |
 
 ---
 
@@ -61,9 +84,11 @@ You do NOT modify the codebase directly; you scan, review, and report actionable
 
 You MUST check off every item before completing your audit:
 - [ ] Scan heading hierarchies, semantic tags, and robots/sitemaps.
-- [ ] Verify title, description, asset accessibility, schema, and international `hreflang` settings.
+- [ ] Verify title, description, asset accessibility, schema markup (JSON-LD types, properties, rich results eligibility), and international `hreflang` settings.
+- [ ] Audit AEO/GEO readiness: LLM extractability, `SpeakableSpecification`, featured snippet compatibility, entity signals.
+- [ ] Audit programmatic SEO: template uniqueness, content depth, index bloat, internal linking across 5+ sample pages.
 - [ ] Audit social share OpenGraph/Twitter cards and ad-copy alignment.
-- [ ] Review readability, contrast, typography, and AI writing signatures.
+- [ ] Review readability, contrast, typography, AI writing signatures, and copy quality (value proposition, conversion patterns, trust signals).
 - [ ] Evaluate above-the-fold CTAs, signup flows, onboarding, paywalls, and popup hygiene.
 - [ ] Audit competitor comparison pages and email lifecycle hooks.
 - [ ] Generate the premium HTML marketing dashboard report under `reports/`.
@@ -85,13 +110,17 @@ You MUST check off every item before completing your audit:
     "total_findings": N,
     "critical_conversion_issues": N,
     "seo_score": N,
+    "schema_score": N,
+    "aeo_geo_readiness_score": N,
+    "programmatic_seo_score": N,
+    "copy_quality_score": N,
     "recommended_actions": ["add OpenGraph tags", "fix heading hierarchy"]
   },
   "findings": [
     {
       "id": "MKT-001",
       "severity": "high",
-      "category": "seo",
+      "category": "seo",  // seo | schema | aeo | programmatic-seo | copy-quality | cro | social | competitor | email
       "file": "index.html:12",
       "finding": "Missing OpenGraph meta tags, rendering shared links simple and unengaging.",
       "remediation": "Add standard og:title, og:description, and og:image tags inside the head section.",
@@ -124,24 +153,4 @@ You found N findings. Some are auto-repairable (lint, types, AI remnants, patch 
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 
-## Modules
-
-[model:gemini-1.5-flash]
-### Enhanced Anti-Loop Guardrails
-Gemini models may exhibit looping behavior. If you detect repeating the same operation with identical results, stop immediately and report current state. Do not re-execute completed operations. Enforce strict output structure.
-
-[model:gemini-1.5-pro]
-### Enhanced Anti-Loop Guardrails
-Same as gemini-1.5-flash. If you detect repeating the same operation with identical results, stop and report current state.
-
-[model:deepseek-v4-flash]
-### Tool Result Handling
-Tool results may be truncated. Request specific file sections if output is incomplete. Prefer structured JSON over markdown prose when reporting results.
-
-[platform:opencode]
-### Platform Invocation
-Invoked via tool call with skill descriptor. Return structured output matching the expected format. All file paths use forward slashes.
-
-[platform:claude-code]
-### Platform Invocation
-Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.
+> Modules: `skills/shared/modules-footer.md`

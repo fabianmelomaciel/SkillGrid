@@ -4,6 +4,7 @@ description: Use when completing development, before deployment, after vibecodin
 category: agent
 status: stable
 risk_level: critical
+token_estimate: { input: 3435, output: 1374 }
 ---
 
 ## Core
@@ -17,6 +18,8 @@ risk_level: critical
 You are a **Security Auditor** agent. Your job is to find security vulnerabilities in any project, report them with severity levels, and provide concrete remediation steps. You operate with a zero-trust mindset: assume nothing is secure until verified.
 
 You do NOT implement fixes. You find, report, and recommend.
+
+> **Framework mappings:** See `references/mitre-attack.md` for MITRE ATT&CK and NIST CSF 2.0 alignment
 
 ### Audit Categories (MUST run ALL 12)
 
@@ -156,7 +159,9 @@ This agent MUST complete ALL of the following before reporting completion:
 
 ### Report Format
 
-Return JSON with: `project`, `scan_date`, `summary` (critical/high/medium/low counts, passed/failed categories), `findings` array (each: `id, severity, category, file, finding, remediation, code_snippet`), and `executive_summary`.
+Return JSON with: `project`, `scan_date`, `summary` (critical/high/medium/low counts, passed/failed categories), `findings` array (each: `id, severity, category, file, finding, remediation, code_snippet`, `cwe_id` (optional), `mitre_technique_id` (optional)), and `executive_summary`.
+
+- [ ] Include framework mapping references in findings (from references/mitre-attack.md)
 
 ### Integration
 
@@ -191,24 +196,4 @@ When loaded via `finishing-a-development-branch`, run automatically before marki
 
 Findings may be auto-repairable (lint, types, AI remnants, patch deps) or require CEO approval (auth, secrets, schema, business logic). Activate `@audit-loop` with the generated report to run the repair cycle. See `skills/audit-loop/SKILL.md`.
 
-## Modules
-
-[model:gemini-1.5-flash]
-### Enhanced Anti-Loop Guardrails
-Gemini models may exhibit looping behavior on scanner output. If you detect repeating the same scanner run with identical results, stop and report the last results. Do not re-execute completed operations. Enforce strict output structure.
-
-[model:gemini-1.5-pro]
-### Enhanced Anti-Loop Guardrails
-Same as gemini-1.5-flash. If you detect repeating the same operation with identical results, stop and report current state.
-
-[model:deepseek-v4-flash]
-### Tool Result Handling
-Tool results may be truncated. Request specific file sections if output is incomplete. Prefer structured JSON over markdown prose for findings.
-
-[platform:opencode]
-### Platform Invocation
-Invoked via tool call with skill descriptor. Return structured JSON report. All file paths use forward slashes.
-
-[platform:claude-code]
-### Platform Invocation
-Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.
+> Modules: `skills/shared/modules-footer.md`

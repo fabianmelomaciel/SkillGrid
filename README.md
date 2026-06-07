@@ -163,7 +163,6 @@ Agentes que se comportan como profesionales con roles definidos:
 | `agente-devops` | Diseña y audita Dockerfiles y pipelines CI/CD seguros. Alineado con IEEE 730 e ISO 27001 |
 | `agente-ideas` | **Deliberación y consenso.** Resuelve decisiones altamente complejas o ambiguas ejecutando un consejo de 3 etapas (propuestas en paralelo, revisión anónima cruzada y síntesis final) |
 | `auditor-de-marketing` | Audita SEO on-page, OpenGraph, readability y CTAs de conversión |
-| `db-schema-detector` | Detecta bases de datos locales y genera esquemas cached en CodeGraph para ahorrar tokens y auditar inconsistencias de diseño y ciberseguridad |
 | `optimizador-finops` | Analiza consumo de tokens, comprime prompts, detecta llamadas redundantes a APIs |
 | `project-manager` | Escucha al CEO, planifica, delega a agentes especializados, revisa resultados y reporta |
 | `gestor-documental` | Formatea documentación técnica y académica (APA 7ª ed., ISO 29148, ISO 29119) |
@@ -326,6 +325,51 @@ risk_level: safe | critical
 ```
 
 Contribuciones via Pull Request son bienvenidas. El CI valida automáticamente el frontmatter. 🟢
+
+---
+
+## v1.2 "Audit Depth & Asset Pipeline" (2026-06-07)
+
+### Marketing Audit Expansion (from marketingskills)
+- **Schema markup deep audit**: Added section 5 with JSON-LD type validation, Google Rich Results eligibility checks, BreadcrumbList/Sitelinks integrity, and structured data conflict detection
+- **AEO/GEO/LLMO audit**: Added section 6 covering LLM citation readiness, `SpeakableSpecification`/`FAQPage` schema for AI surfaces, featured snippet compatibility, and entity recognition via Wikidata/Wikipedia
+- **Programmatic SEO audit**: Added section 7 with template scalability checks, content depth threshold (300-word minimum), index bloat detection, and contextual internal linking verification
+- **Copy quality & messaging audit**: Added section 8 with value proposition clarity, conversion copy patterns (PAS/BAB/FAB), emotional triggers, trust signals placement, and multi-segment detection
+- **Report schema extended**: Added `schema_score`, `aeo_geo_readiness_score`, `programmatic_seo_score`, and `copy_quality_score` to summary output
+
+### Visual Asset Pipeline (from web-asset-generator)
+- **Web asset generation pipeline**: Added full favicon multi-resolution generation (16×16 → 512×512), social media OG image templates (FB/LinkedIn/Twitter/YouTube/Pinterest), and PWA manifest.json auto-generation
+- **Asset validation system**: Added dimension/format checks, WCAG 4.5:1 contrast ratio validation for text overlays, and file size budget table per asset type
+- **Emoji library**: Added 7 curated emoji categories (60+ emojis) with brand-context suggestions and geometric icon fallback via ImageMagick
+- **Framework auto-integration**: CodeGraph-based detection of Next.js/Astro/Vite/Nuxt/Angular with automatic `<link>` and `<meta>` tag insertion in the correct layout file
+- **Severity matrix & verification gate**: Updated to cover favicon 404, OG image size limits, PWA path mismatches, and WCAG contrast gaps
+
+---
+
+## v1.1 "Lean & Efficient" (2026-06-07)
+
+### Token Economy Improvements
+- **Deduplicated platform modules**: ~480 lines of repeated `## Modules` footer extracted to `skills/shared/modules-footer.md` — single reference line per skill
+- **Frontmatter index**: New `skills/index.json` with progressive disclosure metadata (token estimates, cost tiers, invocation graph) for all 30 skills
+- **Token budget metadata**: Added `token_estimate: { input, output }` to every SKILL.md frontmatter (estimated from actual file sizes)
+- **Install profiles**: Added `minimal`/`standard`/`strict` profiles to `skills/bundles/index.json` for progressive skill loading
+- **Session runtime controls**: New `skills/shared/session-controls.md` with environment variables (`SKILLGRID_HOOK_PROFILE`, `SKILLGRID_DISABLED_SKILLS`, etc.)
+
+### Shared Resources
+- **Stack detection**: Extracted from audit-loop to `skills/shared/stack-detection.md` — shared by audit-loop and auditor-de-seguridad
+
+### Security Hardening
+- **Security framework mappings**: New `skills/auditor-de-seguridad/references/mitre-attack.md` mapping all 12 scanner categories to MITRE ATT&CK v19.1 and NIST CSF 2.0
+- **External repo integration guide**: New `skills/auditor-de-seguridad/references/external-repos.md` for progressive disclosure of third-party security skills
+- **Findings schema enhanced**: Added optional `cwe_id` and `mitre_technique_id` fields to audit findings
+- **CVSS 4.0 rubric & Risk Decision Matrix**: Added to `skills/shared/risk-assessment.md` along with Risk Treatment Decision Tree
+- **Security anti-rationalizations**: 4 new rows in `skills/shared/anti-rationalization.md` covering scanner false confidence, POC security debt, auth retrofit, and internal-only encryption
+
+### Enhancements
+- **db-schema-detector**: Re-categorized from `agent` to `core` (18→19 core, 9→8 agent)
+- **Incremental CodeGraph sync**: Added to `skills/shared/codegraph-startup.md` — timestamp-based diffing to avoid full rescans
+- **DESIGN_VARIANCE dial**: Updated description in impeccable-design-taste (section renamed to "The Four Dials")
+- **Academic research pipeline**: New `skills/gestor-documental/references/research-pipeline.md` with 10-stage workflow
 
 ---
 

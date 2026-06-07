@@ -4,6 +4,7 @@ description: Use for any frontend design work, UI generation, or design review w
 category: design
 status: stable
 risk_level: safe
+token_estimate: { input: 1536, output: 614 }
 ---
 
 ## Core
@@ -32,10 +33,10 @@ Before writing code, analyze requirements and state in one line:
 
 ---
 
-## 2. The Three Dials & Layout Archetypes
+## 2. The Four Dials & Layout Archetypes
 
 After declaring the Design Read, configure the layout dial parameters:
-*   **`DESIGN_VARIANCE` [1-10]** (1 = Symmetrical Grid, 10 = Artsy Chaos / Masonry)
+*   **`DESIGN_VARIANCE` [1-10]** (1 = Repetition, 10 = Max Surprise / Asymmetric)
 *   **`MOTION_INTENSITY` [1-10]** (1 = Static, 10 = Cinematic Scroll GSAP)
 *   **`VISUAL_DENSITY` [1-10]** (1 = Art Gallery / Airy, 10 = Cockpit / Compact)
 
@@ -93,24 +94,4 @@ If any check is "no", fix before declaring completion.
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 
-## Modules
-
-[model:gemini-1.5-flash]
-### Enhanced Anti-Loop Guardrails
-Gemini models may exhibit looping behavior. If you detect repeating the same operation with identical results, stop immediately and report current state. Do not re-execute completed operations. Enforce strict output structure.
-
-[model:gemini-1.5-pro]
-### Enhanced Anti-Loop Guardrails
-Same as gemini-1.5-flash. If you detect repeating the same operation with identical results, stop and report current state.
-
-[model:deepseek-v4-flash]
-### Tool Result Handling
-Tool results may be truncated. Request specific file sections if output is incomplete. Prefer structured JSON over markdown prose when reporting results.
-
-[platform:opencode]
-### Platform Invocation
-Invoked via tool call with skill descriptor. Return structured output matching the expected format. All file paths use forward slashes.
-
-[platform:claude-code]
-### Platform Invocation
-Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.
+> Modules: `skills/shared/modules-footer.md`

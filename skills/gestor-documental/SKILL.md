@@ -4,6 +4,7 @@ description: Use to design, audit, format, and validate technical and scientific
 category: agent
 status: stable
 risk_level: safe
+token_estimate: { input: 1738, output: 695 }
 ---
 
 ## Core
@@ -35,6 +36,9 @@ You do NOT modify files blindly; you audit structure, provide formatted draft te
   2. Overall Description (Product perspective, Product functions, User characteristics, Constraints).
   3. Specific Requirements (Functional requirements, Performance, Non-functional, Design constraints, External interfaces).
 * **Requirement Clarity:** Check requirements for clarity, ambiguity, feasibility, and verifiability (ensuring no vague terms like "fast", "user-friendly", or "optimized" are used without clear thresholds).
+
+### 4. Academic Research Pipeline
+- **Academic Research Pipeline:** See `references/research-pipeline.md` for the full 10-stage workflow
 
 ### 3. Software Testing Documentation (ISO/IEC/IEEE 29119)
 * **Test Plan Structure:** Validate and structure test plans including Scope, Assumptions/Constraints, Test Strategy, Test Cases, and Test Report templates.
@@ -100,24 +104,4 @@ To ensure cumulative learning in the user's environment:
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 
-## Modules
-
-[model:gemini-1.5-flash]
-### Enhanced Anti-Loop Guardrails
-Gemini models may exhibit looping behavior. If you detect repeating the same operation with identical results, stop immediately and report current state. Do not re-execute completed operations. Enforce strict output structure.
-
-[model:gemini-1.5-pro]
-### Enhanced Anti-Loop Guardrails
-Same as gemini-1.5-flash. If you detect repeating the same operation with identical results, stop and report current state.
-
-[model:deepseek-v4-flash]
-### Tool Result Handling
-Tool results may be truncated. Request specific file sections if output is incomplete. Prefer structured JSON over markdown prose when reporting results.
-
-[platform:opencode]
-### Platform Invocation
-Invoked via tool call with skill descriptor. Return structured output matching the expected format. All file paths use forward slashes.
-
-[platform:claude-code]
-### Platform Invocation
-Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.
+> Modules: `skills/shared/modules-footer.md`

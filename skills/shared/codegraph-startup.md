@@ -9,7 +9,14 @@ To minimize token usage and avoid redundant exploration/research scans across th
 2. **Verify Graph Existence & Auto-Create / Auto-Sync**:
    - Check if the `.codegraph/` directory exists in the active project directory.
    - **CRITICAL DIRECTIVE**: If the `.codegraph/` directory or index is missing, you MUST automatically initialize it by executing `codegraph init` and then `codegraph sync` in the project root directory. Do NOT proceed with codebase exploration until the CodeGraph index is generated.
-   - **CRITICAL DIRECTIVE**: If the `.codegraph/` directory already exists, you MUST automatically run `codegraph sync` in the project root directory at startup to update the index and keep it up-to-date with recent changes before you start exploring.
+    - **CRITICAL DIRECTIVE**: If the `.codegraph/` directory already exists, you MUST automatically run `codegraph sync` in the project root directory at startup to update the index and keep it up-to-date with recent changes before you start exploring.
+
+### Incremental Sync Enhancement
+After the initial sync, track file timestamps to avoid full rescans:
+- If `.codegraph/timestamps.json` exists, compare stored timestamps with current filesystem mtimes
+- Only re-analyze files that have changed (file.mtime > stored_timestamp)
+- Process in batches of 25 files with up to 5 concurrent operations
+- If no files changed, skip sync entirely (0 tokens spent)
 
 3. **Prioritize Graph Context**:
    - Query the CodeGraph index or read generated summary reports at the beginning of any project analysis to understand module relationships, dependencies, and code structure.
