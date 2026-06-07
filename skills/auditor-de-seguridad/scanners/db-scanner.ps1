@@ -4,11 +4,12 @@ param(
 )
 
 $findings = @()
-$excludeDirs = @('node_modules', 'vendor', '.git', 'venv', '__pycache__', 'bin', 'obj', '.next', 'build', 'dist', 'scratch', 'reports')
+$excludeDirs = @('node_modules', 'vendor', '.git', 'venv', '__pycache__', 'bin', 'obj', '.next', 'build', 'dist', 'scratch', 'reports', '.codegraph')
 
 Get-ChildItem -Path $ProjectPath -Include "*.php", "*.py", "*.js", "*.ts", "*.env", "*.yml", "*.yaml", "*.json", "*.xml", "*.conf", "*.sql" -File -Recurse -ErrorAction SilentlyContinue |
 Where-Object {
     $excludeDir = $_.DirectoryName
+    if ($excludeDir -match 'tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]') { return $false }
     $skip = $false
     foreach ($ex in $excludeDirs) {
         if ($excludeDir -match [regex]::Escape($ex)) { $skip = $true; break }
@@ -51,13 +52,17 @@ Where-Object {
         }
     }
 
-    if ($content -match '\b3306\b' -or $content -match '\b5432\b' -or $content -match '\b27017\b' -or $content -match '\b6379\b') {
-        $findings += @{
-            id = "DB-004"; severity = "low"; category = "database"
-            file = $_.FullName
-            finding = "Database port number detected in config (3306/5432/27017/6379)"
-            remediation = "Ensure database ports are not exposed publicly, restrict to internal network"
-            code_snippet = ""
+    if ($_.Extension -in '.env', '.yml', '.yaml', '.json', '.xml', '.conf') {
+        $hasPortKey = $content -match '\b(db_)?port\b' -or $content -match '\b(DB_PORT|MYSQL_PORT|POSTGRES_PORT|MONGO_PORT|REDIS_PORT)\b'
+        $hasDbPortValue = $content -match '\b(3306|5432|27017|6379)\b'
+        if ($hasPortKey -and $hasDbPortValue) {
+            $findings += @{
+                id = "DB-004"; severity = "low"; category = "database"
+                file = $_.FullName
+                finding = "Database port number detected in config (3306/5432/27017/6379)"
+                remediation = "Ensure database ports are not exposed publicly, restrict to internal network"
+                code_snippet = ""
+            }
         }
     }
 }

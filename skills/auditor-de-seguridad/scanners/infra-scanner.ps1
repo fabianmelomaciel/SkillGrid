@@ -4,6 +4,22 @@ param(
 )
 
 $findings = @()
+$looksWebApp = $false
+
+$packageJson = Join-Path -Path $ProjectPath -ChildPath "package.json"
+if (Test-Path -LiteralPath $packageJson) {
+    try {
+        $pj = Get-Content -LiteralPath $packageJson -Raw -ErrorAction Stop
+        if ($pj -match '"express"|"fastify"|"@nestjs/|\"next\"|\"nuxt\"|\"koa\"|\"hapi\"|\"sails\"') { $looksWebApp = $true }
+    } catch {}
+}
+$composerJson = Join-Path -Path $ProjectPath -ChildPath "composer.json"
+if (-not $looksWebApp -and (Test-Path -LiteralPath $composerJson)) {
+    try {
+        $cj = Get-Content -LiteralPath $composerJson -Raw -ErrorAction Stop
+        if ($cj -match '"laravel/|"symfony/|"slim/slim"|"cakephp/"|"codeigniter"') { $looksWebApp = $true }
+    } catch {}
+}
 
 # Check Dockerfile
 $dockerfiles = Get-ChildItem -Path $ProjectPath -Filter "Dockerfile*" -File -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
@@ -41,7 +57,7 @@ foreach ($df in $dockerfiles) {
 }
 
 $corsFiles = Get-ChildItem -Path $ProjectPath -Include "*.php", "*.py", "*.js", "*.ts", "*.json", "*.yaml", "*.yml" -File -Recurse -ErrorAction SilentlyContinue |
-    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
+    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
 foreach ($cf in $corsFiles) {
     $content = Get-Content -LiteralPath $cf.FullName -Raw -ErrorAction SilentlyContinue
     if (-not $content) { continue }
@@ -58,7 +74,7 @@ foreach ($cf in $corsFiles) {
 }
 
 $envFiles = Get-ChildItem -Path $ProjectPath -Filter ".env" -File -Recurse -ErrorAction SilentlyContinue |
-    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
+    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
 foreach ($ef in $envFiles) {
     $content = Get-Content -LiteralPath $ef.FullName -Raw -ErrorAction SilentlyContinue
     if ($content -match 'APP_DEBUG\s*=\s*true') {
@@ -120,7 +136,7 @@ if ($envFiles) {
 
 $debugPatterns = @('/[_]?debug\b', '\bphpinfo\s*\(', '\binfo\.php\b', '\blaravel-debugbar\b', '\bwhoops\b')
 $filesWithDebug = Get-ChildItem -Path $ProjectPath -Include "*.php", "*.py", "*.js", "*.ts", "*.conf" -File -Recurse -ErrorAction SilentlyContinue |
-    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
+    Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
 foreach ($fd in $filesWithDebug) {
     $content = Get-Content -LiteralPath $fd.FullName -Raw -ErrorAction SilentlyContinue
     if (-not $content) { continue }
@@ -143,7 +159,7 @@ $htaccess = Get-ChildItem -Path $ProjectPath -Filter ".htaccess" -File -Recurse 
 $middleware = Get-ChildItem -Path $ProjectPath -Include "*.php", "*.py", "*.js", "*.ts" -File -Recurse -ErrorAction SilentlyContinue |
     Where-Object { $_.Name -match 'middleware|security' -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' } | Select-Object -First 1
 
-if (-not $nginxConf -and -not $htaccess -and -not $middleware) {
+if ($looksWebApp -and -not $nginxConf -and -not $htaccess -and -not $middleware) {
     $findings += @{
         id = "INF-008"; severity = "low"; category = "infrastructure"
         file = $ProjectPath

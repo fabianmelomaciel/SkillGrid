@@ -20,10 +20,26 @@ function AddFinding($sev, $file, $finding, $remediation) {
 }
 
 $codeExtensions = @('*.php', '*.py', '*.js', '*.ts', '*.java', '*.cs', '*.go', '*.rb', '*.rs', '*.kt', '*.swift')
-$codeFiles = Get-ChildItem -Path $ProjectPath -Include $codeExtensions -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
+$codeFiles = Get-ChildItem -Path $ProjectPath -Include $codeExtensions -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
 
 $foundLogging = $false
 $foundPiiLogging = $false
+$looksWebApp = $false
+
+$packageJson = Join-Path -Path $ProjectPath -ChildPath "package.json"
+if (Test-Path -LiteralPath $packageJson) {
+    try {
+        $pj = Get-Content -LiteralPath $packageJson -Raw -ErrorAction Stop
+        if ($pj -match '"express"|"fastify"|"@nestjs/|\"next\"|\"nuxt\"|\"koa\"|\"hapi\"|\"sails\"') { $looksWebApp = $true }
+    } catch {}
+}
+$composerJson = Join-Path -Path $ProjectPath -ChildPath "composer.json"
+if (-not $looksWebApp -and (Test-Path -LiteralPath $composerJson)) {
+    try {
+        $cj = Get-Content -LiteralPath $composerJson -Raw -ErrorAction Stop
+        if ($cj -match '"laravel/|"symfony/|"slim/slim"|"cakephp/"|"codeigniter"') { $looksWebApp = $true }
+    } catch {}
+}
 
 foreach ($f in $codeFiles) {
     $content = Get-Content -LiteralPath $f.FullName -Raw -ErrorAction SilentlyContinue
@@ -43,7 +59,7 @@ foreach ($f in $codeFiles) {
     }
 
     # Check for stack traces exposed to users
-    if ($content -match 'echo.*\$e|print.*\$e|console\.log.*err|print.*traceback|echo.*trace') {
+    if ($content -match 'err\.(stack|trace)\b|console\.(log|error)\s*\(\s*(err|error)\s*\)|print.*traceback|echo.*\$e->getTrace|echo.*\$e->getTraceAsString|echo.*traceback') {
         AddFinding "medium" "$($f.FullName)" "Potential stack trace exposed to user" "Log errors internally, show generic error messages to users"
     }
 }
@@ -54,14 +70,16 @@ if (-not $foundLogging) {
 
 # Check for error handling
 $hasErrorHandler = $false
-foreach ($f in $codeFiles) {
-    $content = Get-Content -LiteralPath $f.FullName -Raw -ErrorAction SilentlyContinue
-    if ($content -and ($content -match 'try.*catch|except.*:|rescue|error_handler|exception.*handler|ErrorHandler|AppException')) {
-        $hasErrorHandler = $true
+if ($looksWebApp) {
+    foreach ($f in $codeFiles) {
+        $content = Get-Content -LiteralPath $f.FullName -Raw -ErrorAction SilentlyContinue
+        if ($content -and ($content -match 'try.*catch|except.*:|rescue|error_handler|exception.*handler|ErrorHandler|AppException|uncaughtException|unhandledRejection')) {
+            $hasErrorHandler = $true
+        }
     }
-}
-if (-not $hasErrorHandler) {
-    AddFinding "medium" "$ProjectPath" "No global error handler detected" "Implement a global exception handler that logs errors and returns safe messages"
+    if (-not $hasErrorHandler) {
+        AddFinding "medium" "$ProjectPath" "No global error handler detected" "Implement a global exception handler that logs errors and returns safe messages"
+    }
 }
 
 # Check for log injection

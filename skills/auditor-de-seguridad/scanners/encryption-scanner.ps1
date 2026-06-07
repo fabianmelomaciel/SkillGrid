@@ -20,17 +20,26 @@ function AddFinding($sev, $file, $finding, $remediation) {
 }
 
 $codeExtensions = @('*.php', '*.py', '*.js', '*.ts', '*.java', '*.cs', '*.go', '*.rb', '*.rs', '*.kt', '*.swift')
-$codeFiles = Get-ChildItem -Path $ProjectPath -Include $codeExtensions -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
+$codeFiles = Get-ChildItem -Path $ProjectPath -Include $codeExtensions -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Length -lt 500KB -and $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
 
 $foundWeakHash = $false
 $foundBcrypt = $false
 $foundArgon = $false
 $foundTls = $false
 $foundHsts = $false
+$looksWebApp = $false
+$hasAuthSurface = $false
 
 foreach ($f in $codeFiles) {
     $content = Get-Content -LiteralPath $f.FullName -Raw -ErrorAction SilentlyContinue
     if (-not $content) { continue }
+
+    if (-not $looksWebApp -and $content -match 'express\s*\(|fastify\s*\(|app\.listen\s*\(|createServer\s*\(|fastapi|flask|django|laravel|symfony|rails|springframework|aspnet|nextjs|nuxt') {
+        $looksWebApp = $true
+    }
+    if (-not $hasAuthSurface -and $content -match 'login|signin|sign-in|signup|sign-up|register|authenticate|authorization|session_start|jsonwebtoken|JWT|jwt\.|passport|next-auth') {
+        $hasAuthSurface = $true
+    }
 
     # Weak algorithms
     if ($content -match '\bMD5\b|\bmd5\b' -and $content -notmatch '//.*md5|#.*md5|/*.*md5') {
@@ -60,12 +69,12 @@ foreach ($f in $codeFiles) {
 }
 
 # Check password hashing
-if (-not $foundBcrypt -and -not $foundArgon) {
+if ($hasAuthSurface -and -not $foundBcrypt -and -not $foundArgon) {
     AddFinding "critical" "$ProjectPath" "No bcrypt or argon2 detected for password hashing" "Use bcrypt (cost >= 10) or argon2id for password storage. Never use MD5 or SHA1"
 }
 
 # Check HSTS
-if (-not $foundHsts) {
+if ($looksWebApp -and -not $foundHsts) {
     AddFinding "medium" "$ProjectPath" "HSTS header not detected" "Add Strict-Transport-Security header with max-age=31536000; includeSubDomains"
 }
 
@@ -86,7 +95,7 @@ foreach ($f in $codeFiles) {
 }
 
 # Check for .env loading TLS config (optional check for cert files)
-$certFiles = Get-ChildItem -Path $ProjectPath -Include "*.pem","*.crt","*.cert","*.key" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports' }
+$certFiles = Get-ChildItem -Path $ProjectPath -Include "*.pem","*.crt","*.cert","*.key" -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.DirectoryName -notmatch 'node_modules|vendor|venv|scratch|reports|tests[\\/]audit-loop[\\/]fixtures|[\\/]fixtures[\\/]' }
 if ($certFiles.Count -gt 0) {
     AddFinding "medium" $certFiles[0].FullName "Certificate/Key files found in project" "Ensure certificate files are not committed to git. Add *.pem, *.crt to .gitignore"
 }

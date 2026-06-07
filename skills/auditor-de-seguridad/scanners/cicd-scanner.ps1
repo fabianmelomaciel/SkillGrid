@@ -52,15 +52,6 @@ if ($ghaFiles.Count -gt 0) {
                 code_snippet = ""
             }
         }
-        if ($content -match 'pull_request:' -and $content -notmatch 'required_reviews') {
-            $findings += @{
-                id = "CICD-005"; severity = "medium"; category = "cicd"
-                file = $gf.FullName
-                finding = "No code review requirement found for pull requests"
-                remediation = "Enable branch protection rules requiring reviews"
-                code_snippet = ""
-            }
-        }
     }
 } else {
     $findings += @{
