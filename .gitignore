@@ -20,5 +20,8 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 
+# GitHub Actions workflows (local/personal CI, not for public repo)
+.github/workflows/
+
 # Node
 node_modules/
