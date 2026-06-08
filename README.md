@@ -3,10 +3,10 @@
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*31 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
+*30 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-31-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-30-22c55e?style=flat-square)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/network/members)
@@ -35,7 +35,7 @@ No es solo una lista de prompts. Es un **sistema de trabajo autónomo y eficient
 
 ## ⚡ Instalación en 10 segundos
 
-> El instalador detecta automáticamente opencode, antigravity, Claude Code y demás — y los configura todos de una vez.
+> El instalador detecta automáticamente opencode, antigravity, Claude Code y demás — y los configura todos de una vez. Por defecto instala el perfil `minimal` para reducir tokens/contexto.
 
 ### Windows (PowerShell)
 
@@ -43,11 +43,28 @@ No es solo una lista de prompts. Es un **sistema de trabajo autónomo y eficient
 irm https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.ps1 | iex
 ```
 
+Perfil (opcional):
+
+```powershell
+$env:SKILLGRID_PROFILE="minimal"
+irm https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.ps1 | iex
+```
+
+Nota: el instalador remoto clona una versión fija por seguridad. Si esa versión todavía no soporta perfiles, el valor se ignora automáticamente. Para asegurar perfiles, clonar y ejecutar localmente.
+
 ### Linux / macOS (bash)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.sh | bash
 ```
+
+Perfil (opcional):
+
+```bash
+SKILLGRID_PROFILE=minimal curl -fsSL https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.sh | bash
+```
+
+Nota: el instalador remoto clona una versión fija por seguridad. Si esa versión todavía no soporta perfiles, el valor se ignora automáticamente. Para asegurar perfiles, clonar y ejecutar localmente.
 
 Eso es todo. El instalador detecta tu setup y copia las skills donde corresponde. ✅
 
@@ -62,13 +79,32 @@ Eso es todo. El instalador detecta tu setup y copia las skills donde corresponde
 # Windows
 git clone https://github.com/fabianmelomaciel/SkillGrid.git C:\SkillGrid
 cd C:\SkillGrid
-.\install.ps1
+.\install.ps1 -Profile minimal
 ```
 
 ```bash
 # Linux / macOS
 git clone https://github.com/fabianmelomaciel/SkillGrid.git ~/skillgrid
-cd ~/skillgrid && bash install.sh
+cd ~/skillgrid && bash install.sh --profile minimal
+```
+
+</details>
+
+<details>
+<summary><strong>Perfiles (recomendado para ahorrar tokens)</strong></summary>
+
+| Perfil | Enfoque | Cuándo usar |
+|--------|---------|-------------|
+| `minimal` | Gates mínimos | Principiantes, sesiones cortas, cambios pequeños |
+| `standard` | Flujo completo | Desarrollo normal día a día |
+| `strict` | Suite completa | Auditorías y hardening (más pesado) |
+| `all` | Todo | Sólo si sabés que lo necesitás |
+
+Chequeo antes de instalar (recomendado):
+
+```bash
+npm test
+node scripts/install-tasks.js token-audit .
 ```
 
 </details>

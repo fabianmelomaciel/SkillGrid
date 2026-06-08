@@ -10,6 +10,7 @@ SKILLS_DIR="$SCRIPT_DIR/skills"
 TARGET_DIR=""
 PROJECT_DIR=""
 LANGUAGE=""
+PROFILE="minimal"
 AUTO_INSTALL_CODEGRAPH=0
 GENERATE_CODEX=0
 
@@ -18,6 +19,7 @@ while [[ "$#" -gt 0 ]]; do
         -t|--target) TARGET_DIR="$2"; shift ;;
         -p|--project) PROJECT_DIR="$2"; shift ;;
         -l|--language) LANGUAGE="$2"; shift ;;
+        --profile) PROFILE="$2"; shift ;;
         --install-codegraph) AUTO_INSTALL_CODEGRAPH=1 ;;
         --generate-codex) GENERATE_CODEX=1 ;;
         -h|--help)
@@ -32,6 +34,7 @@ while [[ "$#" -gt 0 ]]; do
             echo "  ./install.sh --project \"/proyecto\" --language php - Instala sólo reglas comunes y de PHP"
             echo "  ./install.sh --install-codegraph           - Permite instalar codegraph automaticamente si falta"
             echo "  ./install.sh --generate-codex              - Genera CODEX.md (memoria local) en instalaciones no-skill-root"
+            echo "  ./install.sh --profile minimal|standard|strict|all - Instala por perfil (recomendado para ahorrar tokens)"
             echo "  ./install.sh --help                       - Muestra esta ayuda"
             exit 0
             ;;
@@ -594,6 +597,66 @@ get_platform_name() {
     esac
 }
 
+PROFILE="$(echo "$PROFILE" | tr '[:upper:]' '[:lower:]')"
+
+extract_frontmatter_field() {
+    local file="$1"
+    local key="$2"
+    awk -v k="$key" '
+      BEGIN { in=0 }
+      /^---[[:space:]]*$/ { if (in==0) { in=1; next } else { exit } }
+      in==1 {
+        if ($1 == (k ":")) {
+          $1=""; sub(/^[[:space:]]+/, "");
+          gsub(/^"|"$/, "");
+          print;
+          exit
+        }
+      }
+    ' "$file"
+}
+
+load_profile_skill_names() {
+    local profile="$1"
+    if [ "$profile" = "all" ] || [ -z "$profile" ]; then
+        return 0
+    fi
+
+    if command -v node &> /dev/null; then
+        node -e '
+const fs = require("fs");
+const path = require("path");
+const root = process.argv[1];
+const profile = process.argv[2];
+const bundlesPath = path.join(root, "skills", "bundles", "index.json");
+const data = JSON.parse(fs.readFileSync(bundlesPath, "utf8"));
+const p = (data.profiles || {})[profile];
+if (!p || !Array.isArray(p.skills)) process.exit(2);
+for (const s of p.skills) console.log(s);
+' "$SCRIPT_DIR" "$profile"
+        return $?
+    fi
+
+    return 2
+}
+
+declare -A ALLOWED_SKILLS=()
+PROFILE_SKILLS_OK=1
+if [ "$PROFILE" != "all" ]; then
+    PROFILE_SKILLS_OK=0
+    while IFS= read -r s; do
+        [ -z "$s" ] && continue
+        ALLOWED_SKILLS["$s"]=1
+    done < <(load_profile_skill_names "$PROFILE" 2>/dev/null || true)
+    if [ ${#ALLOWED_SKILLS[@]} -gt 0 ]; then
+        PROFILE_SKILLS_OK=1
+    else
+        echo "  [!] No se pudo cargar el perfil '$PROFILE' (requiere Node.js). Instalando: all" >&2
+        PROFILE="all"
+        PROFILE_SKILLS_OK=1
+    fi
+fi
+
 COUNT=0
 INSTALLED_TARGETS=()
 for TARGET in "${DETECTED[@]}"; do
@@ -618,14 +681,36 @@ for TARGET in "${DETECTED[@]}"; do
     MERGE_SCRIPT="$SCRIPT_DIR/scripts/merge-skill.sh"
     MODELS_JSON="$SCRIPT_DIR/models.json"
 
-    # Copiar skills (with optional platform-specific merging)
-    for SKILL in "$SKILLS_DIR"/*/; do
-        NAME=$(basename "$SKILL")
-        if [ "$IS_SKILL_ROOT" -eq 1 ]; then
-            SKILL_DEST="$TARGET/$NAME"
-        else
-            SKILL_DEST="$TARGET/skills/$NAME"
+    SKILLS_ROOT="$TARGET"
+    if [ "$IS_SKILL_ROOT" -ne 1 ]; then
+        SKILLS_ROOT="$TARGET/skills"
+    fi
+
+    echo "  Perfil: $PROFILE"
+
+    for SPECIAL in "shared" "bundles"; do
+        if [ -d "$SKILLS_DIR/$SPECIAL" ]; then
+            rm -rf "$SKILLS_ROOT/$SPECIAL"
+            mkdir -p "$SKILLS_ROOT/$SPECIAL"
+            cp -rf "$SKILLS_DIR/$SPECIAL"/* "$SKILLS_ROOT/$SPECIAL/" 2>/dev/null || true
         fi
+    done
+
+    INSTALLED_SKILLS=()
+    while IFS= read -r SKILL_FILE; do
+        SKILL_DIR="$(dirname "$SKILL_FILE")"
+        NAME="$(extract_frontmatter_field "$SKILL_FILE" "name")"
+        if [ -z "$NAME" ]; then
+            NAME="$(basename "$SKILL_DIR")"
+        fi
+        if [ "$NAME" = "template" ]; then
+            continue
+        fi
+        if [ "$PROFILE" != "all" ] && [ -z "${ALLOWED_SKILLS[$NAME]+x}" ]; then
+            continue
+        fi
+
+        SKILL_DEST="$SKILLS_ROOT/$NAME"
         if [ -z "$TARGET" ] || [ "$TARGET" = "/" ]; then
             echo "FATAL: Refusing to rm -rf under empty or root target" >&2
             exit 1
@@ -635,8 +720,8 @@ for TARGET in "${DETECTED[@]}"; do
 
         if [ -n "$PLATFORM" ] && [ -f "$MERGE_SCRIPT" ] && [ -f "$MODELS_JSON" ]; then
             echo "  Procesando: $NAME (para $PLATFORM)..."
-            find "$SKILL" -type f | while read -r FILE; do
-                REL_PATH="${FILE#$SKILL}"
+            find "$SKILL_DIR" -type f | while read -r FILE; do
+                REL_PATH="${FILE#$SKILL_DIR}"
                 REL_PATH="${REL_PATH#/}"
                 DEST_FILE="$SKILL_DEST/$REL_PATH"
                 DEST_DIR=$(dirname "$DEST_FILE")
@@ -649,12 +734,14 @@ for TARGET in "${DETECTED[@]}"; do
             done
         else
             echo "  Copiando: $NAME..."
-            cp -rf "$SKILL"/* "$SKILL_DEST/"
+            cp -rf "$SKILL_DIR"/* "$SKILL_DEST/"
         fi
-        if [ "$TARGET" == "${DETECTED[0]}" ]; then
-            COUNT=$((COUNT + 1))
-        fi
-    done
+        INSTALLED_SKILLS+=("$NAME")
+    done < <(find "$SKILLS_DIR" -type f -name "SKILL.md" ! -path "*/skills/template/*" | sort)
+
+    if [ "$TARGET" == "${DETECTED[0]}" ]; then
+        COUNT=${#INSTALLED_SKILLS[@]}
+    fi
 
     # Copiar archivos base
     if [ "$IS_SKILL_ROOT" -ne 1 ]; then
@@ -729,14 +816,15 @@ echo "Agrega estas rutas a tu configuracion:"
 echo ""
 echo '  "skills": { "paths": ['
 for T in "${INSTALLED_TARGETS[@]}"; do
-    for SKILL in "$SKILLS_DIR"/*/; do
-        NAME=$(basename "$SKILL")
-        if [[ "$T" == */skills ]]; then
-            echo "    \"$T/$NAME\","
-        else
-            echo "    \"$T/skills/$NAME\","
-        fi
-    done
+    SKILLS_ROOT="$T"
+    if [[ "$T" != */skills ]]; then
+        SKILLS_ROOT="$T/skills"
+    fi
+    if command -v find &> /dev/null; then
+        find "$SKILLS_ROOT" -mindepth 1 -maxdepth 1 -type d | while read -r D; do
+            echo "    \"$D\","
+        done
+    fi
 done
 echo '  ]}'
 echo ""

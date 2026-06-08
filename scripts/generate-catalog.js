@@ -2,6 +2,30 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
+const CATALOG_JSON_PATH = path.join(ROOT, 'catalog.json');
+const PACKAGE_JSON_PATH = path.join(ROOT, 'package.json');
+
+function resolveCatalogVersion() {
+  if (fs.existsSync(CATALOG_JSON_PATH)) {
+    try {
+      const existing = JSON.parse(fs.readFileSync(CATALOG_JSON_PATH, 'utf-8'));
+      if (existing && typeof existing.version === 'string' && existing.version.trim().length > 0) {
+        return existing.version.trim();
+      }
+    } catch (_) {}
+  }
+
+  if (fs.existsSync(PACKAGE_JSON_PATH)) {
+    try {
+      const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf-8'));
+      if (pkg && typeof pkg.version === 'string' && pkg.version.trim().length > 0) {
+        return pkg.version.trim();
+      }
+    } catch (_) {}
+  }
+
+  return '1.0.0';
+}
 
 function parseFrontmatter(file) {
   const content = fs.readFileSync(file, 'utf-8');
@@ -46,7 +70,7 @@ skills.forEach(s => {
 });
 
 const catalog = {
-  version: '1.0.0',
+  version: resolveCatalogVersion(),
   generated: new Date().toISOString().split('T')[0],
   summary: {
     total: skills.length,

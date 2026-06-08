@@ -75,7 +75,10 @@ function walk(dir) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   for (const entry of entries) {
     const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) walk(full);
+    if (entry.isDirectory()) {
+      if (dir === path.join(ROOT, 'skills') && entry.name === 'template') continue;
+      walk(full);
+    }
     else if (entry.name === 'SKILL.md') validateSkill(full);
   }
 }

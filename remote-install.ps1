@@ -31,7 +31,16 @@ Write-Host "Clonando SkillGrid en directorio temporal: $targetDir" -ForegroundCo
 # Run the installer
 try {
     Write-Host "Ejecutando instalador local..." -ForegroundColor Cyan
-    & "$targetDir\install.ps1"
+    $profile = $env:SKILLGRID_PROFILE
+    if (-not [string]::IsNullOrWhiteSpace($profile)) {
+        try {
+            & "$targetDir\install.ps1" -Profile $profile
+        } catch {
+            & "$targetDir\install.ps1"
+        }
+    } else {
+        & "$targetDir\install.ps1"
+    }
 } finally {
     try {
         Remove-Item -LiteralPath $targetDir -Recurse -Force -ErrorAction SilentlyContinue

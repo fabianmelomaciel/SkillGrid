@@ -20,7 +20,10 @@ function findSkillDirs(dir) {
   return results;
 }
 
-const skillDirs = findSkillDirs(SKILLS_DIR);
+const skillDirs = findSkillDirs(SKILLS_DIR).filter(dir => {
+  const rel = path.relative(SKILLS_DIR, dir).replace(/\\/g, '/');
+  return rel !== 'template' && !rel.startsWith('template/');
+});
 
 let passed = 0;
 let failed = 0;

@@ -27,4 +27,8 @@ git clone --depth 1 --branch v1.0.0 https://github.com/fabianmelomaciel/SkillGri
 
 # Run the installer
 echo "Ejecutando instalador local..."
-bash "$TARGET/install.sh"
+if [ -n "${SKILLGRID_PROFILE:-}" ]; then
+    bash "$TARGET/install.sh" --profile "$SKILLGRID_PROFILE" || bash "$TARGET/install.sh"
+else
+    bash "$TARGET/install.sh"
+fi

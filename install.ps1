@@ -2,7 +2,7 @@ param(
     [string]$TargetDir = "",
     [string]$ProjectDir = "",
     [string]$Language = "",
-    [string]$Profile = "",
+    [string]$Profile = "minimal",
     [switch]$AutoInstallCodeGraph,
     [switch]$GenerateCodex,
     [switch]$Help
@@ -28,6 +28,7 @@ function InstallToProject($project, $source, $lang) {
 }
 
 function Get-NormalizedPlatformName($name) {
+    if (-not $name) { return "" }
     $map = @{
         "opencode" = "opencode"
         "antigravity" = "antigravity"
@@ -40,13 +41,15 @@ function Get-NormalizedPlatformName($name) {
 }
 
 function Get-ProfileSkillList($profileName, $bundlesJsonPath) {
-    if (-not $profileName) { return $null }
+    if (-not $profileName) { $profileName = "minimal" }
+    $profileName = $profileName.ToLower().Trim()
+    if ($profileName -eq "all") { return $null }
     try {
         $bundles = Get-Content -LiteralPath $bundlesJsonPath -Raw -Encoding utf8 | ConvertFrom-Json
         $validProfiles = $bundles.profiles.PSObject.Properties.Name
         if ($profileName -notin $validProfiles) {
-            Write-Host "  [!] Perfil '$profileName' no valido. Opciones: $($validProfiles -join ', '). Usando: standard" -ForegroundColor Yellow
-            $profileName = "standard"
+            Write-Host "  [!] Perfil '$profileName' no valido. Opciones: $($validProfiles -join ', ') o all. Usando: minimal" -ForegroundColor Yellow
+            $profileName = "minimal"
         }
         $skills = $bundles.profiles.$profileName.skills
         Write-Host "  Perfil '$profileName': $($skills.Count) skills" -ForegroundColor Cyan
@@ -54,6 +57,23 @@ function Get-ProfileSkillList($profileName, $bundlesJsonPath) {
     } catch {
         Write-Host "  [!] No se pudo leer profiles desde bundles/index.json. Instalando todas las skills." -ForegroundColor Yellow
         return $null
+    }
+}
+
+function Get-SkillFrontmatterMeta($skillFilePath) {
+    $content = Get-Content -LiteralPath $skillFilePath -Raw -Encoding utf8
+    $match = [regex]::Match($content, '^---\r?\n([\s\S]*?)\r?\n---', [System.Text.RegularExpressions.RegexOptions]::Multiline)
+    if (-not $match.Success) { return $null }
+    $fm = $match.Groups[1].Value
+    $get = {
+        param([string]$key)
+        $m = [regex]::Match($fm, "^\s*${key}:\s*(.+)\s*$", [System.Text.RegularExpressions.RegexOptions]::Multiline)
+        if (-not $m.Success) { return $null }
+        return $m.Groups[1].Value.Trim().Trim('"')
+    }
+    return [pscustomobject]@{
+        Name = & $get "name"
+        Category = & $get "category"
     }
 }
 
@@ -77,21 +97,47 @@ function InstallToDir($target, $source, $platformName) {
     $useLoader = $platformName -and (Test-Path -LiteralPath $mergeScript) -and (Test-Path -LiteralPath $modelsJson)
     $normalizedPlatform = Get-NormalizedPlatformName $platformName
     $profileSkills = Get-ProfileSkillList $Profile (Join-Path -Path $scriptDir -ChildPath "skills\bundles\index.json")
-    $skillDirs = Get-ChildItem -LiteralPath "$source\skills" -Directory
     if ($profileSkills) { Write-Host "  Perfil activo: $Profile ($($profileSkills.Count) skills)" -ForegroundColor Cyan }
-    foreach ($skill in $skillDirs) {
-        if ($profileSkills -and $skill.Name -notin $profileSkills -and $skill.Name -ne "template" -and $skill.Name -ne "shared" -and $skill.Name -ne "bundles") {
-            Write-Host "  Omitiendo: $($skill.Name) (no incluido en perfil '$Profile')" -ForegroundColor DarkGray
+    else { Write-Host "  Perfil activo: all" -ForegroundColor Cyan }
+
+    $skillsRoot = $target
+    if (-not $isSkillRoot) { $skillsRoot = Join-Path -Path $target -ChildPath "skills" }
+
+    foreach ($special in @("shared", "bundles")) {
+        $srcSpecial = Join-Path -Path "$source\skills" -ChildPath $special
+        $dstSpecial = Join-Path -Path $skillsRoot -ChildPath $special
+        if (Test-Path -LiteralPath $srcSpecial) {
+            Remove-Item -LiteralPath $dstSpecial -Recurse -Force -ErrorAction SilentlyContinue
+            New-Item -ItemType Directory -Path $dstSpecial -Force | Out-Null
+            Copy-Item -LiteralPath "$srcSpecial\*" -Destination $dstSpecial -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    $skillFiles = Get-ChildItem -LiteralPath "$source\skills" -Recurse -Filter "SKILL.md" -File | Where-Object {
+        $_.FullName -notmatch "[\\/]skills[\\/]template[\\/]"
+    }
+    $skillItems = @()
+    foreach ($sf in $skillFiles) {
+        $meta = Get-SkillFrontmatterMeta $sf.FullName
+        if (-not $meta -or [string]::IsNullOrWhiteSpace($meta.Name)) { continue }
+        if ($meta.Name -eq "template") { continue }
+        $dir = Split-Path -Parent $sf.FullName
+        $skillItems += [pscustomobject]@{ Name = $meta.Name; Dir = $dir }
+    }
+    $skillItems = $skillItems | Sort-Object -Property Name -Unique
+
+    $installed = 0
+    foreach ($skill in $skillItems) {
+        if ($profileSkills -and $skill.Name -notin $profileSkills) {
             continue
         }
-        if ($isSkillRoot) { $destPath = Join-Path -Path $target -ChildPath $skill.Name }
-        else { $destPath = Join-Path -Path "$target\skills" -ChildPath $skill.Name }
+        $destPath = Join-Path -Path $skillsRoot -ChildPath $skill.Name
         if ($useLoader) {
             Write-Host "  Procesando: $($skill.Name) (para $normalizedPlatform)..." -ForegroundColor Gray
             Remove-Item -LiteralPath $destPath -Recurse -Force -ErrorAction SilentlyContinue
             New-Item -ItemType Directory -Path $destPath -Force | Out-Null
-            Get-ChildItem -LiteralPath $skill.FullName -Recurse -File | ForEach-Object {
-                $relPath = $_.FullName.Substring($skill.FullName.Length + 1)
+            Get-ChildItem -LiteralPath $skill.Dir -Recurse -File | ForEach-Object {
+                $relPath = $_.FullName.Substring($skill.Dir.Length + 1)
                 $destFile = Join-Path -Path $destPath -ChildPath $relPath
                 $destFileDir = Split-Path $destFile -Parent
                 if (-not (Test-Path -LiteralPath $destFileDir)) { New-Item -ItemType Directory -Path $destFileDir -Force | Out-Null }
@@ -104,8 +150,9 @@ function InstallToDir($target, $source, $platformName) {
         } else {
             Write-Host "  Copiando: $($skill.Name)..." -ForegroundColor Gray
             Remove-Item -LiteralPath $destPath -Recurse -Force -ErrorAction SilentlyContinue
-            Copy-Item -LiteralPath $skill.FullName -Destination $destPath -Recurse -Force
+            Copy-Item -LiteralPath $skill.Dir -Destination $destPath -Recurse -Force
         }
+        $installed++
     }
     if (-not $isSkillRoot) {
         Copy-Item -LiteralPath "$source\install.ps1" -Destination "$target\" -Force -ErrorAction SilentlyContinue
@@ -173,7 +220,7 @@ This document is the shared, dynamically evolving persistent memory of the Skill
             }
         }
     }
-    Write-Host "  Listo: $($skillDirs.Count) skills instaladas" -ForegroundColor Green
+    Write-Host "  Listo: $installed skills instaladas" -ForegroundColor Green
 }
 
 function InstallToOpendir($source) {
@@ -571,12 +618,12 @@ USO:
   .\install.ps1 -ProjectDir "C:\proyecto" -Language php - Instala sólo reglas comunes y de PHP
    .\install.ps1 -AutoInstallCodeGraph         - Permite instalar codegraph automaticamente si falta
    .\install.ps1 -GenerateCodex                - Genera CODEX.md (memoria local) en instalaciones no-skill-root
-   .\install.ps1 -Profile "minimal"            - Instala solo skills del perfil (minimal/standard/strict)
+   .\install.ps1 -Profile "minimal"            - Instala solo skills del perfil (minimal/standard/strict/all)
    .\install.ps1 -Profile "standard"           - Perfil recomendado (~15 skills)
    .\install.ps1 -Help                         - Muestra esta ayuda
 
-SIN PARAMETROS: Detecta opencode o antigravity y instala alli.
-PERFILES: minimal (~5 skills, ~8K tokens) | standard (~15, ~25K) | strict (~30, ~60K)
+SIN PARAMETROS: Detecta opencode o antigravity y instala alli (por defecto: minimal).
+PERFILES: minimal (~5 skills) | standard (~15) | strict (~30) | all (todo)
 "@ -ForegroundColor Cyan
     exit 0
 }
