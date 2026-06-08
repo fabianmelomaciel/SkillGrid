@@ -77,6 +77,91 @@ function Get-SkillFrontmatterMeta($skillFilePath) {
     }
 }
 
+function ConvertTo-OrderedMap($value) {
+    if ($null -eq $value) { return $null }
+    if ($value -is [string] -or $value -is [int] -or $value -is [long] -or $value -is [double] -or $value -is [decimal] -or $value -is [bool]) {
+        return $value
+    }
+    if ($value -is [System.Collections.IDictionary]) {
+        $map = [ordered]@{}
+        foreach ($key in $value.Keys) {
+            $map[[string]$key] = ConvertTo-OrderedMap $value[$key]
+        }
+        return $map
+    }
+    if ($value -is [System.Collections.IEnumerable] -and -not ($value -is [string])) {
+        $items = @()
+        foreach ($item in $value) {
+            $items += ,(ConvertTo-OrderedMap $item)
+        }
+        return $items
+    }
+    if ($value.PSObject -and $value.PSObject.Properties.Count -gt 0) {
+        $map = [ordered]@{}
+        foreach ($prop in $value.PSObject.Properties) {
+            $map[$prop.Name] = ConvertTo-OrderedMap $prop.Value
+        }
+        return $map
+    }
+    return $value
+}
+
+function Sync-OpenCodeConfig($skillsRoot) {
+    $opencodeConfigDir = Join-Path -Path $env:USERPROFILE -ChildPath ".config\opencode"
+    if (-not (Test-Path -LiteralPath $opencodeConfigDir)) { return }
+
+    $configPath = Join-Path -Path $opencodeConfigDir -ChildPath "opencode.json"
+    $config = [ordered]@{}
+
+    if (Test-Path -LiteralPath $configPath) {
+        try {
+            $parsed = Get-Content -LiteralPath $configPath -Raw -Encoding utf8 | ConvertFrom-Json
+            if ($parsed) {
+                $config = ConvertTo-OrderedMap $parsed
+            }
+        } catch {
+            Write-Host "  [!] No se pudo leer opencode.json existente. Se conserva sin cambios." -ForegroundColor Yellow
+            return
+        }
+    } else {
+        $config["`$schema"] = "https://opencode.ai/config.json"
+    }
+
+    if (-not $config.Contains("skills") -or -not ($config["skills"] -is [hashtable])) {
+        $config["skills"] = [ordered]@{}
+    }
+
+    $managedSkillsRoot = [System.IO.Path]::GetFullPath((Join-Path -Path $opencodeConfigDir -ChildPath "skills")).TrimEnd('\')
+    $preservedPaths = @()
+    $existingPaths = @()
+    if ($config["skills"].Contains("paths")) {
+        $existingPaths = @($config["skills"]["paths"])
+    }
+
+    foreach ($pathEntry in $existingPaths) {
+        if ([string]::IsNullOrWhiteSpace($pathEntry)) { continue }
+        try {
+            $fullPath = [System.IO.Path]::GetFullPath([string]$pathEntry).TrimEnd('\')
+        } catch {
+            $fullPath = [string]$pathEntry
+        }
+        if (-not $fullPath.StartsWith($managedSkillsRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+            $preservedPaths += [string]$pathEntry
+        }
+    }
+
+    $normalizedSkillsRoot = [System.IO.Path]::GetFullPath($skillsRoot).TrimEnd('\')
+    if ($normalizedSkillsRoot -notin $preservedPaths) {
+        $preservedPaths += $normalizedSkillsRoot
+    }
+
+    $config["skills"]["paths"] = @($preservedPaths)
+
+    $json = $config | ConvertTo-Json -Depth 20
+    $json | Out-File -FilePath $configPath -Encoding utf8 -Force
+    Write-Host "  opencode.json sincronizado -> skills.paths = $normalizedSkillsRoot" -ForegroundColor Gray
+}
+
 function InstallToDir($target, $source, $platformName) {
     if (-not $source) { $source = $scriptDir }
     $targetPath = [System.IO.Path]::GetFullPath($target).TrimEnd('\').TrimEnd('/')
@@ -219,6 +304,11 @@ This document is the shared, dynamically evolving persistent memory of the Skill
                 Write-Host "  CODEX.md ya existe localmente (memoria de aprendizaje conservada)." -ForegroundColor Yellow
             }
         }
+    }
+    $expectedOpenCodeSkillsRoot = [System.IO.Path]::GetFullPath((Join-Path -Path $env:USERPROFILE -ChildPath ".config\opencode\skills")).TrimEnd('\')
+    $isOpenCodeTarget = $normalizedPlatform -eq "opencode" -or $skillsRoot.TrimEnd('\') -ieq $expectedOpenCodeSkillsRoot
+    if ($isOpenCodeTarget) {
+        Sync-OpenCodeConfig $skillsRoot
     }
     Write-Host "  Listo: $installed skills instaladas" -ForegroundColor Green
 }
