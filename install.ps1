@@ -247,7 +247,7 @@ function InstallToOpendirAgents($source) {
     Write-Host "`nGenerando agentes en opencode agents/..." -ForegroundColor Cyan
     New-Item -ItemType Directory -Path $agentsDir -Force | Out-Null
     if (Get-Command node -ErrorAction SilentlyContinue) {
-        & node "$scriptDir\scripts\install-tasks.js" generate-agents "$source" "$agentsDir"
+        & node "$scriptDir\scripts\install-tasks.js" generate-agents "$source" "$agentsDir" "$Profile"
     } else {
         Write-Host "  [-] Error: Node.js es requerido para generar agentes." -ForegroundColor Red
     }

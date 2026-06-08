@@ -111,8 +111,19 @@ const TASKS = {
   },
 
   'generate-agents': (args) => {
-    const [scriptDir, agentsDir] = args;
+    const [scriptDir, agentsDir, profileName] = args;
     const skillsDir = path.join(scriptDir, 'skills');
+    let allowed = null;
+    if (profileName && profileName !== 'all') {
+      try {
+        const bundlesPath = path.join(scriptDir, 'skills', 'bundles', 'index.json');
+        const bundles = JSON.parse(fs.readFileSync(bundlesPath, 'utf8'));
+        const p = (bundles.profiles || {})[String(profileName).toLowerCase().trim()];
+        if (p && Array.isArray(p.skills)) {
+          allowed = new Set(p.skills);
+        }
+      } catch (_) {}
+    }
     const scanForSkills = (dir) => {
       fs.readdirSync(dir, { withFileTypes: true }).forEach(d => {
         const fullPath = path.join(dir, d.name);
@@ -121,11 +132,13 @@ const TASKS = {
           if (fs.existsSync(skillFile)) {
             const content = fs.readFileSync(skillFile, 'utf8');
             const lines = content.replace(/\r/g, '').split('\n');
-            let desc = d.name, body = content, category = null;
+            let name = d.name, desc = d.name, body = content, category = null;
             if (lines[0] === '---') {
               const endIdx = lines.indexOf('---', 1);
               if (endIdx > 0) {
                 const fm = lines.slice(1, endIdx).join('\n');
+                const n = fm.match(/^name:\s*(.+)$/m);
+                if (n) name = n[1].trim().replace(/^"(.*)"$/, '$1');
                 const m = fm.match(/description:\s*(?:["']?)([^"'\n]+)/);
                 if (m) desc = m[1].trim();
                 const c = fm.match(/^category:\s*(.+)$/m);
@@ -134,6 +147,7 @@ const TASKS = {
               }
             }
             if (category !== 'agent') return;
+            if (allowed && !allowed.has(name)) return;
             const agentContent = `---\ndescription: ${desc}\nmode: subagent\npermission:\n  edit: deny\n  bash: deny\n---\n\n${body}`;
             fs.writeFileSync(path.join(agentsDir, d.name + '.md'), agentContent, 'utf8');
             console.log('  Agente: ' + d.name + '.md');
