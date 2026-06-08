@@ -100,6 +100,27 @@ cd ~/skillgrid && bash install.sh --profile minimal
 | `strict` | Suite completa | Auditorías y hardening (más pesado) |
 | `all` | Todo | Sólo si sabés que lo necesitás |
 
+Cómo entenderlo (para nuevos):
+
+- Un perfil es la “cantidad de roles” que cargás. Menos roles = menos contexto, menos ruido y menos consumo.
+- Si tu tarea es normal (feature/bugfix), empezá en `minimal` o `standard`.
+- Si te piden auditoría completa (seguridad/marketing/finops) o coordinación total, usá `strict` o `all`.
+
+Cambiar de perfil (reinstalar encima):
+
+```powershell
+.\install.ps1 -Profile minimal|standard|strict|all
+```
+
+```bash
+./install.sh --profile minimal|standard|strict|all
+```
+
+Nota sobre “cantidad de carpetas” instaladas:
+
+- El repo tiene 30 skills. Además se instalan `shared/` y `bundles/` (soporte, no cuentan como skill).
+- Si ven más carpetas, suele ser por restos de instalaciones anteriores (por ejemplo `core/`, `design/`, `template/`). Podés borrarlas manualmente y reinstalar el perfil elegido.
+
 Chequeo antes de instalar (recomendado):
 
 ```bash
