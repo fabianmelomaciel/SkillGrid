@@ -1,0 +1,40 @@
+{
+    "$schema": "https://opencode.ai/config.json",
+    "skills": {
+        "paths": [
+            "C:\\Users\\fabia\\.config\\opencode\\skills"
+        ]
+    },
+    "agent": {
+        "project-manager": {
+            "mode": "primary",
+            "description": "project-manager que escucha al CEO, planea, delega a sub-agentes, revisa y reporta",
+            "prompt": "{file:C:\\Users\\fabia\\.config\\opencode\\skills\\project-manager\\SKILL.md}"
+        },
+        "optimizador-finops": {
+            "mode": "primary",
+            "description": "optimizador-finops para auditoria de calidad SQA, eficiencia de prompts, APIs y control de riesgos de consumo (FinOps)",
+            "prompt": "{file:C:\\Users\\fabia\\.config\\opencode\\skills\\optimizador-finops\\SKILL.md}"
+        },
+        "agente-devops": {
+            "mode": "primary",
+            "description": "agente-devops para SCM, seguridad de contenedores Docker/Compose y pipelines de CI/CD (SRE)",
+            "prompt": "{file:C:\\Users\\fabia\\.config\\opencode\\skills\\agente-devops\\SKILL.md}"
+        },
+        "auditor-de-marketing": {
+            "mode": "primary",
+            "description": "auditor-de-marketing para auditoria de growth SEO, social sharing OpenGraph y optimizacion de conversion (CTA)",
+            "prompt": "{file:C:\\Users\\fabia\\.config\\opencode\\skills\\auditor-de-marketing\\SKILL.md}"
+        },
+        "gestor-documental": {
+            "mode": "primary",
+            "description": "gestor-documental para diseno, validacion y formateo de especificaciones tecnicas y academicas (normas APA, ISO 29148, ISO 29119)",
+            "prompt": "{file:C:\\Users\\fabia\\.config\\opencode\\skills\\gestor-documental\\SKILL.md}"
+        },
+        "auditor-de-seguridad": {
+            "mode": "primary",
+            "description": "Auditor de seguridad que escanea proyectos buscando vulnerabilidades, secrets, dependencias, SAST, infra, DB y CI/CD",
+            "prompt": "{file:C:\\Users\\fabia\\.config\\opencode\\skills\\auditor-de-seguridad\\SKILL.md}"
+        }
+    }
+}
