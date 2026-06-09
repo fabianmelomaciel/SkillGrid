@@ -183,3 +183,7 @@ Next: 1. [action] 2. [action]
 ## Progressive Disclosure
 
 Este SKILL.md es la punta del iceberg. Para patrones avanzados de delegación (especulación paralela, cadena de confianza, enjambre, especialista+revisor), carga `references/delegation-patterns.md` solo cuando lo necesites.
+
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **Session Controls:** `skills/shared/session-controls.md`
+
+> Modules: `skills/shared/modules-footer.md`
