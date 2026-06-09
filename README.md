@@ -216,7 +216,7 @@ Agentes que se comportan como profesionales con roles definidos:
 | `auditor-de-seguridad` | Escanea 12 categorías: secrets, dependencias, SAST (OWASP Top 10), rate limiting, auth, API security, encryption, logging, compliance, infra, DB y CI/CD |
 | `audit-loop` | **Follow-up de auditorías.** Clasifica hallazgos, aplica fixes seguros automáticamente, pide OK para los sensibles, re-audita hasta 3 veces |
 | `agente-devops` | Diseña y audita Dockerfiles y pipelines CI/CD seguros. Alineado con IEEE 730 e ISO 27001 |
-| `agente-ideas` | **Deliberación y consenso.** Resuelve decisiones altamente complejas o ambiguas ejecutando un consejo de 3 etapas (propuestas en paralelo, revisión anónima cruzada y síntesis final) |
+| `agente-ideas` | **Deliberación y consenso.** Resuelve decisiones complejas o ambiguas con un consejo de 3 etapas optimizado: Complexity Gate (evalúa si vale la pena), Early-Exit Gate (salta revisión si hay convergencia) y Chairman-driven synthesis — mínimo gasto de tokens |
 | `auditor-de-marketing` | Audita SEO on-page, schema markup, AEO/GEO, programmatic SEO, AI writing (30 patrones), copy quality, OpenGraph, readability y CRO |
 | `optimizador-finops` | Analiza consumo de tokens, comprime prompts, detecta llamadas redundantes a APIs |
 | `project-manager` | Escucha al CEO, planifica, delega a agentes especializados, revisa resultados y reporta |
@@ -249,6 +249,17 @@ Combinaciones pre-diseñadas para tareas complejas:
 | **Deploy seguro** | `agente-devops` → `auditor-de-seguridad` → `audit-loop` |
 | **Rediseño UI** | `brainstorming` → `impeccable-design-taste` → `emil-kowalski-design` → `incremental-implementation` |
 | **Auditoría completa** | `auditor-de-seguridad` + `auditor-de-marketing` + `optimizador-finops` (paralelo) → `gestor-documental` |
+
+---
+
+## 🧪 v1.4 "Token-Efficient Deliberation" (2026-06-08)
+
+### Token Optimization
+- **agente-ideas**: −42% tokens (1,101→633). Nuevo Complexity Gate (evalúa si vale la pena convocar consejo), Early-Exit Gate (salta Stage 2 si hay convergencia) y Stage 2 rediseñado (Chairman-driven, elimina 3 LLM calls por deliberación). Tools legacy corregidos a nombres reales de opencode (`task`, `read`, `glob`, `grep`, `edit`, `write`, `bash`).
+- **project-manager**: −69% tokens (3,354→1,030). Session Handoff compacto, Database Change Management comprimido, Dual-Environment Analysis comprimido, Tools corregidos. Shared refs restauradas (existen en `skills/shared/`).
+- **db-schema-detector**: Tools legacy corregidos (`run_command`→`bash`, `view_file`→`read`, `write_to_file`→`edit/write`).
+- **openskills bundle**: agente-ideas añadido a la distribución para plataforma antigravity.
+- **README**: Descripciones actualizadas, tabla de idiomas corregida.
 
 ---
 
@@ -413,7 +424,7 @@ Además del −89.5% de CodeGraph, los protocolos de SkillGrid evitan tokens des
 | **Verify Before Refactor Gate** (verificar antes de sugerir cambios) | −30% a −60% en ciclos de reparación | El audit-loop ya no itera sobre cambios que no deberían hacerse |
 | **DRY Enforcement** (no duplicar código) | −10% a −20% en código generado | Se reusa código existente en vez de crear desde cero |
 | **Dual-Environment Protocol** (localhost vs producción) | −15% a −30% en sugerencias inválidas | No se proponen cambios que romperían en producción ni se discuten archivos environment-específicos |
-| **Skills en Inglés** (lenguaje universal de IA) | −5% a −10% por skill cargada | El inglés es 15–20% más compacto que español en tokens de prompt |
+| **Idioma del skill adaptado** (inglés o español según el agente) | −5% a −10% por skill cargada | Skills en inglés (~15–20% más compacto) donde aplica; skills en español para equipos hispanohablantes. Detectado automáticamente por `project-manager` |
 | **Context Engineering** (working set + sin re-lecturas completas) | −20% a −40% en exploración | No se releen archivos completos "para recordar" |
 
 **Ahorro combinado total estimado:** entre **−92% y −95%** versus un agente sin SkillGrid ni CodeGraph.
