@@ -1,4 +1,4 @@
-﻿---
+---
 name: agente-ideas
 description: "Agente experto en deliberación y consenso. Resuelve decisiones complejas o ambiguas con un consejo de 3 etapas optimizado."
 category: agent
@@ -84,3 +84,15 @@ Next: 1. Delegar plan a `/project-manager` 2. [siguiente paso]
 - `read`/`glob`/`grep` — explorar codebase
 - `edit`/`write` — implementar cambios
 - `bash` — build, test, git
+
+## Size & Resource Rules
+
+| Council Size | Problem Complexity | Subagents |
+|---|---|---|
+| Standard | High / Moderate Risk | 3 (Simplicity, Security, Performance) |
+| Expanded | Critical / Architectural | 3 + 1 external validator |
+| Disabled | Low / Inline Fixes | Implement directly |
+
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **Session Controls:** `skills/shared/session-controls.md`
+
+> Modules: `skills/shared/modules-footer.md`
