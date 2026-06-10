@@ -47,6 +47,16 @@
         "impeccable-design-taste"
       ]
     },
+    "testing": {
+      "label": "Quality Assurance & Testing",
+      "description": "E2E testing, TDD, debugging and verification skills for QA teams",
+      "skills": [
+        "playwright-testing",
+        "test-driven-development",
+        "systematic-debugging",
+        "verification-before-completion"
+      ]
+    },
     "management": {
       "label": "Project Management",
       "description": "Project planning, delegation, audit loop, and documentation",
@@ -78,8 +88,13 @@
     },
     "strict": {
       "label": "Full Suite + Auditors",
-      "description": "Everything including all agents (~30 skills, ~60K tokens)",
+      "description": "Everything including all agents (~31 skills, ~60K tokens)",
       "skills": ["brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "incremental-implementation", "playwright-testing", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "gestor-documental", "optimizador-finops", "project-manager", "creativo-visual", "emil-kowalski-design", "impeccable-design-taste"]
+    },
+    "testing": {
+      "label": "QA & Testing",
+      "description": "E2E, TDD and debugging skills for QA teams (~4 skills, ~8K tokens)",
+      "skills": ["playwright-testing", "test-driven-development", "systematic-debugging", "verification-before-completion"]
     }
   }
 }

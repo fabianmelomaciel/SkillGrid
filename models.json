@@ -74,10 +74,32 @@
       "context_window": 1048576,
       "thinking": true,
       "supports": ["tools", "vision", "code-execution", "audio"],
-      "quirks": ["excellent-reasoning", "very-large-context", "thinking-mode-available"],
+      "quirks": ["excellent-reasoning", "very-large-context", "thinking-mode-available", "state-of-the-art"],
       "anti_patterns": ["may-overthink-simple-tasks", "verbose-thinking-output"],
       "token_cost_per_1M_input": 1.25,
       "token_cost_per_1M_output": 10.00
+    },
+    "gemini-2.5-flash": {
+      "provider": "google",
+      "platforms": ["antigravity-ide", "antigravity"],
+      "context_window": 1048576,
+      "thinking": true,
+      "supports": ["tools", "vision", "code-execution", "audio"],
+      "quirks": ["fast-with-large-context", "thinking-mode-available", "best-cost-performance"],
+      "anti_patterns": ["may-skip-edge-cases-on-complex-tasks", "less-thorough-than-pro"],
+      "token_cost_per_1M_input": 0.15,
+      "token_cost_per_1M_output": 0.60
+    },
+    "claude-sonnet-4.6-thinking": {
+      "provider": "anthropic",
+      "platforms": ["antigravity-ide", "opencode"],
+      "context_window": 200000,
+      "thinking": true,
+      "supports": ["tools", "vision", "code-execution", "parallel-tool-calls", "extended-thinking"],
+      "quirks": ["best-reasoning-mode", "shows-chain-of-thought", "respects-xml-tags"],
+      "anti_patterns": ["very-slow-on-simple-tasks", "expensive-for-quick-fixes"],
+      "token_cost_per_1M_input": 3.00,
+      "token_cost_per_1M_output": 15.00
     },
     "gpt-4o": {
       "provider": "openai",
@@ -89,6 +111,17 @@
       "anti_patterns": ["may-ignore-negative-instructions", "can-be-verbose"],
       "token_cost_per_1M_input": 2.50,
       "token_cost_per_1M_output": 10.00
+    },
+    "o4-mini": {
+      "provider": "openai",
+      "platforms": ["cursor", "github-copilot"],
+      "context_window": 200000,
+      "thinking": true,
+      "supports": ["tools", "vision", "code-execution"],
+      "quirks": ["fast-reasoning", "cost-efficient-thinking-model", "good-at-math-and-code"],
+      "anti_patterns": ["less-reliable-with-long-instructions", "may-truncate-complex-outputs"],
+      "token_cost_per_1M_input": 1.10,
+      "token_cost_per_1M_output": 4.40
     },
     "multi-model": {
       "provider": "unknown",
