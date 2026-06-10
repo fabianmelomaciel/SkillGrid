@@ -25,14 +25,19 @@ $targetDir = Join-Path -Path $tempRoot -ChildPath ("skillgrid-" + [guid]::NewGui
 
 Write-Host "Clonando SkillGrid en directorio temporal: $targetDir" -ForegroundColor Cyan
 
-    # WARNING: Pinned to release tag v1.0.0 for supply chain safety. Update tag when releasing new versions.
-    git clone --depth 1 --branch v1.0.0 https://github.com/fabianmelomaciel/SkillGrid.git "$targetDir"
+    # WARNING: Pinned to release tag for supply chain safety. Update tag when releasing new versions.
+    git clone --depth 1 --branch v1.5.0 https://github.com/fabianmelomaciel/SkillGrid.git "$targetDir"
 
 # Run the installer
 try {
     Write-Host "Ejecutando instalador local..." -ForegroundColor Cyan
     $profile = $env:SKILLGRID_PROFILE
+    $validProfiles = @("minimal", "standard", "testing", "strict", "all")
     if (-not [string]::IsNullOrWhiteSpace($profile)) {
+        if ($profile -notin $validProfiles) {
+            Write-Host "Perfil '$profile' no reconocido. Perfiles válidos: $($validProfiles -join ', '). Usando 'minimal'." -ForegroundColor Yellow
+            $profile = "minimal"
+        }
         try {
             & "$targetDir\install.ps1" -Profile $profile
         } catch {
