@@ -97,6 +97,7 @@ cd ~/skillgrid && bash install.sh --profile minimal
 |--------|---------|-------------|
 | `minimal` | Gates mínimos | Principiantes, sesiones cortas, cambios pequeños |
 | `standard` | Flujo completo | Desarrollo normal día a día |
+| `testing` | QA & E2E | Equipos de QA — solo 4 skills, ~8K tokens |
 | `strict` | Suite completa | Auditorías y hardening (más pesado) |
 | `all` | Todo | Sólo si sabés que lo necesitás |
 
@@ -116,9 +117,9 @@ Cambiar de perfil (reinstalar encima):
 ./install.sh --profile minimal|standard|strict|all
 ```
 
-Nota sobre “cantidad de carpetas” instaladas:
+Nota sobre "cantidad de carpetas" instaladas:
 
-- El repo tiene 30 skills. Además se instalan `shared/` y `bundles/` (soporte, no cuentan como skill).
+- El repo tiene 31 skills. Además se instalan `shared/` y `bundles/` (soporte, no cuentan como skill).
 - Si ven más carpetas, suele ser por restos de instalaciones anteriores (por ejemplo `core/`, `design/`, `template/`). Podés borrarlas manualmente y reinstalar el perfil elegido.
 
 Chequeo antes de instalar (recomendado):
@@ -231,9 +232,10 @@ Instala solo lo que necesita tu equipo:
 
 | Bundle | Qué incluye |
 |--------|-------------|
-| **`core`** | Las 19 skills de metodología de desarrollo |
+| **`core`** | Las 20 skills de metodología de desarrollo |
 | **`devops`** | agente-devops · audit-loop · auditor-de-seguridad · optimizador-finops |
 | **`design`** | impeccable-design-taste · emil-kowalski-design · creativo-visual |
+| **`testing`** | playwright-testing · test-driven-development · systematic-debugging · verification-before-completion |
 | **`management`** | project-manager · gestor-documental · audit-loop · agente-ideas |
 | **`marketing`** | auditor-de-marketing |
 
@@ -251,6 +253,21 @@ Combinaciones pre-diseñadas para tareas complejas:
 | **Deploy seguro** | `agente-devops` → `auditor-de-seguridad` → `audit-loop` |
 | **Rediseño UI** | `brainstorming` → `impeccable-design-taste` → `emil-kowalski-design` → `incremental-implementation` |
 | **Auditoría completa** | `auditor-de-seguridad` + `auditor-de-marketing` + `optimizador-finops` (paralelo) → `gestor-documental` |
+
+---
+
+## 🧪 v1.5 "Security & Intelligence" (2026-06-10)
+
+### New Skills & Models
+- **playwright-testing**: Nueva skill E2E integrada en bundle `core` y nuevo bundle/perfil `testing` (4 skills, ~8K tokens).
+- **models.json**: 3 modelos nuevos — `gemini-2.5-flash`, `claude-sonnet-4.6-thinking`, `o4-mini` con quirks, anti_patterns y precios reales.
+
+### Security
+- **ralph-loop.ps1 / ralph-loop.sh**: Security gate — whitelist de agentes permitidos (`claude`, `opencode`, `antigravity-ide`, `antigravity`, `aider`, `gemini`). Previene ejecución arbitraria de comandos.
+
+### DX & Tooling
+- **generate-catalog.js**: Auto-sync de `skills/index.json` al correr `npm run catalog`. Previene desincronización futura entre catalog.json e index.json.
+- **README**: Workflow **"Feature con E2E"** agregado. Perfil `testing` documentado en tablas.
 
 ---
 
