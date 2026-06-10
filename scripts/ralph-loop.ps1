@@ -36,6 +36,15 @@ Write-Host " Max Iteraciones: $MaxIterations"
 Write-Host " Espera:         $DelaySeconds segundos"
 Write-Host "======================================================================"
 
+# === SECURITY GATE: Whitelist de agentes permitidos ===
+$ALLOWED_AGENTS = @("claude", "opencode", "antigravity-ide", "antigravity", "aider", "gemini")
+if ($AgentCommand -notin $ALLOWED_AGENTS) {
+    Write-Host "🔴 [SEGURIDAD] Agente '$AgentCommand' no está en la lista de agentes permitidos." -ForegroundColor Red
+    Write-Host "   Agentes permitidos: $($ALLOWED_AGENTS -join ', ')" -ForegroundColor Yellow
+    Write-Host "   Si necesitas agregar un agente, edita la variable `$ALLOWED_AGENTS en ralph-loop.ps1." -ForegroundColor Yellow
+    exit 1
+}
+
 if (-not (Test-Path $TaskFile)) {
     Write-Host "⚠️ [ADVERTENCIA] No se encontró el archivo '$TaskFile'. Creando uno básico..." -ForegroundColor Yellow
     @'

@@ -27,6 +27,22 @@ echo -e " Max Iteraciones: $MAX_ITERATIONS"
 echo -e " Espera:         $DELAY_SECONDS segundos"
 echo -e "${CYAN}======================================================================${NC}"
 
+# === SECURITY GATE: Whitelist de agentes permitidos ===
+ALLOWED_AGENTS=("claude" "opencode" "antigravity-ide" "antigravity" "aider" "gemini")
+is_allowed=false
+for agent in "${ALLOWED_AGENTS[@]}"; do
+    if [ "$AGENT_COMMAND" = "$agent" ]; then
+        is_allowed=true
+        break
+    fi
+done
+if [ "$is_allowed" = false ]; then
+    echo -e "${RED}🔴 [SEGURIDAD] Agente '$AGENT_COMMAND' no está en la lista de agentes permitidos.${NC}"
+    echo -e "${YELLOW}   Agentes permitidos: ${ALLOWED_AGENTS[*]}${NC}"
+    echo -e "${YELLOW}   Si necesitas agregar un agente, edita la variable ALLOWED_AGENTS en ralph-loop.sh.${NC}"
+    exit 1
+fi
+
 if [ ! -f "$TASK_FILE" ]; then
     echo -e "${YELLOW}⚠️ [ADVERTENCIA] No se encontró el archivo '$TASK_FILE'. Creando uno básico...${NC}"
     cat <<EOT > "$TASK_FILE"

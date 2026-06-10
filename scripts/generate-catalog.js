@@ -84,3 +84,22 @@ fs.writeFileSync(
   JSON.stringify(catalog, null, 2) + '\n'
 );
 console.log(`Catalog generated: ${skills.length} skills`);
+
+// === Tier-3: Auto-sync skills/index.json summary ===
+// Keeps total + categories in index.json aligned with the real catalog.
+// Does NOT touch per-skill token_estimate / cost_tier (maintained manually).
+const INDEX_PATH = path.join(ROOT, 'skills', 'index.json');
+if (fs.existsSync(INDEX_PATH)) {
+  try {
+    const index = JSON.parse(fs.readFileSync(INDEX_PATH, 'utf-8'));
+    index.generated = catalog.generated;
+    index.summary = { total: skills.length, categories };
+    // Bump patch version of index.json automatically
+    const [maj, min, pat] = (index.version || '1.0.0').split('.').map(Number);
+    index.version = `${maj}.${min}.${pat + 1}`;
+    fs.writeFileSync(INDEX_PATH, JSON.stringify(index, null, 2) + '\n');
+    console.log(`skills/index.json synced: v${index.version}, ${skills.length} skills`);
+  } catch (e) {
+    console.warn(`Warning: could not sync skills/index.json — ${e.message}`);
+  }
+}

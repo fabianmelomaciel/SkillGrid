@@ -246,6 +246,7 @@ Combinaciones pre-diseñadas para tareas complejas:
 | Workflow | Secuencia |
 |----------|-----------|
 | **Feature completa** | `brainstorming` → `spec-driven-development` → `writing-plans` → `incremental-implementation` → `requesting-code-review` → `finishing-a-development-branch` |
+| **Feature con E2E** | `brainstorming` → `spec-driven-development` → `writing-plans` → `test-driven-development` → `incremental-implementation` → `playwright-testing` → `requesting-code-review` → `finishing-a-development-branch` |
 | **Auditoría + reparación** | `auditor-de-seguridad` → `audit-loop` |
 | **Deploy seguro** | `agente-devops` → `auditor-de-seguridad` → `audit-loop` |
 | **Rediseño UI** | `brainstorming` → `impeccable-design-taste` → `emil-kowalski-design` → `incremental-implementation` |

@@ -1,5 +1,5 @@
 {
-  "version": "1.2.0",
+  "version": "1.2.1",
   "generated": "2026-06-10",
   "summary": {
     "total": 31,
@@ -16,9 +16,15 @@
       "category": "agent",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 1916, "output": 766 },
+      "token_estimate": {
+        "input": 1916,
+        "output": 766
+      },
       "cost_tier": "low",
-      "invokes": ["audit-loop", "auditor-de-seguridad"]
+      "invokes": [
+        "audit-loop",
+        "auditor-de-seguridad"
+      ]
     },
     "agente-ideas": {
       "name": "agente-ideas",
@@ -26,9 +32,15 @@
       "category": "agent",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 1886, "output": 754 },
+      "token_estimate": {
+        "input": 1886,
+        "output": 754
+      },
       "cost_tier": "low",
-      "invokes": ["brainstorming", "project-manager"]
+      "invokes": [
+        "brainstorming",
+        "project-manager"
+      ]
     },
     "audit-loop": {
       "name": "audit-loop",
@@ -36,7 +48,10 @@
       "category": "agent",
       "status": "beta",
       "risk_level": "critical",
-      "token_estimate": { "input": 2730, "output": 1092 },
+      "token_estimate": {
+        "input": 2730,
+        "output": 1092
+      },
       "cost_tier": "low",
       "invokes": []
     },
@@ -46,9 +61,14 @@
       "category": "agent",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 5320, "output": 2128 },
+      "token_estimate": {
+        "input": 5320,
+        "output": 2128
+      },
       "cost_tier": "high",
-      "invokes": ["audit-loop"]
+      "invokes": [
+        "audit-loop"
+      ]
     },
     "auditor-de-seguridad": {
       "name": "auditor-de-seguridad",
@@ -56,9 +76,14 @@
       "category": "agent",
       "status": "stable",
       "risk_level": "critical",
-      "token_estimate": { "input": 3435, "output": 1374 },
+      "token_estimate": {
+        "input": 3435,
+        "output": 1374
+      },
       "cost_tier": "medium",
-      "invokes": ["audit-loop"]
+      "invokes": [
+        "audit-loop"
+      ]
     },
     "brainstorming": {
       "name": "brainstorming",
@@ -66,9 +91,15 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 3054, "output": 1222 },
+      "token_estimate": {
+        "input": 3054,
+        "output": 1222
+      },
       "cost_tier": "medium",
-      "invokes": ["writing-plans", "spec-driven-development"]
+      "invokes": [
+        "writing-plans",
+        "spec-driven-development"
+      ]
     },
     "changelog-generator": {
       "name": "changelog-generator",
@@ -76,7 +107,10 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 1281, "output": 513 },
+      "token_estimate": {
+        "input": 1281,
+        "output": 513
+      },
       "cost_tier": "low",
       "invokes": []
     },
@@ -86,7 +120,10 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 3786, "output": 1514 },
+      "token_estimate": {
+        "input": 3786,
+        "output": 1514
+      },
       "cost_tier": "medium",
       "invokes": []
     },
@@ -96,7 +133,10 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 3347, "output": 1339 },
+      "token_estimate": {
+        "input": 3347,
+        "output": 1339
+      },
       "cost_tier": "medium",
       "invokes": []
     },
@@ -106,9 +146,14 @@
       "category": "design",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 4660, "output": 1864 },
+      "token_estimate": {
+        "input": 4660,
+        "output": 1864
+      },
       "cost_tier": "medium",
-      "invokes": ["emil-kowalski-design"]
+      "invokes": [
+        "emil-kowalski-design"
+      ]
     },
     "db-schema-detector": {
       "name": "db-schema-detector",
@@ -116,7 +161,10 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 1379, "output": 552 },
+      "token_estimate": {
+        "input": 1379,
+        "output": 552
+      },
       "cost_tier": "low",
       "invokes": []
     },
@@ -126,9 +174,14 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 2012, "output": 805 },
+      "token_estimate": {
+        "input": 2012,
+        "output": 805
+      },
       "cost_tier": "low",
-      "invokes": ["subagent-driven-development"]
+      "invokes": [
+        "subagent-driven-development"
+      ]
     },
     "emil-kowalski-design": {
       "name": "emil-kowalski-design",
@@ -136,7 +189,10 @@
       "category": "design",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 1777, "output": 710 },
+      "token_estimate": {
+        "input": 1777,
+        "output": 710
+      },
       "cost_tier": "low",
       "invokes": []
     },
@@ -146,9 +202,16 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 988, "output": 395 },
+      "token_estimate": {
+        "input": 988,
+        "output": 395
+      },
       "cost_tier": "low",
-      "invokes": ["using-git-worktrees", "writing-plans", "finishing-a-development-branch"]
+      "invokes": [
+        "using-git-worktrees",
+        "writing-plans",
+        "finishing-a-development-branch"
+      ]
     },
     "finishing-a-development-branch": {
       "name": "finishing-a-development-branch",
@@ -156,9 +219,14 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 2112, "output": 845 },
+      "token_estimate": {
+        "input": 2112,
+        "output": 845
+      },
       "cost_tier": "low",
-      "invokes": ["verification-before-completion"]
+      "invokes": [
+        "verification-before-completion"
+      ]
     },
     "gestor-documental": {
       "name": "gestor-documental",
@@ -166,7 +234,10 @@
       "category": "agent",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 1738, "output": 695 },
+      "token_estimate": {
+        "input": 1738,
+        "output": 695
+      },
       "cost_tier": "low",
       "invokes": []
     },
@@ -176,9 +247,14 @@
       "category": "design",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 1536, "output": 614 },
+      "token_estimate": {
+        "input": 1536,
+        "output": 614
+      },
       "cost_tier": "low",
-      "invokes": ["emil-kowalski-design"]
+      "invokes": [
+        "emil-kowalski-design"
+      ]
     },
     "incremental-implementation": {
       "name": "incremental-implementation",
@@ -186,9 +262,14 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 2491, "output": 996 },
+      "token_estimate": {
+        "input": 2491,
+        "output": 996
+      },
       "cost_tier": "low",
-      "invokes": ["verification-before-completion"]
+      "invokes": [
+        "verification-before-completion"
+      ]
     },
     "optimizador-finops": {
       "name": "optimizador-finops",
@@ -196,9 +277,14 @@
       "category": "agent",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 1813, "output": 725 },
+      "token_estimate": {
+        "input": 1813,
+        "output": 725
+      },
       "cost_tier": "low",
-      "invokes": ["audit-loop"]
+      "invokes": [
+        "audit-loop"
+      ]
     },
     "playwright-testing": {
       "name": "playwright-testing",
@@ -206,9 +292,15 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 2000, "output": 800 },
+      "token_estimate": {
+        "input": 2000,
+        "output": 800
+      },
       "cost_tier": "low",
-      "invokes": ["systematic-debugging", "verification-before-completion"]
+      "invokes": [
+        "systematic-debugging",
+        "verification-before-completion"
+      ]
     },
     "project-manager": {
       "name": "project-manager",
@@ -216,9 +308,17 @@
       "category": "agent",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 5301, "output": 2120 },
+      "token_estimate": {
+        "input": 5301,
+        "output": 2120
+      },
       "cost_tier": "high",
-      "invokes": ["brainstorming", "writing-plans", "incremental-implementation", "context-engineering"]
+      "invokes": [
+        "brainstorming",
+        "writing-plans",
+        "incremental-implementation",
+        "context-engineering"
+      ]
     },
     "receiving-code-review": {
       "name": "receiving-code-review",
@@ -226,7 +326,10 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 1927, "output": 771 },
+      "token_estimate": {
+        "input": 1927,
+        "output": 771
+      },
       "cost_tier": "low",
       "invokes": []
     },
@@ -236,7 +339,10 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 1050, "output": 420 },
+      "token_estimate": {
+        "input": 1050,
+        "output": 420
+      },
       "cost_tier": "low",
       "invokes": []
     },
@@ -246,9 +352,14 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 2206, "output": 882 },
+      "token_estimate": {
+        "input": 2206,
+        "output": 882
+      },
       "cost_tier": "low",
-      "invokes": ["writing-plans"]
+      "invokes": [
+        "writing-plans"
+      ]
     },
     "subagent-driven-development": {
       "name": "subagent-driven-development",
@@ -256,9 +367,16 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 3480, "output": 1392 },
+      "token_estimate": {
+        "input": 3480,
+        "output": 1392
+      },
       "cost_tier": "medium",
-      "invokes": ["dispatching-parallel-agents", "executing-plans", "incremental-implementation"]
+      "invokes": [
+        "dispatching-parallel-agents",
+        "executing-plans",
+        "incremental-implementation"
+      ]
     },
     "systematic-debugging": {
       "name": "systematic-debugging",
@@ -266,7 +384,10 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 2955, "output": 1182 },
+      "token_estimate": {
+        "input": 2955,
+        "output": 1182
+      },
       "cost_tier": "low",
       "invokes": []
     },
@@ -276,7 +397,10 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 2444, "output": 978 },
+      "token_estimate": {
+        "input": 2444,
+        "output": 978
+      },
       "cost_tier": "low",
       "invokes": []
     },
@@ -286,7 +410,10 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 2343, "output": 937 },
+      "token_estimate": {
+        "input": 2343,
+        "output": 937
+      },
       "cost_tier": "low",
       "invokes": []
     },
@@ -296,7 +423,10 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 1586, "output": 635 },
+      "token_estimate": {
+        "input": 1586,
+        "output": 635
+      },
       "cost_tier": "low",
       "invokes": []
     },
@@ -306,9 +436,14 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 1870, "output": 748 },
+      "token_estimate": {
+        "input": 1870,
+        "output": 748
+      },
       "cost_tier": "low",
-      "invokes": ["incremental-implementation"]
+      "invokes": [
+        "incremental-implementation"
+      ]
     },
     "writing-skills": {
       "name": "writing-skills",
@@ -316,7 +451,10 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
-      "token_estimate": { "input": 2751, "output": 1100 },
+      "token_estimate": {
+        "input": 2751,
+        "output": 1100
+      },
       "cost_tier": "low",
       "invokes": []
     }
