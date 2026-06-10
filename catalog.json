@@ -1,11 +1,11 @@
 {
   "version": "1.1.0",
-  "generated": "2026-06-07",
+  "generated": "2026-06-10",
   "summary": {
-    "total": 30,
+    "total": 31,
     "categories": {
       "agent": 8,
-      "core": 19,
+      "core": 20,
       "design": 3
     }
   },
@@ -19,7 +19,7 @@
     },
     {
       "name": "agente-ideas",
-      "description": "Agente experto en deliberación y consenso. Resuelve decisiones altamente complejas o ambiguas ejecutando un consejo de 3 etapas (propuestas en paralelo, revisión anónima cruzada y síntesis final).",
+      "description": "Agente experto en deliberación y consenso. Resuelve decisiones complejas o ambiguas con un consejo de 3 etapas optimizado.",
       "category": "agent",
       "status": "stable",
       "risk_level": "safe"
@@ -144,8 +144,15 @@
       "risk_level": "safe"
     },
     {
+      "name": "playwright-testing",
+      "description": "Use when designing, writing, debugging, or auditing Playwright E2E and component tests.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
       "name": "project-manager",
-      "description": "Project Manager agent. CEO gives high-level direction; Project Manager plans, delegates, reviews, and reports.",
+      "description": "Project Manager agent. CEO gives direction; PM plans, delegates, reviews, reports.",
       "category": "agent",
       "status": "stable",
       "risk_level": "safe"

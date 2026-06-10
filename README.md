@@ -3,10 +3,10 @@
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*30 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
+*31 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-30-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-31-22c55e?style=flat-square)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/network/members)
@@ -171,7 +171,7 @@ Genera automáticamente `.cursor/rules/` y `.github/instructions/` con las regla
 
 ### 🔧 Core — Metodología de desarrollo
 
-Las 19 skills que convierten a tu agente en un ingeniero de software disciplinado:
+Las 20 skills que convierten a tu agente en un ingeniero de software disciplinado:
 
 | Skill | Cuándo la usas |
 |-------|----------------|
@@ -180,6 +180,7 @@ Las 19 skills que convierten a tu agente en un ingeniero de software disciplinad
 | `spec-driven-development` | Cuando los requerimientos son vagos o ambiguos |
 | `writing-plans` | Para planificar cambios que tocan múltiples archivos |
 | `incremental-implementation` | Para entregar en rebanadas seguras y revisables |
+| `playwright-testing` | Diseñar, escribir y optimizar pruebas E2E y de componente con Playwright |
 | `test-driven-development` | Red → Green → Refactor con disciplina real |
 | `systematic-debugging` | Cuando algo falla y no sabés por qué |
 | `code-simplification` | Refactorizar sin cambiar comportamiento |
@@ -522,6 +523,30 @@ Contribuciones via Pull Request son bienvenidas. El CI valida automáticamente e
 - **Incremental CodeGraph sync**: Added to `skills/shared/codegraph-startup.md` — timestamp-based diffing to avoid full rescans
 - **DESIGN_VARIANCE dial**: Updated description in impeccable-design-taste (section renamed to "The Four Dials")
 - **Academic research pipeline**: New `skills/gestor-documental/references/research-pipeline.md` with 10-stage workflow
+
+## 🔄 Ralph Loop Runner (Bucle Autónomo)
+
+SkillGrid incluye scripts automatizados para implementar el **Ralph Loop** de ejecución autónoma en tu terminal. Esto ejecuta al agente de IA (como `claude` o `antigravity-ide`) en ciclos iterativos independientes, permitiendo que avance tarea por tarea sin saturar la ventana de contexto de una sola conversación larga.
+
+El runner lee un archivo de seguimiento (por defecto `task.md`) y se detiene automáticamente cuando no quedan tareas pendientes, o cuando alcanza el límite de iteraciones configurado.
+
+### Uso en Windows (PowerShell)
+```powershell
+# Ejecución básica (usa 'claude' y 'task.md')
+.\scripts\ralph-loop.ps1
+
+# Personalizado
+.\scripts\ralph-loop.ps1 -AgentCommand "antigravity-ide" -TaskFile "task.md" -MaxIterations 5 -DelaySeconds 10
+```
+
+### Uso en Linux / macOS (Bash)
+```bash
+# Ejecución básica
+bash scripts/ralph-loop.sh
+
+# Personalizado (Parámetros posicionales: agente, taskfile, max_iter, delay)
+bash scripts/ralph-loop.sh "claude" "task.md" 5 10
+```
 
 ---
 

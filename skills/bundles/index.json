@@ -15,6 +15,7 @@
         "executing-plans",
         "finishing-a-development-branch",
         "incremental-implementation",
+        "playwright-testing",
         "receiving-code-review",
         "requesting-code-review",
         "spec-driven-development",
@@ -78,7 +79,7 @@
     "strict": {
       "label": "Full Suite + Auditors",
       "description": "Everything including all agents (~30 skills, ~60K tokens)",
-      "skills": ["brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "incremental-implementation", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "gestor-documental", "optimizador-finops", "project-manager", "creativo-visual", "emil-kowalski-design", "impeccable-design-taste"]
+      "skills": ["brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "incremental-implementation", "playwright-testing", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "gestor-documental", "optimizador-finops", "project-manager", "creativo-visual", "emil-kowalski-design", "impeccable-design-taste"]
     }
   }
 }
