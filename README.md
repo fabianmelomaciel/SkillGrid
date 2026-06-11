@@ -497,6 +497,26 @@ risk_level: safe | critical
 
 Contribuciones via Pull Request son bienvenidas. El CI valida automáticamente el frontmatter. 🟢
 
+### 🛠️ Optimización del Repositorio para Desarrollo con IA (Dev-Mode)
+
+Si estás desarrollando o contribuyendo al propio repositorio de **SkillGrid** con asistentes de IA (tales como opencode, antigravity, Claude Code, Cursor o Copilot), puedes inicializar las reglas locales, el índice de CodeGraph y la memoria persistente ejecutando el instalador apuntando al directorio raíz del proyecto:
+
+**En Windows (PowerShell):**
+```powershell
+.\install.ps1 -ProjectDir . -Language typescript -GenerateCodex
+```
+
+**En Linux / macOS (Bash):**
+```bash
+./install.sh --project . --language typescript
+```
+
+Esto configurará:
+1. **Reglas de IDE locales**: En `.cursor/rules/` y `.github/instructions/` específicas para TypeScript/JS/Scripts.
+2. **Índice CodeGraph**: En `.codegraph/` para navegación semántica ultrarrápida.
+3. **Memoria Persistente (`CODEX.md`)**: Para recordar el contexto del repositorio y evitar alucinaciones.
+4. **Git Exclude**: Configura automáticamente `.git/info/exclude` para que estas configuraciones locales permanezcan privadas y no contaminen el árbol de commits.
+
 ---
 
 ## v1.2 "Audit Depth & Asset Pipeline" (2026-06-07)
