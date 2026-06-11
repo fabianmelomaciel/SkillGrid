@@ -79,7 +79,13 @@ $results = $jobs | Wait-Job | Receive-Job
 $jobs | Remove-Job
 
 foreach ($r in $results) {
-    foreach ($f in $r.findings) { $allFindings += $f }
+    if ($r.findings) {
+        foreach ($f in $r.findings) {
+            if ($f -and $f.finding) {
+                $allFindings += $f
+            }
+        }
+    }
     if ($r.hasIssues) { $summary.failed_categories += $r.key }
     elseif (-not $r.skipped) { $summary.passed_categories += $r.key }
 }
