@@ -489,8 +489,11 @@ function Setup-ProjectCodeGraph($projectDir) {
         "token_comparison.json",
         "token_usage_comparison.json",
         "token_usage.json",
+        "security-audit-report.html",
+        "security-audit-report.json",
         ".cursor/rules/",
-        ".github/instructions/"
+        ".github/instructions/",
+        "CODEX.md"
     )
 
     $targetExcludeFile = $null

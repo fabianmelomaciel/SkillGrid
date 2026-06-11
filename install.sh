@@ -341,8 +341,11 @@ setup_project_codegraph() {
         "token_comparison.json"
         "token_usage_comparison.json"
         "token_usage.json"
+        "security-audit-report.html"
+        "security-audit-report.json"
         ".cursor/rules/"
         ".github/instructions/"
+        "CODEX.md"
     )
 
     local TARGET_EXCLUDE_FILE=""
