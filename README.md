@@ -98,6 +98,7 @@ cd ~/skillgrid && bash install.sh --profile minimal
 | `minimal` | Gates mínimos | Principiantes, sesiones cortas, cambios pequeños |
 | `standard` | Flujo completo | Desarrollo normal día a día |
 | `testing` | QA & E2E | Equipos de QA — solo 4 skills, ~8K tokens |
+| `superpowers` | Flujo Planificado | Metodología estructurada de obra/superpowers (~22 skills) |
 | `strict` | Suite completa | Auditorías y hardening (más pesado) |
 | `all` | Todo | Sólo si sabés que lo necesitás |
 
@@ -172,7 +173,7 @@ Genera automáticamente `.cursor/rules/` y `.github/instructions/` con las regla
 
 ### 🔧 Core — Metodología de desarrollo
 
-Las 20 skills que convierten a tu agente en un ingeniero de software disciplinado:
+Las 22 skills que convierten a tu agente en un ingeniero de software disciplinado:
 
 | Skill | Cuándo la usas |
 |-------|----------------|
@@ -196,6 +197,8 @@ Las 20 skills que convierten a tu agente en un ingeniero de software disciplinad
 | `using-git-worktrees` | Aislar features para no romper el workspace |
 | `writing-skills` | Crear y testear tus propias skills |
 | `executing-plans` | Ejecutar planes por lotes con checkpoints de revisión |
+| `gsd-workflow` | Metodología GSD (Discuss → Plan → Execute → Verify → Ship) para combatir el context rot |
+| `ultra-review` | Protocolo de auditoría paralela multi-perspectiva de cambios (diffs) antes de mergear/commit |
 
 ---
 
@@ -475,7 +478,15 @@ Ese JSON incluye, por proyecto: `baseline_full_scan_tokens`, `codegraph_context_
 
 ## 🤝 Crear tu propia skill
 
-Copia el template y completa los campos:
+Puedes generar una nueva skill de forma interactiva ejecutando:
+
+```powershell
+node scripts/create-skill.js
+```
+
+El script te preguntará el nombre, categoría, descripción y nivel de riesgo, y generará automáticamente la estructura de directorios y el frontmatter YAML validado.
+
+O bien, puedes copiar la plantilla manualmente y completar los campos:
 
 ```
 skills/tu-skill/

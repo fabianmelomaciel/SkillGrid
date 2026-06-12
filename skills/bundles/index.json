@@ -14,6 +14,7 @@
         "dispatching-parallel-agents",
         "executing-plans",
         "finishing-a-development-branch",
+        "gsd-workflow",
         "incremental-implementation",
         "playwright-testing",
         "receiving-code-review",
@@ -22,6 +23,7 @@
         "subagent-driven-development",
         "systematic-debugging",
         "test-driven-development",
+        "ultra-review",
         "using-git-worktrees",
         "verification-before-completion",
         "writing-plans",
@@ -83,13 +85,18 @@
     },
     "standard": {
       "label": "Full Development Workflow",
-      "description": "Standard development workflow (~15 skills, ~25K tokens)",
-      "skills": ["brainstorming", "verification-before-completion", "writing-plans", "systematic-debugging", "context-engineering", "test-driven-development", "requesting-code-review", "receiving-code-review", "spec-driven-development", "incremental-implementation", "code-simplification", "finishing-a-development-branch", "dispatching-parallel-agents", "subagent-driven-development", "executing-plans"]
+      "description": "Standard development workflow (~17 skills, ~28K tokens)",
+      "skills": ["brainstorming", "verification-before-completion", "writing-plans", "systematic-debugging", "context-engineering", "test-driven-development", "requesting-code-review", "receiving-code-review", "spec-driven-development", "incremental-implementation", "code-simplification", "finishing-a-development-branch", "dispatching-parallel-agents", "subagent-driven-development", "executing-plans", "gsd-workflow", "ultra-review"]
+    },
+    "superpowers": {
+      "label": "Superpowers Framework",
+      "description": "Full development methodology from Jesse Vincent's superpowers (~22 skills, ~35K tokens)",
+      "skills": ["brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "incremental-implementation", "playwright-testing", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills"]
     },
     "strict": {
       "label": "Full Suite + Auditors",
-      "description": "Everything including all agents (~31 skills, ~60K tokens)",
-      "skills": ["brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "incremental-implementation", "playwright-testing", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "gestor-documental", "optimizador-finops", "project-manager", "creativo-visual", "emil-kowalski-design", "impeccable-design-taste"]
+      "description": "Everything including all agents (~33 skills, ~65K tokens)",
+      "skills": ["brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "incremental-implementation", "playwright-testing", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "gestor-documental", "optimizador-finops", "project-manager", "creativo-visual", "emil-kowalski-design", "impeccable-design-taste"]
     },
     "testing": {
       "label": "QA & Testing",

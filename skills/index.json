@@ -1,11 +1,11 @@
 {
-  "version": "1.2.1",
-  "generated": "2026-06-10",
+  "version": "1.2.3",
+  "generated": "2026-06-12",
   "summary": {
-    "total": 31,
+    "total": 33,
     "categories": {
       "agent": 8,
-      "core": 20,
+      "core": 22,
       "design": 3
     }
   },
@@ -241,6 +241,21 @@
       "cost_tier": "low",
       "invokes": []
     },
+    "gsd-workflow": {
+      "name": "gsd-workflow",
+      "description": "Use when executing complex, multi-step coding tasks where context rot or token limits could degrade performance.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe",
+      "token_estimate": {
+        "input": 2450,
+        "output": 980
+      },
+      "cost_tier": "low",
+      "invokes": [
+        "subagent-driven-development"
+      ]
+    },
     "impeccable-design-taste": {
       "name": "impeccable-design-taste",
       "description": "Use for any frontend design work, UI generation, or design review where quality must be premium. Activates comprehensive design auditing across typography, color, spacing, motion, and accessibility.",
@@ -403,6 +418,21 @@
       },
       "cost_tier": "low",
       "invokes": []
+    },
+    "ultra-review": {
+      "name": "ultra-review",
+      "description": "Use when you need to perform a deep, multi-perspective automated audit of code changes prior to committing or merging.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe",
+      "token_estimate": {
+        "input": 3300,
+        "output": 1320
+      },
+      "cost_tier": "medium",
+      "invokes": [
+        "dispatching-parallel-agents"
+      ]
     },
     "using-git-worktrees": {
       "name": "using-git-worktrees",

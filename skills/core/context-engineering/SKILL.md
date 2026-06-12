@@ -177,11 +177,19 @@ For richer context, use Model Context Protocol servers:
 
 | MCP Server | What It Provides |
 |-----------|-----------------|
+| **Context Mode** | Sandboxes tool output into SQLite, summarizing logs to prevent context bloat |
 | **Context7** | Auto-fetches relevant documentation for libraries |
 | **Chrome DevTools** | Live browser state, DOM, console, network |
 | **PostgreSQL** | Direct database schema and query results |
 | **Filesystem** | Project file access and search |
 | **GitHub** | Issue, PR, and repository context |
+
+### Context Mode & Output Sandboxing
+To prevent raw stdout or log dumps (e.g., test runs, build outputs, large query results) from bloat-polluting the active context:
+1. **Sandbox raw tool output**: Store heavy output streams in a local SQLite database or cache files.
+2. **Summarize logs**: Present only error highlights, structural statistics, or specific warning blocks to the agent instead of dumping thousands of lines of raw text.
+3. **MCP Server Integration**: Use the `context-mode` MCP server to intercept large tool execution payloads and automatically supply high-level summaries to the agent.
+
 
 ## Confusion Management
 Even with good context, you will encounter ambiguity. How you handle it determines outcome quality.
