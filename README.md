@@ -3,10 +3,10 @@
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*31 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
+*33 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-31-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-33-22c55e?style=flat-square)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/network/members)
@@ -235,7 +235,7 @@ Instala solo lo que necesita tu equipo:
 
 | Bundle | Qué incluye |
 |--------|-------------|
-| **`core`** | Las 20 skills de metodología de desarrollo |
+| **`core`** | Las 22 skills de metodología de desarrollo |
 | **`devops`** | agente-devops · audit-loop · auditor-de-seguridad · optimizador-finops |
 | **`design`** | impeccable-design-taste · emil-kowalski-design · creativo-visual |
 | **`testing`** | playwright-testing · test-driven-development · systematic-debugging · verification-before-completion |
