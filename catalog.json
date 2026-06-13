@@ -1,15 +1,22 @@
 {
-  "version": "1.1.0",
+  "version": "1.6.0",
   "generated": "2026-06-13",
   "summary": {
-    "total": 33,
+    "total": 38,
     "categories": {
-      "agent": 8,
-      "core": 22,
+      "core": 25,
+      "agent": 10,
       "design": 3
     }
   },
   "skills": [
+    {
+      "name": "a2a-orchestrator",
+      "description": "Orchestrates multi-agent workflows using the Agent-to-Agent (A2A) protocol — the 2026 open standard for cross-process agent communication. Use when coordinating specialized agents running in separate processes, different tools, or different machines. Different from dispatching-parallel-agents (intra-session) — A2A is for inter-process, inter-tool agent coordination.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
     {
       "name": "agente-devops",
       "description": "Use to audit, generate, and manage secure Docker container configurations (Dockerfile, docker-compose.yml) and DevOps CI/CD pipelines (GitHub Actions). Aligned with SCM, IEEE 730, and ISO 27001 standards.",
@@ -144,9 +151,23 @@
       "risk_level": "safe"
     },
     {
+      "name": "mcp-configurator",
+      "description": "Configures Model Context Protocol (MCP) servers to extend agent capabilities. Use when connecting an AI agent to databases, APIs, file systems, or external tools via the MCP standard. Supports Claude Code, Cursor, VS Code, and opencode. MCP is the 2026 standard for agent-tool integration.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
       "name": "optimizador-finops",
       "description": "Use to audit computational resource utilization, API efficiency, and token usage economy. Aligned with SQA & ISO 31000 risk management standards.",
       "category": "agent",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "performance-profiler",
+      "description": "Measure-first performance engineering. Use before merging features that touch UI, API endpoints, or build config. Audits Core Web Vitals, bundle size, Lighthouse CI scores, and detects performance regressions. Enforces a baseline-before-fix methodology.",
+      "category": "core",
       "status": "stable",
       "risk_level": "safe"
     },
@@ -163,6 +184,13 @@
       "category": "agent",
       "status": "stable",
       "risk_level": "safe"
+    },
+    {
+      "name": "prompt-injection-guard",
+      "description": "Defends against prompt injection attacks in AI-powered applications. Use when building features that process user-provided text, external data, or tool outputs that get passed to an LLM. Audits for direct injection, indirect injection via RAG/tools, jailbreak vectors, and privilege escalation through context manipulation. Aligned with OWASP LLM Top 10 (LLM01:2025).",
+      "category": "agent",
+      "status": "stable",
+      "risk_level": "critical"
     },
     {
       "name": "receiving-code-review",
@@ -191,6 +219,13 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe"
+    },
+    {
+      "name": "supply-chain-auditor",
+      "description": "Audits the software supply chain of a project — npm/pip/composer dependencies, lockfile integrity, CVEs, license compliance, and transitive risk. Use before merging to main, when adding new dependencies, or as part of a CI/CD post-install gate.",
+      "category": "agent",
+      "status": "stable",
+      "risk_level": "critical"
     },
     {
       "name": "systematic-debugging",

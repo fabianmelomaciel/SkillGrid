@@ -73,3 +73,58 @@ agente-devops → auditor-de-seguridad → audit-loop
 1. **agente-devops**: valida Docker/CI configs
 2. **auditor-de-seguridad**: escanea vulnerabilidades
 3. **audit-loop**: aplica fixes seguros automáticos, pide OK para sensibles, re-audita hasta 3 iteraciones o hasta que todo esté limpio antes del push
+
+## 🔒 AI Security Gate (LLM Apps) — v1.6
+
+```
+prompt-injection-guard → auditor-de-seguridad → supply-chain-auditor → audit-loop
+```
+
+1. **prompt-injection-guard**: Audita todas las superficies LLM del proyecto (chatbots, RAG pipelines, tool agents) contra OWASP LLM01:2025
+2. **auditor-de-seguridad**: Escanea el código de aplicación (SAST, OWASP web Top 10, secrets)
+3. **supply-chain-auditor**: Verifica CVEs en dependencias, lockfile integrity, licencias del SDK de IA
+4. **audit-loop**: Repara automáticamente lo que sea seguro, escala lo crítico al CEO
+
+## 📦 Supply Chain Gate (Pre-Merge) — v1.6
+
+```
+supply-chain-auditor → audit-loop
+```
+
+1. **supply-chain-auditor**: `npm install <dep>` → CVE scan + license check + lockfile verify + deprecated check
+2. **audit-loop**: auto-aplica `npm audit fix --only=patch`, escala breaking changes y licencias incompatibles
+
+## ⚡ Performance Gate (Pre-Merge UI Features) — v1.6
+
+```
+performance-profiler [baseline] → [merge feature] → performance-profiler [after] → delta report
+```
+
+1. **performance-profiler** (antes del merge): captura baseline — Lighthouse score, bundle size, LCP/CLS/INP
+2. *(merge de la feature)*
+3. **performance-profiler** (después): mide de nuevo, genera tabla delta
+4. Si alguna métrica degrada >10% → bloquea merge y escala al CEO
+
+## 🤖 Multi-Agent Pipeline (A2A) — v1.6
+
+```
+a2a-orchestrator → [Agent A (seguridad) ‖ Agent B (performance) ‖ Agent C (supply-chain)] → merge → gestor-documental
+```
+
+1. **a2a-orchestrator**: define topología (3 agentes en paralelo), genera `agentcard.json`, configura task lifecycle
+2. **Agentes A/B/C**: corren en procesos separados, cada uno con su skill especializada
+3. **merge**: orchestrator espera los 3 `COMPLETED`, fusiona reportes JSON
+4. **gestor-documental**: compila informe final APA/ISO
+
+## 🛡️ LLM App Hardening (Full Stack) — v1.6
+
+```
+brainstorming → spec-driven-development → [prompt-injection-guard + supply-chain-auditor] (paralelo) → mcp-configurator → audit-loop → agente-devops
+```
+
+1. **brainstorming**: define arquitectura de la app LLM (RAG, agentic, chatbot, etc.)
+2. **spec-driven-development**: documenta requerimientos de seguridad y límites del sistema
+3. **prompt-injection-guard** + **supply-chain-auditor** (en paralelo): auditoría de seguridad completa antes del primer deploy
+4. **mcp-configurator**: conecta al agente de desarrollo con los MCP servers necesarios (DB, GitHub, tools)
+5. **audit-loop**: repara hallazgos seguros, escala críticos
+6. **agente-devops**: genera Dockerfile y pipeline CI/CD con todos los gates de seguridad incorporados

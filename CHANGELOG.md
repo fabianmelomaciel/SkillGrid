@@ -7,13 +7,88 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
+## [1.6.0] - 2026-06-13
 
-- New `audit-loop` agent skill: closed-loop audit repair with bounded iterations (max 3), 3-color finding taxonomy (green auto-fix, yellow CEO-OK, red never-fix), per-batch verification, and escalation gates
-- Follow-up "¿Ejecuto el loop de reparación?" prompt in `auditor-de-seguridad`, `auditor-de-marketing`, and `optimizador-finops`
-- 3 new workflows in `skills/bundles/workflows.md`: post-audit repair loop, full audit+repair, pre-deploy gate
-- 9 fixture projects for testing the audit-loop behavior across all scenarios
-- `tests/audit-loop/audit-loop.test.js` with PowerShell-based fixture runner and snapshot validation
+### Added
+- **`supply-chain-auditor`** agent skill: audits npm/pip/composer dependency graphs for CVEs (CVSS-scored), lockfile integrity, license violations (GPL/AGPL detection), deprecated packages, and transitive risk. Integrates with `audit-loop`.
+- **`performance-profiler`** core skill: measure-first performance engineering covering Core Web Vitals (LCP/INP/CLS/FCP/TTFB), Lighthouse CI, bundle size analysis, API endpoint latency (p50/p95), DB slow query detection, and regression tracking with before/after delta tables.
+- **`mcp-configurator`** core skill: configures Model Context Protocol (MCP) servers for Claude Code, Cursor, VS Code, opencode, and Windsurf. Includes platform detection, Tier 1/2 server directory, security checklist, and config templates for web dev, data science, and DevOps roles.
+- **`prompt-injection-guard`** agent skill: defends against OWASP LLM01:2025 — direct injection, indirect injection via RAG/tools, jailbreak vectors, privilege escalation via tool calls. Includes 6-category audit checklist, safe prompt construction patterns, tool whitelist templates, and output schema validation examples.
+- **`a2a-orchestrator`** core skill: implements Google Agent-to-Agent (A2A) protocol for cross-process multi-agent coordination. Covers Agent Cards, task lifecycle (SUBMITTED→WORKING→COMPLETED), sequential pipeline, parallel fan-out, and human-in-the-loop patterns. Distinct from `dispatching-parallel-agents` (intra-session).
+- 5 new workflows in `skills/bundles/workflows.md`: AI Security Gate, Supply Chain Gate, Performance Gate, Multi-Agent Pipeline, LLM App Hardening
+- `SKILLGRID_LOOP_TIMEOUT` and `SKILLGRID_LOOP_MAX_ITER` environment variables in `skills/shared/session-controls.md`
+
+### Changed
+- **`optimizador-finops`**: Added model cost optimization section with task-type → model recommendations table sourced from `models.json` (gemini-2.5-flash for quick fixes → claude-sonnet-4.6-thinking for architecture decisions)
+- **`audit-loop`**: Added `ROLLBACK-SAFE` rule (revert only failing fix, not whole batch) and `TIMEOUT` rule (300s per iteration, configurable via `SKILLGRID_LOOP_TIMEOUT`)
+- `remote-install.ps1` and `remote-install.sh`: updated pin from `v1.5.0` → `v1.6.0`
+- `catalog.json`: version synced from `1.1.0` → `1.6.0` (was out of sync with README)
+- Skills count: 33 → **38**
+
+### Fixed
+- `catalog.json` version field was reporting `1.1.0` while README documented v1.5 — now aligned
+
+## [1.5.0] - 2026-06-10
+
+### Added
+- **`playwright-testing`** core skill: E2E testing skill integrated into bundle `core` and new bundle/profile `testing` (4 skills, ~8K tokens)
+- **`models.json`**: 3 new models — `gemini-2.5-flash`, `claude-sonnet-4.6-thinking`, `o4-mini` with quirks, anti_patterns, and real pricing
+- **`ralph-loop.ps1` / `ralph-loop.sh`**: Security gate — whitelist of allowed agents (claude, opencode, antigravity-ide, antigravity, aider, gemini). Prevents arbitrary command execution.
+
+### Changed
+- **`generate-catalog.js`**: Auto-sync of `skills/index.json` on `npm run catalog`. Prevents future desync between catalog.json and index.json.
+- README: Workflow "Feature con E2E" added. Profile `testing` documented.
+
+## [1.4.0] - 2026-06-08
+
+### Changed
+- **`agente-ideas`**: −42% tokens (1,101→633). New Complexity Gate, Early-Exit Gate (skips Stage 2 on convergence), Stage 2 redesigned as Chairman-driven (eliminates 3 LLM calls per deliberation)
+- **`project-manager`**: −69% tokens (3,354→1,030). Compact Session Handoff, compressed protocols
+- **`db-schema-detector`**: Tool names corrected to real opencode names (`bash`, `read`, `edit/write`)
+- `openskills` bundle: `agente-ideas` added to antigravity distribution
+
+## [1.3.0] - 2026-06-07
+
+### Security
+- `remote-install.ps1` and `remote-install.sh` pinned to `--branch v1.0.0` (supply-chain protection)
+- `install.sh`: confirmation prompt before any destructive `rm -rf` operation
+- `package-lock.json` generated to freeze dependency tree
+
+### Changed
+- `skills/shared/`: `report-common.ps1` created — shared `Escape-Html` function used by `audit.ps1` and `generate-report-from-json.ps1`
+- All 12 security scanners in `audit.ps1` now run via `Start-Job` (parallel, PowerShell 5.1)
+- Install profiles: `minimal`/`standard`/`strict` via `-Profile` flag
+- `install-tasks.js` extracted from `install.ps1` (~739→~557 lines)
+- AI writing patterns (30) extracted from `auditor-de-marketing/SKILL.md` to `references/ai-writing-patterns.md`
+
+### Fixed
+- `workflows.md`: typo `imperfectable` → `impeccable`
+- `gestor-documental/SKILL.md`: Sections 3 and 4 swapped (correct logical order)
+- `auditor-de-seguridad/SKILL.md`: Missing `verification-gate.md` reference added
+
+## [1.2.0] - 2026-06-07
+
+### Added
+- **Marketing Audit Expansion**: Schema markup deep audit (JSON-LD, Rich Results), AEO/GEO/LLMO audit (`SpeakableSpecification`, `FAQPage`), Programmatic SEO audit, Copy quality audit (PAS/BAB/FAB patterns)
+- **Visual Asset Pipeline**: Favicon multi-resolution (16×16→512×512), OG image templates, PWA manifest auto-generation, WCAG 4.5:1 contrast validation, framework auto-integration (Next.js/Astro/Vite/Nuxt/Angular)
+- **`creativo-visual`** design skill: Visual Creative Director with 5-component prompt specification, ImageMagick integration, emoji library (60+ emojis)
+
+## [1.1.0] - 2026-06-07
+
+### Added
+- `skills/index.json`: frontmatter index with progressive disclosure metadata (token estimates, cost tiers, invocation graph) for all skills
+- `skills/shared/session-controls.md`: runtime environment variables (`SKILLGRID_HOOK_PROFILE`, `SKILLGRID_DISABLED_SKILLS`, `SKILLGRID_MAX_TOKENS_PER_SESSION`, `SKILLGRID_DRY_RUN`)
+- `skills/shared/modules-footer.md`: DRY extraction of ~480 repeated lines across skills
+- Install profiles: `minimal`/`standard`/`strict` in `skills/bundles/index.json`
+- `token_estimate` frontmatter field on all SKILL.md files
+
+### Security
+- `skills/auditor-de-seguridad/references/mitre-attack.md`: MITRE ATT&CK v19.1 + NIST CSF 2.0 mappings for all 12 scanner categories
+- `skills/shared/risk-assessment.md`: CVSS 4.0 rubric + Risk Treatment Decision Tree
+
+### Changed
+- `db-schema-detector`: Re-categorized from `agent` → `core`
+- `skills/shared/codegraph-startup.md`: Incremental sync (timestamp-based diffing, avoids full rescans)
 
 ## [1.0.0] - 2026-05-01
 

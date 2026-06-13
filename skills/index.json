@@ -1,15 +1,28 @@
 {
-  "version": "1.2.4",
+  "version": "1.2.8",
   "generated": "2026-06-13",
   "summary": {
-    "total": 33,
+    "total": 38,
     "categories": {
-      "agent": 8,
-      "core": 22,
+      "core": 25,
+      "agent": 10,
       "design": 3
     }
   },
   "skills": {
+    "a2a-orchestrator": {
+      "name": "a2a-orchestrator",
+      "description": "Orchestrates multi-agent workflows using the Agent-to-Agent (A2A) protocol — the 2026 open standard for cross-process agent communication. Use when coordinating specialized agents running in separate processes, different tools, or different machines. Different from dispatching-parallel-agents (intra-session) — A2A is for inter-process, inter-tool agent coordination.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe",
+      "token_estimate": {
+        "input": 1500,
+        "output": 600
+      },
+      "cost_tier": "low",
+      "invokes": []
+    },
     "agente-devops": {
       "name": "agente-devops",
       "description": "Use to audit, generate, and manage secure Docker container configurations (Dockerfile, docker-compose.yml) and DevOps CI/CD pipelines (GitHub Actions). Aligned with SCM, IEEE 730, and ISO 27001 standards.",
@@ -28,13 +41,13 @@
     },
     "agente-ideas": {
       "name": "agente-ideas",
-      "description": "Agente experto en deliberación y consenso. Resuelve decisiones altamente complejas o ambiguas ejecutando un consejo de 3 etapas (propuestas en paralelo, revisión anónima cruzada y síntesis final).",
+      "description": "Agente experto en deliberación y consenso. Resuelve decisiones complejas o ambiguas con un consejo de 3 etapas optimizado.",
       "category": "agent",
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 1886,
-        "output": 754
+        "input": 1200,
+        "output": 500
       },
       "cost_tier": "low",
       "invokes": [
@@ -185,7 +198,7 @@
     },
     "emil-kowalski-design": {
       "name": "emil-kowalski-design",
-      "description": "Use when building, reviewing, or auditing any UI component to apply Emil Kowalski's design engineering principles. Enforces animation quality, micro-interaction polish, perceived performance, and accessibility standards.",
+      "description": "Use when building, reviewing, or auditing any UI component to apply Emil Kowalski's design engineering principles. Enforces animation quality, micro-interaction polish, perceived performance, and accessibility standards. Trigger on requests like \"make this feel polished\", \"review my animations\", \"improve UX\", or any frontend UI work.",
       "category": "design",
       "status": "stable",
       "risk_level": "safe",
@@ -258,7 +271,7 @@
     },
     "impeccable-design-taste": {
       "name": "impeccable-design-taste",
-      "description": "Use for any frontend design work, UI generation, or design review where quality must be premium. Activates comprehensive design auditing across typography, color, spacing, motion, and accessibility.",
+      "description": "Use for any frontend design work, UI generation, or design review where quality must be premium. Activates comprehensive design auditing across typography, color, spacing, motion, and accessibility. Trigger on \"make this beautiful\", \"premium design\", \"review my UI quality\", \"this feels generic\", or any design-first request.",
       "category": "design",
       "status": "stable",
       "risk_level": "safe",
@@ -286,6 +299,19 @@
         "verification-before-completion"
       ]
     },
+    "mcp-configurator": {
+      "name": "mcp-configurator",
+      "description": "Configures Model Context Protocol (MCP) servers to extend agent capabilities. Use when connecting an AI agent to databases, APIs, file systems, or external tools via the MCP standard. Supports Claude Code, Cursor, VS Code, and opencode. MCP is the 2026 standard for agent-tool integration.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe",
+      "token_estimate": {
+        "input": 1300,
+        "output": 500
+      },
+      "cost_tier": "low",
+      "invokes": []
+    },
     "optimizador-finops": {
       "name": "optimizador-finops",
       "description": "Use to audit computational resource utilization, API efficiency, and token usage economy. Aligned with SQA & ISO 31000 risk management standards.",
@@ -300,6 +326,19 @@
       "invokes": [
         "audit-loop"
       ]
+    },
+    "performance-profiler": {
+      "name": "performance-profiler",
+      "description": "Measure-first performance engineering. Use before merging features that touch UI, API endpoints, or build config. Audits Core Web Vitals, bundle size, Lighthouse CI scores, and detects performance regressions. Enforces a baseline-before-fix methodology.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe",
+      "token_estimate": {
+        "input": 1400,
+        "output": 600
+      },
+      "cost_tier": "low",
+      "invokes": []
     },
     "playwright-testing": {
       "name": "playwright-testing",
@@ -319,13 +358,13 @@
     },
     "project-manager": {
       "name": "project-manager",
-      "description": "Project Manager agent. CEO gives high-level direction; Project Manager plans, delegates, reviews, and reports.",
+      "description": "Project Manager agent. CEO gives direction; PM plans, delegates, reviews, reports.",
       "category": "agent",
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 5301,
-        "output": 2120
+        "input": 2800,
+        "output": 1200
       },
       "cost_tier": "high",
       "invokes": [
@@ -334,6 +373,19 @@
         "incremental-implementation",
         "context-engineering"
       ]
+    },
+    "prompt-injection-guard": {
+      "name": "prompt-injection-guard",
+      "description": "Defends against prompt injection attacks in AI-powered applications. Use when building features that process user-provided text, external data, or tool outputs that get passed to an LLM. Audits for direct injection, indirect injection via RAG/tools, jailbreak vectors, and privilege escalation through context manipulation. Aligned with OWASP LLM Top 10 (LLM01:2025).",
+      "category": "agent",
+      "status": "stable",
+      "risk_level": "critical",
+      "token_estimate": {
+        "input": 1800,
+        "output": 900
+      },
+      "cost_tier": "low",
+      "invokes": []
     },
     "receiving-code-review": {
       "name": "receiving-code-review",
@@ -392,6 +444,19 @@
         "executing-plans",
         "incremental-implementation"
       ]
+    },
+    "supply-chain-auditor": {
+      "name": "supply-chain-auditor",
+      "description": "Audits the software supply chain of a project — npm/pip/composer dependencies, lockfile integrity, CVEs, license compliance, and transitive risk. Use before merging to main, when adding new dependencies, or as part of a CI/CD post-install gate.",
+      "category": "agent",
+      "status": "stable",
+      "risk_level": "critical",
+      "token_estimate": {
+        "input": 1600,
+        "output": 800
+      },
+      "cost_tier": "low",
+      "invokes": []
     },
     "systematic-debugging": {
       "name": "systematic-debugging",

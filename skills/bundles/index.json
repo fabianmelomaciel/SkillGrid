@@ -6,7 +6,7 @@
       "label": "Core Development",
       "description": "Essential skills for any software engineering workflow",
       "skills": [
-        "brainstorming",
+              "brainstorming",
         "changelog-generator",
         "code-simplification",
         "context-engineering",
@@ -16,6 +16,8 @@
         "finishing-a-development-branch",
         "gsd-workflow",
         "incremental-implementation",
+        "mcp-configurator",
+        "performance-profiler",
         "playwright-testing",
         "receiving-code-review",
         "requesting-code-review",
@@ -34,10 +36,12 @@
       "label": "DevOps & Security",
       "description": "Infrastructure, security audits, and cost optimization",
       "skills": [
-        "agente-devops",
+                    "agente-devops",
         "audit-loop",
         "auditor-de-seguridad",
-        "optimizador-finops"
+        "optimizador-finops",
+        "prompt-injection-guard",
+        "supply-chain-auditor"
       ]
     },
     "design": {
@@ -53,6 +57,7 @@
       "label": "Quality Assurance & Testing",
       "description": "E2E testing, TDD, debugging and verification skills for QA teams",
       "skills": [
+              "performance-profiler",
         "playwright-testing",
         "test-driven-development",
         "systematic-debugging",
@@ -63,10 +68,11 @@
       "label": "Project Management",
       "description": "Project planning, delegation, audit loop, and documentation",
       "skills": [
-        "project-manager",
+              "project-manager",
         "gestor-documental",
         "audit-loop",
-        "agente-ideas"
+        "agente-ideas",
+        "a2a-orchestrator"
       ]
     },
     "marketing": {
@@ -95,8 +101,8 @@
     },
     "strict": {
       "label": "Full Suite + Auditors",
-      "description": "Everything including all agents (~33 skills, ~65K tokens)",
-      "skills": ["brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "incremental-implementation", "playwright-testing", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "gestor-documental", "optimizador-finops", "project-manager", "creativo-visual", "emil-kowalski-design", "impeccable-design-taste"]
+      "description": "Everything including all agents (~38 skills, ~75K tokens)",
+      "skills": ["a2a-orchestrator", "brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "incremental-implementation", "mcp-configurator", "performance-profiler", "playwright-testing", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "gestor-documental", "optimizador-finops", "project-manager", "prompt-injection-guard", "supply-chain-auditor", "creativo-visual", "emil-kowalski-design", "impeccable-design-taste"]
     },
     "testing": {
       "label": "QA & Testing",

@@ -3,10 +3,10 @@
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*33 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
+*38 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-33-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-38-22c55e?style=flat-square)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/network/members)
@@ -199,6 +199,9 @@ Las 22 skills que convierten a tu agente en un ingeniero de software disciplinad
 | `executing-plans` | Ejecutar planes por lotes con checkpoints de revisión |
 | `gsd-workflow` | Metodología GSD (Discuss → Plan → Execute → Verify → Ship) para combatir el context rot |
 | `ultra-review` | Protocolo de auditoría paralela multi-perspectiva de cambios (diffs) antes de mergear/commit |
+| `mcp-configurator` | Configura servidores MCP (Model Context Protocol) para conectar el agente a DBs, APIs y tools externas |
+| `performance-profiler` | Auditoría measure-first: Core Web Vitals, Lighthouse CI, bundle size, latencia de API, detección de regresiones |
+| `a2a-orchestrator` | Orquesta redes multi-agente con el protocolo A2A (Agent-to-Agent). Para agentes cross-proceso/cross-tool — diferente a `dispatching-parallel-agents` (intra-sesión) |
 
 ---
 
@@ -218,7 +221,9 @@ Agentes que se comportan como profesionales con roles definidos:
 
 | Agente | Rol |
 |--------|-----|
-| `auditor-de-seguridad` | Escanea 12 categorías: secrets, dependencias, SAST (OWASP Top 10), rate limiting, auth, API security, encryption, logging, compliance, infra, DB y CI/CD |
+| `auditor-de-seguridad` | Escanea 12 categorías: secrets, SAST (OWASP Top 10), rate limiting, auth, API security, encryption, logging, compliance, infra, DB y CI/CD |
+| `supply-chain-auditor` | Audita la cadena de suministro: CVEs en deps (npm/pip/composer), lockfile integrity, licencias, paquetes deprecados y riesgo transitivo |
+| `prompt-injection-guard` | Defiende contra ataques de prompt injection (OWASP LLM01:2025): inyección directa, indirecta vía RAG/tools, jailbreaks y escalada de privilegios |
 | `audit-loop` | **Follow-up de auditorías.** Clasifica hallazgos, aplica fixes seguros automáticamente, pide OK para los sensibles, re-audita hasta 3 veces |
 | `agente-devops` | Diseña y audita Dockerfiles y pipelines CI/CD seguros. Alineado con IEEE 730 e ISO 27001 |
 | `agente-ideas` | **Deliberación y consenso.** Resuelve decisiones complejas o ambiguas con un consejo de 3 etapas optimizado: Complexity Gate (evalúa si vale la pena), Early-Exit Gate (salta revisión si hay convergencia) y Chairman-driven synthesis — mínimo gasto de tokens |
@@ -235,11 +240,11 @@ Instala solo lo que necesita tu equipo:
 
 | Bundle | Qué incluye |
 |--------|-------------|
-| **`core`** | Las 22 skills de metodología de desarrollo |
-| **`devops`** | agente-devops · audit-loop · auditor-de-seguridad · optimizador-finops |
+| **`core`** | Las 25 skills de metodología de desarrollo |
+| **`devops`** | agente-devops · audit-loop · auditor-de-seguridad · supply-chain-auditor · prompt-injection-guard · optimizador-finops |
 | **`design`** | impeccable-design-taste · emil-kowalski-design · creativo-visual |
-| **`testing`** | playwright-testing · test-driven-development · systematic-debugging · verification-before-completion |
-| **`management`** | project-manager · gestor-documental · audit-loop · agente-ideas |
+| **`testing`** | playwright-testing · performance-profiler · test-driven-development · systematic-debugging · verification-before-completion |
+| **`management`** | project-manager · gestor-documental · audit-loop · agente-ideas · a2a-orchestrator |
 | **`marketing`** | auditor-de-marketing |
 
 ---
@@ -256,6 +261,49 @@ Combinaciones pre-diseñadas para tareas complejas:
 | **Deploy seguro** | `agente-devops` → `auditor-de-seguridad` → `audit-loop` |
 | **Rediseño UI** | `brainstorming` → `impeccable-design-taste` → `emil-kowalski-design` → `incremental-implementation` |
 | **Auditoría completa** | `auditor-de-seguridad` + `auditor-de-marketing` + `optimizador-finops` (paralelo) → `gestor-documental` |
+| **AI Security Gate** 🔒 | `prompt-injection-guard` → `auditor-de-seguridad` → `supply-chain-auditor` → `audit-loop` |
+| **Supply Chain Gate** 📦 | `supply-chain-auditor` → `audit-loop` (pre-merge, on `npm install`) |
+| **Performance Gate** ⚡ | `performance-profiler` [baseline] → [merge] → `performance-profiler` [delta] |
+| **Multi-Agent Pipeline** 🤖 | `a2a-orchestrator` → [agentes especializados en paralelo] → `gestor-documental` |
+| **LLM App Hardening** 🛡️ | `brainstorming` → `spec-driven-development` → [`prompt-injection-guard` + `supply-chain-auditor`] → `mcp-configurator` → `audit-loop` → `agente-devops` |
+
+---
+
+## 🧪 v1.6 "Supply Chain & Agent Protocol" (2026-06-13)
+
+### 3 New Skills — Research-Backed (GitHub Trending 2026)
+
+| Skill | Bundle | Why now |
+|-------|--------|---------|
+| **`supply-chain-auditor`** | `devops` | Top requested skill in 2026 — CVEs, lockfile integrity, license compliance, transitive risk |
+| **`performance-profiler`** | `core` + `testing` | Core Web Vitals + Lighthouse CI + bundle analysis. Measure-first methodology |
+| **`mcp-configurator`** | `core` | MCP is the "USB-C for AI" — de facto standard 2026. Supports Claude Code, Cursor, opencode |
+
+### Supply Chain Workflow (NEW)
+```
+npm install <dep>
+  → supply-chain-auditor → CVE scan + license check + lockfile verify
+  → audit-loop → auto-fix patchable CVEs, escalate breaking changes
+```
+
+### Performance Gate (NEW)
+```
+Pre-merge check on UI features:
+  → performance-profiler → Lighthouse baseline → bundle delta comparison → ⚠️ flag regressions >10%
+```
+
+### Improvements to Existing Skills
+
+- **`optimizador-finops`**: Added model cost optimization section — reads `models.json` to recommend cheapest model per task type (e.g., `gemini-2.5-flash` at $0.75/1M for quick fixes vs `claude-sonnet-4.6-thinking` at $18/1M for deep reasoning)
+- **`audit-loop`**: Added `ROLLBACK-SAFE` rule — partial failure now reverts only the failing fix, not the whole batch. Added `TIMEOUT` rule (300s per iteration, configurable via `SKILLGRID_LOOP_TIMEOUT`)
+- **`shared/session-controls.md`**: Added `SKILLGRID_LOOP_TIMEOUT` and `SKILLGRID_LOOP_MAX_ITER` environment variables
+
+### Infra
+- `catalog.json` version synced to `1.6.0` (was `1.1.0`, out of sync with README)
+- `npm run catalog` now reports **38 skills** (was 33)
+- Remote-install pin updated to `v1.6.0`
+- `CHANGELOG.md` fully versioned (v1.1 – v1.6)
+- 5 new workflows added to `skills/bundles/workflows.md`
 
 ---
 
