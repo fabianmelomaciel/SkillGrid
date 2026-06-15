@@ -95,6 +95,15 @@ After completing work:
 ### Token Data
 Check `$env:SKILLGRID_SCRATCH\token_usage_comparison.json` (or `scratch/token_usage_comparison.json`) and include fields in handoff.
 
+## 🎯 Precision & Zero-Error Coding Protocol (MANDATORY)
+
+To guarantee software reliability, prevent regressions, and eliminate wasted tokens:
+1. **Trace references before any edit:** Locate and review all reference and import sites of any code block, class, or method before editing. Use CodeGraph or grep.
+2. **Turn-by-turn verification:** Run tests, compile, or lint scripts *immediately* after each single-file edit. Never queue multiple modifications without confirming the previous one works.
+3. **Strict 2-Strike Rollback:** If a change breaks the build, compiler, or tests, attempt up to two (2) targeted fixes. If it still fails, you MUST run `git restore` on all modified files, stop execution, and ask the user for advice. Do not stack debug changes on top of broken files.
+4. **Clean boundary scopes:** Keep changes localized. Never touch unrelated configuration or database settings unless explicitly instructed.
+5. **Concrete evidence required:** You must run compiler or test commands and attach the stdout results to prove the task is actually working before reporting it as complete. "Looks like it works" is not valid.
+
 ## Audit Mitigation Protocol
 
 When audit findings arrive (from `optimizador-finops`, `auditor-de-seguridad`, etc.):
