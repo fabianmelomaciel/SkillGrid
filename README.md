@@ -464,11 +464,12 @@ SkillGrid combina **CodeGraph** (indexación semántica local) con **protocolos 
 
 ### 📊 Comparativa Real de Consumo y Costos por Plataforma
 
-Medido el 2026-06-04 sobre **300 archivos** (~1.47 MB de código fuente):
+#### 📂 Caso A: Proyecto Mediano (OpenSkills)
+*Medido el 2026-06-04 sobre **300 archivos** (~1.47 MB de código fuente)*
 
 | Métrica | Full Scan (sin CodeGraph) | Con CodeGraph | Reducción |
 |---------|:------------------------:|:-------------:|:---------:|
-| **Tokens de contexto** | 368,298 | 38,830 | **−89.5%** |
+| **Tokens de contexto** | 368,298 | 38,830 | **−89.46%** |
 
 | Plataforma / Herramienta | Modelo | Costo Full Scan | Costo con CodeGraph | Ahorro CodeGraph |
 | :--- | :--- | ---: | ---: | ---: |
@@ -481,6 +482,25 @@ Medido el 2026-06-04 sobre **300 archivos** (~1.47 MB de código fuente):
 | **Cursor IDE** | GPT-4o / Claude 3.5 | \$0.921 | \$0.097 | **89.5%** |
 | **GitHub Copilot** | GPT-4o | \$0.921 | \$0.097 | **89.5%** |
 | **Open WebUI** | Multi-model | variable | variable | **≥89.5%** |
+
+#### 📂 Caso B: Proyecto Grande (SkillGrid completo)
+*Medido el 2026-06-15 sobre **10,467 archivos** (~144.5 MB de código fuente)*
+
+| Métrica | Full Scan (sin CodeGraph) | Con CodeGraph | Reducción |
+|---------|:------------------------:|:-------------:|:---------:|
+| **Tokens de contexto** | 36,135,586 | 3,615,559 | **−89.99%** |
+
+| Plataforma / Herramienta | Modelo | Costo Full Scan | Costo con CodeGraph | Ahorro CodeGraph |
+| :--- | :--- | ---: | ---: | ---: |
+| **opencode** | Claude Sonnet 4.6 | \$108.407 | \$10.847 | **89.99%** |
+| **opencode** | DeepSeek V4 Flash | \$18.068 | \$1.808 | **89.99%** |
+| **Antigravity** | Gemini 1.5 Flash | \$2.710 | \$0.271 | **89.99%** |
+| **Antigravity / Cursor** | Gemini 1.5 Pro | \$45.169 | \$4.519 | **89.99%** |
+| **Antigravity IDE** | Gemini 2.5 Pro | \$45.169 | \$4.519 | **89.99%** |
+| **Claude Code** | Claude 3.5 Sonnet | \$108.407 | \$10.847 | **89.99%** |
+| **Cursor IDE** | GPT-4o / Claude 3.5 | \$90.339 | \$9.039 | **89.99%** |
+| **GitHub Copilot** | GPT-4o | \$90.339 | \$9.039 | **89.99%** |
+| **Open WebUI** | Multi-model | variable | variable | **≥89.9%** |
 
 > [!NOTE]
 > **¿Por qué Gemini ahorra aún más?**
