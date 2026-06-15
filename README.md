@@ -28,7 +28,7 @@ No es solo una lista de prompts. Es un **sistema de trabajo autónomo y eficient
 
 - 🔁 **Bucle de Reparación Automática** — Ahorra horas de depuración. Tus agentes auditan y corrigen fallos en ciclos autónomos cerrados.
 - 🧠 **Memoria Persistente (CODEX)** — Cero fricción en contexto. El agente aprende los secretos de tu proyecto y nunca te hace repetir explicaciones.
-- 🛡️ **Seguridad Bajo Control (Taxonomía de Riesgo)** — Duerme tranquilo. El agente sabe qué cambios aplicar de forma segura y cuándo pedir tu autorización.
+ - 🛡️ **Seguridad Bajo Control (Taxonomía de Riesgo)** — Duerme tranquilo. El agente sabe qué cambios aplicar de forma segura y cuándo pedir tu autorización. Adicionalmente, las skills son auditadas proactivamente con el escáner de seguridad **NVIDIA SkillSpector**.
 - 📦 **Instalación Modular por Roles** — Descarga solo lo que tu equipo necesita (DevOps, Diseño, Gestión, Marketing).
 
 ---
@@ -295,6 +295,7 @@ Pre-merge check on UI features:
 ### Improvements to Existing Skills
 
 - **`optimizador-finops`**: Added model cost optimization section — reads `models.json` to recommend cheapest model per task type (e.g., `gemini-2.5-flash` at $0.75/1M for quick fixes vs `claude-sonnet-4.6-thinking` at $18/1M for deep reasoning)
+- **`auditor-de-seguridad`**: Integrated reference and validation steps for **NVIDIA SkillSpector** (see [skillspector.md](file:///c:/laragon/www/SkillGrid/skills/auditor-de-seguridad/references/skillspector.md)) to scan and secure AI Agent Skills against prompt injections, exfiltration, rogue agent behavior, and tool abuse.
 - **`audit-loop`**: Added `ROLLBACK-SAFE` rule — partial failure now reverts only the failing fix, not the whole batch. Added `TIMEOUT` rule (300s per iteration, configurable via `SKILLGRID_LOOP_TIMEOUT`)
 - **`shared/session-controls.md`**: Added `SKILLGRID_LOOP_TIMEOUT` and `SKILLGRID_LOOP_MAX_ITER` environment variables
 
@@ -304,6 +305,7 @@ Pre-merge check on UI features:
 - Remote-install pin updated to `v1.6.0`
 - `CHANGELOG.md` fully versioned (v1.1 – v1.6)
 - 5 new workflows added to `skills/bundles/workflows.md`
+- **CI/CD Security Gate**: Integrated automatic static scans using `skillspector scan --no-llm` inside GitHub Actions to audit all skill files.
 
 ---
 

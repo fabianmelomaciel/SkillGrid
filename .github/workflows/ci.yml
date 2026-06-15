@@ -28,7 +28,8 @@ jobs:
         run: node tests/audit-loop/audit-loop.test.js
 
       - name: Validate models.json
-        run: node -e "const m=JSON.parse(require('fs').readFileSync('models.json','utf-8'));if(!m.models||!m.platforms)process.exit(1);console.log('models.json: ' + Object.keys(m.models).length + ' models, ' + Object.keys(m.platforms).length + ' platforms')"
+        run: |
+          node -e "const m=JSON.parse(require('fs').readFileSync('models.json','utf-8'));if(!m.models||!m.platforms)process.exit(1);console.log('models.json: ' + Object.keys(m.models).length + ' models, ' + Object.keys(m.platforms).length + ' platforms')"
 
       - name: Test PowerShell merge loader
         shell: pwsh
@@ -104,3 +105,21 @@ jobs:
             exit 1
           fi
           echo "Bash loader test passed"
+
+  skillspector-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install NVIDIA SkillSpector
+        run: pip install git+https://github.com/NVIDIA/SkillSpector.git
+
+      - name: Scan skills with SkillSpector
+        run: skillspector scan ./skills/ --no-llm
+
