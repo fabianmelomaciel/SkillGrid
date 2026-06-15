@@ -12,7 +12,9 @@ function resolveCatalogVersion() {
       if (existing && typeof existing.version === 'string' && existing.version.trim().length > 0) {
         return existing.version.trim();
       }
-    } catch (_) {}
+    } catch (err) {
+      console.warn('Warning: Could not parse catalog.json version:', err.message);
+    }
   }
 
   if (fs.existsSync(PACKAGE_JSON_PATH)) {
@@ -21,7 +23,9 @@ function resolveCatalogVersion() {
       if (pkg && typeof pkg.version === 'string' && pkg.version.trim().length > 0) {
         return pkg.version.trim();
       }
-    } catch (_) {}
+    } catch (err) {
+      console.warn('Warning: Could not parse package.json version:', err.message);
+    }
   }
 
   return '1.0.0';
@@ -44,7 +48,7 @@ function parseFrontmatter(file) {
     try {
       const jsonStr = m[1].replace(/([a-zA-Z0-9_]+)\s*:/g, '"$1":');
       return JSON.parse(jsonStr);
-    } catch (_) {
+    } catch (err) {
       return null;
     }
   };

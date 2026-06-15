@@ -122,7 +122,9 @@ const TASKS = {
         if (p && Array.isArray(p.skills)) {
           allowed = new Set(p.skills);
         }
-      } catch (_) {}
+      } catch (err) {
+        console.warn('Warning: Could not load bundles json:', err.message);
+      }
     }
     const scanForSkills = (dir) => {
       fs.readdirSync(dir, { withFileTypes: true }).forEach(d => {
