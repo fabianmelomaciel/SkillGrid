@@ -3,10 +3,10 @@
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*38 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
+*39 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-38-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-39-22c55e?style=flat-square)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/network/members)
@@ -211,6 +211,7 @@ Las 22 skills que convierten a tu agente en un ingeniero de software disciplinad
 |-------|----------|
 | `impeccable-design-taste` | Auditoría de diseño en 6 capas: tipografía, color, espaciado, polish, motion y accesibilidad WCAG AA. Detecta y elimina los "AI tells" (glassmorphism genérico, gradients de AI, cards idénticas). |
 | `emil-kowalski-design` | Animaciones ≤300ms, micro-interacciones, perceived performance. Principios de diseño de Emil Kowalski aplicados sistemáticamente. |
+| `github-premium-aesthetics` | Implementa patrones UI de vanguardia inspirados en GitHub y Vercel, incluyendo Bento grids, bordes brillantes, gradientes mesh y movimiento fluido. |
 | `creativo-visual` | Director Creativo y Diseñador Visual. Traduce prompts básicos a especificaciones artísticas de 5 componentes (Subject, Action, Context, Composition, Style) e integra ImageMagick. |
 
 ---
@@ -271,13 +272,14 @@ Combinaciones pre-diseñadas para tareas complejas:
 
 ## 🧪 v1.6 "Supply Chain & Agent Protocol" (2026-06-13)
 
-### 3 New Skills — Research-Backed (GitHub Trending 2026)
+### 4 New Skills — Research-Backed (GitHub Trending 2026)
 
 | Skill | Bundle | Why now |
 |-------|--------|---------|
 | **`supply-chain-auditor`** | `devops` | Top requested skill in 2026 — CVEs, lockfile integrity, license compliance, transitive risk |
 | **`performance-profiler`** | `core` + `testing` | Core Web Vitals + Lighthouse CI + bundle analysis. Measure-first methodology |
 | **`mcp-configurator`** | `core` | MCP is the "USB-C for AI" — de facto standard 2026. Supports Claude Code, Cursor, opencode |
+| **`github-premium-aesthetics`** | `design` | Highly requested to eliminate standard "AI-looking" designs. Integrates Bento grids, glowing borders, and fluid CSS physics. |
 
 ### Supply Chain Workflow (NEW)
 ```
@@ -301,7 +303,7 @@ Pre-merge check on UI features:
 
 ### Infra
 - `catalog.json` version synced to `1.6.0` (was `1.1.0`, out of sync with README)
-- `npm run catalog` now reports **38 skills** (was 33)
+- `npm run catalog` now reports **39 skills** (was 33)
 - Remote-install pin updated to `v1.6.0`
 - `CHANGELOG.md` fully versioned (v1.1 – v1.6)
 - 5 new workflows added to `skills/bundles/workflows.md`

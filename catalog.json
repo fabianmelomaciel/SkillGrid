@@ -2,11 +2,11 @@
   "version": "1.6.0",
   "generated": "2026-06-15",
   "summary": {
-    "total": 38,
+    "total": 39,
     "categories": {
       "core": 25,
       "agent": 10,
-      "design": 3
+      "design": 4
     }
   },
   "skills": [
@@ -126,6 +126,13 @@
       "name": "gestor-documental",
       "description": "Use to design, audit, format, and validate technical and scientific documents according to APA (7th Edition) and software engineering requirements/testing standards (ISO 29148, ISO 29119).",
       "category": "agent",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "github-premium-aesthetics",
+      "description": "Implements cutting-edge GitHub/Vercel-inspired UI patterns including Bento grids, glowing borders, mesh gradients, and fluid motion.",
+      "category": "design",
       "status": "stable",
       "risk_level": "safe"
     },

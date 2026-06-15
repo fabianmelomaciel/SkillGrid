@@ -1,12 +1,12 @@
 {
-  "version": "1.2.10",
+  "version": "1.2.12",
   "generated": "2026-06-15",
   "summary": {
-    "total": 38,
+    "total": 39,
     "categories": {
       "core": 25,
       "agent": 10,
-      "design": 3
+      "design": 4
     }
   },
   "skills": {
@@ -250,6 +250,19 @@
       "token_estimate": {
         "input": 1738,
         "output": 695
+      },
+      "cost_tier": "low",
+      "invokes": []
+    },
+    "github-premium-aesthetics": {
+      "name": "github-premium-aesthetics",
+      "description": "Implements cutting-edge GitHub/Vercel-inspired UI patterns including Bento grids, glowing borders, mesh gradients, and fluid motion.",
+      "category": "design",
+      "status": "stable",
+      "risk_level": "safe",
+      "token_estimate": {
+        "input": 2000,
+        "output": 800
       },
       "cost_tier": "low",
       "invokes": []
