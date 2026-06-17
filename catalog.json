@@ -1,11 +1,12 @@
 {
   "version": "1.6.0",
-  "generated": "2026-06-15",
+  "generated": "2026-06-17",
   "summary": {
-    "total": 39,
+    "total": 40,
     "categories": {
       "core": 25,
       "agent": 10,
+      "null": 1,
       "design": 4
     }
   },
@@ -86,6 +87,13 @@
       "category": "design",
       "status": "stable",
       "risk_level": "safe"
+    },
+    {
+      "name": "cyber-neo",
+      "description": ">",
+      "category": null,
+      "status": null,
+      "risk_level": null
     },
     {
       "name": "db-schema-detector",
