@@ -3,10 +3,10 @@
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*39 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
+*40 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-39-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-40-22c55e?style=flat-square)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/network/members)
@@ -232,6 +232,7 @@ Agentes que se comportan como profesionales con roles definidos:
 | `optimizador-finops` | Analiza consumo de tokens, comprime prompts, detecta llamadas redundantes a APIs |
 | `project-manager` | Escucha al CEO, planifica, delega a agentes especializados, revisa resultados y reporta |
 | `gestor-documental` | Formatea documentación técnica y académica (APA 7ª ed., ISO 29148, ISO 29119) |
+| `cyber-neo` | **Análisis de ciberseguridad.** Realiza auditorías profundas de seguridad de solo lectura abarcando 11 dominios, OWASP y CWE. |
 
 ---
 
@@ -303,7 +304,7 @@ Pre-merge check on UI features:
 
 ### Infra
 - `catalog.json` version synced to `1.6.0` (was `1.1.0`, out of sync with README)
-- `npm run catalog` now reports **39 skills** (was 33)
+- `npm run catalog` now reports **40 skills** (was 33)
 - Remote-install pin updated to `v1.6.0`
 - `CHANGELOG.md` fully versioned (v1.1 – v1.6)
 - 5 new workflows added to `skills/bundles/workflows.md`
