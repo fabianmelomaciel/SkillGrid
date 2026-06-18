@@ -167,3 +167,15 @@ Detailed check items per category. Reference these from the main SKILL.md during
   - **Cookie compliance**: cookie categories (essential/functional/analytics/marketing), consent before non-essential cookies, cookie expiry
   - **Data Processing Register**: documented processing activities, lawful basis for each processing purpose
   - **Security measures**: documented technical and organizational measures (TOMs)
+
+## AI Agent Skills Security (NVIDIA SkillSpector)
+
+- If the project contains AI Agent Skills (rules, system prompts, configurations), scan them with SkillSpector (see `references/skillspector.md`)
+- **Critical findings**: prompt injection paths, rogue agent behaviors, data exfiltration vectors, tool abuse, and unsafe sandbox bypasses
+- Check for:
+  - **Prompt Injection & Leakage** — directives that allow arbitrary inputs to override safety parameters or exfiltrate system instructions
+  - **Data Exfiltration** — actions forcing the agent to send sensitive workspace info (API keys, code) to external endpoints via CLI/web tools
+  - **Privilege Escalation** — tasks urging the agent to bypass sandbox constraints or elevate terminal privileges
+  - **Tool Misuse & Abuse** — execution of destructive system commands (such as unverified deletions) without confirmation gates
+  - **MCP Tool Poisoning** — compromise or unauthorized manipulation of Model Context Protocol servers/endpoints
+

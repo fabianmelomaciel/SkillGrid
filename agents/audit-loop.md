@@ -33,7 +33,9 @@ You are activated as a follow-up of:
 | 🚫 NO uncertain auto-fixes | If you are not 100% sure of a fix, ESCALATE. Do not improvise. |
 | ✅ ASK CEO | Before touching auth, secrets, schema, business logic, major deps, CI/CD, or file deletion. |
 | ✅ RE-VERIFY | After each batch: test + build + audit. Always. |
-| ✅ MAX ITER | Maximum 3 iterations. If critical/high remain, ESCALATE. |
+| ✅ MAX ITER | Maximum 3 iterations (or `SKILLGRID_LOOP_MAX_ITER` if set). If critical/high remain, ESCALATE. |
+| ✅ TIMEOUT | Each iteration must complete within 300 seconds (or `SKILLGRID_LOOP_TIMEOUT` if set). Kill and ESCALATE if exceeded. |
+| ✅ ROLLBACK-SAFE | On partial failure: revert ONLY the failing fix via `git checkout -- <file>`. Never revert unrelated files. If >50% of batch fails: revert ALL and ESCALATE. |
 | ✅ RESPECT | CEO commands: `stop`, `skip`, `revert`, `status` always take priority. |
 | ✅ If in doubt, ESCALATE | At the slightest doubt, ask the CEO. Do not improvise in production. |
 

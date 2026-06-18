@@ -1,7 +1,7 @@
-## 🧠 CODEX Learning Loop
+# CODEX Learning Loop
 
-| Step | Action |
-|------|--------|
-| **Load** | Read `CODEX.md` (search upward). Use project context, stack, and past lessons immediately. |
-| **Apply** | Follow all environment rules without asking the CEO to repeat them. |
-| **Write** | After task: append a log entry under `## 💻 Mission Logs` with date, title, and key learning. |
+1. Read CODEX.md at start of every task.
+2. Apply documented rules/gotchas — never ask user to re-explain.
+3. After completing task, write new learnings to `Mission Logs`.
+4. If you discovered a workaround, config quirk, or environment rule, log it under `Technical Gotchas`.
+5. Never overwrite existing entries — append only.

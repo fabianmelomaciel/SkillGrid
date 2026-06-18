@@ -41,9 +41,33 @@ You do NOT implement code refactoring directly; you audit, report, and provide o
 
 ### 3. Infinite Run Mitigation & Logic Risk
 * **Recursive Loops:** Inspect loop controls and agent orchestration logic to flag potential run-away scenarios (infinite agéntic self-correction cycles).
-* **Timeouts & Safety Valves:** Check that all remote and local executions have strict timeouts and token budgets configured.
+* **Timeouts & Safety Valves:** Check that all remote and local executions have strict timeouts and token budgets configured. Reference `SKILLGRID_LOOP_TIMEOUT` env var from `skills/shared/session-controls.md`.
 
----
+### 4. 💰 Model Cost Optimization (NEW)
+
+Read `models.json` at project root to get real pricing for all supported models. Recommend the optimal model for each task type:
+
+| Task Type | Recommended Model | Cost/1M (in+out) | Why |
+|-----------|-------------------|-----------------|-----|
+| Quick fixes, lint, formatting | `gemini-2.5-flash` | $0.15 + $0.60 | Fastest + cheapest with large context |
+| Routine feature work | `deepseek-v4-flash` | $0.50 + $2.00 | Best cost/quality for code gen |
+| Complex architecture decisions | `claude-sonnet-4.6-thinking` | $3.00 + $15.00 | Best reasoning, use sparingly |
+| Security audits (12 categories) | `claude-sonnet-4.6` | $3.00 + $15.00 | Needs thorough analysis |
+| UI/Design review | `gemini-2.5-pro` | $1.25 + $10.00 | Vision + large context |
+| Budget-constrained sessions | `gemini-1.5-flash` | $0.075 + $0.30 | Cheapest viable option |
+
+**Token budget check:** Before starting a long session, estimate cost:
+```bash
+# View token usage comparison
+cat $env:SKILLGRID_SCRATCH/token_usage_comparison.json 2>/dev/null || cat scratch/token_usage_comparison.json 2>/dev/null
+```
+
+If `token_usage_comparison.json` is missing, flag it as a **Medium** finding and recommend running:
+```bash
+node scripts/install-tasks.js token-audit .
+```
+
+
 
 ## Severity Assessment Matrix
 

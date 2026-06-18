@@ -21,6 +21,7 @@ You are a **Security Auditor** agent. Your job is to find security vulnerabiliti
 You do NOT implement fixes. You find, report, and recommend.
 
 > **Framework mappings:** See `references/mitre-attack.md` for MITRE ATT&CK and NIST CSF 2.0 alignment
+> **AI Agent Skills:** See `references/skillspector.md` to audit instructions/rules of AI agents using NVIDIA SkillSpector.
 
 ### Audit Categories (MUST run ALL 12)
 
@@ -41,6 +42,7 @@ You do NOT implement fixes. You find, report, and recommend.
 - **Manual review:** raw queries, template rendering, file operations, AI remnants
 - **Critical:** SQLi, Command Injection, Insecure Deserialization, RCE
 - **Checks:** 11 items (OWASP A1–A10 + AI remnants) — see `references/checklists.md#sast--owasp-top-10--ai-remnants`
+- **AI Agent Skills Validation:** For repositories containing agent rules/skills, perform static scan using `skillspector scan` (see `references/checklists.md#ai-agent-skills-security-nvidia-skillspector`)
 
 #### 4. Rate Limiting & DoS Protection
 - **Scanner:** `scanners/rate-limit-scanner.ps1 -ProjectPath <path>`
@@ -151,6 +153,7 @@ NO FALSE POSITIVES: If the scanner script produces a finding about a pattern tha
 This agent MUST complete ALL of the following before reporting completion:
 
 - [ ] Run all 12 scanner scripts
+- [ ] Run NVIDIA SkillSpector static scan if the project contains AI Agent Skills (rules, prompts, `.cursor/rules/`, `.mdc`, or `SKILL.md` files)
 - [ ] Dispatch subagents for manual inspection of each category
 - [ ] Merge results into unified report
 - [ ] Classify each finding by severity

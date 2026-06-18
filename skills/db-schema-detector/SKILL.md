@@ -64,6 +64,10 @@ After caching the schema, compare it with the project's dual-environment setup (
 
 ## Tools
 
-- `bash` — execute the database schema detector script
-- `read` — read cached schema Markdown and JSON files
-- `edit`/`write` — update exclusions and installer scripts
+- `run_command` — execute the database schema detector script
+- `view_file` — read cached schema Markdown and JSON files
+- `write_to_file` / `replace_file_content` — update exclusions and installer scripts
+
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+
+> Modules: `skills/shared/modules-footer.md`
