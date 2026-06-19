@@ -3,10 +3,10 @@
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*40 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
+*42 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-40-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-42-22c55e?style=flat-square)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/network/members)
@@ -202,6 +202,7 @@ Las 22 skills que convierten a tu agente en un ingeniero de software disciplinad
 | `mcp-configurator` | Configura servidores MCP (Model Context Protocol) para conectar el agente a DBs, APIs y tools externas |
 | `performance-profiler` | Auditoría measure-first: Core Web Vitals, Lighthouse CI, bundle size, latencia de API, detección de regresiones |
 | `a2a-orchestrator` | Orquesta redes multi-agente con el protocolo A2A (Agent-to-Agent). Para agentes cross-proceso/cross-tool — diferente a `dispatching-parallel-agents` (intra-sesión) |
+| `headroom` | Reduce el consumo de tokens del LLM comprimiendo dinámicamente contextos, logs e historial de conversación |
 
 ---
 
@@ -233,6 +234,7 @@ Agentes que se comportan como profesionales con roles definidos:
 | `project-manager` | Escucha al CEO, planifica, delega a agentes especializados, revisa resultados y reporta |
 | `gestor-documental` | Formatea documentación técnica y académica (APA 7ª ed., ISO 29148, ISO 29119) |
 | `cyber-neo` | **Análisis de ciberseguridad.** Realiza auditorías profundas de seguridad de solo lectura abarcando 11 dominios, OWASP y CWE. |
+| `execution-runtime` | Gestiona entornos de ejecución seguros y aislados (sandboxes como Docker o WASM) para ejecutar código de forma segura |
 
 ---
 
@@ -268,6 +270,22 @@ Combinaciones pre-diseñadas para tareas complejas:
 | **Performance Gate** ⚡ | `performance-profiler` [baseline] → [merge] → `performance-profiler` [delta] |
 | **Multi-Agent Pipeline** 🤖 | `a2a-orchestrator` → [agentes especializados en paralelo] → `gestor-documental` |
 | **LLM App Hardening** 🛡️ | `brainstorming` → `spec-driven-development` → [`prompt-injection-guard` + `supply-chain-auditor`] → `mcp-configurator` → `audit-loop` → `agente-devops` |
+
+---
+
+## 🧪 v1.7 "Context Compression & Secure Runtimes" (2026-06-19)
+
+### 2 New Skills — Context Optimization & Security Isolation
+
+| Skill | Bundle | Why now |
+|-------|--------|---------|
+| **`headroom`** | `core` + `devops` | Context compression proxy and MCP server to reduce token consumption by up to 95% |
+| **`execution-runtime`** | `devops` + `testing` | Secure, isolated execution environment (Docker/WASM/microVM sandboxes) for running untrusted code safely |
+
+### Improvements to Existing Skills & Infrastructure
+- **`mcp-configurator`**: Added predefined configuration patterns for the playroom/headroom token compression MCP server.
+- **`optimizador-finops`**: Integrated Headroom stats for monitoring context token compression ratio and saving estimates in real-time.
+- **`catalog.json` & `skills/index.json`**: Auto-synced and bumped version to `1.7.0`, reporting **42 skills** in total.
 
 ---
 
