@@ -12,6 +12,47 @@ token_estimate: { input: 2491, output: 996 }
 ## Overview
 Build in thin vertical slices — implement one piece, test it, verify it, then expand. Avoid implementing an entire feature in one pass. Each increment should leave the system in a working, testable state. This is the execution discipline that makes large features manageable.
 
+## Headroom Integration (Token Optimization)
+If `headroom` CLI is available, use it to compress context and tool outputs throughout the increment cycle. This prevents LLM context window bloating on long implementation sessions.
+
+### Detection
+```bash
+headroom --version 2>/dev/null || pip install "headroom-ai[all]" || npm install -g headroom-ai
+```
+
+### As MCP Server (Recommended)
+Start headroom as an MCP server for transparent context compression:
+```bash
+headroom mcp start --port 8787
+```
+Then add to your agent's MCP config:
+```json
+"headroom": {
+  "command": "npx",
+  "args": ["-y", "headroom-ai", "mcp", "start"],
+  "description": "Token compression and context management"
+}
+```
+
+### As Command Wrapper
+For per-command compression on large outputs:
+```bash
+# Wrap test output
+headroom exec -- npm test
+
+# Wrap build output
+headroom exec -- npm run build
+
+# Wrap TypeScript check
+headroom exec -- npx tsc --noEmit
+```
+
+### Context Windows
+If context becomes large during implementation:
+1. Run `headroom compress` on accumulated tool outputs
+2. Ask the agent to summarize progress before continuing
+3. Use `headroom context --stats` to see token usage
+
 ## When to Use
 - Implementing any multi-file change
 - Building a new feature from a task breakdown
@@ -190,6 +231,7 @@ After each increment, verify:
 - [ ] Linting passes (`npm run lint`)
 - [ ] The new functionality works as expected
 - [ ] The change is committed with a descriptive message
+- [ ] Context compressed with `headroom` if tool outputs were large
 
 **Note:** Run each verification command after a change that could affect it. After a successful run, don't repeat the same command unless the code has changed since — re-running on unchanged code adds no information.
 
@@ -214,6 +256,7 @@ After each increment, verify:
 - Touching files outside the task scope "while I'm here"
 - Creating new utility files for one-time operations
 - Running the same build/test command twice in a row without any intervening code change
+- Context window approaching limit without calling `headroom compress`
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 
