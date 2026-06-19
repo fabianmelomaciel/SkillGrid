@@ -9,6 +9,21 @@ token_estimate: { input: 2206, output: 882 }
 
 ## Core
 
+## Spec Kit Integration (Fast Path)
+If GitHub Spec-Kit (`specify` CLI) is available, delegate artifact generation to the `spec-kit` subagent for automated scaffolding. This saves tokens and produces structured artifacts faster.
+
+### Detection
+Run `Get-Command specify` (PowerShell) or `command -v specify` (bash). If `specify` is found, delegate to `spec-kit` subagent instead of using manual instructions below. The subagent will:
+1. Run `specify init . --integration opencode --force` (if not initialized)
+2. Generate constitution → spec → plan → tasks using Spec Kit templates
+3. Return control to this skill for human review gates
+
+### Manual Init (if `specify` not installed)
+```bash
+uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+```
+Or continue with the manual workflow below.
+
 ## Overview
 Write a structured specification before writing any code. The spec is the shared source of truth between you and the human engineer — it defines what we're building, why, and how we'll know it's done. Code without a spec is guessing.
 

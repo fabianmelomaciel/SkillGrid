@@ -1,11 +1,11 @@
 {
-  "version": "1.2.14",
+  "version": "1.2.15",
   "generated": "2026-06-19",
   "summary": {
-    "total": 42,
+    "total": 43,
     "categories": {
       "core": 26,
-      "agent": 12,
+      "agent": 13,
       "design": 4
     }
   },
@@ -479,6 +479,19 @@
       "invokes": [
         "writing-plans"
       ]
+    },
+    "spec-kit": {
+      "name": "spec-kit",
+      "description": "Wraps GitHub Spec-Kit (`specify`) CLI for opencode — generates specs, plans, and task artifacts via Spec-Driven Development tooling instead of manual drafting. Requires Python 3.11+ and `uv`.",
+      "category": "agent",
+      "status": "stable",
+      "risk_level": "safe",
+      "token_estimate": {
+        "input": 800,
+        "output": 400
+      },
+      "cost_tier": "low",
+      "invokes": []
     },
     "subagent-driven-development": {
       "name": "subagent-driven-development",

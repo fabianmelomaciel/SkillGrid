@@ -235,6 +235,7 @@ Agentes que se comportan como profesionales con roles definidos:
 | `gestor-documental` | Formatea documentación técnica y académica (APA 7ª ed., ISO 29148, ISO 29119) |
 | `cyber-neo` | **Análisis de ciberseguridad.** Realiza auditorías profundas de seguridad de solo lectura abarcando 11 dominios, OWASP y CWE. |
 | `execution-runtime` | Gestiona entornos de ejecución seguros y aislados (sandboxes como Docker o WASM) para ejecutar código de forma segura |
+| `spec-kit` | Wrapper de GitHub Spec-Kit (`specify` CLI). Genera specs, planes y tareas estructurados automáticamente en lugar de redactarlos manualmente. Requiere Python 3.11+ y `uv` |
 
 ---
 
@@ -248,7 +249,7 @@ Instala solo lo que necesita tu equipo:
 | **`devops`** | agente-devops · audit-loop · auditor-de-seguridad · supply-chain-auditor · prompt-injection-guard · optimizador-finops |
 | **`design`** | impeccable-design-taste · emil-kowalski-design · creativo-visual |
 | **`testing`** | playwright-testing · performance-profiler · test-driven-development · systematic-debugging · verification-before-completion |
-| **`management`** | project-manager · gestor-documental · audit-loop · agente-ideas · a2a-orchestrator |
+| **`management`** | project-manager · gestor-documental · audit-loop · agente-ideas · a2a-orchestrator · spec-kit |
 | **`marketing`** | auditor-de-marketing |
 
 ---

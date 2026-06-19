@@ -2,10 +2,10 @@
   "version": "1.7.0",
   "generated": "2026-06-19",
   "summary": {
-    "total": 42,
+    "total": 43,
     "categories": {
       "core": 26,
-      "agent": 12,
+      "agent": 13,
       "design": 4
     }
   },
@@ -238,6 +238,13 @@
       "name": "spec-driven-development",
       "description": "Creates specs before coding. Use when starting a new project, feature, or significant change and no specification exists yet. Use when requirements are unclear, ambiguous, or only exist as a vague idea.",
       "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "spec-kit",
+      "description": "Wraps GitHub Spec-Kit (`specify`) CLI for opencode — generates specs, plans, and task artifacts via Spec-Driven Development tooling instead of manual drafting. Requires Python 3.11+ and `uv`.",
+      "category": "agent",
       "status": "stable",
       "risk_level": "safe"
     },
