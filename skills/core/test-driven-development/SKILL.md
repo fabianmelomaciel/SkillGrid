@@ -336,6 +336,23 @@ When adding mocks or test utilities, read @testing-anti-patterns.md to avoid com
 - Adding test-only methods to production classes
 - Mocking without understanding dependencies
 
+## Headroom Integration
+
+For large test suites or repeated TDD cycles, use headroom to compress output and save tokens:
+
+```bash
+# Wrap test output with headroom compression
+headroom exec -- npm test
+
+# If running individual test files repeatedly, compress accumulated output
+headroom compress --type output
+
+# Check context window during long TDD sessions
+headroom context --stats
+```
+
+This is especially valuable during long refactoring sessions where many test cycles accumulate significant output.
+
 ## Final Rule
 
 ```

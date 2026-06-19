@@ -118,6 +118,36 @@ Long conversations accumulate stale context. Manage this:
 - **Summarize progress** when context is getting long: "So far we've completed X, Y, Z. Now working on W."
 - **Compact deliberately** — if the tool supports it, compact/summarize before critical work
 
+**Headroom Integration:** If `headroom` CLI is available, use it proactively:
+```bash
+# Check context window health
+headroom context --stats
+
+# Compress accumulated conversation context before critical sections
+headroom compress --type conversation
+
+# Compress large tool outputs (build logs, test results)
+headroom exec -- npm test 2>&1 | headroom compress --type output
+```
+
+### Level 6: CodeGraph (Active Invocation)
+For code research tasks, invoke CodeGraph directly instead of reading files:
+```bash
+# Query the graph instead of grep
+codegraph query "Find all functions that call UserService"
+
+# Get architecture overview without reading files
+codegraph report --type architecture
+
+# Find dependencies without traversing directories
+codegraph query --type dependencies <module_name>
+```
+
+Always initialize CodeGraph if `.codegraph/` is missing:
+```bash
+codegraph init && codegraph sync
+```
+
 ### The Brain Dump
 At session start, provide everything the agent needs in a structured block:
 

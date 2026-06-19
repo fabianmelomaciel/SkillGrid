@@ -146,6 +146,23 @@ Run the command. Read the output. THEN claim the result.
 
 This is non-negotiable.
 
+## Headroom Integration
+
+For large verification outputs (test suites, build logs), compress with headroom to save tokens:
+
+```bash
+# Wrap verification commands with headroom to compress output
+headroom exec -- npm test
+
+# If output is large, compress it before including in context
+npm test 2>&1 | headroom compress --type output
+
+# Check context window before verification
+headroom context --stats
+```
+
+This prevents LLM context window bloating when running comprehensive test suites or large builds.
+
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 
 > Modules: `skills/shared/modules-footer.md`
