@@ -11,7 +11,7 @@ description: >
   "pentest", "security check", or invokes /cyber-neo.
 category: agent
 status: stable
-risk_level: safe
+risk_level: critical
 allowed-tools:
   - Read
   - Grep

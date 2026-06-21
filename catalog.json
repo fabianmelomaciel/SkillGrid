@@ -1,6 +1,6 @@
 {
   "version": "1.7.0",
-  "generated": "2026-06-19",
+  "generated": "2026-06-21",
   "summary": {
     "total": 43,
     "categories": {
@@ -92,7 +92,7 @@
       "description": ">",
       "category": "agent",
       "status": "stable",
-      "risk_level": "safe"
+      "risk_level": "critical"
     },
     {
       "name": "db-schema-detector",
@@ -246,7 +246,7 @@
       "description": "Wraps GitHub Spec-Kit (`specify`) CLI for opencode — generates specs, plans, and task artifacts via Spec-Driven Development tooling instead of manual drafting. Requires Python 3.11+ and `uv`.",
       "category": "agent",
       "status": "stable",
-      "risk_level": "safe"
+      "risk_level": "critical"
     },
     {
       "name": "subagent-driven-development",

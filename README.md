@@ -691,6 +691,32 @@ bash scripts/ralph-loop.sh "claude" "task.md" 5 10
 
 ---
 
+## 🔒 Reporte de Vulnerabilidades (Security)
+
+Si descubrís una vulnerabilidad de seguridad en SkillGrid, **no abras un issue público**.
+
+Reportá la vulnerabilidad de forma responsable:
+
+| Método | Contacto |
+|--------|----------|
+| **Email** | security@skillgrid.dev (o [fabianmelomaciel@github](https://github.com/fabianmelomaciel)) |
+| **GitHub Security Advisory** | [Report privately](https://github.com/fabianmelomaciel/SkillGrid/security/advisories/new) |
+
+Incluí en el reporte:
+- Descripción de la vulnerabilidad y su impacto
+- Pasos para reproducirla
+- Versión/Commit afectado
+- Cualquier prueba de concepto (opcional)
+
+**Tiempos de respuesta esperados:**
+- Confirmación de recepción: < 48 horas
+- Evaluación inicial: < 7 días
+- Fix y release: según severidad (Critical: < 72h, High: < 2 semanas)
+
+Gracias por ayudar a mantener SkillGrid seguro. 🛡️
+
+---
+
 ## Licencia
 
 MIT — [Fabian Melo Maciel](https://github.com/fabianmelomaciel)

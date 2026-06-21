@@ -3,7 +3,7 @@ name: spec-kit
 description: Wraps GitHub Spec-Kit (`specify`) CLI for opencode — generates specs, plans, and task artifacts via Spec-Driven Development tooling instead of manual drafting. Requires Python 3.11+ and `uv`.
 category: agent
 status: stable
-risk_level: safe
+risk_level: critical
 token_estimate: { input: 800, output: 400 }
 ---
 
@@ -28,6 +28,7 @@ Creates an agent `spec-kit` in opencode that other skills (notably `spec-driven-
 ```bash
 uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 ```
+> ⚠️ **Supply Chain Note:** This installs a CLI from GitHub via `uv`. Verify the source before running in production environments. Consider pinning to a specific commit hash.
 
 ### Verify
 ```bash

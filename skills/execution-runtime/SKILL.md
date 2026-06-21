@@ -34,14 +34,16 @@ python --version
 Create or select the appropriate execution runtime image/environment for the workspace.
 If Docker/Podman is available, spin up a lightweight container matching the target environment:
 ```bash
-# Example running inside a Node.js sandbox
-docker run -it --rm -v "$(pwd):/workspace" -w /workspace node:20-alpine npm test
+# Example running inside a Node.js sandbox with timeout guard
+docker run --rm --timeout 300 -v "$(pwd):/workspace" -w /workspace node:20-alpine npm test
 ```
+**Timeout Guard:** Always use `--timeout <seconds>` (Docker 25+) or wrap with `timeout` command to prevent hanging containers.
 
 ### Step 3: Enforce Isolation Policies
 - **No Host Network Access:** Unless explicitly required, disable host network access (`--network none`).
 - **Read-Only Bind Mounts:** Mount input directories as read-only, and designate a separate output directory for writes.
 - **Resource Constraints:** Apply CPU and memory limits (e.g., `--memory 512m --cpus 1`) to prevent denial-of-service or memory exhaustion on the host machine.
+- **Execution Timeout:** Always set `--timeout <seconds>` (Docker 25+) or wrap with `timeout <seconds>` command. Default: 300s.
 
 ## Tools
 

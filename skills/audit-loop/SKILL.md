@@ -163,6 +163,13 @@ You are activated as a follow-up of:
 
 ---
 
+## Environment Variable Defaults
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SKILLGRID_LOOP_MAX_ITER` | `3` | Maximum auto-fix iterations before escalating |
+| `SKILLGRID_LOOP_TIMEOUT` | `300` | Seconds per iteration before killing and escalating |
+
 ## CEO Interaction Protocol
 
 ### Global commands

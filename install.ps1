@@ -2,7 +2,7 @@ param(
     [string]$TargetDir = "",
     [string]$ProjectDir = "",
     [string]$Language = "",
-    [string]$Profile = "minimal",
+    [string]$Profile = "all",
     [switch]$AutoInstallCodeGraph,
     [switch]$GenerateCodex,
     [switch]$Help
