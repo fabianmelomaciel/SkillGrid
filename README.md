@@ -3,10 +3,10 @@
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*42 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
+*43 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-42-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-43-22c55e?style=flat-square)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/network/members)
@@ -286,7 +286,7 @@ Combinaciones pre-diseñadas para tareas complejas:
 ### Improvements to Existing Skills & Infrastructure
 - **`mcp-configurator`**: Added predefined configuration patterns for the playroom/headroom token compression MCP server.
 - **`optimizador-finops`**: Integrated Headroom stats for monitoring context token compression ratio and saving estimates in real-time.
-- **`catalog.json` & `skills/index.json`**: Auto-synced and bumped version to `1.7.0`, reporting **42 skills** in total.
+- **`catalog.json` & `skills/index.json`**: Auto-synced and bumped version to `1.7.0`, reporting **43 skills** in total.
 
 ---
 
@@ -500,7 +500,7 @@ SkillGrid combina **CodeGraph** (indexación semántica local) con **protocolos 
 | **Antigravity** | Gemini 1.5 Flash | \$0.028 | \$0.003 | **89.5%** |
 | **Antigravity / Cursor** | Gemini 1.5 Pro | \$0.460 | \$0.049 | **89.5%** |
 | **Antigravity IDE** | Gemini 2.5 Pro | \$0.460 | \$0.049 | **89.5%** |
-| **Claude Code** | Claude 3.5 Sonnet | \$1.105 | \$0.116 | **89.5%** |
+| **Claude Code** | Claude Sonnet 4.6 | \$1.105 | \$0.116 | **89.5%** |
 | **Cursor IDE** | GPT-4o / Claude 3.5 | \$0.921 | \$0.097 | **89.5%** |
 | **GitHub Copilot** | GPT-4o | \$0.921 | \$0.097 | **89.5%** |
 | **Open WebUI** | Multi-model | variable | variable | **≥89.5%** |
@@ -519,7 +519,7 @@ SkillGrid combina **CodeGraph** (indexación semántica local) con **protocolos 
 | **Antigravity** | Gemini 1.5 Flash | \$2.710 | \$0.271 | **89.99%** |
 | **Antigravity / Cursor** | Gemini 1.5 Pro | \$45.169 | \$4.519 | **89.99%** |
 | **Antigravity IDE** | Gemini 2.5 Pro | \$45.169 | \$4.519 | **89.99%** |
-| **Claude Code** | Claude 3.5 Sonnet | \$108.407 | \$10.847 | **89.99%** |
+| **Claude Code** | Claude Sonnet 4.6 | \$108.407 | \$10.847 | **89.99%** |
 | **Cursor IDE** | GPT-4o / Claude 3.5 | \$90.339 | \$9.039 | **89.99%** |
 | **GitHub Copilot** | GPT-4o | \$90.339 | \$9.039 | **89.99%** |
 | **Open WebUI** | Multi-model | variable | variable | **≥89.9%** |
@@ -544,6 +544,26 @@ Además del −89.5% de CodeGraph, los protocolos de SkillGrid evitan tokens des
 **Ahorro combinado total estimado:** entre **−92% y −95%** versus un agente sin SkillGrid ni CodeGraph.
 
 > ⚡ **Ejemplo real**: Una auditoría de seguridad completa (12 categorías) que antes consumía ~50,000 tokens ahora consume ~4,000–8,000 tokens gracias a CodeGraph + Chesterton's Fence + Verify Before Refactor.
+
+### 🔋 Ahorro de Sesión — Infraestructura de Contexto (v1.7.x)
+
+Además del ahorro por CodeGraph y protocolos, SkillGrid incluye una capa de optimización de **contexto de sesión** que reduce el baseline de tokens cargado al inicio de cada conversación:
+
+| Mejora | Antes | Después | Reducción |
+|--------|:-----:|:-------:|:---------:|
+| `catalog-lite.json` (carga lazy del catálogo) | 14.4 KB | 5.5 KB | **−62%** |
+| `scratch/` limpio (sin repos `.git` anidados) | ~204 KB artifacts | 0 KB | **−100%** |
+| `memory/` rotada (sin historial acumulado) | crece sin límite | comprimida semanalmente | **variable** |
+| Baseline de sesión combinado | ~90K tokens | ~45K tokens | **−50%** |
+
+**Scripts incluidos** (en `.claude/scripts/`):
+- `cleanup-artifacts.sh` — se ejecuta automáticamente al terminar cada sesión (Stop hook). Purga repos `.git` anidados en `scratch/` y archiva artifacts con más de 30 días de antigüedad.
+- `compress-memory.sh` — comprime y rota los archivos de memoria del proyecto. Ejecutar semanalmente o manualmente con `bash .claude/scripts/compress-memory.sh`.
+
+> 💡 **Genera `catalog-lite.json`** (solo campos esenciales — 62% más pequeño):
+> ```bash
+> node -e "const c=require('./catalog.json'),fs=require('fs');fs.writeFileSync('catalog-lite.json',JSON.stringify({version:c.version,generated_at:c.generated_at,total:c.total,skills:c.skills.map(s=>({name:s.name,status:s.status,risk_level:s.risk_level,category:s.category}))},null,2))"
+> ```
 
 ---
 
