@@ -41,6 +41,7 @@ Detailed check items per category. Reference these from the main SKILL.md during
 - **Critical findings**: no rate limiting on auth endpoints, no DoS protections
 - Check for:
   - Login/register endpoints without rate limiting (brute force vector)
+  - **Email/username case-variation bypass**: rate limits keyed on the raw (non-normalized) email allow attackers to cycle case variants (`User@x.com` → `uSer@x.com` → `USER@x.com`) on every attempt, evading per-identifier lockout while targeting the same account. Fix: normalize identifier to lowercase BEFORE the rate-limit key is generated; apply dual-axis limiting (normalized identifier + IP) so either axis alone triggers lockout independently.
   - Password reset without rate limiting or account locking
   - API endpoints without throttling (per-IP, per-user, per-key)
   - Missing or misconfigured reverse proxy rate limiting (nginx limit_req, Apache mod_evasive, Cloudflare)

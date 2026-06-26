@@ -61,6 +61,27 @@ foreach ($f in $authFiles) {
     if ($hasAuthLogic -and -not $hasRateLimit) {
         AddFinding "high" "$($f.FullName):1" "Auth endpoint may lack rate limiting" "Implement rate limiting on this auth endpoint. Use express-rate-limit, django-ratelimit, or nginx limit_req"
     }
+
+    # --- EMAIL CASE NORMALIZATION BYPASS CHECK ---
+    # Attackers cycle email case variants (User@x.com, uSer@x.com, USER@x.com) on each
+    # attempt to bypass per-email rate limits. Systems that don't normalize before keying
+    # treat each variant as a different identity, allowing unlimited brute-force attempts
+    # on the same account while evading per-username lockout.
+    if ($hasAuthLogic) {
+        $hasEmailInput    = $content -match 'email|username|user_name|identifier'
+        $hasNormalize     = $content -match '\.toLowerCase\(\)|\.lower\(\)|strtolower\(|mb_strtolower\(|strings\.ToLower\(|\.ToLower\(\)|\.downcase|email\.lower|normaliz'
+        $hasRateLimitKey  = $content -match 'ratelimit.*email|ratelimit.*user|throttle.*email|throttle.*user|key.*email|key.*user|identifier.*limit'
+
+        if ($hasEmailInput -and -not $hasNormalize) {
+            AddFinding "high" "$($f.FullName):1" `
+                "Email/username not normalized before rate-limit keying — case-variation bypass possible. Attackers can cycle 'User@example.com', 'uSer@example.com', 'USER@example.com' on each login attempt to evade per-identifier lockout while targeting the same account." `
+                "Normalize the identifier to lowercase BEFORE generating the rate-limit key and before any comparison: key = email.toLowerCase() (JS), email.lower() (Python), strtolower(email) (PHP). Apply rate limits on BOTH the normalized identifier AND the source IP independently so either axis alone triggers lockout."
+        } elseif ($hasEmailInput -and $hasNormalize -and -not $hasRateLimitKey) {
+            AddFinding "medium" "$($f.FullName):1" `
+                "Email is normalized but rate-limit key may not include the normalized identifier. Verify the rate-limit key is derived from the lowercased email/username, not the raw input." `
+                "Ensure the rate-limit key is built from the normalized value: rateLimiter.key = normalize(email). Dual-axis limiting (normalized identifier + IP) prevents bypass even when the attacker rotates IPs or email casing."
+        }
+    }
 }
 
 # Check for missing request size limits

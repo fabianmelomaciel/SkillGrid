@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# pre-commit — Lightweight secrets scan. No external tools required.
+# Activate: git config core.hooksPath .githooks
+set -euo pipefail
+
+RED='\033[0;31m'; YELLOW='\033[1;33m'; NC='\033[0m'
+FOUND=0
+
+# Patterns that must never be committed
+PATTERNS=(
+  # Generic secret keys
+  'AKIA[0-9A-Z]{16}'                          # AWS Access Key ID
+  'AIza[0-9A-Za-z\-_]{35}'                   # Google API Key
+  'sk-[a-zA-Z0-9]{48}'                        # OpenAI API Key
+  'sk-ant-[a-zA-Z0-9\-_]{40,}'               # Anthropic API Key
+  'xox[baprs]-[0-9a-zA-Z\-]+'               # Slack token
+  'ghp_[0-9a-zA-Z]{36}'                      # GitHub personal token
+  'ghs_[0-9a-zA-Z]{36}'                      # GitHub secret
+  'github_pat_[0-9a-zA-Z_]{82}'             # GitHub fine-grained PAT
+  'Bearer [a-zA-Z0-9\-\._~\+\/]{40,}'        # Generic Bearer token (min 40 chars)
+  # Hard-coded credentials
+  'password\s*=\s*["\x27][^"\x27]{8,}'      # password = "..."
+  'secret\s*=\s*["\x27][^"\x27]{8,}'        # secret = "..."
+  'api_key\s*=\s*["\x27][^"\x27]{8,}'       # api_key = "..."
+  'private_key\s*=\s*["\x27][^"\x27]{8,}'   # private_key = "..."
+  # Private key headers (use literal match to avoid grep flag interpretation)
+  'BEGIN (RSA |EC |OPENSSH |PGP )?PRIVATE KEY'
+  # .env-style assignments with actual values (not placeholders)
+  '^(ANTHROPIC|OPENAI|GITHUB|AWS|GCP|AZURE|STRIPE)_[A-Z_]+=.{10,}'
+)
+
+# Files staged for commit
+STAGED=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null)
+if [ -z "$STAGED" ]; then exit 0; fi
+
+for file in $STAGED; do
+  [ -f "$file" ] || continue
+  # Skip binary and known-safe files
+  case "$file" in
+    *.png|*.jpg|*.gif|*.ico|*.woff*|*.ttf|*.eot|*.svg|*.pdf|*.db) continue ;;
+    *.min.js|package-lock.json|yarn.lock) continue ;;
+  esac
+
+  for pattern in "${PATTERNS[@]}"; do
+    match=$(git show ":$file" 2>/dev/null | grep -Eon -e "$pattern" | head -1 || true)
+    if [ -n "$match" ]; then
+      echo -e "${RED}[pre-commit] BLOCKED — Possible secret in staged file:${NC}"
+      echo -e "  File   : $file"
+      echo -e "  Pattern: $pattern"
+      echo -e "  Match  : ${YELLOW}${match:0:60}...${NC}"
+      FOUND=1
+    fi
+  done
+done
+
+if [ "$FOUND" -eq 1 ]; then
+  echo ""
+  echo -e "${RED}Commit blocked. Remove secrets before committing.${NC}"
+  echo "  If this is a false positive, use: git commit --no-verify"
+  echo "  If it's real: revoke the credential immediately."
+  exit 1
+fi
+
+exit 0
