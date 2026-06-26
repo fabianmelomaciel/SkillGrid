@@ -41,15 +41,15 @@ function Get-NormalizedPlatformName($name) {
 }
 
 function Get-ProfileSkillList($profileName, $bundlesJsonPath) {
-    if (-not $profileName) { $profileName = "minimal" }
+    if (-not $profileName) { $profileName = "all" }
     $profileName = $profileName.ToLower().Trim()
     if ($profileName -eq "all") { return $null }
     try {
         $bundles = Get-Content -LiteralPath $bundlesJsonPath -Raw -Encoding utf8 | ConvertFrom-Json
         $validProfiles = $bundles.profiles.PSObject.Properties.Name
         if ($profileName -notin $validProfiles) {
-            Write-Host "  [!] Perfil '$profileName' no valido. Opciones: $($validProfiles -join ', ') o all. Usando: minimal" -ForegroundColor Yellow
-            $profileName = "minimal"
+            Write-Host "  [!] Perfil '$profileName' no valido. Opciones: $($validProfiles -join ', ') o all. Usando: all" -ForegroundColor Yellow
+            $profileName = "all"
         }
         $skills = $bundles.profiles.$profileName.skills
         Write-Host "  Perfil '$profileName': $($skills.Count) skills" -ForegroundColor Cyan
@@ -715,8 +715,8 @@ USO:
    .\install.ps1 -Profile "standard"           - Perfil recomendado (~15 skills)
    .\install.ps1 -Help                         - Muestra esta ayuda
 
-SIN PARAMETROS: Detecta opencode o antigravity y instala alli (por defecto: minimal).
-PERFILES: minimal (~5 skills) | standard (~15) | strict (~30) | all (todo)
+SIN PARAMETROS: Detecta opencode o antigravity y instala alli (por defecto: all).
+PERFILES: minimal (~5 skills) | standard (~15) | strict (~30) | all (todo, default)
 "@ -ForegroundColor Cyan
     exit 0
 }

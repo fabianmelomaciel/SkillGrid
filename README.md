@@ -3,7 +3,7 @@
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*43 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
+*43 skills · 226 tests · 4 plataformas · ~90% ahorro de tokens*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-43-22c55e?style=flat-square)](catalog.json)
@@ -11,6 +11,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/network/members)
 [![GitHub contributors](https://img.shields.io/github/contributors/fabianmelomaciel/SkillGrid?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/graphs/contributors)
+[![Default Profile](https://img.shields.io/badge/default%20profile-all-6366f1?style=flat-square)](install.ps1)
 
 <br>
 
@@ -35,7 +36,7 @@ No es solo una lista de prompts. Es un **sistema de trabajo autónomo y eficient
 
 ## ⚡ Instalación en 10 segundos
 
-> El instalador detecta automáticamente opencode, antigravity, Claude Code y demás — y los configura todos de una vez. Por defecto instala el perfil `minimal` para reducir tokens/contexto.
+> El instalador detecta automáticamente opencode, antigravity, Claude Code y demás — y los configura todos de una vez. Por defecto instala el perfil `all` (43 skills).
 
 ### Windows (PowerShell)
 
@@ -46,7 +47,7 @@ irm https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-ins
 Perfil (opcional):
 
 ```powershell
-$env:SKILLGRID_PROFILE="minimal"
+$env:SKILLGRID_PROFILE="all"
 irm https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.ps1 | iex
 ```
 
@@ -61,7 +62,7 @@ curl -fsSL https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/rem
 Perfil (opcional):
 
 ```bash
-SKILLGRID_PROFILE=minimal curl -fsSL https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.sh | bash
+SKILLGRID_PROFILE=all curl -fsSL https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.sh | bash
 ```
 
 Nota: el instalador remoto clona una versión fija por seguridad. Si esa versión todavía no soporta perfiles, el valor se ignora automáticamente. Para asegurar perfiles, clonar y ejecutar localmente.
@@ -79,13 +80,15 @@ Eso es todo. El instalador detecta tu setup y copia las skills donde corresponde
 # Windows
 git clone https://github.com/fabianmelomaciel/SkillGrid.git C:\SkillGrid
 cd C:\SkillGrid
-.\install.ps1 -Profile minimal
+.\install.ps1          # Default: all (43 skills)
+.\install.ps1 -Profile minimal  # Opcional: perfil más ligero
 ```
 
 ```bash
 # Linux / macOS
 git clone https://github.com/fabianmelomaciel/SkillGrid.git ~/skillgrid
-cd ~/skillgrid && bash install.sh --profile minimal
+cd ~/skillgrid && bash install.sh          # Default: all
+bash install.sh --profile minimal          # Opcional: perfil más ligero
 ```
 
 </details>
@@ -95,18 +98,18 @@ cd ~/skillgrid && bash install.sh --profile minimal
 
 | Perfil | Enfoque | Cuándo usar |
 |--------|---------|-------------|
+| `all` | Completo (default) | **43 skills** — instalación completa recomendada |
 | `minimal` | Gates mínimos | Principiantes, sesiones cortas, cambios pequeños |
 | `standard` | Flujo completo | Desarrollo normal día a día |
 | `testing` | QA & E2E | Equipos de QA — solo 4 skills, ~8K tokens |
 | `superpowers` | Flujo Planificado | Metodología estructurada de obra/superpowers (~22 skills) |
 | `strict` | Suite completa | Auditorías y hardening (más pesado) |
-| `all` | Todo | Sólo si sabés que lo necesitás |
 
 Cómo entenderlo (para nuevos):
 
-- Un perfil es la “cantidad de roles” que cargás. Menos roles = menos contexto, menos ruido y menos consumo.
-- Si tu tarea es normal (feature/bugfix), empezá en `minimal` o `standard`.
-- Si te piden auditoría completa (seguridad/marketing/finops) o coordinación total, usá `strict` o `all`.
+- Un perfil es la "cantidad de roles" que cargás. Menos roles = menos contexto, menos ruido y menos consumo.
+- Por defecto se instala `all` (43 skills) para máxima capacidad.
+- Si querés ahorrar tokens, usá `minimal` o `standard`.
 
 Cambiar de perfil (reinstalar encima):
 
@@ -271,6 +274,17 @@ Combinaciones pre-diseñadas para tareas complejas:
 | **Performance Gate** ⚡ | `performance-profiler` [baseline] → [merge] → `performance-profiler` [delta] |
 | **Multi-Agent Pipeline** 🤖 | `a2a-orchestrator` → [agentes especializados en paralelo] → `gestor-documental` |
 | **LLM App Hardening** 🛡️ | `brainstorming` → `spec-driven-development` → [`prompt-injection-guard` + `supply-chain-auditor`] → `mcp-configurator` → `audit-loop` → `agente-devops` |
+
+---
+
+## 🧪 v1.7.1 "Stats Dashboard & Default All" (2026-06-26)
+
+### Cambios
+
+- **Default profile**: `install.ps1` ahora instala perfil `all` por defecto (antes `minimal`). `install.sh` ya tenía `all` como default.
+- **Test fix**: Corregido snapshot desincronizado en `project-mixed-findings` (expected `applied=3`→`2`, `pending=1`→`2`).
+- **README**: Nueva sección de estadísticas del proyecto (tests, plataformas, ahorro de tokens).
+- **GitHub**: Repositorio inicializado y subido a `github.com/fabianmelomaciel/SkillGrid`.
 
 ---
 
@@ -564,6 +578,41 @@ Además del ahorro por CodeGraph y protocolos, SkillGrid incluye una capa de opt
 > ```bash
 > node -e "const c=require('./catalog.json'),fs=require('fs');fs.writeFileSync('catalog-lite.json',JSON.stringify({version:c.version,generated_at:c.generated_at,total:c.total,skills:c.skills.map(s=>({name:s.name,status:s.status,risk_level:s.risk_level,category:s.category}))},null,2))"
 > ```
+
+---
+
+## 📊 Estadísticas del Proyecto
+
+### Skills & Tests
+
+| Métrica | Valor |
+|---------|:-----:|
+| Skills totales | **43** |
+| Tests de skills (frontmatter, core, modules, CodeGraph, references) | **217** ✅ |
+| Tests de audit-loop (9 fixtures) | **9** ✅ |
+| Cobertura de validación YAML | **100%** |
+
+### Instalación Multi-Plataforma
+
+| Plataforma | Skills | Agentes | Autodetección |
+|------------|:------:|:-------:|:-------------:|
+| **opencode** | 43 | 13 ✅ | `~/.config/opencode/skills/` |
+| **antigravity (gemini)** | 43 | — | `~/.gemini/config/skills/` |
+| **antigravity-ide** | 43 | — | `~/.gemini/antigravity-ide/skills/` |
+| **Claude Code** | 43 | — | `~/.claude/skills/` |
+
+### Ahorro de Tokens por Plataforma (Proyecto Grande: ~10K archivos, 144MB)
+
+| Plataforma | Modelo | Costo Full Scan | Costo con CodeGraph | Ahorro |
+|------------|--------|----------------:|--------------------:|:------:|
+| opencode | DeepSeek V4 Flash | $18.07 | $1.81 | **90%** |
+| opencode | Claude Sonnet 4.6 | $108.41 | $10.85 | **90%** |
+| antigravity | Gemini 1.5 Flash | $2.71 | $0.27 | **90%** |
+| antigravity-ide | Gemini 2.5 Flash | $5.42 | **$0.54** | **90%** ⭐ |
+| antigravity-ide | Gemini 2.5 Pro | $45.17 | $4.52 | **90%** |
+| Claude Code | Claude 3.5 Sonnet | $108.41 | $10.85 | **90%** |
+
+> ⭐ **Mejor relación inteligencia/costo**: antigravity + Gemini 2.5 Flash — $0.54/sesión, 1M contexto, thinking mode.
 
 ---
 
