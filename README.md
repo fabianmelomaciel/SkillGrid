@@ -176,7 +176,7 @@ Genera automáticamente `.cursor/rules/` y `.github/instructions/` con las regla
 
 ### 🔧 Core — Metodología de desarrollo
 
-Las 22 skills que convierten a tu agente en un ingeniero de software disciplinado:
+Las 26 skills que convierten a tu agente en un ingeniero de software disciplinado:
 
 | Skill | Cuándo la usas |
 |-------|----------------|
@@ -248,7 +248,7 @@ Instala solo lo que necesita tu equipo:
 
 | Bundle | Qué incluye |
 |--------|-------------|
-| **`core`** | Las 25 skills de metodología de desarrollo |
+| **`core`** | Las 24 skills de metodología de desarrollo |
 | **`devops`** | agente-devops · audit-loop · auditor-de-seguridad · supply-chain-auditor · prompt-injection-guard · optimizador-finops |
 | **`design`** | impeccable-design-taste · emil-kowalski-design · creativo-visual |
 | **`testing`** | playwright-testing · performance-profiler · test-driven-development · systematic-debugging · verification-before-completion |
@@ -581,6 +581,64 @@ Además del ahorro por CodeGraph y protocolos, SkillGrid incluye una capa de opt
 
 ---
 
+## 🧠 Model Selection & Platform Compatibility Guide
+
+### Platform Capability Matrix
+
+| Plataforma | Default Model | Fallback | Cost Input/1M | Cost Output/1M | ¿Soporta Skills? | ¿Soporta Agentes? | Mecanismo |
+|------------|--------------|:--------:|:-------------:|:--------------:|:----------------:|:-----------------:|-----------|
+| **opencode** | Claude Sonnet 4.6 | DeepSeek V4 Flash | $3.00 | $15.00 | ✅ SKILL.md | ✅ **Sí (32 agentes .md)** | `~/.config/opencode/skills/` + `agents/` |
+| **antigravity** | Gemini 1.5 Flash | Gemini 1.5 Pro | $0.075 | $0.30 | ✅ SKILL.md | ❌ | `~/.gemini/config/skills/` |
+| **antigravity-ide** | Gemini 2.5 Pro | Gemini 1.5 Pro | $1.25 | $10.00 | ✅ SKILL.md | ❌ | `~/.gemini/antigravity-ide/skills/` |
+| **Claude Code** | Claude 3.5 Sonnet | — | $3.00 | $15.00 | ✅ SKILL.md | ❌ | `~/.claude/skills/` |
+| **Cursor IDE** | GPT-4o | Claude 3.5 Sonnet | $2.50 | $10.00 | ❌ (usa rules) | ❌ | `.cursor/rules/*.mdc` |
+| **GitHub Copilot** | GPT-4o | — | $2.50 | $10.00 | ❌ (usa instructions) | ❌ | `.github/instructions/*.md` |
+| **Open WebUI** | multi-model | — | $0.00 | $0.00 | ✅ SKILL.md | ❌ | configurable |
+
+### Agent System: ¿Por qué solo opencode tiene agentes?
+
+SkillGrid genera **32 agentes `.md`** en `~/.config/opencode/agents/`. Cada agente tiene:
+
+```yaml
+---
+description: Cuándo y por qué usar este agente
+mode: subagent
+permission:
+  edit: deny    # solo lectura — seguridad primero
+  bash: deny
+---
+```
+
+**¿Por qué las otras plataformas no tienen agentes?**
+
+| Plataforma | ¿Por qué no? |
+|------------|-------------|
+| **antigravity / antigravity-ide** | Solo leen SKILL.md directamente. No existe un directorio `agents/` ni un concepto de `mode: subagent`. |
+| **Claude Code** | Lee SKILL.md desde `~/.claude/skills/`. No tiene sistema de subagentes ni delegación aislada. |
+| **Cursor / Copilot** | No soportan SKILL.md nativo. Usan `.mdc` y `.instructions.md` respectivamente — son reglas de proyecto, no agentes autónomos. |
+
+El sistema de agentes de opencode es **único**: permite delegar tareas a subagentes especializados con contexto aislado, permisos restringidos y sin riesgo de fuga de contexto entre tareas.
+
+### Model Reference
+
+| Modelo | Provider | Thinking | Ventana | Compatible con | Input/1M | Output/1M |
+|--------|----------|:--------:|:-------:|:--------------:|:--------:|:---------:|
+| **Claude Sonnet 4.6** | Anthropic | Sí | 200K | opencode | $3.00 | $15.00 |
+| **Claude Sonnet 4.6 Thinking** | Anthropic | Sí (extendido) | 200K | opencode, antigravity-ide | $3.00 | $15.00 |
+| **Claude 3.5 Sonnet** | Anthropic | No | 200K | claude-code, cursor | $3.00 | $15.00 |
+| **Claude Haiku 4.5** | Anthropic | No | 200K | opencode | $1.00 | $5.00 |
+| **DeepSeek V4 Flash** | DeepSeek | No | 128K | opencode | $0.50 | $2.00 |
+| **Gemini 2.5 Pro** | Google | Sí | 1M | antigravity-ide | $1.25 | $10.00 |
+| **Gemini 2.5 Flash** | Google | Sí | 1M | antigravity-ide, antigravity | $0.15 | $0.60 |
+| **Gemini 1.5 Pro** | Google | No | 128K | antigravity, cursor | $1.25 | $5.00 |
+| **Gemini 1.5 Flash** | Google | No | 128K | antigravity | $0.075 | $0.30 |
+| **GPT-4o** | OpenAI | No | 128K | cursor, github-copilot | $2.50 | $10.00 |
+| **o4-mini** | OpenAI | Sí | 200K | cursor, github-copilot | $1.10 | $4.40 |
+
+> 💡 **Tip**: DeepSeek V4 Flash ($0.50/$2.00) es el modelo económico recomendado para opencode en tareas rápidas. Gemini 2.5 Flash ($0.15/$0.60) es el más barato con thinking mode.
+
+---
+
 ## 📊 Estadísticas del Proyecto
 
 ### Skills & Tests
@@ -591,15 +649,19 @@ Además del ahorro por CodeGraph y protocolos, SkillGrid incluye una capa de opt
 | Tests de skills (frontmatter, core, modules, CodeGraph, references) | **217** ✅ |
 | Tests de audit-loop (9 fixtures) | **9** ✅ |
 | Cobertura de validación YAML | **100%** |
+| Agentes generados (opencode) | **32** |
+| Skills con sección `[platform:opencode]` | **5** |
+| Perfiles de instalación | **6** (all, minimal, standard, strict, testing, superpowers) |
+| Bundles por rol | **6** (core, devops, design, testing, management, marketing) |
 
 ### Instalación Multi-Plataforma
 
-| Plataforma | Skills | Agentes | Autodetección |
-|------------|:------:|:-------:|:-------------:|
-| **opencode** | 43 | 13 ✅ | `~/.config/opencode/skills/` |
-| **antigravity (gemini)** | 43 | — | `~/.gemini/config/skills/` |
-| **antigravity-ide** | 43 | — | `~/.gemini/antigravity-ide/skills/` |
-| **Claude Code** | 43 | — | `~/.claude/skills/` |
+| Plataforma | Skills | Agentes | Default Model | Autodetección |
+|------------|:------:|:-------:|:-------------|:--------------|
+| **opencode** | 43 | 32 ✅ | Claude Sonnet 4.6 | `~/.config/opencode/skills/` |
+| **antigravity** | 43 | — | Gemini 1.5 Flash | `~/.gemini/config/skills/` |
+| **antigravity-ide** | 43 | — | Gemini 2.5 Pro | `~/.gemini/antigravity-ide/skills/` |
+| **Claude Code** | 43 | — | Claude 3.5 Sonnet | `~/.claude/skills/` |
 
 ### Ahorro de Tokens por Plataforma (Proyecto Grande: ~10K archivos, 144MB)
 
