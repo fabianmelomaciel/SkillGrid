@@ -1,6 +1,6 @@
 ---
 name: audit-loop
-description: Orchestrates the closed loop: audit → fix → re-audit → iterate. Activated as a follow-up of audits (security, marketing, finops).
+description: Orquesta el bucle cerrado: auditar → corregir → re-auditar → iterar. Se activa como seguimiento de auditorías (seguridad, marketing, finops).
 category: agent
 status: beta
 risk_level: critical

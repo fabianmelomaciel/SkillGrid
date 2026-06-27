@@ -1,6 +1,6 @@
 ---
 name: auditor-de-marketing
-description: Use to audit website growth, on-page SEO, schema markup, AI search optimization (AEO/GEO), programmatic SEO, social sharing cards (OpenGraph), readability, copy quality, AI writing detection (30 patterns), CRO, and CTA conversion.
+description: Úsalo para auditar el crecimiento del sitio web, SEO on-page, marcado de esquema, optimización para motores de búsqueda de IA (AEO/GEO), SEO programático, tarjetas para compartir en redes sociales (OpenGraph), legibilidad, calidad del copy, detección de redacción por IA (30 patrones), CRO y conversión de CTA.
 category: agent
 status: stable
 risk_level: safe

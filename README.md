@@ -561,18 +561,23 @@ Además del −89.5% de CodeGraph, los protocolos de SkillGrid evitan tokens des
 
 ### 🔋 Ahorro de Sesión — Infraestructura de Contexto (v1.7.x)
 
-Además del ahorro por CodeGraph y protocolos, SkillGrid incluye una capa de optimización de **contexto de sesión** que reduce el baseline de tokens cargado al inicio de cada conversación:
+Además del ahorro por CodeGraph y protocolos, SkillGrid incluye una capa de optimización de **contexto de sesión** que reduce el baseline de tokens cargado al inicio de cada conversación y maneja los límites de tokens en tiempo real:
 
-| Mejora | Antes | Después | Reducción |
+| Mejora | Antes | Después | Reducción / Acción |
 |--------|:-----:|:-------:|:---------:|
 | `catalog-lite.json` (carga lazy del catálogo) | 14.4 KB | 5.5 KB | **−62%** |
 | `scratch/` limpio (sin repos `.git` anidados) | ~204 KB artifacts | 0 KB | **−100%** |
 | `memory/` rotada (sin historial acumulado) | crece sin límite | comprimida semanalmente | **variable** |
+| **Compactación de Contexto** | Desborde de contexto | `/compact` automático | **Proactiva al llegar al 80%** |
 | Baseline de sesión combinado | ~90K tokens | ~45K tokens | **−50%** |
 
 **Scripts incluidos** (en `.claude/scripts/`):
 - `cleanup-artifacts.sh` — se ejecuta automáticamente al terminar cada sesión (Stop hook). Purga repos `.git` anidados en `scratch/` y archiva artifacts con más de 30 días de antigüedad.
 - `compress-memory.sh` — comprime y rota los archivos de memoria del proyecto. Ejecutar semanalmente o manualmente con `bash .claude/scripts/compress-memory.sh`.
+
+#### 🚀 Integración con RTK (Rust Token Killer)
+SkillGrid es totalmente compatible con **RTK (Rust Token Killer)**, la herramienta proxy CLI de alto rendimiento que intercepta y comprime salidas de terminal pesadas (`git diff`, `npm test`, etc.) antes de enviarlas al modelo. Se recomienda integrar RTK para lograr un ahorro adicional del 60% al 90% en tokens de entrada durante la ejecución de tareas automatizadas en segundo plano.
+
 
 > 💡 **Genera `catalog-lite.json`** (solo campos esenciales — 62% más pequeño):
 > ```bash

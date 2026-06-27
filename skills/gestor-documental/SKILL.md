@@ -1,6 +1,6 @@
 ---
 name: gestor-documental
-description: Use to design, audit, format, and validate technical and scientific documents according to APA (7th Edition) and software engineering requirements/testing standards (ISO 29148, ISO 29119).
+description: Úsalo para diseñar, auditar, dar formato y validar documentos técnicos y científicos de acuerdo con la norma APA (7.ª edición) y los estándares de pruebas/requisitos de ingeniería de software (ISO 29148, ISO 29119).
 category: agent
 status: stable
 risk_level: safe

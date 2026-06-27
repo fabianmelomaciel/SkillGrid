@@ -1,6 +1,6 @@
 ---
 name: optimizador-finops
-description: Use to audit computational resource utilization, API efficiency, and token usage economy. Aligned with SQA & ISO 31000 risk management standards.
+description: Úsalo para auditar la utilización de recursos computacionales, la eficiencia de las APIs y la economía en el uso de tokens. Alineado con los estándares de gestión de riesgos SQA e ISO 31000.
 category: agent
 status: stable
 risk_level: safe

@@ -1,6 +1,6 @@
 ---
 name: spec-kit
-description: Wraps GitHub Spec-Kit (`specify`) CLI for opencode — generates specs, plans, and task artifacts via Spec-Driven Development tooling instead of manual drafting. Requires Python 3.11+ and `uv`.
+description: Envuelve la CLI Spec-Kit de GitHub (`specify`) para opencode; genera especificaciones, planes y artefactos de tareas mediante herramientas de Desarrollo Guiado por Especificaciones en lugar de redactarlos manualmente. Requiere Python 3.11+ y `uv`.
 category: agent
 status: stable
 risk_level: critical

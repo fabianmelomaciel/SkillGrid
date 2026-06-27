@@ -1,6 +1,6 @@
 ---
 name: headroom
-description: Reduces LLM token usage by compressing context, logs, tool outputs, and files. Use when dealing with large contexts, massive tool outputs, or optimizing agent token spend.
+description: Reduce el uso de tokens del LLM comprimiendo el contexto, logs, salidas de herramientas y archivos. Úsalo al tratar con contextos extensos, salidas de herramientas masivas o para optimizar el gasto de tokens del agente.
 category: core
 status: stable
 risk_level: safe

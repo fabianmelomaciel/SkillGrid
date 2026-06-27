@@ -30,6 +30,11 @@ Lower context sensitivity tasks:
 - Documentation updates
 - Simple bug fixes
 
+### Compactación Automática de Contexto (Compaction)
+- Si el IDE o la plataforma soporta un comando de reducción/compactación de contexto (como el comando `/compact` de Claude Code o la compresión intermedia en opencode/otros), el agente **debe** ejecutarlo o sugerir su ejecución de forma proactiva al detectar que se está aproximando al límite de tokens (especialmente al entrar en el último 20% del contexto disponible).
+- Durante y después del proceso de compactación, el agente debe mantenerse extremadamente atento a la implementación en curso, leyendo el archivo de tareas (`task.md`) para continuar las tareas planificadas de forma fluida y sin detenerse ni perder el hilo de desarrollo.
+
+
 ## Extended Thinking + Plan Mode
 
 Extended thinking is enabled by default, reserving up to 31,999 tokens for internal reasoning.

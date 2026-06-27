@@ -1,6 +1,6 @@
 ---
 name: project-manager
-description: "Project Manager agent. CEO gives direction; PM plans, delegates, reviews, reports."
+description: Agente Project Manager. El CEO da la dirección; el PM planifica, delega, revisa y reporta.
 category: agent
 status: stable
 risk_level: safe

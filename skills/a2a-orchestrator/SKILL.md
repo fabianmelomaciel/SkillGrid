@@ -1,6 +1,6 @@
 ---
 name: a2a-orchestrator
-description: Orchestrates multi-agent workflows using the Agent-to-Agent (A2A) protocol — the 2026 open standard for cross-process agent communication. Use when coordinating specialized agents running in separate processes, different tools, or different machines. Different from dispatching-parallel-agents (intra-session) — A2A is for inter-process, inter-tool agent coordination.
+description: Orquesta flujos de trabajo multi-agente usando el protocolo Agent-to-Agent (A2A), el estándar abierto de 2026 para la comunicación de agentes entre procesos. Úsalo al coordinar agentes especializados ejecutados en procesos separados, herramientas distintas o diferentes máquinas. A diferencia de dispatching-parallel-agents (intra-sesión), A2A es para la coordinación de agentes entre procesos y herramientas.
 category: core
 status: stable
 risk_level: safe

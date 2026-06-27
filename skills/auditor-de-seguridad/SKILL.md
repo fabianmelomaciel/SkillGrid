@@ -1,6 +1,6 @@
 ---
 name: auditor-de-seguridad
-description: Use when completing development, before deployment, after vibecoding/AI code generation, or when reviewing project security. Covers secrets, dependencies, SAST (OWASP Top 10), rate limiting, authentication, session management, API security, encryption, logging, compliance, infrastructure, database, and CI/CD.
+description: Úsalo al finalizar el desarrollo, antes del despliegue, después de la generación de código con IA/vibecoding, o al revisar la seguridad del proyecto. Cubre secretos, dependencias, SAST (OWASP Top 10), límite de tasa, autenticación, gestión de sesiones, seguridad de APIs, cifrado, logs, conformidad, infraestructura, base de datos y CI/CD.
 category: agent
 status: stable
 risk_level: critical

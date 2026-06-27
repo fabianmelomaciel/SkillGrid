@@ -1,6 +1,6 @@
 ---
 name: prompt-injection-guard
-description: Defends against prompt injection attacks in AI-powered applications. Use when building features that process user-provided text, external data, or tool outputs that get passed to an LLM. Audits for direct injection, indirect injection via RAG/tools, jailbreak vectors, and privilege escalation through context manipulation. Aligned with OWASP LLM Top 10 (LLM01:2025).
+description: Defiende contra ataques de inyección de prompts en aplicaciones potenciadas por IA. Úsalo al construir características que procesen texto provisto por el usuario, datos externos o salidas de herramientas que se pasen a un LLM. Audita inyección directa, inyección indirecta vía RAG/herramientas, vectores de jailbreak y escalada de privilegios mediante manipulación del contexto. Alineado con OWASP LLM Top 10 (LLM01:2025).
 category: agent
 status: stable
 risk_level: critical

@@ -1,6 +1,6 @@
 ---
 name: supply-chain-auditor
-description: Audits the software supply chain of a project — npm/pip/composer dependencies, lockfile integrity, CVEs, license compliance, and transitive risk. Use before merging to main, when adding new dependencies, or as part of a CI/CD post-install gate.
+description: Audita la cadena de suministro de software de un proyecto: dependencias de npm/pip/composer, integridad del archivo lock, CVEs, conformidad de licencias y riesgo transitivo. Úsalo antes de fusionar a la rama principal, al añadir nuevas dependencias o como parte de un gate post-instalación de CI/CD.
 category: agent
 status: stable
 risk_level: critical

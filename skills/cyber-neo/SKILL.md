@@ -1,14 +1,12 @@
 ---
 name: cyber-neo
 description: >
-  Comprehensive cybersecurity analysis for any local project. Scans for
-  dependency vulnerabilities (SCA), code security patterns (SAST), leaked
-  secrets, authentication/authorization flaws, cryptographic weaknesses,
-  misconfigurations, supply chain risks, and CI/CD security. Covers all
-  OWASP 2025 Top 10 and CWE Top 25. Generates a prioritized report with
-  remediation guidance. Use when the user says "security audit", "vulnerability
-  scan", "check for security issues", "find vulnerabilities", "security review",
-  "pentest", "security check", or invokes /cyber-neo.
+  Análisis integral de ciberseguridad para cualquier proyecto local. Escanea
+  vulnerabilidades en dependencias (SCA), patrones de seguridad en código (SAST), secretos
+  filtrados, fallos de autenticación/autorización, debilidades criptográficas,
+  malas configuraciones, riesgos en la cadena de suministro y seguridad CI/CD. Cubre todo
+  OWASP 2025 Top 10 y CWE Top 25. Genera un informe priorizado con guías de
+  remediación. Úsalo cuando el usuario solicite una auditoría de seguridad o pentest.
 category: agent
 status: stable
 risk_level: critical

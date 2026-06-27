@@ -1,6 +1,6 @@
 ---
 name: mcp-configurator
-description: Configures Model Context Protocol (MCP) servers to extend agent capabilities. Use when connecting an AI agent to databases, APIs, file systems, or external tools via the MCP standard. Supports Claude Code, Cursor, VS Code, and opencode. MCP is the 2026 standard for agent-tool integration.
+description: Configura servidores del Protocolo de Contexto de Modelos (MCP) para extender las capacidades del agente. Úsalo al conectar un agente de IA a bases de datos, APIs, sistemas de archivos o herramientas externas mediante el estándar MCP. Soporta Claude Code, Cursor, VS Code y opencode. MCP es el estándar de 2026 para la integración de agentes y herramientas.
 category: core
 status: stable
 risk_level: safe
