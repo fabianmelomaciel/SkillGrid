@@ -3,7 +3,7 @@
 
 **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*43 skills especializadas para opencode · antigravity · Claude Code · Cursor · Copilot*
+*43 skills · 226 tests · 4 plataformas · ~90% ahorro de tokens*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-43-22c55e?style=flat-square)](catalog.json)
@@ -11,6 +11,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/network/members)
 [![GitHub contributors](https://img.shields.io/github/contributors/fabianmelomaciel/SkillGrid?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/graphs/contributors)
+[![Default Profile](https://img.shields.io/badge/default%20profile-all-6366f1?style=flat-square)](install.ps1)
 
 <br>
 
@@ -35,7 +36,7 @@ No es solo una lista de prompts. Es un **sistema de trabajo autónomo y eficient
 
 ## ⚡ Instalación en 10 segundos
 
-> El instalador detecta automáticamente opencode, antigravity, Claude Code y demás — y los configura todos de una vez. Por defecto instala el perfil `minimal` para reducir tokens/contexto.
+> El instalador detecta automáticamente opencode, antigravity, Claude Code y demás — y los configura todos de una vez. Por defecto instala el perfil `all` (43 skills).
 
 ### Windows (PowerShell)
 
@@ -46,7 +47,7 @@ irm https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-ins
 Perfil (opcional):
 
 ```powershell
-$env:SKILLGRID_PROFILE="minimal"
+$env:SKILLGRID_PROFILE="all"
 irm https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.ps1 | iex
 ```
 
@@ -61,7 +62,7 @@ curl -fsSL https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/rem
 Perfil (opcional):
 
 ```bash
-SKILLGRID_PROFILE=minimal curl -fsSL https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.sh | bash
+SKILLGRID_PROFILE=all curl -fsSL https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.sh | bash
 ```
 
 Nota: el instalador remoto clona una versión fija por seguridad. Si esa versión todavía no soporta perfiles, el valor se ignora automáticamente. Para asegurar perfiles, clonar y ejecutar localmente.
@@ -79,13 +80,15 @@ Eso es todo. El instalador detecta tu setup y copia las skills donde corresponde
 # Windows
 git clone https://github.com/fabianmelomaciel/SkillGrid.git C:\SkillGrid
 cd C:\SkillGrid
-.\install.ps1 -Profile minimal
+.\install.ps1          # Default: all (43 skills)
+.\install.ps1 -Profile minimal  # Opcional: perfil más ligero
 ```
 
 ```bash
 # Linux / macOS
 git clone https://github.com/fabianmelomaciel/SkillGrid.git ~/skillgrid
-cd ~/skillgrid && bash install.sh --profile minimal
+cd ~/skillgrid && bash install.sh          # Default: all
+bash install.sh --profile minimal          # Opcional: perfil más ligero
 ```
 
 </details>
@@ -95,18 +98,18 @@ cd ~/skillgrid && bash install.sh --profile minimal
 
 | Perfil | Enfoque | Cuándo usar |
 |--------|---------|-------------|
+| `all` | Completo (default) | **43 skills** — instalación completa recomendada |
 | `minimal` | Gates mínimos | Principiantes, sesiones cortas, cambios pequeños |
 | `standard` | Flujo completo | Desarrollo normal día a día |
 | `testing` | QA & E2E | Equipos de QA — solo 4 skills, ~8K tokens |
 | `superpowers` | Flujo Planificado | Metodología estructurada de obra/superpowers (~22 skills) |
 | `strict` | Suite completa | Auditorías y hardening (más pesado) |
-| `all` | Todo | Sólo si sabés que lo necesitás |
 
 Cómo entenderlo (para nuevos):
 
-- Un perfil es la “cantidad de roles” que cargás. Menos roles = menos contexto, menos ruido y menos consumo.
-- Si tu tarea es normal (feature/bugfix), empezá en `minimal` o `standard`.
-- Si te piden auditoría completa (seguridad/marketing/finops) o coordinación total, usá `strict` o `all`.
+- Un perfil es la "cantidad de roles" que cargás. Menos roles = menos contexto, menos ruido y menos consumo.
+- Por defecto se instala `all` (43 skills) para máxima capacidad.
+- Si querés ahorrar tokens, usá `minimal` o `standard`.
 
 Cambiar de perfil (reinstalar encima):
 
@@ -173,7 +176,7 @@ Genera automáticamente `.cursor/rules/` y `.github/instructions/` con las regla
 
 ### 🔧 Core — Metodología de desarrollo
 
-Las 22 skills que convierten a tu agente en un ingeniero de software disciplinado:
+Las 26 skills que convierten a tu agente en un ingeniero de software disciplinado:
 
 | Skill | Cuándo la usas |
 |-------|----------------|
@@ -245,7 +248,7 @@ Instala solo lo que necesita tu equipo:
 
 | Bundle | Qué incluye |
 |--------|-------------|
-| **`core`** | Las 25 skills de metodología de desarrollo |
+| **`core`** | Las 24 skills de metodología de desarrollo |
 | **`devops`** | agente-devops · audit-loop · auditor-de-seguridad · supply-chain-auditor · prompt-injection-guard · optimizador-finops |
 | **`design`** | impeccable-design-taste · emil-kowalski-design · creativo-visual |
 | **`testing`** | playwright-testing · performance-profiler · test-driven-development · systematic-debugging · verification-before-completion |
@@ -271,6 +274,17 @@ Combinaciones pre-diseñadas para tareas complejas:
 | **Performance Gate** ⚡ | `performance-profiler` [baseline] → [merge] → `performance-profiler` [delta] |
 | **Multi-Agent Pipeline** 🤖 | `a2a-orchestrator` → [agentes especializados en paralelo] → `gestor-documental` |
 | **LLM App Hardening** 🛡️ | `brainstorming` → `spec-driven-development` → [`prompt-injection-guard` + `supply-chain-auditor`] → `mcp-configurator` → `audit-loop` → `agente-devops` |
+
+---
+
+## 🧪 v1.7.1 "Stats Dashboard & Default All" (2026-06-26)
+
+### Cambios
+
+- **Default profile**: `install.ps1` ahora instala perfil `all` por defecto (antes `minimal`). `install.sh` ya tenía `all` como default.
+- **Test fix**: Corregido snapshot desincronizado en `project-mixed-findings` (expected `applied=3`→`2`, `pending=1`→`2`).
+- **README**: Nueva sección de estadísticas del proyecto (tests, plataformas, ahorro de tokens).
+- **GitHub**: Repositorio inicializado y subido a `github.com/fabianmelomaciel/SkillGrid`.
 
 ---
 
@@ -564,6 +578,103 @@ Además del ahorro por CodeGraph y protocolos, SkillGrid incluye una capa de opt
 > ```bash
 > node -e "const c=require('./catalog.json'),fs=require('fs');fs.writeFileSync('catalog-lite.json',JSON.stringify({version:c.version,generated_at:c.generated_at,total:c.total,skills:c.skills.map(s=>({name:s.name,status:s.status,risk_level:s.risk_level,category:s.category}))},null,2))"
 > ```
+
+---
+
+## 🧠 Model Selection & Platform Compatibility Guide
+
+### Platform Capability Matrix
+
+| Plataforma | Default Model | Fallback | Cost Input/1M | Cost Output/1M | ¿Soporta Skills? | ¿Soporta Agentes? | Mecanismo |
+|------------|--------------|:--------:|:-------------:|:--------------:|:----------------:|:-----------------:|-----------|
+| **opencode** | Claude Sonnet 4.6 | DeepSeek V4 Flash | $3.00 | $15.00 | ✅ SKILL.md | ✅ **Sí (32 agentes .md)** | `~/.config/opencode/skills/` + `agents/` |
+| **antigravity** | Gemini 1.5 Flash | Gemini 1.5 Pro | $0.075 | $0.30 | ✅ SKILL.md | ❌ | `~/.gemini/config/skills/` |
+| **antigravity-ide** | Gemini 2.5 Pro | Gemini 1.5 Pro | $1.25 | $10.00 | ✅ SKILL.md | ❌ | `~/.gemini/antigravity-ide/skills/` |
+| **Claude Code** | Claude 3.5 Sonnet | — | $3.00 | $15.00 | ✅ SKILL.md | ❌ | `~/.claude/skills/` |
+| **Cursor IDE** | GPT-4o | Claude 3.5 Sonnet | $2.50 | $10.00 | ❌ (usa rules) | ❌ | `.cursor/rules/*.mdc` |
+| **GitHub Copilot** | GPT-4o | — | $2.50 | $10.00 | ❌ (usa instructions) | ❌ | `.github/instructions/*.md` |
+| **Open WebUI** | multi-model | — | $0.00 | $0.00 | ✅ SKILL.md | ❌ | configurable |
+
+### Agent System: ¿Por qué solo opencode tiene agentes?
+
+SkillGrid genera **32 agentes `.md`** en `~/.config/opencode/agents/`. Cada agente tiene:
+
+```yaml
+---
+description: Cuándo y por qué usar este agente
+mode: subagent
+permission:
+  edit: deny    # solo lectura — seguridad primero
+  bash: deny
+---
+```
+
+**¿Por qué las otras plataformas no tienen agentes?**
+
+| Plataforma | ¿Por qué no? |
+|------------|-------------|
+| **antigravity / antigravity-ide** | Solo leen SKILL.md directamente. No existe un directorio `agents/` ni un concepto de `mode: subagent`. |
+| **Claude Code** | Lee SKILL.md desde `~/.claude/skills/`. No tiene sistema de subagentes ni delegación aislada. |
+| **Cursor / Copilot** | No soportan SKILL.md nativo. Usan `.mdc` y `.instructions.md` respectivamente — son reglas de proyecto, no agentes autónomos. |
+
+El sistema de agentes de opencode es **único**: permite delegar tareas a subagentes especializados con contexto aislado, permisos restringidos y sin riesgo de fuga de contexto entre tareas.
+
+### Model Reference
+
+| Modelo | Provider | Thinking | Ventana | Compatible con | Input/1M | Output/1M |
+|--------|----------|:--------:|:-------:|:--------------:|:--------:|:---------:|
+| **Claude Sonnet 4.6** | Anthropic | Sí | 200K | opencode | $3.00 | $15.00 |
+| **Claude Sonnet 4.6 Thinking** | Anthropic | Sí (extendido) | 200K | opencode, antigravity-ide | $3.00 | $15.00 |
+| **Claude 3.5 Sonnet** | Anthropic | No | 200K | claude-code, cursor | $3.00 | $15.00 |
+| **Claude Haiku 4.5** | Anthropic | No | 200K | opencode | $1.00 | $5.00 |
+| **DeepSeek V4 Flash** | DeepSeek | No | 128K | opencode | $0.50 | $2.00 |
+| **Gemini 2.5 Pro** | Google | Sí | 1M | antigravity-ide | $1.25 | $10.00 |
+| **Gemini 2.5 Flash** | Google | Sí | 1M | antigravity-ide, antigravity | $0.15 | $0.60 |
+| **Gemini 1.5 Pro** | Google | No | 128K | antigravity, cursor | $1.25 | $5.00 |
+| **Gemini 1.5 Flash** | Google | No | 128K | antigravity | $0.075 | $0.30 |
+| **GPT-4o** | OpenAI | No | 128K | cursor, github-copilot | $2.50 | $10.00 |
+| **o4-mini** | OpenAI | Sí | 200K | cursor, github-copilot | $1.10 | $4.40 |
+
+> 💡 **Tip**: DeepSeek V4 Flash ($0.50/$2.00) es el modelo económico recomendado para opencode en tareas rápidas. Gemini 2.5 Flash ($0.15/$0.60) es el más barato con thinking mode.
+
+---
+
+## 📊 Estadísticas del Proyecto
+
+### Skills & Tests
+
+| Métrica | Valor |
+|---------|:-----:|
+| Skills totales | **43** |
+| Tests de skills (frontmatter, core, modules, CodeGraph, references) | **217** ✅ |
+| Tests de audit-loop (9 fixtures) | **9** ✅ |
+| Cobertura de validación YAML | **100%** |
+| Agentes generados (opencode) | **32** |
+| Skills con sección `[platform:opencode]` | **5** |
+| Perfiles de instalación | **6** (all, minimal, standard, strict, testing, superpowers) |
+| Bundles por rol | **6** (core, devops, design, testing, management, marketing) |
+
+### Instalación Multi-Plataforma
+
+| Plataforma | Skills | Agentes | Default Model | Autodetección |
+|------------|:------:|:-------:|:-------------|:--------------|
+| **opencode** | 43 | 32 ✅ | Claude Sonnet 4.6 | `~/.config/opencode/skills/` |
+| **antigravity** | 43 | — | Gemini 1.5 Flash | `~/.gemini/config/skills/` |
+| **antigravity-ide** | 43 | — | Gemini 2.5 Pro | `~/.gemini/antigravity-ide/skills/` |
+| **Claude Code** | 43 | — | Claude 3.5 Sonnet | `~/.claude/skills/` |
+
+### Ahorro de Tokens por Plataforma (Proyecto Grande: ~10K archivos, 144MB)
+
+| Plataforma | Modelo | Costo Full Scan | Costo con CodeGraph | Ahorro |
+|------------|--------|----------------:|--------------------:|:------:|
+| opencode | DeepSeek V4 Flash | $18.07 | $1.81 | **90%** |
+| opencode | Claude Sonnet 4.6 | $108.41 | $10.85 | **90%** |
+| antigravity | Gemini 1.5 Flash | $2.71 | $0.27 | **90%** |
+| antigravity-ide | Gemini 2.5 Flash | $5.42 | **$0.54** | **90%** ⭐ |
+| antigravity-ide | Gemini 2.5 Pro | $45.17 | $4.52 | **90%** |
+| Claude Code | Claude 3.5 Sonnet | $108.41 | $10.85 | **90%** |
+
+> ⭐ **Mejor relación inteligencia/costo**: antigravity + Gemini 2.5 Flash — $0.54/sesión, 1M contexto, thinking mode.
 
 ---
 
