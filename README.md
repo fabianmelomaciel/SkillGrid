@@ -80,51 +80,35 @@ Eso es todo. El instalador detecta tu setup y copia las skills donde corresponde
 # Windows
 git clone https://github.com/fabianmelomaciel/SkillGrid.git C:\SkillGrid
 cd C:\SkillGrid
-.\install.ps1          # Default: all (43 skills)
-.\install.ps1 -Profile minimal  # Opcional: perfil más ligero
+.\install.ps1          # Instala las 43 skills (perfil all)
 ```
 
 ```bash
 # Linux / macOS
 git clone https://github.com/fabianmelomaciel/SkillGrid.git ~/skillgrid
-cd ~/skillgrid && bash install.sh          # Default: all
-bash install.sh --profile minimal          # Opcional: perfil más ligero
+cd ~/skillgrid && bash install.sh          # Instala las 43 skills (perfil all)
 ```
 
 </details>
 
 <details>
-<summary><strong>Perfiles (recomendado para ahorrar tokens)</strong></summary>
+<summary><strong>Perfiles (instalación parcial)</strong></summary>
 
-| Perfil | Enfoque | Cuándo usar |
-|--------|---------|-------------|
-| `all` | Completo (default) | **43 skills** — instalación completa recomendada |
-| `minimal` | Gates mínimos | Principiantes, sesiones cortas, cambios pequeños |
-| `standard` | Flujo completo | Desarrollo normal día a día |
-| `testing` | QA & E2E | Equipos de QA — solo 4 skills, ~8K tokens |
-| `superpowers` | Flujo Planificado | Metodología estructurada de obra/superpowers (~22 skills) |
-| `strict` | Suite completa | Auditorías y hardening (más pesado) |
-
-Cómo entenderlo (para nuevos):
-
-- Un perfil es la "cantidad de roles" que cargás. Menos roles = menos contexto, menos ruido y menos consumo.
-- Por defecto se instala `all` (43 skills) para máxima capacidad.
-- Si querés ahorrar tokens, usá `minimal` o `standard`.
-
-Cambiar de perfil (reinstalar encima):
+Por defecto se instalan las **43 skills** completas. Si necesitás una instalación más liviana:
 
 ```powershell
-.\install.ps1 -Profile minimal|standard|strict|all
+.\install.ps1 -Profile minimal   # Gates mínimos
+.\install.ps1 -Profile standard  # Flujo completo día a día
+.\install.ps1 -Profile strict    # Auditorías y hardening
 ```
 
 ```bash
-./install.sh --profile minimal|standard|strict|all
+./install.sh --profile minimal
+./install.sh --profile standard
+./install.sh --profile strict
 ```
 
-Nota sobre "cantidad de carpetas" instaladas:
-
-- El repo tiene 31 skills. Además se instalan `shared/` y `bundles/` (soporte, no cuentan como skill).
-- Si ven más carpetas, suele ser por restos de instalaciones anteriores (por ejemplo `core/`, `design/`, `template/`). Podés borrarlas manualmente y reinstalar el perfil elegido.
+Nota: si ven carpetas extra (`core/`, `design/`, `template/`), son restos de instalaciones anteriores. Reinstalar borra y reemplaza correctamente.
 
 Chequeo antes de instalar (recomendado):
 
@@ -248,7 +232,7 @@ Instala solo lo que necesita tu equipo:
 
 | Bundle | Qué incluye |
 |--------|-------------|
-| **`core`** | Las 24 skills de metodología de desarrollo |
+| **`core`** | Las 26 skills de metodología de desarrollo |
 | **`devops`** | agente-devops · audit-loop · auditor-de-seguridad · supply-chain-auditor · prompt-injection-guard · optimizador-finops |
 | **`design`** | impeccable-design-taste · emil-kowalski-design · creativo-visual |
 | **`testing`** | playwright-testing · performance-profiler · test-driven-development · systematic-debugging · verification-before-completion |
