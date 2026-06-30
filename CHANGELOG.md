@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **Architecture and Performance Rules**: Added `rules/common/architecture.md` defining rules for database bottlenecks, optimistic rendering rollbacks, static hosting layer boundaries, and OpenGraph/SEO meta configurations.
 
+### Changed
+- **`agente-ideas`**: Translated prompt instruction body to English to optimize context tokens and model logic flow, while preserving Spanish for frontmatter and interactive/final report outputs.
+
+
 ## [1.7.1] - 2026-06-26
 
 ### Changed

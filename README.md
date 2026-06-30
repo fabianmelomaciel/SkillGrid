@@ -263,7 +263,9 @@ Combinaciones pre-diseñadas para tareas complejas:
 
 ### Cambios
 - **Reglas de Arquitectura**: Nuevo archivo `rules/common/architecture.md` con lineamientos estrictos para evitar cuellos de botella en BD (N+1), configurar rollback en renderizado optimista, aislar alojamiento estático y asegurar metaetiquetas OpenGraph/SEO.
+- **Optimización de agente-ideas**: Traducido el cuerpo del prompt al inglés para optimizar el consumo de tokens y mejorar el seguimiento de instrucciones, manteniendo las deliberaciones y reportes finales en español.
 - **Versión**: Bump general de versión a 1.7.2 en `package.json` y `catalog.json`.
+
 
 ---
 
