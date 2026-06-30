@@ -259,6 +259,12 @@ Combinaciones pre-diseñadas para tareas complejas:
 | **Multi-Agent Pipeline** 🤖 | `a2a-orchestrator` → [agentes especializados en paralelo] → `gestor-documental` |
 | **LLM App Hardening** 🛡️ | `brainstorming` → `spec-driven-development` → [`prompt-injection-guard` + `supply-chain-auditor`] → `mcp-configurator` → `audit-loop` → `agente-devops` |
 
+## 🧪 v1.7.2 "Architectural & Performance Rules" (2026-06-30)
+
+### Cambios
+- **Reglas de Arquitectura**: Nuevo archivo `rules/common/architecture.md` con lineamientos estrictos para evitar cuellos de botella en BD (N+1), configurar rollback en renderizado optimista, aislar alojamiento estático y asegurar metaetiquetas OpenGraph/SEO.
+- **Versión**: Bump general de versión a 1.7.2 en `package.json` y `catalog.json`.
+
 ---
 
 ## 🧪 v1.7.1 "Stats Dashboard & Default All" (2026-06-26)
