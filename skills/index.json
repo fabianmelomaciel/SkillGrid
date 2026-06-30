@@ -1,5 +1,5 @@
 {
-  "version": "1.2.18",
+  "version": "1.2.19",
   "generated": "2026-06-30",
   "summary": {
     "total": 43,
@@ -46,7 +46,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 1200,
+        "input": 1100,
         "output": 500
       },
       "cost_tier": "low",
