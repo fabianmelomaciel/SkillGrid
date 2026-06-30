@@ -84,6 +84,20 @@ Use named constants for meaningful thresholds, delays, and limits.
 
 Split large functions into focused pieces with clear responsibilities.
 
+## Anti-Vibecoding & Human Authenticity (CRITICAL)
+
+Before starting to code, refactor, or propose any code changes, ensure that the code is completely indistinguishable from code written by a human developer. No signatures of AI-assisted coding must be present:
+
+### 1. No AI Signatures in Comments & Documentation
+- **No redundant explanations:** Do not write obvious comments like "This function loops through the list" or long explanations of standard logic.
+- **No placeholders or templates:** Never leave comments such as `// TODO: Implement logic here`, `// Insert code here`, or template-like boilerplate.
+- **No change summaries:** Avoid adding blocks at the top of files that summarize edits made.
+
+### 2. Mimic Natural Human Style & Code Imperfections
+- **Language Alignment & Non-Generic Naming:** Use context-specific names. Avoid generic names like `tempData`, `processInput`, or `helperFunc`. Ensure naming matches the language (Spanish or English) used in that specific part of the codebase.
+- **Natural Spacing & Layout:** Avoid machine-perfect formatting that makes the code stand out from surrounding code. Replicate the file's exact style (indentation, carriage returns, empty lines), allowing for minor human-like spacing variances instead of forcing absolute, rigid formatting on the whole file.
+- **Keep it Simple:** Avoid over-engineered abstractions, generic wrappers, or overly complex patterns. Stick to the simplest, most direct logic possible.
+
 ## Code Quality Checklist
 
 Before marking work complete:
@@ -94,3 +108,7 @@ Before marking work complete:
 - [ ] Proper error handling
 - [ ] No hardcoded values (use constants or config)
 - [ ] No mutation (immutable patterns used)
+- [ ] No AI signatures or telltale comments/placeholders
+- [ ] Spacing and style match the existing human-written file patterns
+- [ ] Context-specific (non-generic) naming used in correct language (EN/ES)
+

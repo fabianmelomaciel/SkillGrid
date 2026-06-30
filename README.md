@@ -259,12 +259,21 @@ Combinaciones pre-diseñadas para tareas complejas:
 | **Multi-Agent Pipeline** 🤖 | `a2a-orchestrator` → [agentes especializados en paralelo] → `gestor-documental` |
 | **LLM App Hardening** 🛡️ | `brainstorming` → `spec-driven-development` → [`prompt-injection-guard` + `supply-chain-auditor`] → `mcp-configurator` → `audit-loop` → `agente-devops` |
 
+## 🧪 v1.7.3 "Anti-Vibecoding & Human Authenticity Rules" (2026-06-30)
+
+### Cambios
+- **Reglas Anti-Vibecoding**: Agregadas directivas estrictas de estilo y mimetismo de código humano en `rules/common/coding-style.md` para evitar trazas de IA, tales como comentarios repetitivos/obvios, placeholders automáticos y formateos de máquina perfectos.
+- **Git Hook Pre-Commit**: Integrado un escáner activo anti-vibecoding y secretos en `.githooks/pre-commit` que bloquea automáticamente commits que contengan restos de IA (como `// TODO: implement`) fuera de carpetas de tests.
+- **Instalación local y compilación**: Instalación local y regeneración automática para todos los entornos e IDEs (`.cursor/rules` para Cursor y `.github/instructions` para Copilot).
+- **Versión**: Bump general de versión a 1.7.3 en `package.json` y `catalog.json`.
+
 ## 🧪 v1.7.2 "Architectural & Performance Rules" (2026-06-30)
 
 ### Cambios
 - **Reglas de Arquitectura**: Nuevo archivo `rules/common/architecture.md` con lineamientos estrictos para evitar cuellos de botella en BD (N+1), configurar rollback en renderizado optimista, aislar alojamiento estático y asegurar metaetiquetas OpenGraph/SEO.
 - **Optimización de agente-ideas**: Traducido el cuerpo del prompt al inglés para optimizar el consumo de tokens y mejorar el seguimiento de instrucciones, manteniendo las deliberaciones y reportes finales en español.
 - **Versión**: Bump general de versión a 1.7.2 en `package.json` y `catalog.json`.
+
 
 
 ---

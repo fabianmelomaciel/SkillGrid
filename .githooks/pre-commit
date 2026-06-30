@@ -51,13 +51,39 @@ for file in $STAGED; do
       FOUND=1
     fi
   done
+
+  # Anti-Vibecoding scan (skip tests, fixtures, and markdown docs)
+  case "$file" in
+    *tests/*|*fixtures/*|*test/*|*.md) continue ;;
+  esac
+
+  VIBE_PATTERNS=(
+    '//\s*TODO:\s*implement'
+    '//\s*Insert\s*logic\s*here'
+    '//\s*Insert\s*code\s*here'
+    '//\s*write\s*your\s*code\s*here'
+    '//\s*AI-generated'
+    '//\s*Generated\s*by\s*AI'
+    '//\s*AI\s*remnant:'
+    'catch\s*\{\s*\}'
+  )
+
+  for vpattern in "${VIBE_PATTERNS[@]}"; do
+    match=$(git show ":$file" 2>/dev/null | grep -Eon -e "$vpattern" | head -1 || true)
+    if [ -n "$match" ]; then
+      echo -e "${RED}[pre-commit] BLOCKED — Possible AI/Vibecoding remnant in staged file:${NC}"
+      echo -e "  File   : $file"
+      echo -e "  Pattern: $vpattern"
+      echo -e "  Match  : ${YELLOW}${match:0:60}...${NC}"
+      FOUND=1
+    fi
+  done
 done
 
 if [ "$FOUND" -eq 1 ]; then
   echo ""
-  echo -e "${RED}Commit blocked. Remove secrets before committing.${NC}"
+  echo -e "${RED}Commit blocked. Clean your code from secrets or AI remnants before committing.${NC}"
   echo "  If this is a false positive, use: git commit --no-verify"
-  echo "  If it's real: revoke the credential immediately."
   exit 1
 fi
 
