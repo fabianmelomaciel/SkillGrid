@@ -603,7 +603,7 @@ SkillGrid es totalmente compatible con **RTK (Rust Token Killer)**, la herramien
 
 ### Agent System: ¿Por qué solo opencode tiene agentes?
 
-SkillGrid genera **32 agentes `.md`** en `~/.config/opencode/agents/`. Cada agente tiene:
+SkillGrid genera **13 agentes `.md`** en `~/.config/opencode/agents/`. Cada agente tiene:
 
 ```yaml
 ---
@@ -655,7 +655,7 @@ El sistema de agentes de opencode es **único**: permite delegar tareas a subage
 | Tests de skills (frontmatter, core, modules, CodeGraph, references) | **217** ✅ |
 | Tests de audit-loop (9 fixtures) | **9** ✅ |
 | Cobertura de validación YAML | **100%** |
-| Agentes generados (opencode) | **32** |
+| Agentes generados (opencode) | **13** |
 | Skills con sección `[platform:opencode]` | **5** |
 | Perfiles de instalación | **6** (all, minimal, standard, strict, testing, superpowers) |
 | Bundles por rol | **6** (core, devops, design, testing, management, marketing) |
@@ -664,7 +664,7 @@ El sistema de agentes de opencode es **único**: permite delegar tareas a subage
 
 | Plataforma | Skills | Agentes | Default Model | Autodetección |
 |------------|:------:|:-------:|:-------------|:--------------|
-| **opencode** | 43 | 32 ✅ | Claude Sonnet 4.6 | `~/.config/opencode/skills/` |
+| **opencode** | 43 | 13 ✅ | Claude Sonnet 4.6 | `~/.config/opencode/skills/` |
 | **antigravity** | 43 | — | Gemini 1.5 Flash | `~/.gemini/config/skills/` |
 | **antigravity-ide** | 43 | — | Gemini 2.5 Pro | `~/.gemini/antigravity-ide/skills/` |
 | **Claude Code** | 43 | — | Claude 3.5 Sonnet | `~/.claude/skills/` |

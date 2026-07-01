@@ -87,4 +87,18 @@ if [ "$FOUND" -eq 1 ]; then
   exit 1
 fi
 
+# Run validation and tests to ensure no bugs remain (without spending tokens)
+echo -e "${YELLOW}[pre-commit] Running skill validation...${NC}"
+if ! npm run validate; then
+  echo -e "${RED}[pre-commit] BLOCKED — Skill validation failed.${NC}"
+  exit 1
+fi
+
+echo -e "${YELLOW}[pre-commit] Running test suite...${NC}"
+if ! npm test; then
+  echo -e "${RED}[pre-commit] BLOCKED — Test suite failed.${NC}"
+  exit 1
+fi
+
+echo -e "\033[0;32m[pre-commit] PASSED — All checks, validation, and tests completed successfully.\033[0m"
 exit 0

@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.3] - 2026-06-30
+
+### Added
+- **Pre-commit validation & test gate**: `.githooks/pre-commit` now runs `npm run validate` and `npm test` before allowing commits, catching broken skills and test failures at commit time.
+- **Anti-vibecoding project directive**: `.agents/AGENTS.md` — project-level style and authenticity rules for all agents operating in this repo.
+
+### Changed
+- **Agent count corrected**: README updated from 32 to 13 (actual agents generated for `category: agent` skills).
+
+
 ## [1.7.2] - 2026-06-30
 
 ### Added
