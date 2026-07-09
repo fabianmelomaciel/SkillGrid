@@ -1,10 +1,10 @@
 {
   "version": "1.7.3",
-  "generated": "2026-06-30",
+  "generated": "2026-07-09",
   "summary": {
-    "total": 43,
+    "total": 44,
     "categories": {
-      "core": 26,
+      "core": 27,
       "agent": 13,
       "design": 4
     }
@@ -160,6 +160,13 @@
     {
       "name": "headroom",
       "description": "Reduce el uso de tokens del LLM comprimiendo el contexto, logs, salidas de herramientas y archivos. Úsalo al tratar con contextos extensos, salidas de herramientas masivas o para optimizar el gasto de tokens del agente.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "humanizer",
+      "description": "Remove signs of AI-generated writing from text. Use when editing or reviewing text to make it sound more natural and human-written.",
       "category": "core",
       "status": "stable",
       "risk_level": "safe"

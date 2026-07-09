@@ -79,7 +79,8 @@
       "label": "Growth & Marketing",
       "description": "SEO audits, content optimization, and conversion analysis",
       "skills": [
-        "auditor-de-marketing"
+        "auditor-de-marketing",
+        "humanizer"
       ]
     }
   },
@@ -102,7 +103,7 @@
     "strict": {
       "label": "Full Suite + Auditors",
       "description": "Everything including all agents (~38 skills, ~75K tokens)",
-      "skills": ["a2a-orchestrator", "brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "incremental-implementation", "mcp-configurator", "performance-profiler", "playwright-testing", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "gestor-documental", "optimizador-finops", "project-manager", "prompt-injection-guard", "supply-chain-auditor", "creativo-visual", "emil-kowalski-design", "impeccable-design-taste"]
+      "skills": ["a2a-orchestrator", "brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "incremental-implementation", "mcp-configurator", "performance-profiler", "playwright-testing", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "gestor-documental", "humanizer", "optimizador-finops", "project-manager", "prompt-injection-guard", "supply-chain-auditor", "creativo-visual", "emil-kowalski-design", "impeccable-design-taste"]
     },
     "testing": {
       "label": "QA & Testing",
