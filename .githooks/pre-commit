@@ -52,9 +52,9 @@ for file in $STAGED; do
     fi
   done
 
-  # Anti-Vibecoding scan (skip tests, fixtures, and markdown docs)
+  # Anti-Vibecoding scan (skip tests, fixtures, markdown docs, and PowerShell)
   case "$file" in
-    *tests/*|*fixtures/*|*test/*|*.md) continue ;;
+    *tests/*|*fixtures/*|*test/*|*.md|*.ps1) continue ;;
   esac
 
   VIBE_PATTERNS=(
