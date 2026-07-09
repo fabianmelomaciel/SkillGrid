@@ -156,6 +156,28 @@ if (fs.existsSync(INDEX_PATH)) {
 
     fs.writeFileSync(INDEX_PATH, JSON.stringify(index, null, 2) + '\n');
     console.log(`skills/index.json fully synced: v${index.version}, ${skills.length} skills`);
+
+    // Generate catalog-lite.json automatically
+    try {
+      const liteCatalog = {
+        version: catalog.version,
+        generated: catalog.generated,
+        summary: catalog.summary,
+        skills: catalog.skills.map(s => ({
+          name: s.name,
+          status: s.status,
+          risk_level: s.risk_level,
+          category: s.category
+        }))
+      };
+      fs.writeFileSync(
+        path.join(ROOT, 'catalog-lite.json'),
+        JSON.stringify(liteCatalog, null, 2) + '\n'
+      );
+      console.log(`catalog-lite.json generated automatically`);
+    } catch (err) {
+      console.warn(`Warning: could not generate catalog-lite.json — ${err.message}`);
+    }
   } catch (e) {
     console.warn(`Warning: could not sync skills/index.json — ${e.message}`);
   }
