@@ -29,7 +29,8 @@
         "using-git-worktrees",
         "verification-before-completion",
         "writing-plans",
-        "writing-skills"
+        "writing-skills",
+        "router"
       ]
     },
     "devops": {
@@ -88,12 +89,12 @@
     "minimal": {
       "label": "Minimal Safety Gates",
       "description": "Only essential safety gates (~5 skills, ~8K tokens)",
-      "skills": ["brainstorming", "verification-before-completion", "writing-plans", "systematic-debugging", "context-engineering"]
+      "skills": ["brainstorming", "verification-before-completion", "writing-plans", "systematic-debugging", "context-engineering", "router"]
     },
     "standard": {
       "label": "Full Development Workflow",
       "description": "Standard development workflow (~17 skills, ~28K tokens)",
-      "skills": ["brainstorming", "verification-before-completion", "writing-plans", "systematic-debugging", "context-engineering", "test-driven-development", "requesting-code-review", "receiving-code-review", "spec-driven-development", "incremental-implementation", "code-simplification", "finishing-a-development-branch", "dispatching-parallel-agents", "subagent-driven-development", "executing-plans", "gsd-workflow", "ultra-review"]
+      "skills": ["brainstorming", "verification-before-completion", "writing-plans", "systematic-debugging", "context-engineering", "test-driven-development", "requesting-code-review", "receiving-code-review", "spec-driven-development", "incremental-implementation", "code-simplification", "finishing-a-development-branch", "dispatching-parallel-agents", "subagent-driven-development", "executing-plans", "gsd-workflow", "ultra-review", "router"]
     },
     "superpowers": {
       "label": "Superpowers Framework",
@@ -103,7 +104,7 @@
     "strict": {
       "label": "Full Suite + Auditors",
       "description": "Everything including all agents (~38 skills, ~75K tokens)",
-      "skills": ["a2a-orchestrator", "brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "incremental-implementation", "mcp-configurator", "performance-profiler", "playwright-testing", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "gestor-documental", "humanizer", "optimizador-finops", "project-manager", "prompt-injection-guard", "supply-chain-auditor", "creativo-visual", "emil-kowalski-design", "impeccable-design-taste"]
+      "skills": ["a2a-orchestrator", "brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "incremental-implementation", "mcp-configurator", "performance-profiler", "playwright-testing", "receiving-code-review", "requesting-code-review", "router", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "gestor-documental", "humanizer", "optimizador-finops", "project-manager", "prompt-injection-guard", "supply-chain-auditor", "creativo-visual", "emil-kowalski-design", "impeccable-design-taste"]
     },
     "testing": {
       "label": "QA & Testing",

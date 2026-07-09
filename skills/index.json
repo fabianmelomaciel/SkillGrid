@@ -1,10 +1,10 @@
 {
-  "version": "1.2.22",
+  "version": "1.2.23",
   "generated": "2026-07-09",
   "summary": {
-    "total": 44,
+    "total": 45,
     "categories": {
-      "core": 27,
+      "core": 28,
       "agent": 13,
       "design": 4
     }
@@ -474,6 +474,19 @@
       "token_estimate": {
         "input": 1050,
         "output": 420
+      },
+      "cost_tier": "low",
+      "invokes": []
+    },
+    "router": {
+      "name": "router",
+      "description": "Dynamically load specific skills based on the user request by querying catalog-lite.json to save token context baseline.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe",
+      "token_estimate": {
+        "input": 800,
+        "output": 400
       },
       "cost_tier": "low",
       "invokes": []

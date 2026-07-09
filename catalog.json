@@ -2,9 +2,9 @@
   "version": "1.7.3",
   "generated": "2026-07-09",
   "summary": {
-    "total": 44,
+    "total": 45,
     "categories": {
-      "core": 27,
+      "core": 28,
       "agent": 13,
       "design": 4
     }
@@ -237,6 +237,13 @@
     {
       "name": "requesting-code-review",
       "description": "Use when completing tasks, implementing major features, or before merging to verify work meets requirements",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "router",
+      "description": "Dynamically load specific skills based on the user request by querying catalog-lite.json to save token context baseline.",
       "category": "core",
       "status": "stable",
       "risk_level": "safe"

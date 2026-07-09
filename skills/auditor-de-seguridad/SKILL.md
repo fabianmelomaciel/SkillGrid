@@ -135,17 +135,6 @@ NO FALSE POSITIVES: If the scanner script produces a finding about a pattern tha
 
 > Load `references/remediation.md` only when specific fix steps are needed — do NOT load preemptively.
 
-| Finding | Quick action |
-|---------|-------------|
-| Secrets | Revoke → git history cleanup → rotate → `.gitignore` |
-| SQL Injection | Parameterized queries — never string interpolation |
-| XSS | `textContent` not `innerHTML`, DOMPurify, CSP header |
-| Command Injection | Native APIs, allowlist validation, no raw user input in shell |
-| CORS | Specific origins only, never `*` with credentials |
-| Rate Limiting | nginx `limit_req` / Cloudflare + lockout + CAPTCHA |
-| Weak Auth | MFA, JWT 15min TTL, session rotation, `secure+httpOnly+SameSite` |
-| Race Condition | DB transactions + optimistic locking + idempotency keys |
-| GDPR Gap | Privacy policy + consent + deletion endpoint + data portability |
 
 ### Verification Gate
 
