@@ -2,12 +2,14 @@
 
 This rule defines strict safety gates to prevent AI agents from introducing regressions (breaking other parts of the project) and wasting tokens during code modifications.
 
-## 1. Trace Before Edit (Impact Analysis)
+## 1. Trace Before Edit & Conceptual Integrity
 
 Before editing any function, class, variable name, database schema, or API endpoint:
 - **Search all references:** Use CodeGraph or grep to search the entire project for all files importing, invoking, or referencing the target symbol.
-- **Analyze dependency scope:** Identify which components or modules depend on the code you are about to change.
+- **Analyze dependency scope:** Identify which components, classes, methods, or database tables depend on the code you are about to change.
 - **Signature lock:** If you modify a function signature (arguments, return type, visibility) or database schema, you MUST update all reference sites in the same step. Do not leave callers broken.
+- **Conceptual Integrity & Logical Alignment:** Every code modification must preserve the primary conceptual architecture of the system. Do NOT write arbitrary, unverified code block edits or make ad-hoc structural modifications just because ("no tirar código porque sí"). Preserve logical coherence.
+- **Side-Effect Scope Validation:** Upon completing any implementation, systematically trace and verify whether it introduced regression errors, compilation issues, database inconsistencies, or broke contracts in other related classes and methods. Fix all affected dependencies coherently.
 
 ## 2. Verify-As-You-Go (Continuous Verification Loop)
 
