@@ -5,8 +5,10 @@ description: >
   vulnerabilidades en dependencias (SCA), patrones de seguridad en código (SAST), secretos
   filtrados, fallos de autenticación/autorización, debilidades criptográficas,
   malas configuraciones, riesgos en la cadena de suministro y seguridad CI/CD. Cubre todo
-  OWASP 2025 Top 10 y CWE Top 25. Genera un informe priorizado con guías de
-  remediación. Úsalo cuando el usuario solicite una auditoría de seguridad o pentest.
+  OWASP 2025 Top 10 y CWE Top 25. Incluye Semgrep, Trivy, Gitleaks, TruffleHog
+  (secretos), Checkov (IaC), Bandit (Python SAST), Safety (SCA Python) y Nuclei
+  (vulnerabilidades web). Genera un informe priorizado con guías de remediación.
+  Úsalo cuando el usuario solicite una auditoría de seguridad o pentest.
 category: agent
 status: stable
 risk_level: critical
@@ -20,6 +22,11 @@ allowed-tools:
   - Bash(semgrep *)
   - Bash(trivy *)
   - Bash(gitleaks *)
+  - Bash(trufflehog *)
+  - Bash(checkov *)
+  - Bash(bandit *)
+  - Bash(safety *)
+  - Bash(nuclei *)
   - Bash(npm audit *)
   - Bash(pip-audit *)
   - Bash(cargo audit *)
@@ -135,7 +142,7 @@ Based on detected stack, read the appropriate reference files from `${CLAUDE_SKI
 Check which security tools are available (all optional):
 
 ```bash
-which semgrep trivy gitleaks npm pip-audit cargo-audit 2>/dev/null
+which semgrep trivy gitleaks trufflehog checkov bandit safety nuclei npm pip-audit cargo-audit 2>/dev/null
 ```
 
 Record which are available. The agent uses them if present but falls back to Claude-native analysis if not.
@@ -192,10 +199,10 @@ After Phase 1 completes, launch **5 parallel subagents** using the Agent tool. E
 **IMPORTANT:** Subagents do NOT have access to `${CLAUDE_SKILL_DIR}`. Load and pass the detailed phase instructions, checklists, and templates from the reference file:
 > See [references/phases.md](file:///c:/laragon/www/SkillGrid/skills/cyber-neo/references/phases.md) for full subagent prompts, code-patterns, tools, and checklists.
 
-*   **PHASE 2 (SCA):** Run Trivy, npm audit, pip-audit, or cargo-audit. Parse outputs.
+*   **PHASE 2 (SCA):** Run Trivy, npm audit, pip-audit, cargo-audit, Safety, Bandit, Checkov, or Nuclei. Parse outputs.
 *   **PHASE 3 (SAST):** Search for SQL Injection, XSS, Command Injection, Insecure Auth, Weak Crypto, and Error/Logging leaks.
-*   **PHASE 4 (Secrets):** Run `scan_secrets.py`, Gitleaks, check `.gitignore` and `.env` files. Redact secrets in reports!
-*   **PHASE 5 (Config & IaC):** Audit framework security settings, security headers, Dockerfiles, and compose configurations.
+*   **PHASE 4 (Secrets):** Run `scan_secrets.py`, Gitleaks, TruffleHog, check `.gitignore` and `.env` files. Redact secrets in reports!
+*   **PHASE 5 (Config & IaC):** Audit framework security settings, security headers, Dockerfiles, compose configurations, and IaC with Checkov.
 *   **PHASE 6 (Supply Chain & CI/CD):** Verify lockfile integrity, dependency confusion, version pinning, and script injections in GitHub Actions workflows.
 
 Every subagent must return findings in the standard output schema specified in [references/phases.md](file:///c:/laragon/www/SkillGrid/skills/cyber-neo/references/phases.md).

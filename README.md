@@ -3,7 +3,7 @@
 
 ### **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*44 skills · 227 tests · 4 plataformas · ~95% ahorro de tokens*
+*44 skills · 227 tests · 4 plataformas · ~95% ahorro de tokens · +5 herramientas de seguridad*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-44-22c55e?style=flat-square)](catalog.json)
@@ -95,6 +95,7 @@ Metodologías avanzadas para garantizar la calidad del código:
 *   `prompt-injection-guard` - Protección contra inyecciones y jailbreaks.
 *   `audit-loop` - Bucle cerrado para resolver vulnerabilidades y findings automáticamente.
 *   `agente-ideas` - Deliberación en tres etapas con consenso optimizado de tokens.
+*   `cyber-neo` **[MEJORADO]** - Ahora con **Semgrep**, **Trivy**, **Gitleaks**, **TruffleHog** (secretos), **Checkov** (IaC), **Bandit** (Python SAST), **Safety** (SCA Python) y **Nuclei** (vulnerabilidades web).
 
 ---
 

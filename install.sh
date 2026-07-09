@@ -114,7 +114,7 @@ check_dependencies() {
         echo -e "  [+] powershell (pwsh): \033[0;32mInstalado\033[0m"
     fi
 
-    local deps=("git" "node" "npm" "composer" "pip" "pip-audit")
+    local deps=("git" "node" "npm" "composer" "pip" "pip-audit" "semgrep" "trivy" "gitleaks" "trufflehog" "checkov" "bandit" "safety" "nuclei")
     for dep in "${deps[@]}"; do
         if ! command -v "$dep" &> /dev/null; then
             echo -e "  [-] $dep: \033[0;33mFALTA (Opcional)\033[0m"
@@ -123,6 +123,41 @@ check_dependencies() {
                 echo ""
                 if [[ $REPLY =~ ^[Ss]$ ]]; then
                     pip install pip-audit
+                fi
+            fi
+            if [ "$dep" == "semgrep" ] && command -v pip &> /dev/null; then
+                read -p "      ¿Deseas instalar 'semgrep' via pip? [S/N]: " -n 1 -r
+                echo ""
+                if [[ $REPLY =~ ^[Ss]$ ]]; then
+                    pip install semgrep
+                fi
+            fi
+            if [ "$dep" == "trufflehog" ] && command -v pip &> /dev/null; then
+                read -p "      ¿Deseas instalar 'trufflehog' via pip? [S/N]: " -n 1 -r
+                echo ""
+                if [[ $REPLY =~ ^[Ss]$ ]]; then
+                    pip install trufflehog
+                fi
+            fi
+            if [ "$dep" == "checkov" ] && command -v pip &> /dev/null; then
+                read -p "      ¿Deseas instalar 'checkov' via pip? [S/N]: " -n 1 -r
+                echo ""
+                if [[ $REPLY =~ ^[Ss]$ ]]; then
+                    pip install checkov
+                fi
+            fi
+            if [ "$dep" == "bandit" ] && command -v pip &> /dev/null; then
+                read -p "      ¿Deseas instalar 'bandit' via pip? [S/N]: " -n 1 -r
+                echo ""
+                if [[ $REPLY =~ ^[Ss]$ ]]; then
+                    pip install bandit
+                fi
+            fi
+            if [ "$dep" == "safety" ] && command -v pip &> /dev/null; then
+                read -p "      ¿Deseas instalar 'safety' via pip? [S/N]: " -n 1 -r
+                echo ""
+                if [[ $REPLY =~ ^[Ss]$ ]]; then
+                    pip install safety
                 fi
             fi
         else

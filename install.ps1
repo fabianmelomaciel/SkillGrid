@@ -353,6 +353,14 @@ function Check-Dependencies {
         @{ Name = "composer"; Command = "composer --version"; Severity = "medium"; Desc = "Gestor de paquetes PHP" }
         @{ Name = "python"; Command = "python --version"; Severity = "low"; Desc = "Auditoria Python" }
         @{ Name = "pip-audit"; Command = "pip-audit --version"; Severity = "medium"; Desc = "Escaneo de seguridad Python" }
+        @{ Name = "semgrep"; Command = "semgrep --version"; Severity = "medium"; Desc = "SAST multilenguaje (OWASP Top 10)" }
+        @{ Name = "trivy"; Command = "trivy --version"; Severity = "medium"; Desc = "Escaneo de vulnerabilidades (SCA + IaC)" }
+        @{ Name = "gitleaks"; Command = "gitleaks --version"; Severity = "medium"; Desc = "Deteccion de secretos en repos" }
+        @{ Name = "trufflehog"; Command = "trufflehog --version"; Severity = "medium"; Desc = "Deteccion de secretos por entropia" }
+        @{ Name = "checkov"; Command = "checkov --version"; Severity = "medium"; Desc = "Seguridad de IaC (Terraform, K8s, Docker)" }
+        @{ Name = "bandit"; Command = "bandit --version"; Severity = "low"; Desc = "SAST para Python" }
+        @{ Name = "safety"; Command = "safety --version"; Severity = "low"; Desc = "SCA para Python" }
+        @{ Name = "nuclei"; Command = "nuclei --version"; Severity = "medium"; Desc = "Escaneo de vulnerabilidades web" }
     )
     foreach ($dep in $dependencies) {
         $status = "OK"
@@ -379,21 +387,26 @@ function Check-Dependencies {
             }
             Write-Host "  [-] $($dep.Name) ($($dep.Desc)): $status" -ForegroundColor $color
             
-            if ($dep.Name -eq "pip-audit") {
+            $pipTools = @("pip-audit", "semgrep", "trufflehog", "checkov", "bandit", "safety")
+            $wingetTools = @("trivy", "gitleaks", "nuclei")
+            if ($dep.Name -in $pipTools) {
                 if (Get-Command "pip" -ErrorAction SilentlyContinue) {
                     $isInteractive = [Environment]::UserInteractive -and $Host.UI.RawUI -and (-not [Console]::IsInputRedirected)
                     if ($isInteractive) {
-                        $response = Read-Host "      ¿Deseas instalar 'pip-audit' automaticamente ahora via pip? [S/N]"
+                        $response = Read-Host "      ¿Deseas instalar '$($dep.Name)' automaticamente ahora via pip? [S/N]"
                         if ($response -eq 'S' -or $response -eq 's') {
-                            Write-Host "      Instalando pip-audit..." -ForegroundColor Cyan
-                            & pip install pip-audit
+                            Write-Host "      Instalando $($dep.Name)..." -ForegroundColor Cyan
+                            & pip install $($dep.Name)
                         }
                     } else {
-                        Write-Host "      Modo no interactivo. Omite pip-audit. Instalalo manualmente con: python -m pip install --user pip-audit" -ForegroundColor Yellow
+                        Write-Host "      Modo no interactivo. Omite $($dep.Name). Instalalo manualmente con: pip install $($dep.Name)" -ForegroundColor Yellow
                     }
                 } else {
-                    Write-Host "      Para instalar: python -m pip install --user pip-audit" -ForegroundColor Yellow
+                    Write-Host "      Para instalar: pip install $($dep.Name)" -ForegroundColor Yellow
                 }
+            }
+            elseif ($dep.Name -in $wingetTools) {
+                Write-Host "      Para instalar: winget install $($dep.Name) -s winget" -ForegroundColor Yellow
             }
         } else {
             Write-Host "  [+] $($dep.Name) ($($dep.Desc)): Instalado" -ForegroundColor $color

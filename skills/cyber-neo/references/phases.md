@@ -17,7 +17,7 @@ This reference file contains the detailed instructions and subagent prompts for 
 >
 > **Instructions:**
 >
-> 1. Check which SCA tools are available: `which trivy npm pip-audit cargo-audit`
+> 1. Check which SCA tools are available: `which trivy npm pip-audit cargo-audit safety bandit checkov nuclei`
 >
 > 2. If Trivy is available:
 >    `trivy fs --scanners vuln {TARGET_DIR} --format json --quiet`
@@ -32,12 +32,31 @@ This reference file contains the detailed instructions and subagent prompts for 
 > 5. If cargo-audit is available and Cargo.lock exists:
 >    `cd {TARGET_DIR} && cargo audit --json 2>/dev/null`
 >
-> 6. If NO tools are available, report:
->    "Dependency vulnerability scanning requires external tools. Install one of:
->    - Trivy (recommended): brew install trivy
->    - npm audit (Node.js): built into npm
->    - pip-audit (Python): pip install pip-audit
->    - cargo-audit (Rust): cargo install cargo-audit"
+> 6. If Safety is available and requirements.txt exists:
+>    `safety scan --json -r {TARGET_DIR}/requirements.txt 2>/dev/null`
+>
+> 7. If Bandit is available (Python project):
+>    `bandit -r {TARGET_DIR} -f json 2>/dev/null`
+>    Parse findings for high-severity issues and add to vulnerability list.
+>
+> 8. If Checkov is available (IaC project):
+>    `checkov -d {TARGET_DIR} --compact --quiet 2>/dev/null`
+>    Parse IaC misconfigurations (CIS benchmarks, GDPR, PCI-DSS).
+>
+> 9. If Nuclei is available (web app project):
+>    `nuclei -target {TARGET_DIR} -json -silent 2>/dev/null | Select-Object -First 50`
+>    Parse findings for known vulnerability templates.
+>
+> 10. If NO tools are available, report:
+>     "Dependency vulnerability scanning requires external tools. Install one of:
+>     - Trivy (recommended): brew install trivy
+>     - npm audit (Node.js): built into npm
+>     - pip-audit (Python): pip install pip-audit
+>     - cargo-audit (Rust): cargo install cargo-audit
+>     - Safety (Python): pip install safety
+>     - Bandit (Python): pip install bandit
+>     - Checkov (IaC): pip install checkov
+>     - Nuclei (Web): brew install nuclei"
 >
 > Parse tool output and report each vulnerability with package name, version, CVE ID, severity, and fix version.
 >
@@ -131,7 +150,11 @@ This reference file contains the detailed instructions and subagent prompts for 
 >    `gitleaks detect --source {TARGET_DIR} --report-format json --no-banner 2>/dev/null`
 >    Parse and merge findings (deduplicate by file+line).
 >
-> 3. Check .gitignore coverage:
+> 3. If TruffleHog is available (complements Gitleaks with entropy detection):
+>    `trufflehog filesystem --directory={TARGET_DIR} --json 2>/dev/null | Select-Object -First 50`
+>    Parse and merge findings (deduplicate by file+line). TruffleHog detects high-entropy strings and additional secret patterns.
+>
+> 4. Check .gitignore coverage:
 >    - Does .gitignore exist?
 >    - Are .env files gitignored?
 >    - Are key/certificate files gitignored? (*.pem, *.key, *.p12)
@@ -194,7 +217,12 @@ This reference file contains the detailed instructions and subagent prompts for 
 >   - Verbose error responses
 >   - Development database credentials in config files
 >
-> **5b. Docker Security (if Dockerfiles exist):**
+> **5b. Docker & IaC Security:**
+>
+> If Checkov is available (covers Terraform, K8s, Docker, CloudFormation):
+>    `checkov -d {TARGET_DIR} --compact --quiet 2>/dev/null`
+>    Parse IaC misconfigurations (CIS Docker Benchmark, K8s RBAC, public S3 buckets, etc.)
+>
 > Use the Docker security patterns provided below to check:
 > - Running as root (no USER directive)
 > - Unpinned base images (:latest)
