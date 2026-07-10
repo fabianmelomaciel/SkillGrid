@@ -1,0 +1,756 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Auditoría de Seguridad — SkillGrid</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(22, 29, 49, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.15);
+            --critical: #f43f5e;
+            --high: #f97316;
+            --medium: #eab308;
+            --low: #3b82f6;
+            --passed: #10b981;
+            --text: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text);
+            padding: 2.5rem 1.5rem;
+            line-height: 1.6;
+            background-image: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(244, 63, 94, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .header-title h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-title p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .meta-info {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .meta-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .meta-info p:last-child {
+            margin-bottom: 0;
+        }
+
+        .meta-info strong {
+            color: var(--text);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-val {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
+
+        .stat-card.critical::before { background: var(--critical); }
+        .stat-card.critical .stat-val { color: var(--critical); text-shadow: 0 0 15px rgba(244, 63, 94, 0.2); }
+        
+        .stat-card.high::before { background: var(--high); }
+        .stat-card.high .stat-val { color: var(--high); text-shadow: 0 0 15px rgba(249, 115, 22, 0.2); }
+        
+        .stat-card.medium::before { background: var(--medium); }
+        .stat-card.medium .stat-val { color: var(--medium); text-shadow: 0 0 15px rgba(234, 179, 8, 0.2); }
+        
+        .stat-card.low::before { background: var(--low); }
+        .stat-card.low .stat-val { color: var(--low); text-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
+
+        .executive-summary {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.8) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.25rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(12px);
+            position: relative;
+        }
+
+        .executive-summary::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .executive-summary h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #a5b4fc;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .executive-summary p {
+            color: #d1d5db;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .section-header {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            border-left: 4px solid var(--primary);
+            padding-left: 0.75rem;
+        }
+
+        .findings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .finding-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .finding-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .finding-header {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .finding-header:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .finding-title-group {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .badge {
+            padding: 0.35rem 0.85rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge-critical { background: rgba(244, 63, 94, 0.15); color: var(--critical); border: 1px solid rgba(244, 63, 94, 0.2); }
+        .badge-high { background: rgba(249, 115, 22, 0.15); color: var(--high); border: 1px solid rgba(249, 115, 22, 0.2); }
+        .badge-medium { background: rgba(234, 179, 8, 0.15); color: var(--medium); border: 1px solid rgba(234, 179, 8, 0.2); }
+        .badge-low { background: rgba(59, 130, 246, 0.15); color: var(--low); border: 1px solid rgba(59, 130, 246, 0.2); }
+
+        .finding-title {
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: #ffffff;
+        }
+
+        .finding-file-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .finding-file-group a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .finding-file-group a:hover {
+            color: var(--text);
+            text-decoration: underline;
+        }
+
+        .finding-file-group svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .finding-content {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            display: none;
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .finding-content.open {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .finding-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .finding-details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-panel {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+
+        .info-panel h4 {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .remediation-panel {
+            border-left: 4px solid var(--primary);
+            background: rgba(99, 102, 241, 0.04);
+        }
+
+        .remediation-panel h4 {
+            color: #a5b4fc;
+        }
+
+        .code-block {
+            background: #060913;
+            padding: 1.25rem;
+            border-radius: 12px;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 0.875rem;
+            margin-top: 1.25rem;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e5e7eb;
+        }
+
+        .chevron {
+            transition: transform 0.2s;
+            color: var(--text-muted);
+        }
+
+        .finding-card.active-card .chevron {
+            transform: rotate(185deg);
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    <script>
+        function toggleFinding(id) {
+            const card = document.getElementById('card-' + id);
+            const content = document.getElementById('content-' + id);
+            content.classList.toggle('open');
+            card.classList.toggle('active-card');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-title">
+                <h1>Reporte de Seguridad</h1>
+                <p>SkillGrid Security Auditor — Análisis Estático & Escaneo de Vulnerabilidades</p>
+            </div>
+            <div class="meta-info">
+                <p>Proyecto: <strong>project-mixed-findings</strong></p>
+                <p>Fecha de Escaneo: <strong>2026-06-27 19:36:57</strong></p>
+            </div>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card critical">
+                <div class="stat-val">0</div>
+                <div class="stat-label">Críticas</div>
+            </div>
+            <div class="stat-card high">
+                <div class="stat-val">3</div>
+                <div class="stat-label">Altas</div>
+            </div>
+            <div class="stat-card medium">
+                <div class="stat-val">2</div>
+                <div class="stat-label">Medias</div>
+            </div>
+            <div class="stat-card low">
+                <div class="stat-val">7</div>
+                <div class="stat-label">Bajas</div>
+            </div>
+        </div>
+
+        <div class="executive-summary">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="fill: #a5b4fc; transform: translateY(2px);">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                </svg>
+                Resumen Ejecutivo
+            </h2>
+            <p>0 vulnerabilidades crÃ­ticas y 3 vulnerabilidades altas encontradas. Se recomienda resolver estos hallazgos antes de desplegar en producciÃ³n.</p>
+        </div>
+
+        <h3 class="section-header">Vulnerabilidades Identificadas</h3>
+
+        <div class="findings-list">
+                        <div class="finding-card" id="card-1">
+                <div class="finding-header" onclick="toggleFinding('1')">
+                    <div class="finding-title-group">
+                        <span class="badge badge-low">Low</span>
+                        <span class="finding-title">No package manager detected (no package.json, composer.json, or requirements*.txt)</span>
+                    </div>
+                    <div class="finding-file-group">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <a href="file:///C:/laragon/www/SkillGrid/tests/audit-loop/fixtures/project-mixed-findings" target="_blank" onclick="event.stopPropagation();">C:\laragon\www\SkillGrid\tests\audit-loop\fixtures\project-mixed-findings</a>
+                    </div>
+                    <div class="chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
+                <div id="content-1" class="finding-content">
+                    <div class="finding-details-grid">
+                        <div class="info-panel">
+                            <h4>DescripciÃ³n del hallazgo</h4>
+                            <p style="color: var(--text-muted);">No package manager detected (no package.json, composer.json, or requirements*.txt)</p>
+                        </div>
+                        <div class="info-panel remediation-panel">
+                            <h4>RemediaciÃ³n recomendada</h4>
+                            <p style="color: #cbd5e1;">Consider using a package manager for dependency management</p>
+                        </div>
+                      </div>
+                      <div class="code-block"></div>
+                  </div>
+              </div>            <div class="finding-card" id="card-2">
+                <div class="finding-header" onclick="toggleFinding('2')">
+                    <div class="finding-title-group">
+                        <span class="badge badge-low">Low</span>
+                        <span class="finding-title">No CI/CD workflows found (no .github/workflows directory)</span>
+                    </div>
+                    <div class="finding-file-group">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <a href="file:///C:/laragon/www/SkillGrid/tests/audit-loop/fixtures/project-mixed-findings" target="_blank" onclick="event.stopPropagation();">C:\laragon\www\SkillGrid\tests\audit-loop\fixtures\project-mixed-findings</a>
+                    </div>
+                    <div class="chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
+                <div id="content-2" class="finding-content">
+                    <div class="finding-details-grid">
+                        <div class="info-panel">
+                            <h4>DescripciÃ³n del hallazgo</h4>
+                            <p style="color: var(--text-muted);">No CI/CD workflows found (no .github/workflows directory)</p>
+                        </div>
+                        <div class="info-panel remediation-panel">
+                            <h4>RemediaciÃ³n recomendada</h4>
+                            <p style="color: #cbd5e1;">Consider adding CI/CD pipelines (GitHub Actions, GitLab CI, etc.)</p>
+                        </div>
+                      </div>
+                      <div class="code-block"></div>
+                  </div>
+              </div>            <div class="finding-card" id="card-3">
+                <div class="finding-header" onclick="toggleFinding('3')">
+                    <div class="finding-title-group">
+                        <span class="badge badge-high">High</span>
+                        <span class="finding-title">No input validation library/functions detected</span>
+                    </div>
+                    <div class="finding-file-group">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <a href="file:///C:/laragon/www/SkillGrid/tests/audit-loop/fixtures/project-mixed-findings" target="_blank" onclick="event.stopPropagation();">C:\laragon\www\SkillGrid\tests\audit-loop\fixtures\project-mixed-findings</a>
+                    </div>
+                    <div class="chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
+                <div id="content-3" class="finding-content">
+                    <div class="finding-details-grid">
+                        <div class="info-panel">
+                            <h4>DescripciÃ³n del hallazgo</h4>
+                            <p style="color: var(--text-muted);">No input validation library/functions detected</p>
+                        </div>
+                        <div class="info-panel remediation-panel">
+                            <h4>RemediaciÃ³n recomendada</h4>
+                            <p style="color: #cbd5e1;">Implement server-side input validation for all API endpoints. Validate types, lengths, formats</p>
+                        </div>
+                      </div>
+                      <div class="code-block"></div>
+                  </div>
+              </div>            <div class="finding-card" id="card-4">
+                <div class="finding-header" onclick="toggleFinding('4')">
+                    <div class="finding-title-group">
+                        <span class="badge badge-high">High</span>
+                        <span class="finding-title">No logging framework detected</span>
+                    </div>
+                    <div class="finding-file-group">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <a href="file:///C:/laragon/www/SkillGrid/tests/audit-loop/fixtures/project-mixed-findings" target="_blank" onclick="event.stopPropagation();">C:\laragon\www\SkillGrid\tests\audit-loop\fixtures\project-mixed-findings</a>
+                    </div>
+                    <div class="chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
+                <div id="content-4" class="finding-content">
+                    <div class="finding-details-grid">
+                        <div class="info-panel">
+                            <h4>DescripciÃ³n del hallazgo</h4>
+                            <p style="color: var(--text-muted);">No logging framework detected</p>
+                        </div>
+                        <div class="info-panel remediation-panel">
+                            <h4>RemediaciÃ³n recomendada</h4>
+                            <p style="color: #cbd5e1;">Implement structured logging for audit trail. Log auth events, sensitive operations, and errors</p>
+                        </div>
+                      </div>
+                      <div class="code-block"></div>
+                  </div>
+              </div>            <div class="finding-card" id="card-5">
+                <div class="finding-header" onclick="toggleFinding('5')">
+                    <div class="finding-title-group">
+                        <span class="badge badge-high">High</span>
+                        <span class="finding-title">No privacy policy or data protection docs found</span>
+                    </div>
+                    <div class="finding-file-group">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <a href="file:///C:/laragon/www/SkillGrid/tests/audit-loop/fixtures/project-mixed-findings" target="_blank" onclick="event.stopPropagation();">C:\laragon\www\SkillGrid\tests\audit-loop\fixtures\project-mixed-findings</a>
+                    </div>
+                    <div class="chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
+                <div id="content-5" class="finding-content">
+                    <div class="finding-details-grid">
+                        <div class="info-panel">
+                            <h4>DescripciÃ³n del hallazgo</h4>
+                            <p style="color: var(--text-muted);">No privacy policy or data protection docs found</p>
+                        </div>
+                        <div class="info-panel remediation-panel">
+                            <h4>RemediaciÃ³n recomendada</h4>
+                            <p style="color: #cbd5e1;">Create a privacy policy covering: what data is collected, why, how long retained, user rights</p>
+                        </div>
+                      </div>
+                      <div class="code-block"></div>
+                  </div>
+              </div>            <div class="finding-card" id="card-6">
+                <div class="finding-header" onclick="toggleFinding('6')">
+                    <div class="finding-title-group">
+                        <span class="badge badge-medium">Medium</span>
+                        <span class="finding-title">No cookie consent mechanism detected</span>
+                    </div>
+                    <div class="finding-file-group">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <a href="file:///C:/laragon/www/SkillGrid/tests/audit-loop/fixtures/project-mixed-findings" target="_blank" onclick="event.stopPropagation();">C:\laragon\www\SkillGrid\tests\audit-loop\fixtures\project-mixed-findings</a>
+                    </div>
+                    <div class="chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
+                <div id="content-6" class="finding-content">
+                    <div class="finding-details-grid">
+                        <div class="info-panel">
+                            <h4>DescripciÃ³n del hallazgo</h4>
+                            <p style="color: var(--text-muted);">No cookie consent mechanism detected</p>
+                        </div>
+                        <div class="info-panel remediation-panel">
+                            <h4>RemediaciÃ³n recomendada</h4>
+                            <p style="color: #cbd5e1;">Implement cookie consent banner for GDPR compliance. Block non-essential cookies until consent</p>
+                        </div>
+                      </div>
+                      <div class="code-block"></div>
+                  </div>
+              </div>            <div class="finding-card" id="card-7">
+                <div class="finding-header" onclick="toggleFinding('7')">
+                    <div class="finding-title-group">
+                        <span class="badge badge-medium">Medium</span>
+                        <span class="finding-title">No data deletion mechanism detected</span>
+                    </div>
+                    <div class="finding-file-group">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <a href="file:///C:/laragon/www/SkillGrid/tests/audit-loop/fixtures/project-mixed-findings" target="_blank" onclick="event.stopPropagation();">C:\laragon\www\SkillGrid\tests\audit-loop\fixtures\project-mixed-findings</a>
+                    </div>
+                    <div class="chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
+                <div id="content-7" class="finding-content">
+                    <div class="finding-details-grid">
+                        <div class="info-panel">
+                            <h4>DescripciÃ³n del hallazgo</h4>
+                            <p style="color: var(--text-muted);">No data deletion mechanism detected</p>
+                        </div>
+                        <div class="info-panel remediation-panel">
+                            <h4>RemediaciÃ³n recomendada</h4>
+                            <p style="color: #cbd5e1;">Implement user data deletion endpoint for GDPR right to erasure compliance</p>
+                        </div>
+                      </div>
+                      <div class="code-block"></div>
+                  </div>
+              </div>            <div class="finding-card" id="card-8">
+                <div class="finding-header" onclick="toggleFinding('8')">
+                    <div class="finding-title-group">
+                        <span class="badge badge-low">Low</span>
+                        <span class="finding-title">No data export mechanism detected</span>
+                    </div>
+                    <div class="finding-file-group">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <a href="file:///C:/laragon/www/SkillGrid/tests/audit-loop/fixtures/project-mixed-findings" target="_blank" onclick="event.stopPropagation();">C:\laragon\www\SkillGrid\tests\audit-loop\fixtures\project-mixed-findings</a>
+                    </div>
+                    <div class="chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
+                <div id="content-8" class="finding-content">
+                    <div class="finding-details-grid">
+                        <div class="info-panel">
+                            <h4>DescripciÃ³n del hallazgo</h4>
+                            <p style="color: var(--text-muted);">No data export mechanism detected</p>
+                        </div>
+                        <div class="info-panel remediation-panel">
+                            <h4>RemediaciÃ³n recomendada</h4>
+                            <p style="color: #cbd5e1;">Implement data portability export for GDPR compliance (JSON/CSV format)</p>
+                        </div>
+                      </div>
+                      <div class="code-block"></div>
+                  </div>
+              </div>            <div class="finding-card" id="card-9">
+                <div class="finding-header" onclick="toggleFinding('9')">
+                    <div class="finding-title-group">
+                        <span class="badge badge-low">Low</span>
+                        <span class="finding-title">No terms of service found</span>
+                    </div>
+                    <div class="finding-file-group">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <a href="file:///C:/laragon/www/SkillGrid/tests/audit-loop/fixtures/project-mixed-findings" target="_blank" onclick="event.stopPropagation();">C:\laragon\www\SkillGrid\tests\audit-loop\fixtures\project-mixed-findings</a>
+                    </div>
+                    <div class="chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
+                <div id="content-9" class="finding-content">
+                    <div class="finding-details-grid">
+                        <div class="info-panel">
+                            <h4>DescripciÃ³n del hallazgo</h4>
+                            <p style="color: var(--text-muted);">No terms of service found</p>
+                        </div>
+                        <div class="info-panel remediation-panel">
+                            <h4>RemediaciÃ³n recomendada</h4>
+                            <p style="color: #cbd5e1;">Add Terms of Service document outlining user rights, responsibilities, and limitations</p>
+                        </div>
+                      </div>
+                      <div class="code-block"></div>
+                  </div>
+              </div>            <div class="finding-card" id="card-10">
+                <div class="finding-header" onclick="toggleFinding('10')">
+                    <div class="finding-title-group">
+                        <span class="badge badge-low">Low</span>
+                        <span class="finding-title">No security.txt found</span>
+                    </div>
+                    <div class="finding-file-group">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <a href="file:///C:/laragon/www/SkillGrid/tests/audit-loop/fixtures/project-mixed-findings" target="_blank" onclick="event.stopPropagation();">C:\laragon\www\SkillGrid\tests\audit-loop\fixtures\project-mixed-findings</a>
+                    </div>
+                    <div class="chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
+                <div id="content-10" class="finding-content">
+                    <div class="finding-details-grid">
+                        <div class="info-panel">
+                            <h4>DescripciÃ³n del hallazgo</h4>
+                            <p style="color: var(--text-muted);">No security.txt found</p>
+                        </div>
+                        <div class="info-panel remediation-panel">
+                            <h4>RemediaciÃ³n recomendada</h4>
+                            <p style="color: #cbd5e1;">Add .well-known/security.txt with vulnerability disclosure contact info</p>
+                        </div>
+                      </div>
+                      <div class="code-block"></div>
+                  </div>
+              </div>            <div class="finding-card" id="card-11">
+                <div class="finding-header" onclick="toggleFinding('11')">
+                    <div class="finding-title-group">
+                        <span class="badge badge-low">Low</span>
+                        <span class="finding-title">No license file found</span>
+                    </div>
+                    <div class="finding-file-group">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <a href="file:///C:/laragon/www/SkillGrid/tests/audit-loop/fixtures/project-mixed-findings" target="_blank" onclick="event.stopPropagation();">C:\laragon\www\SkillGrid\tests\audit-loop\fixtures\project-mixed-findings</a>
+                    </div>
+                    <div class="chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
+                <div id="content-11" class="finding-content">
+                    <div class="finding-details-grid">
+                        <div class="info-panel">
+                            <h4>DescripciÃ³n del hallazgo</h4>
+                            <p style="color: var(--text-muted);">No license file found</p>
+                        </div>
+                        <div class="info-panel remediation-panel">
+                            <h4>RemediaciÃ³n recomendada</h4>
+                            <p style="color: #cbd5e1;">Add a LICENSE file to clarify usage rights for your project</p>
+                        </div>
+                      </div>
+                      <div class="code-block"></div>
+                  </div>
+              </div>            <div class="finding-card" id="card-12">
+                <div class="finding-header" onclick="toggleFinding('12')">
+                    <div class="finding-title-group">
+                        <span class="badge badge-low">Low</span>
+                        <span class="finding-title">No data retention policy found in code</span>
+                    </div>
+                    <div class="finding-file-group">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <a href="file:///C:/laragon/www/SkillGrid/tests/audit-loop/fixtures/project-mixed-findings" target="_blank" onclick="event.stopPropagation();">C:\laragon\www\SkillGrid\tests\audit-loop\fixtures\project-mixed-findings</a>
+                    </div>
+                    <div class="chevron">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                </div>
+                <div id="content-12" class="finding-content">
+                    <div class="finding-details-grid">
+                        <div class="info-panel">
+                            <h4>DescripciÃ³n del hallazgo</h4>
+                            <p style="color: var(--text-muted);">No data retention policy found in code</p>
+                        </div>
+                        <div class="info-panel remediation-panel">
+                            <h4>RemediaciÃ³n recomendada</h4>
+                            <p style="color: #cbd5e1;">Define data retention periods and implement automated cleanup for expired data</p>
+                        </div>
+                      </div>
+                      <div class="code-block"></div>
+                  </div>
+              </div>
+        </div>
+    </div>
+</body>
+</html>
+

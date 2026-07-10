@@ -133,7 +133,6 @@ SkillGrid combina **CodeGraph** (indexación local) con políticas estrictas de 
 ---
 
 ## 🔄 Ralph Loop: Ejecución Autónoma
-
 SkillGrid incluye un orquestador para ejecutar agentes de forma iterativa y autónoma sobre un archivo de tareas (`task.md`):
 
 ```powershell

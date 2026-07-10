@@ -19,9 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **README**: Nueva sección `🔒 Security Pipeline` con tabla de 5 jobs, badges de CI y Security Pentest.
-
----
-
 ## [1.7.3] - 2026-06-30
 
 ### Added
