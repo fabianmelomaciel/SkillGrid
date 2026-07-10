@@ -3,7 +3,7 @@
 
 ### **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*44 skills · 227 tests · 4 plataformas · ~95% ahorro de tokens · +5 herramientas de seguridad*
+*45 skills · 236 tests · 4 plataformas · ~95% ahorro de tokens · +5 herramientas de seguridad*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-44-22c55e?style=flat-square)](catalog.json)
@@ -88,6 +88,7 @@ Metodologías avanzadas para garantizar la calidad del código:
 *   `impeccable-design-taste` - Auditoría visual de tipografía, colores, espaciados y accesibilidad.
 *   `emil-kowalski-design` - Animaciones fluidas de micro-interacciones (≤300ms) y rendimiento percibido.
 *   `github-premium-aesthetics` - Bento grids, mesh gradients y UI modernas.
+*   `creativo-visual` - Director creativo visual: generación de assets, favicons, OG images y paletas de marca.
 
 ### 🤖 Agentes Especializados (13 Agents)
 *   `auditor-de-seguridad` - Escáner SAST (OWASP Top 10), secretos y APIs.
