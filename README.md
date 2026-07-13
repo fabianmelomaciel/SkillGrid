@@ -6,11 +6,13 @@
 *45 skills · 236 tests · 4 plataformas · ~95% ahorro de tokens · +5 herramientas de seguridad*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-44-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-45-22c55e?style=flat-square)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
+[![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/ci.yml)
+[![Security Pentest](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/pentest.yml?branch=main&label=Security%20Pentest&style=flat-square&color=dc2626)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/pentest.yml)
 
-**[⚡ Instalación Rápida](#-instalación-en-10-segundos) | [🛠️ Uso Avanzado](#%EF%B8%8F-instalación-avanzada) | [📄 Changelog](CHANGELOG.md)**
+**[⚡ Instalación Rápida](#-instalación-en-10-segundos) | [🛠️ Uso Avanzado](#%EF%B8%8F-instalación-avanzada) | [🔒 Security Pipeline](#-security-pipeline) | [📄 Changelog](CHANGELOG.md)**
 </div>
 
 ---
@@ -21,14 +23,14 @@ SkillGrid es un **sistema de trabajo autónomo** de instrucciones portables (`SK
 
 *   🔁 **Bucle de Reparación Cerrado:** Los agentes auditan y corrigen fallos en ciclos autónomos sin intervención humana.
 *   🧠 **Memoria Persistente (CODEX):** El agente recuerda el contexto de tu proyecto, eliminando explicaciones repetitivas.
-*   🛡️ **Seguridad Nativa:** Control de riesgos con la auditoría integrada de **NVIDIA SkillSpector**.
+*   🛡️ **Seguridad Nativa:** Control de riesgos con la auditoría integrada de **NVIDIA SkillSpector** + pipeline de pentest automatizado en CI.
 *   📦 **Instalación Modular:** Instala únicamente el perfil de skills que tu equipo requiere.
 
 ---
 
 ## ⚡ Instalación en 10 segundos
 
-El instalador autodetecta opencode, antigravity, Claude Code y Cursor, y los configura de inmediato. Por defecto instala el perfil `all` (44 skills).
+El instalador autodetecta opencode, antigravity, Claude Code y Cursor, y los configura de inmediato. Por defecto instala el perfil `all` (45 skills).
 
 ### Windows (PowerShell)
 ```powershell
@@ -100,6 +102,22 @@ Metodologías avanzadas para garantizar la calidad del código:
 
 ---
 
+## 🔒 Security Pipeline
+
+SkillGrid aplica sus propias skills de seguridad a sí mismo mediante un pipeline de CI dedicado (`.github/workflows/pentest.yml`). Se ejecuta automáticamente en cada **Pull Request hacia `main`** y de forma **programada cada domingo**.
+
+| Job | Herramienta | Cobertura |
+|:---|:---|:---|
+| 🔑 **Secrets Detection** | TruffleHog + Gitleaks | Secretos por entropía y patrones en todo el historial git |
+| 🧪 **SAST** | Semgrep `p/owasp-top-ten` | Vulnerabilidades de código estático (OWASP Top 10) |
+| 📦 **SCA** | Trivy `fs` | CVEs en dependencias — bloquea en severidad CRITICAL |
+| 🏗️ **IaC** | Checkov | Malas configuraciones en `.github/workflows/` |
+| 🔗 **Supply Chain** | OpenSSF Scorecard | Puntuación de 18 prácticas de seguridad del proyecto |
+
+> Todos los resultados se suben como **SARIF** a la pestaña **Security → Code Scanning** de GitHub para trazabilidad centralizada.
+
+---
+
 ## 📈 Ahorro de Tokens del ~95% con CodeGraph
 
 SkillGrid combina **CodeGraph** (indexación local) con políticas estrictas de eficiencia para minimizar el context flooding:
@@ -126,5 +144,5 @@ SkillGrid incluye un orquestador para ejecutar agentes de forma iterativa y aut�
 
 ## 📄 Historial de Cambios y Licencia
 
-*   Para consultar los detalles de cada versión (incluyendo la última v1.7.3), revisa el [CHANGELOG.md](CHANGELOG.md).
+*   Para consultar los detalles de cada versión (incluyendo la última v1.8.0), revisa el [CHANGELOG.md](CHANGELOG.md).
 *   **Licencia:** MIT — [Fabian Melo Maciel](https://github.com/fabianmelomaciel).

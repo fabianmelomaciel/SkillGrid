@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2026-07-13
+
+### Added
+- **GitHub Actions Security Pentest Workflow** (`.github/workflows/pentest.yml`): Pipeline dedicado de penetración y seguridad con 5 jobs paralelos:
+  - 🔑 `secrets-scan` — TruffleHog (entropía) + Gitleaks (patrones) sobre historial git completo.
+  - 🧪 `sast-scan` — Semgrep `p/owasp-top-ten` + `p/secrets` con upload SARIF a GitHub Security tab.
+  - 📦 `sca-scan` — Trivy filesystem scan, bloquea PRs con severidad CRITICAL.
+  - 🏗️ `iac-scan` — Checkov sobre `.github/workflows/` para detectar malas configuraciones de CI/CD.
+  - 🔗 `supply-chain` — OpenSSF Scorecard (18 prácticas de seguridad, solo en `push` y `schedule`).
+- **Triggers:** `pull_request → main` + `schedule` semanal (domingos 02:00 UTC) + `workflow_dispatch`.
+- **SARIF centralizado:** Todos los resultados visibles en `Security → Code Scanning` de GitHub.
+
+### Changed
+- **README**: Nueva sección `🔒 Security Pipeline` con tabla de 5 jobs, badges de CI y Security Pentest.
+
+---
+
 ## [1.7.3] - 2026-06-30
 
 ### Added
