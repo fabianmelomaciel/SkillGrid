@@ -21,6 +21,10 @@ jobs:
       - name: Validate skill frontmatter
         run: node scripts/validate-skills.js
 
+      - name: npm audit — dependency vulnerability gate
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
       - name: Run skill structure tests
         run: node tests/skills.test.js
 
@@ -92,6 +96,10 @@ jobs:
 
       - name: Validate skill frontmatter
         run: node scripts/validate-skills.js
+
+      - name: npm audit — dependency vulnerability gate
+        run: npm audit --audit-level=high
+        continue-on-error: true
 
       - name: Run skill structure tests
         run: node tests/skills.test.js
