@@ -34,7 +34,7 @@ while [[ "$#" -gt 0 ]]; do
             echo "  ./install.sh --project \"/proyecto\" --language php - Instala sólo reglas comunes y de PHP"
             echo "  ./install.sh --install-codegraph           - Permite instalar codegraph automaticamente si falta"
             echo "  ./install.sh --generate-codex              - Genera CODEX.md (memoria local) en instalaciones no-skill-root"
-            echo "  ./install.sh --profile minimal|standard|strict|all - Instala por perfil (recomendado para ahorrar tokens)"
+            echo "  ./install.sh --profile minimal|standard|superpowers|testing|strict|all - Instala por perfil (recomendado para ahorrar tokens)"
             echo "  ./install.sh --help                       - Muestra esta ayuda"
             exit 0
             ;;

@@ -1,12 +1,13 @@
 {
-  "version": "1.0.0",
-  "description": "Role-based skill bundles for SkillGrid. Use these when setting up a new user or project.",
+  "version": "1.1.0",
+  "description": "Role-based skill bundles for SkillGrid (48 skills). Use these when setting up a new user or project.",
   "bundles": {
     "core": {
       "label": "Core Development",
       "description": "Essential skills for any software engineering workflow",
       "skills": [
-              "brainstorming",
+        "brainstorming",
+        "changelog-drafter",
         "changelog-generator",
         "code-simplification",
         "context-engineering",
@@ -15,12 +16,16 @@
         "executing-plans",
         "finishing-a-development-branch",
         "gsd-workflow",
+        "headroom",
         "incremental-implementation",
+        "issue-triage",
         "mcp-configurator",
         "performance-profiler",
         "playwright-testing",
+        "post-merge-cleanup",
         "receiving-code-review",
         "requesting-code-review",
+        "router",
         "spec-driven-development",
         "subagent-driven-development",
         "systematic-debugging",
@@ -29,17 +34,18 @@
         "using-git-worktrees",
         "verification-before-completion",
         "writing-plans",
-        "writing-skills",
-        "router"
+        "writing-skills"
       ]
     },
     "devops": {
       "label": "DevOps & Security",
       "description": "Infrastructure, security audits, and cost optimization",
       "skills": [
-                    "agente-devops",
+        "agente-devops",
         "audit-loop",
         "auditor-de-seguridad",
+        "cyber-neo",
+        "execution-runtime",
         "optimizador-finops",
         "prompt-injection-guard",
         "supply-chain-auditor"
@@ -51,14 +57,15 @@
       "skills": [
         "creativo-visual",
         "emil-kowalski-design",
+        "github-premium-aesthetics",
         "impeccable-design-taste"
       ]
     },
     "testing": {
       "label": "Quality Assurance & Testing",
-      "description": "E2E testing, TDD, debugging and verification skills for QA teams",
+      "description": "E2E testing, TDD, debugging and verification",
       "skills": [
-              "performance-profiler",
+        "performance-profiler",
         "playwright-testing",
         "test-driven-development",
         "systematic-debugging",
@@ -69,11 +76,12 @@
       "label": "Project Management",
       "description": "Project planning, delegation, audit loop, and documentation",
       "skills": [
-              "project-manager",
-        "gestor-documental",
-        "audit-loop",
+        "a2a-orchestrator",
         "agente-ideas",
-        "a2a-orchestrator"
+        "audit-loop",
+        "gestor-documental",
+        "project-manager",
+        "spec-kit"
       ]
     },
     "marketing": {
@@ -88,27 +96,27 @@
   "profiles": {
     "minimal": {
       "label": "Minimal Safety Gates",
-      "description": "Only essential safety gates (~5 skills, ~8K tokens)",
-      "skills": ["brainstorming", "verification-before-completion", "writing-plans", "systematic-debugging", "context-engineering", "router"]
+      "description": "Only essential safety gates (~6 skills, ~8K tokens)",
+      "skills": ["brainstorming", "context-engineering", "router", "systematic-debugging", "verification-before-completion", "writing-plans"]
     },
     "standard": {
       "label": "Full Development Workflow",
-      "description": "Standard development workflow (~17 skills, ~28K tokens)",
-      "skills": ["brainstorming", "verification-before-completion", "writing-plans", "systematic-debugging", "context-engineering", "test-driven-development", "requesting-code-review", "receiving-code-review", "spec-driven-development", "incremental-implementation", "code-simplification", "finishing-a-development-branch", "dispatching-parallel-agents", "subagent-driven-development", "executing-plans", "gsd-workflow", "ultra-review", "router"]
+      "description": "Standard development workflow (~18 skills, ~28K tokens)",
+      "skills": ["brainstorming", "code-simplification", "context-engineering", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "incremental-implementation", "receiving-code-review", "requesting-code-review", "router", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "verification-before-completion", "writing-plans"]
     },
     "superpowers": {
       "label": "Superpowers Framework",
-      "description": "Full development methodology from Jesse Vincent's superpowers (~22 skills, ~35K tokens)",
-      "skills": ["brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "incremental-implementation", "playwright-testing", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills"]
+      "description": "Full development methodology (~26 skills, ~40K tokens)",
+      "skills": ["brainstorming", "changelog-drafter", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "headroom", "incremental-implementation", "issue-triage", "playwright-testing", "post-merge-cleanup", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills"]
     },
     "strict": {
       "label": "Full Suite + Auditors",
-      "description": "Everything including all agents (~38 skills, ~75K tokens)",
-      "skills": ["a2a-orchestrator", "brainstorming", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "incremental-implementation", "mcp-configurator", "performance-profiler", "playwright-testing", "receiving-code-review", "requesting-code-review", "router", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "gestor-documental", "humanizer", "optimizador-finops", "project-manager", "prompt-injection-guard", "supply-chain-auditor", "creativo-visual", "emil-kowalski-design", "impeccable-design-taste"]
+      "description": "Everything including all agents (48 skills, ~75K tokens)",
+      "skills": ["a2a-orchestrator", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "brainstorming", "changelog-drafter", "changelog-generator", "code-simplification", "context-engineering", "creativo-visual", "cyber-neo", "db-schema-detector", "dispatching-parallel-agents", "emil-kowalski-design", "executing-plans", "execution-runtime", "finishing-a-development-branch", "gestor-documental", "github-premium-aesthetics", "gsd-workflow", "headroom", "humanizer", "impeccable-design-taste", "incremental-implementation", "issue-triage", "mcp-configurator", "optimizador-finops", "performance-profiler", "playwright-testing", "post-merge-cleanup", "project-manager", "prompt-injection-guard", "receiving-code-review", "requesting-code-review", "router", "spec-driven-development", "spec-kit", "subagent-driven-development", "supply-chain-auditor", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills"]
     },
     "testing": {
       "label": "QA & Testing",
-      "description": "E2E, TDD and debugging skills for QA teams (~4 skills, ~8K tokens)",
+      "description": "E2E, TDD and debugging skills (~4 skills, ~8K tokens)",
       "skills": ["playwright-testing", "test-driven-development", "systematic-debugging", "verification-before-completion"]
     }
   }
