@@ -17,6 +17,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Validate skill frontmatter
         run: node scripts/validate-skills.js
@@ -27,54 +28,8 @@ jobs:
       - name: npm audit — full report (info, never fails)
         run: npm audit --audit-level=info || true
 
-      - name: Run skill structure tests
-        run: node tests/skills.test.js
-
-      - name: Run audit-loop tests
-        run: node tests/audit-loop/audit-loop.test.js
-
-      - name: Validate models.json
-        run: |
-          node -e "const m=JSON.parse(require('fs').readFileSync('models.json','utf-8'));if(!m.models||!m.platforms)process.exit(1);console.log('models.json: ' + Object.keys(m.models).length + ' models, ' + Object.keys(m.platforms).length + ' platforms')"
-
-      - name: Test merge-skill.js — module injection
-        run: node scripts/merge-skill.js skills/humanizer/SKILL.md "deepseek-v4-flash" "" "" ${{ runner.temp }}\test-merged.md
-      - name: Verify module injection
-        shell: pwsh
-        run: |
-          if (-not (Select-String -Path "${{ runner.temp }}\test-merged.md" -Pattern "\[model:deepseek-v4-flash\]" -SimpleMatch -Quiet)) {
-            Write-Error "Loader did not inject matching module"; exit 1
-          }
-
-      - name: Test merge-skill.js — stripped mode
-        run: node scripts/merge-skill.js skills/humanizer/SKILL.md "" "" "" ${{ runner.temp }}\test-stripped.md "" "stripped"
-      - name: Verify stripped mode
-        shell: pwsh
-        run: |
-          if (Select-String -Path "${{ runner.temp }}\test-stripped.md" -Pattern "## Modules" -SimpleMatch -Quiet) {
-            Write-Error "Stripped mode should not include ## Modules"; exit 1
-          }
-
-      - name: Test merge-skill.js — platform resolution
-        run: node scripts/merge-skill.js skills/humanizer/SKILL.md "" "antigravity" models.json ${{ runner.temp }}\test-platform.md
-      - name: Verify platform resolution
-        shell: pwsh
-        run: |
-          if (-not (Select-String -Path "${{ runner.temp }}\test-platform.md" -Pattern "\[model:gemini-1.5-flash\]" -SimpleMatch -Quiet)) {
-            Write-Error "Loader did not resolve antigravity -> gemini-1.5-flash"; exit 1
-          }
-
-      - name: Verify all skills are parseable by merge-skill.js
-        shell: pwsh
-        run: |
-          $errors = 0
-          Get-ChildItem -Recurse -Filter "SKILL.md" -Path .\skills | ForEach-Object {
-            $tmp = Join-Path "${{ runner.temp }}" "verify_$($_.Name)"
-            node scripts/merge-skill.js $_.FullName $tmp 2>&1 | Out-Null
-            if ($LASTEXITCODE -ne 0) { Write-Error "Loader failed on: $($_.FullName)"; $errors++ }
-          }
-          if ($errors -gt 0) { exit 1 }
-          Write-Host "All skills parseable by merge-skill.js"
+      - name: Run unit tests
+        run: npm test
 
   validate-linux:
     runs-on: ubuntu-latest
@@ -86,6 +41,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Validate skill frontmatter
         run: node scripts/validate-skills.js
@@ -96,15 +52,8 @@ jobs:
       - name: npm audit — full report (info, never fails)
         run: npm audit --audit-level=info || true
 
-      - name: Run skill structure tests
-        run: node tests/skills.test.js
-
-      - name: Test merge-skill.js — platform resolution (Linux)
-        run: |
-          node scripts/merge-skill.js skills/auditor-de-seguridad/SKILL.md "" "claude-code" models.json /tmp/test-linux.md
-          if ! grep -q "\[platform:claude-code\]" /tmp/test-linux.md; then
-            echo "Loader did not inject matching module"; exit 1
-          fi
+      - name: Run unit tests
+        run: npm test
 
   skillspector-scan:
     runs-on: ubuntu-latest

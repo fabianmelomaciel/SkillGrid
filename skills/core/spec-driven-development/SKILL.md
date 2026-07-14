@@ -9,6 +9,8 @@ token_estimate: { input: 2206, output: 882 }
 
 ## Core
 
+# Spec-Driven Development
+
 ## Spec Kit Integration (Fast Path)
 If GitHub Spec-Kit (`specify` CLI) is available, delegate artifact generation to the `spec-kit` subagent for automated scaffolding. This saves tokens and produces structured artifacts faster.
 

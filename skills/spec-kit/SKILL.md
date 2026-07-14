@@ -9,6 +9,8 @@ token_estimate: { input: 800, output: 400 }
 
 ## Core
 
+# Spec Kit Agent
+
 ## Overview
 Delegates artifact generation to the `specify` CLI from GitHub Spec-Kit. Instead of manually drafting specs, plans, and tasks, this skill runs `specify` commands to scaffold structured artifacts, then passes them to human review gates.
 

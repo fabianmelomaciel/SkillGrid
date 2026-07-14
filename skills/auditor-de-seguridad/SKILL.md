@@ -9,6 +9,8 @@ token_estimate: { input: 3435, output: 1374 }
 
 ## Core
 
+# Security Auditor (auditor-de-seguridad)
+
 > **AUTOMATIC CODEGRAPH STARTUP:** Immediately check if `codegraph` CLI is installed and install it if not, then initialize (if `.codegraph` folder is missing) or sync (if it exists) the codebase graph at startup. Do NOT explore or edit the codebase before this process completes. See the Codebase Graph Memory section for instructions.
 
 > **CODEX-FIRST:** Read `CODEX.md` (search upward or in active skills root) before starting. Apply all documented gotchas, environment lessons, and past findings. Log new learnings when done.
