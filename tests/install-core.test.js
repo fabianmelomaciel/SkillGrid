@@ -73,7 +73,12 @@ test('normalizePlatform: maps known platforms', () => {
 
 test('normalizePlatform: returns unknown as-is', () => {
   check(normalizePlatform('custom') === 'custom');
-  check(normalizePlatform('') === '');
+});
+
+test('normalizePlatform: empty/undefined returns generic', () => {
+  check(normalizePlatform('') === 'generic');
+  check(normalizePlatform(undefined) === 'generic');
+  check(normalizePlatform(null) === 'generic');
 });
 
 test('loadProfileSkills: invalid profile returns null', () => {

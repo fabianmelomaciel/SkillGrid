@@ -84,6 +84,7 @@ function detectPlatforms() {
 }
 
 function normalizePlatform(name) {
+  if (!name) return "generic";
   const map = {
     "opencode": "opencode",
     "antigravity": "antigravity",
