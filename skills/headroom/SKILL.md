@@ -4,6 +4,7 @@ description: Reduce el uso de tokens del LLM comprimiendo el contexto, logs, sal
 category: core
 status: stable
 risk_level: safe
+token_estimate: { input: 869, output: 356 }
 ---
 
 ## Core

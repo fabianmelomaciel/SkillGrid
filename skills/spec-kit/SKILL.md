@@ -61,3 +61,5 @@ to install Spec Kit commands for each agent from the same `.specify/` project ro
 The `spec-driven-development` skill checks for `specify` on `PATH` at startup. If found, it delegates artifact generation here, then takes over for human review gates and implementation dispatch. If not found, it falls back to manual drafting instructions.
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+
+> Modules: `skills/shared/modules-footer.md`

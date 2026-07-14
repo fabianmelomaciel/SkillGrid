@@ -4,6 +4,7 @@ description: "Scans for stale branches eligible for cleanup after merge. Report-
 category: core
 status: stable
 risk_level: safe
+token_estimate: { input: 611, output: 251 }
 ---
 
 ## Core

@@ -4,6 +4,7 @@ description: "Auto-generates CHANGELOG.md drafts post-tag by reading git log (re
 category: core
 status: stable
 risk_level: safe
+token_estimate: { input: 521, output: 214 }
 ---
 
 ## Core

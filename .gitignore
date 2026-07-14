@@ -1,3 +1,6 @@
+# Backup artifacts
+*.bak
+
 # SkillGrid local-only files
 .codegraph/
 .cursor/rules/

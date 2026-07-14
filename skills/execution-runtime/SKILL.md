@@ -4,6 +4,7 @@ description: Gestiona entornos de ejecución seguros y aislados (como Docker, WA
 category: agent
 status: stable
 risk_level: critical
+token_estimate: { input: 950, output: 390 }
 ---
 
 ## Core

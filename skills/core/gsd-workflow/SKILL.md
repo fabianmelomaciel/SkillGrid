@@ -4,6 +4,7 @@ description: Use when executing complex, multi-step coding tasks where context r
 category: core
 status: stable
 risk_level: safe
+token_estimate: { input: 1141, output: 468 }
 ---
 
 ## Core

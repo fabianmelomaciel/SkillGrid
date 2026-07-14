@@ -4,6 +4,7 @@ description: "Classifies open GitHub issues by heuristics (keywords, template ma
 category: core
 status: stable
 risk_level: safe
+token_estimate: { input: 597, output: 245 }
 ---
 
 ## Core
