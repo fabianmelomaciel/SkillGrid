@@ -3,10 +3,10 @@
 
 ### **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*45 skills · 236 tests · 4 plataformas · ~95% ahorro de tokens · +5 herramientas de seguridad*
+*48 skills · 251 tests · 4 plataformas · ~95% ahorro de tokens · +5 herramientas de seguridad*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-45-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-48-22c55e?style=flat-square)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/ci.yml)
@@ -30,7 +30,7 @@ SkillGrid es un **sistema de trabajo autónomo** de instrucciones portables (`SK
 
 ## ⚡ Instalación en 10 segundos
 
-El instalador autodetecta opencode, antigravity, Claude Code y Cursor, y los configura de inmediato. Por defecto instala el perfil `all` (45 skills).
+El instalador autodetecta opencode, antigravity, Claude Code y Cursor, y los configura de inmediato. Por defecto instala el perfil `all` (48 skills).
 
 ### Windows (PowerShell)
 ```powershell
@@ -77,14 +77,17 @@ Genera automáticamente archivos de reglas optimizados en tu proyecto local:
 
 ## 🗺️ Catálogo de Skills Destacadas
 
-### 🔧 Desarrollo Core (27 Skills)
+### 🔧 Desarrollo Core (31 Skills)
 Metodologías avanzadas para garantizar la calidad del código:
 *   `brainstorming` - Diseño y alineación de features antes de escribir código.
 *   `spec-driven-development` - Creación de especificaciones técnicas precisas.
 *   `writing-plans` y `incremental-implementation` - Planificación e implementación incremental.
 *   `test-driven-development` y `playwright-testing` - Ciclo Red-Green-Refactor y pruebas E2E.
 *   `verification-before-completion` - Pruebas obligatorias antes de finalizar tareas.
-*   `humanizer` **[NUEVO]** - Remueve patrones y clichés de escritura de IA para lograr textos más naturales.
+*   `humanizer` - Remueve patrones y clichés de escritura de IA para lograr textos más naturales.
+*   `changelog-drafter` **[NUEVO]** - Auto-genera borradores de CHANGELOG.md post-tag con gates de seguridad (read-only, anti-loop).
+*   `issue-triage` **[NUEVO]** - Clasifica issues de GitHub por heurísticas, read-only por defecto.
+*   `post-merge-cleanup` **[NUEVO]** - Escanea branches stale post-merge, modo report-only con whitelist y gate humano.
 
 ### 🎨 Design Engineering (4 Skills)
 *   `impeccable-design-taste` - Auditoría visual de tipografía, colores, espaciados y accesibilidad.
@@ -143,5 +146,5 @@ SkillGrid incluye un orquestador para ejecutar agentes de forma iterativa y aut�
 
 ## 📄 Historial de Cambios y Licencia
 
-*   Para consultar los detalles de cada versión (incluyendo la última v1.8.0), revisa el [CHANGELOG.md](CHANGELOG.md).
+*   Para consultar los detalles de cada versión (incluyendo la última v1.9.0), revisa el [CHANGELOG.md](CHANGELOG.md).
 *   **Licencia:** MIT — [Fabian Melo Maciel](https://github.com/fabianmelomaciel).

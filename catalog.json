@@ -1,10 +1,10 @@
 {
-  "version": "1.8.0",
-  "generated": "2026-07-10",
+  "version": "1.9.0",
+  "generated": "2026-07-14",
   "summary": {
-    "total": 45,
+    "total": 48,
     "categories": {
-      "core": 28,
+      "core": 31,
       "agent": 13,
       "design": 4
     }
@@ -55,6 +55,13 @@
     {
       "name": "brainstorming",
       "description": "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "changelog-drafter",
+      "description": "Auto-generates CHANGELOG.md drafts post-tag by reading git log (read-only). Creates PRs with changelog proposals. Includes security gates for safe operation.",
       "category": "core",
       "status": "stable",
       "risk_level": "safe"
@@ -172,6 +179,13 @@
       "risk_level": "safe"
     },
     {
+      "name": "issue-triage",
+      "description": "Classifies open GitHub issues by heuristics (keywords, template matching) and proposes labels/priorities. Read-only mode by default — never closes or modifies issues.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
       "name": "impeccable-design-taste",
       "description": "Use for any frontend design work, UI generation, or design review where quality must be premium. Activates comprehensive design auditing across typography, color, spacing, motion, and accessibility. Trigger on \"make this beautiful\", \"premium design\", \"review my UI quality\", \"this feels generic\", or any design-first request.",
       "category": "design",
@@ -209,6 +223,13 @@
     {
       "name": "playwright-testing",
       "description": "Use when designing, writing, debugging, or auditing Playwright E2E and component tests.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "post-merge-cleanup",
+      "description": "Scans for stale branches eligible for cleanup after merge. Report-only by default — lists candidates but never deletes without human confirmation.",
       "category": "core",
       "status": "stable",
       "risk_level": "safe"
