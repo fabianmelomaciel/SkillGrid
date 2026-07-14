@@ -145,9 +145,12 @@ skillDirs.forEach(dir => {
 // Cross-model loader tests
 console.log(`\nTesting merge loader...\n`);
 
+const mergeJsPath = path.join(ROOT, 'scripts', 'merge-skill.js');
+
 test('loader: produces valid output', () => {
   const loaderPath = path.join(ROOT, 'scripts', 'merge-skill.ps1');
   check(fs.existsSync(loaderPath), 'merge-skill.ps1 not found');
+  check(fs.existsSync(mergeJsPath), 'merge-skill.js not found');
 });
 
 test('loader: models.json integrity', () => {
@@ -158,6 +161,41 @@ test('loader: models.json integrity', () => {
   check(mj.platforms, 'missing platforms');
   check(Object.keys(mj.models).length >= 8, `expected >=8 models, got ${Object.keys(mj.models).length}`);
   check(Object.keys(mj.platforms).length >= 5, `expected >=5 platforms, got ${Object.keys(mj.platforms).length}`);
+});
+
+test('merge-skill.js: parses all 48 skills', () => {
+  let errors = 0;
+  for (const dir of skillDirs) {
+    const skillPath = path.join(dir, 'SKILL.md');
+    const { execSync } = require('child_process');
+    try {
+      const out = execSync(`node "${mergeJsPath}" "${skillPath}"`, { encoding: 'utf-8', timeout: 10000 });
+      check(out.startsWith('---'), `${skillPath}: output does not start with ---`);
+    } catch (e) {
+      errors++;
+    }
+  }
+  check(errors === 0, `${errors} skills failed to parse`);
+});
+
+const skillWithModules = path.join(SKILLS_DIR, 'humanizer', 'SKILL.md');
+
+test('merge-skill.js: injects model-specific module', () => {
+  const { execSync } = require('child_process');
+  const out = execSync(`node "${mergeJsPath}" "${skillWithModules}" "deepseek-v4-flash"`, { encoding: 'utf-8', timeout: 10000 });
+  check(out.includes('[model:deepseek-v4-flash]'), 'should include model-specific module');
+});
+
+test('merge-skill.js: stripped mode omits ## Modules', () => {
+  const { execSync } = require('child_process');
+  const out = execSync(`node "${mergeJsPath}" "${skillWithModules}" "" "" "" "" "stripped"`, { encoding: 'utf-8', timeout: 10000 });
+  check(!out.includes('## Modules'), 'stripped mode should not include ## Modules');
+});
+
+test('merge-skill.js: resolves platform from models.json', () => {
+  const { execSync } = require('child_process');
+  const out = execSync(`node "${mergeJsPath}" "${skillWithModules}" "" "antigravity" "${MODELS_JSON}"`, { encoding: 'utf-8', timeout: 10000 });
+  check(out.includes('[model:gemini-1.5-flash]'), 'should resolve antigravity -> gemini-1.5-flash');
 });
 
 console.log(`\n${passed} passed, ${failed} failed\n`);
