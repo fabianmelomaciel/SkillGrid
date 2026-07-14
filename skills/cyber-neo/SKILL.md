@@ -148,6 +148,16 @@ which semgrep trivy gitleaks trufflehog checkov bandit safety nuclei npm pip-aud
 
 Record which are available. The agent uses them if present but falls back to Claude-native analysis if not.
 
+### Step 1.4a: Docker Toolchain Fallback
+
+If 3+ external tools are missing AND Docker is available, offer to use the containerized toolchain:
+
+```bash
+docker compose run --rm -v TARGET_DIR:/workspace:ro cyber-neo <tool> <args>
+```
+
+This provides all security tools (semgrep, trivy, gitleaks, trufflehog, checkov, bandit, safety, nuclei, pip-audit) without native installation. The container runs from `skillgrid/cyber-neo:latest` (build with `docker compose build cyber-neo` from the SkillGrid root).
+
 ### Step 1.5: Report Reconnaissance Results
 
 Before proceeding, briefly tell the user what you found:

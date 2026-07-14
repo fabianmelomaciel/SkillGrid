@@ -1,0 +1,20 @@
+services:
+  cyber-neo:
+    build:
+      context: ./skills/cyber-neo
+      dockerfile: Dockerfile
+    image: skillgrid/cyber-neo:latest
+    container_name: cyber-neo
+    volumes:
+      - ${TARGET_DIR:-.}:/workspace:ro
+      - ${REPORT_DIR:-./reports}:/reports
+    environment:
+      - TARGET_DIR=/workspace
+      - REPORT_DIR=/reports
+    working_dir: /workspace
+    entrypoint: ["/bin/bash"]
+    stdin_open: true
+    tty: true
+    profiles:
+      - audit
+      - security
