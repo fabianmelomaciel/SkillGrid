@@ -5,6 +5,9 @@
   "keywords": ["opencode", "antigravity", "skills", "ai-coding", "vibecoding", "security-auditor"],
   "author": "Fabian Melo Maciel",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/fabianmelomaciel/SkillGrid.git"
