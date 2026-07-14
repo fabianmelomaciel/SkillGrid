@@ -1,6 +1,6 @@
 {
-  "version": "1.2.25",
-  "generated": "2026-07-10",
+  "version": "1.2.26",
+  "generated": "2026-07-14",
   "summary": {
     "total": 48,
     "categories": {
@@ -114,6 +114,19 @@
         "spec-driven-development"
       ]
     },
+    "changelog-drafter": {
+      "name": "changelog-drafter",
+      "description": "Auto-generates CHANGELOG.md drafts post-tag by reading git log (read-only). Creates PRs with changelog proposals. Includes security gates for safe operation.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe",
+      "token_estimate": {
+        "input": 521,
+        "output": 214
+      },
+      "cost_tier": "low",
+      "invokes": []
+    },
     "changelog-generator": {
       "name": "changelog-generator",
       "description": "Genera notas de lanzamiento (Changelogs) automatizadas y legibles para el usuario final analizando el historial de Git (commits). Clasifica los cambios en categorías lógicas y actualiza el archivo CHANGELOG.md.",
@@ -170,13 +183,13 @@
     },
     "cyber-neo": {
       "name": "cyber-neo",
-      "description": ">",
+      "description": "Análisis integral de ciberseguridad para cualquier proyecto local. Escanea vulnerabilidades en dependencias (SCA), patrones de seguridad en código (SAST), secretos filtrados, fallos de autenticación/autorización, debilidades criptográficas, malas configuraciones, riesgos en la cadena de suministro y seguridad CI/CD. Cubre todo OWASP 2025 Top 10 y CWE Top 25. Incluye Semgrep, Trivy, Gitleaks, TruffleHog (secretos), Checkov (IaC), Bandit (Python SAST), Safety (SCA Python) y Nuclei (vulnerabilidades web). Genera un informe priorizado con guías de remediación. Úsalo cuando el usuario solicite una auditoría de seguridad o pentest.",
       "category": "agent",
       "status": "stable",
       "risk_level": "critical",
       "token_estimate": {
-        "input": 2000,
-        "output": 800
+        "input": 4153,
+        "output": 1703
       },
       "cost_tier": "low",
       "invokes": []
@@ -246,8 +259,8 @@
       "status": "stable",
       "risk_level": "critical",
       "token_estimate": {
-        "input": 2000,
-        "output": 800
+        "input": 950,
+        "output": 390
       },
       "cost_tier": "low",
       "invokes": []
@@ -287,8 +300,8 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 2000,
-        "output": 800
+        "input": 1649,
+        "output": 676
       },
       "cost_tier": "low",
       "invokes": []
@@ -300,8 +313,8 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 2450,
-        "output": 980
+        "input": 1141,
+        "output": 468
       },
       "cost_tier": "low",
       "invokes": [
@@ -315,8 +328,8 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 2000,
-        "output": 800
+        "input": 869,
+        "output": 356
       },
       "cost_tier": "low",
       "invokes": []
@@ -363,6 +376,19 @@
       "invokes": [
         "verification-before-completion"
       ]
+    },
+    "issue-triage": {
+      "name": "issue-triage",
+      "description": "Classifies open GitHub issues by heuristics (keywords, template matching) and proposes labels/priorities. Read-only mode by default — never closes or modifies issues.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe",
+      "token_estimate": {
+        "input": 597,
+        "output": 245
+      },
+      "cost_tier": "low",
+      "invokes": []
     },
     "mcp-configurator": {
       "name": "mcp-configurator",
@@ -420,6 +446,19 @@
         "systematic-debugging",
         "verification-before-completion"
       ]
+    },
+    "post-merge-cleanup": {
+      "name": "post-merge-cleanup",
+      "description": "Scans for stale branches eligible for cleanup after merge. Report-only by default — lists candidates but never deletes without human confirmation.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe",
+      "token_estimate": {
+        "input": 611,
+        "output": 251
+      },
+      "cost_tier": "low",
+      "invokes": []
     },
     "project-manager": {
       "name": "project-manager",
@@ -582,8 +621,8 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 3300,
-        "output": 1320
+        "input": 1219,
+        "output": 500
       },
       "cost_tier": "medium",
       "invokes": [

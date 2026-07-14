@@ -96,7 +96,7 @@
     },
     {
       "name": "cyber-neo",
-      "description": ">",
+      "description": "Análisis integral de ciberseguridad para cualquier proyecto local. Escanea vulnerabilidades en dependencias (SCA), patrones de seguridad en código (SAST), secretos filtrados, fallos de autenticación/autorización, debilidades criptográficas, malas configuraciones, riesgos en la cadena de suministro y seguridad CI/CD. Cubre todo OWASP 2025 Top 10 y CWE Top 25. Incluye Semgrep, Trivy, Gitleaks, TruffleHog (secretos), Checkov (IaC), Bandit (Python SAST), Safety (SCA Python) y Nuclei (vulnerabilidades web). Genera un informe priorizado con guías de remediación. Úsalo cuando el usuario solicite una auditoría de seguridad o pentest.",
       "category": "agent",
       "status": "stable",
       "risk_level": "critical"
@@ -179,13 +179,6 @@
       "risk_level": "safe"
     },
     {
-      "name": "issue-triage",
-      "description": "Classifies open GitHub issues by heuristics (keywords, template matching) and proposes labels/priorities. Read-only mode by default — never closes or modifies issues.",
-      "category": "core",
-      "status": "stable",
-      "risk_level": "safe"
-    },
-    {
       "name": "impeccable-design-taste",
       "description": "Use for any frontend design work, UI generation, or design review where quality must be premium. Activates comprehensive design auditing across typography, color, spacing, motion, and accessibility. Trigger on \"make this beautiful\", \"premium design\", \"review my UI quality\", \"this feels generic\", or any design-first request.",
       "category": "design",
@@ -195,6 +188,13 @@
     {
       "name": "incremental-implementation",
       "description": "Delivers changes incrementally. Use when implementing any feature or change that touches more than one file. Use when you're about to write a large amount of code at once, or when a task feels too big to land in one step.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "issue-triage",
+      "description": "Classifies open GitHub issues by heuristics (keywords, template matching) and proposes labels/priorities. Read-only mode by default — never closes or modifies issues.",
       "category": "core",
       "status": "stable",
       "risk_level": "safe"

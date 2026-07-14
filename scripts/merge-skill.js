@@ -17,7 +17,7 @@ if (!targetModel && platform && modelsJson && fs.existsSync(modelsJson)) {
 }
 
 const content = fs.readFileSync(skillPath, 'utf-8');
-const lines = content.split('\n');
+const lines = content.replace(/\r/g, '').split('\n');
 
 const fmStart = lines.findIndex(l => l.trim() === '---');
 if (fmStart !== 0) { console.error('Invalid SKILL.md: must start with --- frontmatter'); process.exit(1); }
