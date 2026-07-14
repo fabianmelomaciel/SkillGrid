@@ -72,3 +72,21 @@ jobs:
       - name: Scan skills with SkillSpector
         run: skillspector scan ./skills/ --no-llm
 
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build cyber-neo toolchain image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./skills/cyber-neo
+          push: false
+          tags: skillgrid/cyber-neo:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+

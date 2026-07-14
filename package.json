@@ -1,6 +1,6 @@
 {
   "name": "skillgrid",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "Portable AI assistant skills collection for opencode, antigravity, and AI coding tools",
   "keywords": ["opencode", "antigravity", "skills", "ai-coding", "vibecoding", "security-auditor"],
   "author": "Fabian Melo Maciel",
@@ -15,7 +15,7 @@
   "scripts": {
     "validate": "node scripts/validate-skills.js",
     "catalog": "node scripts/generate-catalog.js",
-    "test": "node tests/skills.test.js && node tests/audit-loop/audit-loop.test.js",
+    "test": "node tests/skills.test.js && node tests/install-core.test.js && node tests/audit-loop/audit-loop.test.js",
     "release": "bash scripts/release.sh"
   }
 }

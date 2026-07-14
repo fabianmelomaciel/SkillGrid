@@ -393,4 +393,11 @@ Usage:
 `);
 }
 
-main();
+if (require.main === module) { main(); }
+
+module.exports = {
+  DEPENDENCIES, CODE_IGNORES,
+  parseFrontmatter, normalizePlatform, loadProfileSkills,
+  detectPlatforms, checkDependencies, setupGitIgnores,
+  installSkills, installCore: main,
+};
