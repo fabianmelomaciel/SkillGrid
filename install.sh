@@ -7,6 +7,31 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SKILLS_DIR="$SCRIPT_DIR/skills"
 
+assert_safe_path() {
+    local path="$1"
+    local label="${2:-path}"
+    if [ -z "$path" ]; then
+        echo "FATAL: $label is null or empty. Refusing destructive operation." >&2
+        exit 1
+    fi
+    # Resolve to absolute path
+    local resolved
+    resolved="$(cd "$(dirname "$path")" 2>/dev/null && pwd -P || echo "$path")/$(basename "$path")"
+    resolved="$(echo "$resolved" | sed 's|[/\\]*$||')"
+    # Refuse if it's root
+    if [ "$resolved" = "/" ]; then
+        echo "FATAL: $label resolves to root '/'. Refusing destructive operation." >&2
+        exit 1
+    fi
+    # Refuse if it's a common system directory
+    for sys in "$HOME" "/etc" "/usr" "/bin" "/lib" "/var"; do
+        if [ "$resolved" = "$sys" ]; then
+            echo "FATAL: $label resolves to system directory '$resolved'. Refusing destructive operation." >&2
+            exit 1
+        fi
+    done
+}
+
 TARGET_DIR=""
 PROJECT_DIR=""
 LANGUAGE=""
@@ -118,46 +143,53 @@ check_dependencies() {
     for dep in "${deps[@]}"; do
         if ! command -v "$dep" &> /dev/null; then
             echo -e "  [-] $dep: \033[0;33mFALTA (Opcional)\033[0m"
+            pip_install_pinned() {
+                local pkg="$1"
+                local ver="$2"
+                if command -v pip &> /dev/null; then
+                    pip install "${pkg}==${ver}"
+                fi
+            }
             if [ "$dep" == "pip-audit" ] && command -v pip &> /dev/null; then
                 read -p "      ¿Deseas instalar 'pip-audit' via pip? [S/N]: " -n 1 -r
                 echo ""
                 if [[ $REPLY =~ ^[Ss]$ ]]; then
-                    pip install pip-audit
+                    pip_install_pinned pip-audit 2.10.1
                 fi
             fi
             if [ "$dep" == "semgrep" ] && command -v pip &> /dev/null; then
                 read -p "      ¿Deseas instalar 'semgrep' via pip? [S/N]: " -n 1 -r
                 echo ""
                 if [[ $REPLY =~ ^[Ss]$ ]]; then
-                    pip install semgrep
+                    pip_install_pinned semgrep 1.169.0
                 fi
             fi
             if [ "$dep" == "trufflehog" ] && command -v pip &> /dev/null; then
                 read -p "      ¿Deseas instalar 'trufflehog' via pip? [S/N]: " -n 1 -r
                 echo ""
                 if [[ $REPLY =~ ^[Ss]$ ]]; then
-                    pip install trufflehog
+                    pip_install_pinned trufflehog 2.2.1
                 fi
             fi
             if [ "$dep" == "checkov" ] && command -v pip &> /dev/null; then
                 read -p "      ¿Deseas instalar 'checkov' via pip? [S/N]: " -n 1 -r
                 echo ""
                 if [[ $REPLY =~ ^[Ss]$ ]]; then
-                    pip install checkov
+                    pip_install_pinned checkov 3.3.8
                 fi
             fi
             if [ "$dep" == "bandit" ] && command -v pip &> /dev/null; then
                 read -p "      ¿Deseas instalar 'bandit' via pip? [S/N]: " -n 1 -r
                 echo ""
                 if [[ $REPLY =~ ^[Ss]$ ]]; then
-                    pip install bandit
+                    pip_install_pinned bandit 1.9.4
                 fi
             fi
             if [ "$dep" == "safety" ] && command -v pip &> /dev/null; then
                 read -p "      ¿Deseas instalar 'safety' via pip? [S/N]: " -n 1 -r
                 echo ""
                 if [[ $REPLY =~ ^[Ss]$ ]]; then
-                    pip install safety
+                    pip_install_pinned safety 3.8.1
                 fi
             fi
         else
@@ -178,17 +210,17 @@ install_codegraph() {
         fi
         echo -e "  [-] codegraph: No encontrado. Instalando automaticamente..."
         if command -v npm &> /dev/null; then
-            echo "  Ejecutando: npm install -g @colbymchenry/codegraph"
-            npm install -g @colbymchenry/codegraph &> /dev/null || true
+            echo "  Ejecutando: npm install -g @colbymchenry/codegraph@1.4.1"
+            npm install -g @colbymchenry/codegraph@1.4.1 &> /dev/null || true
         elif command -v uv &> /dev/null; then
-            echo "  Ejecutando: uv tool install codegraph-cli"
-            uv tool install codegraph-cli &> /dev/null || true
+            echo "  Ejecutando: uv tool install codegraph-cli==2.1.4"
+            uv tool install codegraph-cli==2.1.4 &> /dev/null || true
         elif command -v pip &> /dev/null; then
-            echo "  Ejecutando: pip install codegraph-cli"
-            pip install codegraph-cli --user &> /dev/null || true
+            echo "  Ejecutando: pip install codegraph-cli==2.1.4"
+            pip install "codegraph-cli==2.1.4" --user &> /dev/null || true
         elif command -v pip3 &> /dev/null; then
-            echo "  Ejecutando: pip3 install codegraph-cli"
-            pip3 install codegraph-cli --user &> /dev/null || true
+            echo "  Ejecutando: pip3 install codegraph-cli==2.1.4"
+            pip3 install "codegraph-cli==2.1.4" --user &> /dev/null || true
         else
             echo -e "  \033[0;31m[!] Advertencia: No se encontro 'npm', 'uv' ni 'pip' para instalar codegraph. Por favor instale uno de ellos e instale codegraph manualmente.\033[0m"
         fi
@@ -548,6 +580,7 @@ for TARGET in "${DETECTED[@]}"; do
 
     for SPECIAL in "shared" "bundles"; do
         if [ -d "$SKILLS_DIR/$SPECIAL" ]; then
+            assert_safe_path "$SKILLS_ROOT/$SPECIAL" "special_dest"
             rm -rf "$SKILLS_ROOT/$SPECIAL"
             mkdir -p "$SKILLS_ROOT/$SPECIAL"
             cp -rf "$SKILLS_DIR/$SPECIAL"/* "$SKILLS_ROOT/$SPECIAL/" 2>/dev/null || true
@@ -569,10 +602,7 @@ for TARGET in "${DETECTED[@]}"; do
         fi
 
         SKILL_DEST="$SKILLS_ROOT/$NAME"
-        if [ -z "$TARGET" ] || [ "$TARGET" = "/" ]; then
-            echo "FATAL: Refusing to rm -rf under empty or root target" >&2
-            exit 1
-        fi
+        assert_safe_path "$SKILL_DEST" "skill_dest"
         rm -rf "$SKILL_DEST"
         mkdir -p "$SKILL_DEST"
 

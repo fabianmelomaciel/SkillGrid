@@ -17,6 +17,26 @@ if (-not $scriptDir) {
 }
 $skillsDir = Join-Path -Path $scriptDir -ChildPath "skills"
 
+function Assert-SafePath {
+    param([string]$Path, [string]$Label = "path")
+    if ([string]::IsNullOrWhiteSpace($Path)) {
+        throw "FATAL: $Label is null or empty. Refusing destructive operation."
+    }
+    $resolved = [System.IO.Path]::GetFullPath($Path).TrimEnd('\').TrimEnd('/')
+    $driveRoots = [System.IO.DriveInfo]::GetDrives() | ForEach-Object { $_.Name.TrimEnd('\') }
+    foreach ($root in $driveRoots) {
+        if ($resolved -eq $root) {
+            throw "FATAL: $Label resolves to drive root '$resolved'. Refusing destructive operation."
+        }
+    }
+    $systemPaths = @("$env:SystemRoot", "$env:WINDIR", "$env:PROGRAMFILES", "${env:ProgramFiles(x86)}")
+    foreach ($sys in $systemPaths) {
+        if ($sys -and $resolved -eq $sys.TrimEnd('\')) {
+            throw "FATAL: $Label resolves to system directory '$resolved'. Refusing destructive operation."
+        }
+    }
+}
+
 function InstallToProject($project, $source, $lang) {
     if (-not $source) { $source = $scriptDir }
     Write-Host "`nInstalando reglas compatibles con proyectos (Cursor y GitHub Copilot) en: $project" -ForegroundColor Cyan
@@ -192,6 +212,7 @@ function InstallToDir($target, $source, $platformName) {
         $srcSpecial = Join-Path -Path "$source\skills" -ChildPath $special
         $dstSpecial = Join-Path -Path $skillsRoot -ChildPath $special
         if (Test-Path -LiteralPath $srcSpecial) {
+            Assert-SafePath -Path $dstSpecial -Label "special_dest"
             Remove-Item -LiteralPath $dstSpecial -Recurse -Force -ErrorAction SilentlyContinue
             New-Item -ItemType Directory -Path $dstSpecial -Force | Out-Null
             Copy-Item -LiteralPath "$srcSpecial\*" -Destination $dstSpecial -Recurse -Force -ErrorAction SilentlyContinue
@@ -219,6 +240,7 @@ function InstallToDir($target, $source, $platformName) {
         $destPath = Join-Path -Path $skillsRoot -ChildPath $skill.Name
         if ($useLoader) {
             Write-Host "  Procesando: $($skill.Name) (para $normalizedPlatform)..." -ForegroundColor Gray
+            Assert-SafePath -Path $destPath -Label "skill_dest(loader)"
             Remove-Item -LiteralPath $destPath -Recurse -Force -ErrorAction SilentlyContinue
             New-Item -ItemType Directory -Path $destPath -Force | Out-Null
             Get-ChildItem -LiteralPath $skill.Dir -Recurse -File | ForEach-Object {
@@ -234,6 +256,7 @@ function InstallToDir($target, $source, $platformName) {
             }
         } else {
             Write-Host "  Copiando: $($skill.Name)..." -ForegroundColor Gray
+            Assert-SafePath -Path $destPath -Label "skill_dest(copy)"
             Remove-Item -LiteralPath $destPath -Recurse -Force -ErrorAction SilentlyContinue
             Copy-Item -LiteralPath $skill.Dir -Destination $destPath -Recurse -Force
         }
@@ -322,6 +345,7 @@ function InstallToOpendir($source) {
         $destPath = Join-Path -Path $targetCore -ChildPath $skill.Name
         try {
             New-Item -ItemType Directory -Path $destPath -Force | Out-Null
+            Assert-SafePath -Path (Join-Path -Path $destPath -ChildPath "*") -Label "opencode_skill"
             Remove-Item -LiteralPath (Join-Path -Path $destPath -ChildPath "*") -Recurse -Force -ErrorAction SilentlyContinue
             Copy-Item -LiteralPath (Join-Path -Path $skill.FullName -ChildPath "*") -Destination $destPath -Recurse -Force -ErrorAction Stop
             Write-Host "  Instalado: $($skill.Name)" -ForegroundColor Gray
@@ -395,8 +419,17 @@ function Check-Dependencies {
                     if ($isInteractive) {
                         $response = Read-Host "      ¿Deseas instalar '$($dep.Name)' automaticamente ahora via pip? [S/N]"
                         if ($response -eq 'S' -or $response -eq 's') {
-                            Write-Host "      Instalando $($dep.Name)..." -ForegroundColor Cyan
-                            & pip install $($dep.Name)
+                            $pipPins = @{
+                                "pip-audit" = "pip-audit==2.10.1"
+                                "semgrep"   = "semgrep==1.169.0"
+                                "trufflehog" = "trufflehog==2.2.1"
+                                "checkov"   = "checkov==3.3.8"
+                                "bandit"    = "bandit==1.9.4"
+                                "safety"    = "safety==3.8.1"
+                            }
+                            $pkg = if ($pipPins.ContainsKey($dep.Name)) { $pipPins[$dep.Name] } else { $dep.Name }
+                            Write-Host "      Instalando $pkg..." -ForegroundColor Cyan
+                            & pip install $pkg
                         }
                     } else {
                         Write-Host "      Modo no interactivo. Omite $($dep.Name). Instalalo manualmente con: pip install $($dep.Name)" -ForegroundColor Yellow
@@ -429,14 +462,14 @@ function Install-CodeGraph {
         }
         Write-Host "  [-] codegraph: No encontrado. Instalando automaticamente..." -ForegroundColor Yellow
         if (Get-Command npm -ErrorAction SilentlyContinue) {
-            Write-Host "  Ejecutando: npm install -g @colbymchenry/codegraph" -ForegroundColor Gray
-            & npm install -g @colbymchenry/codegraph *>$null
+            Write-Host "  Ejecutando: npm install -g @colbymchenry/codegraph@1.4.1" -ForegroundColor Gray
+            & npm install -g @colbymchenry/codegraph@1.4.1 *>$null
         } elseif (Get-Command uv -ErrorAction SilentlyContinue) {
-            Write-Host "  Ejecutando: uv tool install codegraph-cli" -ForegroundColor Gray
-            & uv tool install codegraph-cli *>$null
+            Write-Host "  Ejecutando: uv tool install codegraph-cli==2.1.4" -ForegroundColor Gray
+            & uv tool install codegraph-cli==2.1.4 *>$null
         } elseif (Get-Command pip -ErrorAction SilentlyContinue) {
-            Write-Host "  Ejecutando: pip install codegraph-cli" -ForegroundColor Gray
-            & pip install codegraph-cli --user *>$null
+            Write-Host "  Ejecutando: pip install codegraph-cli==2.1.4" -ForegroundColor Gray
+            & pip install codegraph-cli==2.1.4 --user *>$null
         } else {
             Write-Host "  [!] Advertencia: No se encontro 'npm', 'uv' ni 'pip' para instalar codegraph. Por favor instale uno de ellos e instale codegraph manualmente." -ForegroundColor Red
         }
