@@ -121,7 +121,7 @@ function installSkills(targetDir, sourceDir, platform, profile) {
       fs.rmSync(dst, { recursive: true, force: true });
       fs.mkdirSync(dst, { recursive: true });
       try { execSync(`xcopy "${src}" "${dst}" /E /I /Y > nul 2>&1`, { stdio: "ignore", shell: true, windowsHide: true }); }
-      catch { try { execSync(`cp -r "${src}/" "${dst}/" 2>/dev/null`, { stdio: "ignore" }); } catch {} }
+      catch { try { execSync(`cp -r "${src}/" "${dst}/" 2>/dev/null`, { stdio: "ignore" }); } catch (e) { /* ignore fallback error */ } }
     }
   }
 
@@ -243,7 +243,7 @@ function installCodeGraph(autoInstall) {
     try {
       execSync("npm install -g @colbymchenry/codegraph@1.4.1", { stdio: "ignore", windowsHide: true });
     } catch {
-      try { execSync("pip install codegraph-cli==2.1.4 --user", { stdio: "ignore", windowsHide: true }); } catch {}
+      try { execSync("pip install codegraph-cli==2.1.4 --user", { stdio: "ignore", windowsHide: true }); } catch (e) { /* ignore pip error */ }
     }
     try {
       execSync("codegraph --version", { stdio: "ignore", windowsHide: true });
@@ -266,8 +266,8 @@ function setupProjectCodeGraph(projectDir) {
   try {
     execSync("codegraph --version", { stdio: "ignore", windowsHide: true });
     log("Initializing codegraph...", "ok");
-    try { execSync("codegraph init", { cwd: absProject, stdio: "ignore", windowsHide: true }); } catch {}
-    try { execSync("codegraph sync", { cwd: absProject, stdio: "ignore", windowsHide: true }); } catch {}
+    try { execSync("codegraph init", { cwd: absProject, stdio: "ignore", windowsHide: true }); } catch (e) { /* ignore init error */ }
+    try { execSync("codegraph sync", { cwd: absProject, stdio: "ignore", windowsHide: true }); } catch (e) { /* ignore sync error */ }
     log("CodeGraph index completed", "ok");
   } catch {
     log("codegraph CLI not found, skipping index", "warn");
@@ -290,7 +290,7 @@ function calcTokens(projectDir) {
               if (e.isDirectory()) walk(fp);
               else if (e.isFile()) { total += fs.statSync(fp).size; count++; }
             }
-          } catch {}
+          } catch (e) { /* ignore walk error */ }
         }
         walk(p);
         console.log(JSON.stringify({ total, count }));

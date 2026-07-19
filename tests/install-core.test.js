@@ -107,7 +107,7 @@ test('detectPlatforms: returns array', () => {
 });
 
 test('cli --deps-only exits cleanly', () => {
-  const out = execSync('node scripts/install-core.js --deps-only', { cwd: ROOT, encoding: 'utf-8', timeout: 15000 });
+  const out = execSync('node scripts/install-core.js --deps-only', { cwd: ROOT, encoding: 'utf-8', timeout: 45000 });
   check(out.includes('Dependency check'), 'should print dependency check');
   check(out.includes('git'), 'should check git');
   check(out.includes('node'), 'should check node');

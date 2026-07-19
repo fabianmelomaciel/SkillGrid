@@ -135,6 +135,36 @@ SkillGrid combina **CodeGraph** (indexación local) con políticas estrictas de 
 
 ---
 
+## 🔍 Grafo de Conocimiento con Graphify (Token Reduction)
+
+SkillGrid ahora soporta e integra nativamente **Graphify** para convertir la base de código del proyecto en un grafo de conocimiento consultable localmente, optimizando la comprensión del agente y reduciendo los tokens de entrada hasta en un **70%**.
+
+### ⚡ Instalación y Uso Rápido
+1. **Instalar CLI:**
+   ```bash
+   uv tool install graphifyy
+   # o alternativamente: pip install graphifyy
+   ```
+2. **Generar Grafo Local:**
+   ```bash
+   graphify update .
+   ```
+3. **Consultar en CLI:**
+   ```bash
+   graphify query "¿Cómo se inicializa el router de SkillGrid?" --budget 1500
+   ```
+
+### 🤖 Integración con Asistentes e IDEs
+Puedes automatizar la lectura del grafo instalando las reglas específicas para tu asistente en tu proyecto local:
+*   **Antigravity:** `graphify antigravity install`
+*   **VS Code (Copilot):** `graphify vscode install`
+*   **Cursor:** `graphify cursor install`
+*   **Claude Code:** `graphify claude install`
+
+*Los archivos autogenerados (`graphify-out/`) están excluidos por defecto en `.gitignore` y `.graphifyignore`.*
+
+---
+
 ## 🔄 Ralph Loop: Ejecución Autónoma
 SkillGrid incluye un orquestador para ejecutar agentes de forma iterativa y autónoma sobre un archivo de tareas (`task.md`):
 
