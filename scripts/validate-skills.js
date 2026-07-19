@@ -83,12 +83,15 @@ function walk(dir) {
   }
 }
 
-walk(path.join(ROOT, 'skills'));
-
-if (errors.length > 0) {
-  console.error(`\nSkill validation failed (${errors.length} errors):\n`);
-  errors.forEach(e => console.error(`  - ${e}`));
-  process.exit(1);
-} else {
-  console.log(`\nAll ${skillCount} skills valid.`);
+if (require.main === module) {
+  walk(path.join(ROOT, 'skills'));
+  if (errors.length > 0) {
+    console.error(`\nSkill validation failed (${errors.length} errors):\n`);
+    errors.forEach(e => console.error(`  - ${e}`));
+    process.exit(1);
+  } else {
+    console.log(`\nAll ${skillCount} skills valid.`);
+  }
 }
+
+module.exports = { validateSkill, walk, rel, errors, skillCount, VALID_CATEGORIES, VALID_STATUSES, VALID_RISK_LEVELS };

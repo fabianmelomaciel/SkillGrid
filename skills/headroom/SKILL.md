@@ -4,6 +4,7 @@ description: Reduce el uso de tokens del LLM comprimiendo el contexto, logs, sal
 category: core
 status: stable
 risk_level: safe
+token_estimate: { input: 869, output: 356 }
 ---
 
 ## Core
@@ -49,8 +50,8 @@ Ensure that critical system instructions and security files are exempt from comp
 
 ## Tools
 
-- `read_file` / `write_file` — inspect and write configurations
-- `run_command` — verify headroom installation and configure the proxy
+- `read` / `write` — inspect and write configurations
+- `bash` — verify headroom installation and configure the proxy
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 

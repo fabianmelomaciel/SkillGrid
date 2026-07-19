@@ -12,6 +12,7 @@ description: >
 category: agent
 status: stable
 risk_level: critical
+token_estimate: { input: 4153, output: 1703 }
 allowed-tools:
   - Read
   - Grep
@@ -147,6 +148,16 @@ which semgrep trivy gitleaks trufflehog checkov bandit safety nuclei npm pip-aud
 
 Record which are available. The agent uses them if present but falls back to Claude-native analysis if not.
 
+### Step 1.4a: Docker Toolchain Fallback
+
+If 3+ external tools are missing AND Docker is available, offer to use the containerized toolchain:
+
+```bash
+docker compose run --rm -v TARGET_DIR:/workspace:ro cyber-neo <tool> <args>
+```
+
+This provides all security tools (semgrep, trivy, gitleaks, trufflehog, checkov, bandit, safety, nuclei, pip-audit) without native installation. The container runs from `skillgrid/cyber-neo:latest` (build with `docker compose build cyber-neo` from the SkillGrid root).
+
 ### Step 1.5: Report Reconnaissance Results
 
 Before proceeding, briefly tell the user what you found:
@@ -197,7 +208,7 @@ If no findings in a phase, the subagent must return: "No findings. Checked: [lis
 After Phase 1 completes, launch **5 parallel subagents** using the Agent tool. Each subagent receives the target path, the reconnaissance results, and phase-specific instructions.
 
 **IMPORTANT:** Subagents do NOT have access to `${CLAUDE_SKILL_DIR}`. Load and pass the detailed phase instructions, checklists, and templates from the reference file:
-> See [references/phases.md](file:///c:/laragon/www/SkillGrid/skills/cyber-neo/references/phases.md) for full subagent prompts, code-patterns, tools, and checklists.
+> See [references/phases.md](./references/phases.md) for full subagent prompts, code-patterns, tools, and checklists.
 
 *   **PHASE 2 (SCA):** Run Trivy, npm audit, pip-audit, cargo-audit, Safety, Bandit, Checkov, or Nuclei. Parse outputs.
 *   **PHASE 3 (SAST):** Search for SQL Injection, XSS, Command Injection, Insecure Auth, Weak Crypto, and Error/Logging leaks.
@@ -205,7 +216,7 @@ After Phase 1 completes, launch **5 parallel subagents** using the Agent tool. E
 *   **PHASE 5 (Config & IaC):** Audit framework security settings, security headers, Dockerfiles, compose configurations, and IaC with Checkov.
 *   **PHASE 6 (Supply Chain & CI/CD):** Verify lockfile integrity, dependency confusion, version pinning, and script injections in GitHub Actions workflows.
 
-Every subagent must return findings in the standard output schema specified in [references/phases.md](file:///c:/laragon/www/SkillGrid/skills/cyber-neo/references/phases.md).
+Every subagent must return findings in the standard output schema specified in [references/phases.md](./references/phases.md).
 
 
 ---
@@ -348,4 +359,6 @@ If you find yourself thinking any of these, you are cutting corners:
 | "The framework probably handles this" | Verify it. Frameworks have defaults that can be disabled. |
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+
+> Modules: `skills/shared/modules-footer.md`
 

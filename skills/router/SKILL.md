@@ -24,7 +24,7 @@ Use at the start of any conversation or task when you need to load specialized a
     *   *CI/CD / Docker config* → `agente-devops`
     *   *Architecture consensus* → `agente-ideas`
     *   *Performance / Web Vitals* → `performance-profiler`
-3.  **Lazy Load Skill:** Load the selected skill's rules by reading its instructions file (e.g., `skills/<skill-name>/SKILL.md`) using `read_file` or `view_file`.
+3.  **Lazy Load Skill:** Load the selected skill's rules by reading its instructions file (e.g., `skills/<skill-name>/SKILL.md`) using `read` or `view`.
 4.  **Execute:** Proceed with the loaded skill's specific workflow.
 
 ## Tools

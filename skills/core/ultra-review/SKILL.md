@@ -4,6 +4,7 @@ description: Use when you need to perform a deep, multi-perspective automated au
 category: core
 status: stable
 risk_level: safe
+token_estimate: { input: 1219, output: 500 }
 ---
 
 ## Core

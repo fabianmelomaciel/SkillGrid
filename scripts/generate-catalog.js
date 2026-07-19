@@ -36,30 +36,53 @@ function parseFrontmatter(file) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return null;
 
-  const fm = match[1];
-  const get = (key) => {
-    const m = fm.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
-    return m ? m[1].trim().replace(/^"(.*)"$/, '$1') : null;
-  };
+  const lines = match[1].split('\n').map(l => l.replace(/\r$/, ''));
+  const fm = {};
+  let currentKey = null;
+  let currentVal = null;
+  let inBlock = false;
 
-  const getObject = (key) => {
-    const m = fm.match(new RegExp(`^${key}:\\s*(\\{[^\\}]+\\})`, 'm'));
-    if (!m) return null;
-    try {
-      const jsonStr = m[1].replace(/([a-zA-Z0-9_]+)\s*:/g, '"$1":');
-      return JSON.parse(jsonStr);
-    } catch (err) {
-      return null;
+  for (const line of lines) {
+    // Continuation of YAML block scalar
+    if (inBlock && line.match(/^\s+/)) {
+      if (currentVal === '>' || currentVal === '|') currentVal = '';
+      currentVal += (currentVal ? ' ' : '') + line.trim();
+      continue;
     }
-  };
+    if (inBlock && currentKey) {
+      fm[currentKey] = currentVal.replace(/^"(.*)"$/, '$1');
+      currentKey = null;
+      currentVal = null;
+      inBlock = false;
+    }
+
+    const kv = line.match(/^(\w+):\s*(.*)$/);
+    if (!kv) continue;
+
+    currentKey = kv[1];
+    currentVal = kv[2].trim();
+
+    if (currentVal === '>' || currentVal === '|') {
+      inBlock = true;
+    } else if (currentVal.match(/^\{/) && currentVal.endsWith('}')) {
+      try {
+        const jsonStr = currentVal.replace(/([a-zA-Z0-9_]+)\s*:/g, '"$1":');
+        fm[currentKey] = JSON.parse(jsonStr);
+      } catch { fm[currentKey] = currentVal.replace(/^"(.*)"$/, '$1'); }
+    } else {
+      fm[currentKey] = currentVal.replace(/^"(.*)"$/, '$1');
+    }
+  }
+  // Flush last block scalar
+  if (inBlock && currentKey) fm[currentKey] = currentVal.replace(/^"(.*)"$/, '$1');
 
   return {
-    name: get('name'),
-    description: get('description'),
-    category: get('category'),
-    status: get('status'),
-    risk_level: get('risk_level'),
-    token_estimate: getObject('token_estimate'),
+    name: fm.name || null,
+    description: fm.description || null,
+    category: fm.category || null,
+    status: fm.status || null,
+    risk_level: fm.risk_level || null,
+    token_estimate: fm.token_estimate || null,
   };
 }
 

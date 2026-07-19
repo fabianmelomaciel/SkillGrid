@@ -9,6 +9,8 @@ token_estimate: { input: 2491, output: 996 }
 
 ## Core
 
+# Incremental Implementation
+
 ## Overview
 Build in thin vertical slices — implement one piece, test it, verify it, then expand. Avoid implementing an entire feature in one pass. Each increment should leave the system in a working, testable state. This is the execution discipline that makes large features manageable.
 

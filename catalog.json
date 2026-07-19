@@ -1,10 +1,10 @@
 {
-  "version": "1.7.3",
-  "generated": "2026-07-10",
+  "version": "1.9.0",
+  "generated": "2026-07-14",
   "summary": {
-    "total": 45,
+    "total": 48,
     "categories": {
-      "core": 28,
+      "core": 31,
       "agent": 13,
       "design": 4
     }
@@ -60,6 +60,13 @@
       "risk_level": "safe"
     },
     {
+      "name": "changelog-drafter",
+      "description": "Auto-generates CHANGELOG.md drafts post-tag by reading git log (read-only). Creates PRs with changelog proposals. Includes security gates for safe operation.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
       "name": "changelog-generator",
       "description": "Genera notas de lanzamiento (Changelogs) automatizadas y legibles para el usuario final analizando el historial de Git (commits). Clasifica los cambios en categorías lógicas y actualiza el archivo CHANGELOG.md.",
       "category": "core",
@@ -89,7 +96,7 @@
     },
     {
       "name": "cyber-neo",
-      "description": ">",
+      "description": "Análisis integral de ciberseguridad para cualquier proyecto local. Escanea vulnerabilidades en dependencias (SCA), patrones de seguridad en código (SAST), secretos filtrados, fallos de autenticación/autorización, debilidades criptográficas, malas configuraciones, riesgos en la cadena de suministro y seguridad CI/CD. Cubre todo OWASP 2025 Top 10 y CWE Top 25. Incluye Semgrep, Trivy, Gitleaks, TruffleHog (secretos), Checkov (IaC), Bandit (Python SAST), Safety (SCA Python) y Nuclei (vulnerabilidades web). Genera un informe priorizado con guías de remediación. Úsalo cuando el usuario solicite una auditoría de seguridad o pentest.",
       "category": "agent",
       "status": "stable",
       "risk_level": "critical"
@@ -186,6 +193,13 @@
       "risk_level": "safe"
     },
     {
+      "name": "issue-triage",
+      "description": "Classifies open GitHub issues by heuristics (keywords, template matching) and proposes labels/priorities. Read-only mode by default — never closes or modifies issues.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
       "name": "mcp-configurator",
       "description": "Configura servidores del Protocolo de Contexto de Modelos (MCP) para extender las capacidades del agente. Úsalo al conectar un agente de IA a bases de datos, APIs, sistemas de archivos o herramientas externas mediante el estándar MCP. Soporta Claude Code, Cursor, VS Code y opencode. MCP es el estándar de 2026 para la integración de agentes y herramientas.",
       "category": "core",
@@ -209,6 +223,13 @@
     {
       "name": "playwright-testing",
       "description": "Use when designing, writing, debugging, or auditing Playwright E2E and component tests.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "post-merge-cleanup",
+      "description": "Scans for stale branches eligible for cleanup after merge. Report-only by default — lists candidates but never deletes without human confirmation.",
       "category": "core",
       "status": "stable",
       "risk_level": "safe"

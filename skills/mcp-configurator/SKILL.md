@@ -222,6 +222,6 @@ This skill pairs well with:
 
 > **Reference:** [punkpeye/awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) | [modelcontextprotocol.io](https://modelcontextprotocol.io)
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 
 > Modules: `skills/shared/modules-footer.md`

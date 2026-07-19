@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] - 2026-07-14
+
+### Added
+- **3 new loop-engineering core skills** (total skills: 45 → 48, core: 28 → 31):
+  - `changelog-drafter` — Post-tag auto-changelog drafting with read-only tools, rate limiting (1 exec/h), secret scan gate, and anti-loop protection (SKILLGRID_LOOP_MAX_ITER=1). Output is always a PR, never a direct push.
+  - `issue-triage` — Read-only GitHub issue classifier using keyword heuristics and template matching. Proposes labels and priorities. Report-only L1 mode by default (no auto-tagging first week). Depends on `gh` CLI with minimum `contents: read` + `issues: read` scopes.
+  - `post-merge-cleanup` — Stale branch scanner with branch whitelist (main/master/develop), prefix filter (feature/, fix/, loop/), merge verification via `git branch --merged`, worktree exclusion, and human confirmation gate. Report-only L1 by default.
+
+### Security
+- All 3 new skills include embedded security gates: tool whitelists, rate limits, read-only defaults, and human confirmation requirements. Pattern aligns with audit-loop security architecture.
+
+---
+
 ## [1.8.0] - 2026-07-13
 
 ### Added

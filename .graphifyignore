@@ -1,0 +1,12 @@
+node_modules/
+.git/
+.venv*/
+.agents/
+.codegraph/
+.claude/
+.cursor/
+dist/
+build/
+tests/
+graphify-out/
+*.log

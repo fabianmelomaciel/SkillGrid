@@ -41,7 +41,7 @@ After declaring the Design Read, configure the layout dial parameters:
 *   **`VISUAL_DENSITY` [1-10]** (1 = Art Gallery / Airy, 10 = Cockpit / Compact)
 
 ### Layout Archetype Selection (Mandatory)
-Choose and implement exactly one structural family from [layout-archetypes.md](file:///c:/laragon/www/SkillGrid/skills/design/impeccable-design-taste/references/layout-archetypes.md):
+Choose and implement exactly one structural family from [references/layout-archetypes.md](./references/layout-archetypes.md):
 1.  **Editorial Column**: Asymmetric 12-col grid, typography-first, high empty spaces.
 2.  **The Command Console**: Rigid 1px grid borders, monospace fonts, dark mode, no rounded corners.
 3.  **Kinetic Canvas**: Overlapping cards, masonry offsets, mouse/scroll transforms, noise backdrops.
@@ -61,12 +61,12 @@ Do not use raw CSS named colors or random neon gradients. Select one positive HS
 
 ## 4. Strict Design Auditing (References)
 
-You must run all 6 layers of check from [design-audit-checklist.md](file:///c:/laragon/www/SkillGrid/skills/design/impeccable-design-taste/references/design-audit-checklist.md) before outputting code:
+You must run all 6 layers of check from [references/design-audit-checklist.md](./references/design-audit-checklist.md) before outputting code:
 *   **Layer 1: Typography**: No default reflex fonts. balance headings, sentence case.
 *   **Layer 2: Color**: Contrast WCAG AA >= 4.5:1. Apply *Lila Rule* (No AI purple glow defaults).
 *   **Layer 3: Spacing & Layout**: 4px base scale. Max 1 uppercase section eyebrow. Layout family used at most once.
 *   **Layer 4: Polish**: Tinted shadows, glassmorphism edge refraction, no nested cards.
-*   **Layer 5: Motion & Interaction**: Duration <=300ms, transform/opacity only, active-press feedback, no `<img>` hover scale (see [motion-patterns.md](file:///c:/laragon/www/SkillGrid/skills/design/impeccable-design-taste/references/motion-patterns.md)).
+*   **Layer 5: Motion & Interaction**: Duration <=300ms, transform/opacity only, active-press feedback, no `<img>` hover scale (see [references/motion-patterns.md](./references/motion-patterns.md)).
 *   **Layer 6: Accessibility**: Target 44x44px touch targets, `:focus-visible` outlines, semantic tag hierarchy.
 
 ---

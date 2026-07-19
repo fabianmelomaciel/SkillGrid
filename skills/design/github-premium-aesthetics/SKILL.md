@@ -4,6 +4,7 @@ description: "Implements cutting-edge GitHub/Vercel-inspired UI patterns includi
 category: design
 status: stable
 risk_level: safe
+token_estimate: { input: 1649, output: 676 }
 ---
 
 ## Core

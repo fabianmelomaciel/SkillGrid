@@ -4,6 +4,7 @@ description: Gestiona entornos de ejecución seguros y aislados (como Docker, WA
 category: agent
 status: stable
 risk_level: critical
+token_estimate: { input: 950, output: 390 }
 ---
 
 ## Core
@@ -47,8 +48,8 @@ docker run --rm --timeout 300 -v "$(pwd):/workspace" -w /workspace node:20-alpin
 
 ## Tools
 
-- `read_file` / `write_file` — inspect and write Dockerfile or docker-compose configurations
-- `run_command` — execute commands inside sandboxed runtimes
+- `read` / `write` — inspect and write Dockerfile or docker-compose configurations
+- `bash` — execute commands inside sandboxed runtimes
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 

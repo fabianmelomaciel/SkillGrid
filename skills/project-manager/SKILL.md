@@ -71,6 +71,53 @@ Delegate to the right specialist:
 - **gestor-documental** — APA docs, requirements specs, formal reports
 - **auditor-de-seguridad** — SAST, secrets scan, dependency audit, infra review
 - **agente-ideas** — complex/ambiguous architecture decisions, consensus deliberation
+- **impeccable-design-taste** — premium frontend UI/UX (landing, dashboard, panel, refactor visual)
+- **emil-kowalski-design** — animation/micro-interaction polish, perceived performance
+- **github-premium-aesthetics** — bento grids, mesh gradients, glassmorphism, fluid motion
+- **creativo-visual** — image generation, favicons, social cards, brand assets
+
+## Frontend Design Intelligence (MANDATORY)
+
+Detect automatically when the task involves frontend/UI work and delegate accordingly.
+
+### Detection Signals
+
+Scan the user request AND current project context for ANY of these:
+
+| Category | Signals |
+|----------|---------|
+| **Keywords** | `landing`, `landing page`, `home page`, `dashboard`, `panel`, `admin panel`, `UI`, `UX`, `frontend`, `component`, `page`, `screen`, `layout`, `template`, `hero`, `card`, `modal`, `form`, `button`, `nav`, `navbar`, `footer`, `sidebar`, `table`, `list`, `grid`, `bento` |
+| **Design triggers** | `make this beautiful`, `premium design`, `review UI`, `this feels generic`, `make it pop`, `refactor design`, `fix UI`, `improve UX`, `animation`, `micro-interaction`, `polish`, `brand`, `aesthetic`, `visual`, `responsive` |
+| **File extensions** | `.html`, `.css`, `.scss`, `.less`, `.jsx`, `.tsx`, `.vue`, `.svelte`, `.astro`, `.blade.php`, `.twig`, `.hbs`, `.liquid` |
+| **Page types** | landing page, homepage, dashboard, admin panel, settings page, profile page, checkout, pricing, documentation, blog, portfolio, gallery, onboarding |
+| **Refactor signals** | `refactor`, `redesign`, `rework`, `retocar`, `arreglar`, `mejorar`, `cambiar`, `modificar` + any UI/frontend keyword |
+
+### Delegation Rules
+
+When design signals are detected, ALWAYS attach the corresponding design agent in parallel:
+
+| If task is... | Delegate via task() |
+|----------------|---------------------|
+| **New page/component/screen** (any language/framework) | `impeccable-design-taste` + `emil-kowalski-design` |
+| **Landing / marketing page** | `impeccable-design-taste` + `auditor-de-marketing` |
+| **Dashboard / admin panel** | `impeccable-design-taste` + `github-premium-aesthetics` |
+| **Animation / interaction refactor** | `emil-kowalski-design` |
+| **Design refactor / "make it pretty"** | `impeccable-design-taste` + `emil-kowalski-design` |
+| **Image / favicon / social card generation** | `creativo-visual` |
+| **Premium visual section (bento, mesh, glass)** | `github-premium-aesthetics` |
+
+### Integration with CEO Workflow
+
+When the CEO request triggers design detection:
+
+```
+CEO → PM:
+  Detect: [design signals matched]
+  Plan:
+    1. [task]. delegating design to impeccable-design-taste + emil-kowalski-design
+    2. [task]. delegating implementation to general (if needed)
+  Review: verify WCAG AA, animation rules, and premium checklist
+```
 
 ## Reporting
 
