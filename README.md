@@ -100,7 +100,7 @@ Metodologías avanzadas para garantizar la calidad del código:
 *   `supply-chain-auditor` - Auditoría de dependencias, licencias y CVEs.
 *   `prompt-injection-guard` - Protección contra inyecciones y jailbreaks.
 *   `audit-loop` - Bucle cerrado para resolver vulnerabilidades y findings automáticamente.
-*   `agente-ideas` - Deliberación en tres etapas con consenso optimizado de tokens.
+*   `agente-ideas` - Consejo deliberativo de 3 etapas con 3 subagentes paralelos (Simplicidad, Seguridad, Performance) y early-exit gate por convergencia.
 *   `cyber-neo` **[MEJORADO]** - Ahora con **Semgrep**, **Trivy**, **Gitleaks**, **TruffleHog** (secretos), **Checkov** (IaC), **Bandit** (Python SAST), **Safety** (SCA Python) y **Nuclei** (vulnerabilidades web).
 
 ---
