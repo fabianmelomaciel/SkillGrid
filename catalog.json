@@ -1,10 +1,10 @@
 {
   "version": "1.9.0",
-  "generated": "2026-07-19",
+  "generated": "2026-07-20",
   "summary": {
-    "total": 48,
+    "total": 49,
     "categories": {
-      "core": 31,
+      "core": 32,
       "agent": 13,
       "design": 4
     }
@@ -223,6 +223,13 @@
     {
       "name": "playwright-testing",
       "description": "Use when designing, writing, debugging, or auditing Playwright E2E and component tests.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "ponytail",
+      "description": "Úsalo antes de escribir código nuevo para forzar la opción más chica posible (YAGNI, reuso, stdlib, one-liner) y recién como último recurso implementar desde cero. Reduce tokens de salida y código innecesario en tareas de feature/fix.",
       "category": "core",
       "status": "stable",
       "risk_level": "safe"

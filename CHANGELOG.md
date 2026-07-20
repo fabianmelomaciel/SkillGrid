@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.12.0] - 2026-07-20
+
+### Added
+- **`ponytail` core skill** (total skills: 48 → 49, core: 31 → 32): forces the minimal-intervention ladder (YAGNI → reuse → stdlib → native → dependency → one-liner → minimal new code) before writing any new code. No external dependencies — pure `SKILL.md`, portable to Claude Code, opencode, and antigravity out of the box via the existing merge-loader.
+
+---
+
 ## [1.9.0] - 2026-07-14
 
 ### Added

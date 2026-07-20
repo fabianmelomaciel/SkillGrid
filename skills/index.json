@@ -1,10 +1,10 @@
 {
-  "version": "1.2.27",
-  "generated": "2026-07-19",
+  "version": "1.2.29",
+  "generated": "2026-07-20",
   "summary": {
-    "total": 48,
+    "total": 49,
     "categories": {
-      "core": 31,
+      "core": 32,
       "agent": 13,
       "design": 4
     }
@@ -446,6 +446,19 @@
         "systematic-debugging",
         "verification-before-completion"
       ]
+    },
+    "ponytail": {
+      "name": "ponytail",
+      "description": "Úsalo antes de escribir código nuevo para forzar la opción más chica posible (YAGNI, reuso, stdlib, one-liner) y recién como último recurso implementar desde cero. Reduce tokens de salida y código innecesario en tareas de feature/fix.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe",
+      "token_estimate": {
+        "input": 2000,
+        "output": 800
+      },
+      "cost_tier": "low",
+      "invokes": []
     },
     "post-merge-cleanup": {
       "name": "post-merge-cleanup",
