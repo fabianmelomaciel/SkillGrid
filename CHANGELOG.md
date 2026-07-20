@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.13.0] - 2026-07-20
+
+### Security
+- **`install-core.js` hardened against command injection and path traversal**: replaced all `execSync` (shell:true, string interpolation) calls with `execFileSync` (array args, no shell parsing) for the `shared`/`bundles` copy step, the `merge-skill.js` invocation, and the removed `node -e` interpolated-script pattern in the token-savings calculator. Added a path-traversal guard (`path.basename` + `path.resolve` + root boundary check) before any per-skill `rmSync`/`mkdirSync`, and a non-blocking warning when installing a skill with `risk_level: critical`.
+
+### Changed
+- **Deduplicated skill directory-walking logic** (`scripts/lib/walk-skills.js`): `validate-skills.js`, `generate-catalog.js`, and `install-core.js` now share a single `walkSkillFiles()` implementation instead of three separate copies.
+- **`catalog.json` version resolution now prioritizes `package.json`** over a potentially stale existing `catalog.json` version, fixing a bug where the catalog could silently fall behind the actual package version.
+- **`.githooks/pre-commit` now scopes skill validation**: `npm run validate` only runs when staged files touch `skills/` or the catalog/validation scripts, reducing redundant work on unrelated commits. The test suite still runs on every commit.
+
+---
+
 ## [1.12.0] - 2026-07-20
 
 ### Added

@@ -1,22 +1,12 @@
 const fs = require('fs');
 const path = require('path');
+const { walkSkillFiles } = require('./lib/walk-skills');
 
 const ROOT = path.join(__dirname, '..');
 const CATALOG_JSON_PATH = path.join(ROOT, 'catalog.json');
 const PACKAGE_JSON_PATH = path.join(ROOT, 'package.json');
 
 function resolveCatalogVersion() {
-  if (fs.existsSync(CATALOG_JSON_PATH)) {
-    try {
-      const existing = JSON.parse(fs.readFileSync(CATALOG_JSON_PATH, 'utf-8'));
-      if (existing && typeof existing.version === 'string' && existing.version.trim().length > 0) {
-        return existing.version.trim();
-      }
-    } catch (err) {
-      console.warn('Warning: Could not parse catalog.json version:', err.message);
-    }
-  }
-
   if (fs.existsSync(PACKAGE_JSON_PATH)) {
     try {
       const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf-8'));
@@ -25,6 +15,17 @@ function resolveCatalogVersion() {
       }
     } catch (err) {
       console.warn('Warning: Could not parse package.json version:', err.message);
+    }
+  }
+
+  if (fs.existsSync(CATALOG_JSON_PATH)) {
+    try {
+      const existing = JSON.parse(fs.readFileSync(CATALOG_JSON_PATH, 'utf-8'));
+      if (existing && typeof existing.version === 'string' && existing.version.trim().length > 0) {
+        return existing.version.trim();
+      }
+    } catch (err) {
+      console.warn('Warning: Could not parse catalog.json version:', err.message);
     }
   }
 
@@ -86,18 +87,11 @@ function parseFrontmatter(file) {
   };
 }
 
-function walk(dir, results = []) {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  for (const entry of entries) {
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) walk(full, results);
-    else if (entry.name === 'SKILL.md') {
-      // skip the template placeholder
-      const rel = path.relative(path.join(ROOT, 'skills'), full).replace(/\\/g, '/');
-      if (rel.startsWith('template/')) return;
-      const meta = parseFrontmatter(full);
-      if (meta) results.push(meta);
-    }
+function walk(dir) {
+  const results = [];
+  for (const full of walkSkillFiles(dir)) {
+    const meta = parseFrontmatter(full);
+    if (meta) results.push(meta);
   }
   return results;
 }

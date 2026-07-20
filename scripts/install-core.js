@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 const fs = require("fs");
 const path = require("path");
-const { execSync } = require("child_process");
+const { execSync, execFileSync } = require("child_process");
+const { walkSkillFiles } = require("./lib/walk-skills");
 
 const ROOT = path.resolve(__dirname, "..");
 const SKILLS_DIR = path.join(ROOT, "skills");
@@ -120,20 +121,12 @@ function installSkills(targetDir, sourceDir, platform, profile) {
     if (fs.existsSync(src)) {
       fs.rmSync(dst, { recursive: true, force: true });
       fs.mkdirSync(dst, { recursive: true });
-      try { execSync(`xcopy "${src}" "${dst}" /E /I /Y > nul 2>&1`, { stdio: "ignore", shell: true, windowsHide: true }); }
-      catch { try { execSync(`cp -r "${src}/" "${dst}/" 2>/dev/null`, { stdio: "ignore" }); } catch (e) { /* ignore fallback error */ } }
+      try { execFileSync("xcopy", [src, dst, "/E", "/I", "/Y"], { stdio: "ignore", windowsHide: true }); }
+      catch { try { execFileSync("cp", ["-r", `${src}/`, `${dst}/`], { stdio: "ignore" }); } catch (e) { /* ignore fallback error */ } }
     }
   }
 
-  const skillFiles = [];
-  function walk(dir) {
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      const fp = path.join(dir, entry.name);
-      if (entry.isDirectory()) walk(fp);
-      else if (entry.name === "SKILL.md" && !fp.includes(path.sep + "template" + path.sep)) skillFiles.push(fp);
-    }
-  }
-  walk(path.join(absSource, "skills"));
+  const skillFiles = walkSkillFiles(path.join(absSource, "skills"));
 
   let installed = 0;
   for (const sf of skillFiles) {
@@ -142,8 +135,17 @@ function installSkills(targetDir, sourceDir, platform, profile) {
     if (name === "template") continue;
     if (profileSkills && !profileSkills.has(name)) continue;
 
+    if (fm && fm.risk_level === "critical") {
+      log(`'${name}' is risk_level:critical — review before trusting in this environment`, "warn");
+    }
+
     const skillDir = path.dirname(sf);
-    const destPath = path.join(skillsRoot, name);
+    const safeName = path.basename(path.normalize(name));
+    const destPath = path.resolve(skillsRoot, safeName);
+    if (destPath !== skillsRoot && !destPath.startsWith(skillsRoot + path.sep)) {
+      log(`Skipping '${name}': resolves outside skills root`, "warn");
+      continue;
+    }
     fs.rmSync(destPath, { recursive: true, force: true });
     fs.mkdirSync(destPath, { recursive: true });
 
@@ -156,7 +158,7 @@ function installSkills(targetDir, sourceDir, platform, profile) {
       if (entry.name === "SKILL.md" && useLoader) {
         const srcFull = path.join(entry.parentPath, entry.name);
         try {
-          execSync(`node "${MERGE_SCRIPT}" "${srcFull}" "" "${normalizedPlatform}" "${MODELS_JSON}" "${destFile}"`, { stdio: "ignore", windowsHide: true });
+          execFileSync(process.execPath, [MERGE_SCRIPT, srcFull, "", normalizedPlatform, MODELS_JSON, destFile], { stdio: "ignore", windowsHide: true });
         } catch {
           fs.copyFileSync(srcFull, destFile);
         }
@@ -274,29 +276,26 @@ function setupProjectCodeGraph(projectDir) {
   }
 }
 
+function scanProjectSize(projectDir) {
+  let total = 0, count = 0;
+  const SKIP = new Set(["node_modules", "vendor", "dist", "build"]);
+  function walk(d) {
+    let entries;
+    try { entries = fs.readdirSync(d, { withFileTypes: true }); } catch { return; }
+    for (const e of entries) {
+      if (e.name.startsWith(".") || SKIP.has(e.name)) continue;
+      const fp = path.join(d, e.name);
+      if (e.isDirectory()) walk(fp);
+      else if (e.isFile()) { try { total += fs.statSync(fp).size; count++; } catch { /* ignore stat error */ } }
+    }
+  }
+  walk(projectDir);
+  return { total, count };
+}
+
 function calcTokens(projectDir) {
   try {
-    const files = execSync(
-      `node -e "
-        const fs = require('fs');
-        const p = ${JSON.stringify(projectDir)};
-        let total = 0, count = 0;
-        function walk(d) {
-          try {
-            for (const e of fs.readdirSync(d, { withFileTypes: true })) {
-              if (e.name.startsWith('.')) continue;
-              if (['node_modules','vendor','dist','build'].includes(e.name)) continue;
-              const fp = require('path').join(d, e.name);
-              if (e.isDirectory()) walk(fp);
-              else if (e.isFile()) { total += fs.statSync(fp).size; count++; }
-            }
-          } catch (e) { /* ignore walk error */ }
-        }
-        walk(p);
-        console.log(JSON.stringify({ total, count }));
-      "`, { encoding: "utf-8", windowsHide: true }
-    );
-    const { total, count } = JSON.parse(files.trim());
+    const { total, count } = scanProjectSize(projectDir);
     const baseline = Math.max(Math.round(total / 4), 1000);
     const codegraphTokens = Math.round(baseline * 0.1) + 2000;
     log(`Project: ${count} files, ${(total / 1024 / 1024).toFixed(1)} MB`, "ok");

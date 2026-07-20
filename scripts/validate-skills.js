@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { walkSkillFiles } = require('./lib/walk-skills');
 
 const VALID_CATEGORIES = ['core', 'design', 'agent'];
 const VALID_STATUSES = ['stable', 'beta', 'experimental', 'deprecated', 'draft'];
@@ -72,15 +73,7 @@ function rel(file) {
 }
 
 function walk(dir) {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  for (const entry of entries) {
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      if (dir === path.join(ROOT, 'skills') && entry.name === 'template') continue;
-      walk(full);
-    }
-    else if (entry.name === 'SKILL.md') validateSkill(full);
-  }
+  walkSkillFiles(dir).forEach(validateSkill);
 }
 
 if (require.main === module) {

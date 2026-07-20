@@ -88,10 +88,12 @@ if [ "$FOUND" -eq 1 ]; then
 fi
 
 # Run validation and tests to ensure no bugs remain (without spending tokens)
-echo -e "${YELLOW}[pre-commit] Running skill validation...${NC}"
-if ! npm run validate; then
-  echo -e "${RED}[pre-commit] BLOCKED — Skill validation failed.${NC}"
-  exit 1
+if echo "$STAGED" | grep -qE '^(skills/|scripts/(validate-skills|generate-catalog)\.js$)'; then
+  echo -e "${YELLOW}[pre-commit] Skill files changed — running skill validation...${NC}"
+  if ! npm run validate; then
+    echo -e "${RED}[pre-commit] BLOCKED — Skill validation failed.${NC}"
+    exit 1
+  fi
 fi
 
 echo -e "${YELLOW}[pre-commit] Running test suite...${NC}"

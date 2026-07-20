@@ -3,7 +3,7 @@
 
 ### **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*49 skills · 251 tests · 4 plataformas · ~95% ahorro de tokens · +5 herramientas de seguridad*
+*49 skills · 288 tests · 4 plataformas · ~95% ahorro de tokens · +5 herramientas de seguridad*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-49-22c55e?style=flat-square)](catalog.json)
