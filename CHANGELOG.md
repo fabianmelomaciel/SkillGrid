@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **`ponytail` core skill** (total skills: 48 → 49, core: 31 → 32): forces the minimal-intervention ladder (YAGNI → reuse → stdlib → native → dependency → one-liner → minimal new code) before writing any new code. No external dependencies — pure `SKILL.md`, portable to Claude Code, opencode, and antigravity out of the box via the existing merge-loader.
+- **README tip: `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE`**: documented how to lower Claude Code's auto-compact threshold (default ~83-90%) via `~/.claude/settings.json`'s `env` block, avoiding premature token exhaustion on long sessions.
 
 ---
 

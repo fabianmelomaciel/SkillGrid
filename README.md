@@ -133,6 +133,12 @@ SkillGrid combina **CodeGraph** (indexación local) con políticas estrictas de 
 |:---|:---:|:---:|:---:|
 | **Proyecto Grande (10K+ arch., 144MB)** | 36M tokens (~$108.41 USD) | 3.6M tokens (~$10.85 USD) | **-89.99%** |
 
+> 💡 **Tip: baja el umbral de auto-compact.** Por defecto Claude Code compacta el contexto recién al ~83-90% de uso, momento en el que ya gastaste una cantidad enorme de tokens leyendo/escribiendo antes de comprimir. Bajalo a un valor más conservador (60-70%) agregando esto a tu `~/.claude/settings.json` (afecta todas tus sesiones, no solo este proyecto):
+> ```json
+> { "env": { "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "65" } }
+> ```
+> Esto fuerza la compactación antes, evitando quedarte sin presupuesto a mitad de una tarea larga.
+
 ---
 
 ## 🔍 Grafo de Conocimiento con Graphify (Token Reduction)
