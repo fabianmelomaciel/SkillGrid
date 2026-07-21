@@ -12,16 +12,17 @@ token_estimate: { input: 800, output: 400 }
 # Skill Router (router)
 
 ## When to Use
-Use at the start of any conversation or task when you need to load specialized agéntic skills dynamically based on the user's request. This prevents bloating the initial context window with all 44 skills.
+Use at the start of any conversation or task when you need to load specialized agéntic skills dynamically based on the user's request. This prevents bloating the initial context window with all 49 skills.
 
 ## Workflow
 
 1.  **Read Catalog:** If not already loaded, read `catalog-lite.json` (or `catalog.json` / `skills/index.json`) in the project root or active configuration directory.
-2.  **Match Task:** Match the user's request to the appropriate skill in the catalog:
+2.  **Match Task:** Match the user's request to the single most specific skill in the catalog. Matches are 1-to-1 and never cascade — loading one skill must never auto-load another:
     *   *Security / Secrets scan* → `auditor-de-seguridad` / `cyber-neo`
     *   *Writing / AI editing* → `humanizer` / `gestor-documental`
     *   *SEO / CTR audits* → `auditor-de-marketing`
     *   *CI/CD / Docker config* → `agente-devops`
+    *   *Token/API cost, resource efficiency* → `optimizador-finops`
     *   *Architecture consensus* → `agente-ideas`
     *   *Performance / Web Vitals* → `performance-profiler`
 3.  **Lazy Load Skill:** Load the selected skill's rules by reading its instructions file (e.g., `skills/<skill-name>/SKILL.md`) using `read` or `view`.
