@@ -1,3 +1,11 @@
+## voice
+
+Read `.agents/VOICE.md` before writing any code comment. All comments must sound human — español rioplatense, directo, sin marca AI.
+
+## anti-vibecoding
+
+Read `.agents/AGENTS.md` before implementing anything. No AI signatures, no obvious comments, names humanas.
+
 ## graphify
 
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
