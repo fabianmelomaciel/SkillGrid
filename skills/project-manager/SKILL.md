@@ -64,7 +64,7 @@ Task(description="Fix crop resize handler", prompt="In cropbox.tsx:17...", subag
 
 ## Specialized Agent Delegation
 
-Delegate to the right specialist:
+Reference table only — none of these trigger automatically. Only delegate when the task at hand actually matches, and only via an explicit `task`/`Skill` call:
 - **agente-devops** — Docker, docker-compose, CI/CD, deployment security
 - **optimizador-finops** — token economy, prompt compression, API cost audit
 - **auditor-de-marketing** — on-page SEO, OpenGraph, CRO, CTAs

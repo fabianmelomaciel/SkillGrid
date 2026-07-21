@@ -65,7 +65,7 @@ Upon receiving the 3 proposals:
 ### Stage 3: Synthesis (Chairman Decides)
 1. Aggregate the rankings (average positions).
 2. Synthesize the final plan, merging the best aspects of each proposal and incorporating critical security fixes.
-3. Present the plan in Spanish to the CEO for approval. Once approved, delegate execution to the `project-manager`.
+3. Present the plan in Spanish to the CEO for approval. Delegating execution to `project-manager` is optional and manual — only do it if the CEO approves the plan AND explicitly asks for delegated execution. Never invoke `project-manager` automatically.
 
 ## Session Handoff (MANDATORY)
 
@@ -77,7 +77,7 @@ Candidates: [A/B/C topics]
 Ranking: [1º, 2º, 3º]
 Branch: [git branch]
 Modified: [archivos sin commit]
-Next: 1. Delegar plan a `/project-manager` 2. [siguiente paso]
+Next (suggestion, not an automatic action): 1. Delegar plan a `/project-manager` si el CEO lo pide 2. [siguiente paso]
 ```
 
 ## Tools
