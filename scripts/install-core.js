@@ -75,6 +75,8 @@ function detectPlatforms() {
     { name: "antigravity", path: path.join(home, ".config", "antigravity", "skills") },
     { name: "antigravity (gemini)", path: path.join(home, ".gemini", "config", "skills") },
     { name: "antigravity-ide", path: path.join(home, ".gemini", "antigravity-ide", "skills") },
+    { name: "antigravity", path: path.join(home, ".antigravity", "skills") },
+    { name: "antigravity-ide", path: path.join(home, ".antigravity-ide", "skills") },
     { name: "claude-code", path: path.join(home, ".claude", "skills") },
   ];
   for (const c of checks) {
