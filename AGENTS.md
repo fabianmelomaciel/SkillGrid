@@ -6,6 +6,10 @@ Read `.agents/VOICE.md` before writing any code comment. All comments must sound
 
 Read `.agents/AGENTS.md` before implementing anything. No AI signatures, no obvious comments, names humanas.
 
+## scratch y reports
+
+Antes de generar un test, prueba manual o reporte nuevo, revisá primero si ya existe algo reutilizable en la carpeta scratch/reports del proyecto (p. ej. `scratch/`, `reports/`, o el directorio temporal indicado por el entorno) en vez de regenerarlo desde cero. Extendé o actualizá lo existente cuando cubra el mismo caso; solo creá un archivo nuevo si no hay nada equivalente. Esto evita gastar tokens repitiendo contenido ya producido en la sesión o en sesiones previas.
+
 ## graphify
 
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.

@@ -78,6 +78,7 @@ function detectPlatforms() {
     { name: "antigravity", path: path.join(home, ".antigravity", "skills") },
     { name: "antigravity-ide", path: path.join(home, ".antigravity-ide", "skills") },
     { name: "claude-code", path: path.join(home, ".claude", "skills") },
+    { name: "cursor", path: path.join(home, ".cursor", "skills") },
   ];
   for (const c of checks) {
     const dir = path.dirname(c.path);
@@ -94,6 +95,7 @@ function normalizePlatform(name) {
     "antigravity (gemini)": "antigravity",
     "antigravity-ide": "antigravity-ide",
     "claude-code": "claude-code",
+    "cursor": "cursor",
   };
   return map[name.toLowerCase()] || name;
 }
