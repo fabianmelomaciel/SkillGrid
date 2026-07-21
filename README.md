@@ -182,5 +182,5 @@ SkillGrid incluye un orquestador para ejecutar agentes de forma iterativa y aut�
 
 ## 📄 Historial de Cambios y Licencia
 
-*   Para consultar los detalles de cada versión (incluyendo la última v1.9.0), revisa el [CHANGELOG.md](CHANGELOG.md).
+*   Para consultar los detalles de cada versión (incluyendo la última v1.13.0), revisa el [CHANGELOG.md](CHANGELOG.md).
 *   **Licencia:** MIT — [Fabian Melo Maciel](https://github.com/fabianmelomaciel).
