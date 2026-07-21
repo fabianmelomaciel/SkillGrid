@@ -12,6 +12,22 @@
     "type": "git",
     "url": "https://github.com/fabianmelomaciel/SkillGrid.git"
   },
+  "files": [
+    "skills/",
+    "scripts/",
+    "docs/",
+    "models.json",
+    "catalog.json",
+    "catalog-lite.json",
+    "install.sh",
+    "install.ps1",
+    "remote-install.sh",
+    "remote-install.ps1",
+    "audit.sh",
+    "audit.ps1",
+    "generate-report-from-json.ps1",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "validate": "node scripts/validate-skills.js",
     "catalog": "node scripts/generate-catalog.js",
