@@ -13,6 +13,8 @@
 [![Security Pentest](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/pentest.yml?branch=main&label=Security%20Pentest&style=flat-square&color=dc2626)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/pentest.yml)
 
 **[⚡ Instalación Rápida](#-instalación-en-10-segundos) | [🛠️ Uso Avanzado](#%EF%B8%8F-instalación-avanzada) | [🔒 Security Pipeline](#-security-pipeline) | [📄 Changelog](CHANGELOG.md)**
+
+⭐ **[Dale una estrella al repo](https://github.com/fabianmelomaciel/SkillGrid/stargazers)** si te resulta útil — ayuda a que más gente lo encuentre.
 </div>
 
 ---
@@ -21,10 +23,10 @@
 
 SkillGrid es un **sistema de trabajo autónomo** de instrucciones portables (`SKILL.md`) que enseña a tus agentes de IA a activarse, ejecutar y detenerse eficientemente, optimizando la precisión y reduciendo costos.
 
-*   🔁 **Bucle de Reparación Cerrado:** Los agentes auditan y corrigen fallos en ciclos autónomos sin intervención humana.
-*   🧠 **Memoria Persistente (CODEX):** El agente recuerda el contexto de tu proyecto, eliminando explicaciones repetitivas.
-*   🛡️ **Seguridad Nativa:** Control de riesgos con la auditoría integrada de **NVIDIA SkillSpector** + pipeline de pentest automatizado en CI.
-*   📦 **Instalación Modular:** Instala únicamente el perfil de skills que tu equipo requiere.
+*   🔁 **Bucle de reparación cerrado** — los agentes auditan y corrigen fallos en ciclos autónomos, sin que tengas que intervenir.
+*   🧠 **CODEX, memoria persistente entre sesiones.** El agente recuerda el contexto de tu proyecto y no te obliga a repetir explicaciones.
+*   🛡️ Auditoría integrada de **NVIDIA SkillSpector** + pentest automatizado en cada PR — la seguridad viene incorporada, no como agregado.
+*   📦 Instalás solo el perfil de skills que tu equipo necesita, nada más.
 
 ---
 
@@ -132,6 +134,8 @@ SkillGrid combina **CodeGraph** (indexación local) con políticas estrictas de 
 | Escenario | Full Scan (Sin CodeGraph) | Con CodeGraph + SkillGrid | Ahorro |
 |:---|:---:|:---:|:---:|
 | **Proyecto Grande (10K+ arch., 144MB)** | 36M tokens (~$108.41 USD) | 3.6M tokens (~$10.85 USD) | **-89.99%** |
+
+*Escenario ilustrativo basado en un proyecto de referencia con y sin CodeGraph; el ahorro real varía según el tamaño y estructura de tu repo.*
 
 > 💡 **Tip: baja el umbral de auto-compact.** Por defecto Claude Code compacta el contexto recién al ~83-90% de uso, momento en el que ya gastaste una cantidad enorme de tokens leyendo/escribiendo antes de comprimir. Bajalo a un valor más conservador (60-70%) agregando esto a tu `~/.claude/settings.json` (afecta todas tus sesiones, no solo este proyecto):
 > ```json
