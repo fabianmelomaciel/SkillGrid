@@ -16,7 +16,7 @@ Ejecuta siempre:
 
 ```bash
 npm run validate   # validación de estructura YAML de skills
-npm test           # 251 tests de integridad
+npm test           # 304 tests de integridad
 ```
 
 Ambos deben pasar sin errores.

@@ -5,15 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.13.0] - 2026-07-20
+## [1.13.0] - 2026-07-22
+
+### Fixed
+- **Router bootstrap bug**: `catalog-lite.json` was gitignored but required at runtime by `skills/router`, so a fresh clone or `npm install` left the router reading the full 28K index instead of the lightweight catalog. Now tracked in git and regenerated via `prepack`.
+- **`postinstall` no longer fails installs**: replaced the direct `graphify update .` postinstall with `scripts/postinstall-graphify.js`, which degrades gracefully (exit 0) when `graphify` isn't on the consumer's PATH.
+- **Stale pinned tag in remote installers**: `remote-install.sh`/`.ps1` were pinned to `v1.7.3` while `package.json` was already at `1.13.0`. Updated to `v1.13.0`; `scripts/release.sh` now auto-syncs this tag on every future release so it can't drift again.
+- **Cosmetic version churn in `skills/index.json`**: `generate-catalog.js` bumped the patch version on every regeneration even with no content change, causing spurious diffs. Now only bumps when skill content actually changed.
 
 ### Security
+- **CI audit gate now actually blocks**: removed `continue-on-error: true` from the `npm audit --audit-level=high` step in `ci.yml` — a high-severity dependency vulnerability now fails the build instead of only being reported.
 - **`install-core.js` hardened against command injection and path traversal**: replaced all `execSync` (shell:true, string interpolation) calls with `execFileSync` (array args, no shell parsing) for the `shared`/`bundles` copy step, the `merge-skill.js` invocation, and the removed `node -e` interpolated-script pattern in the token-savings calculator. Added a path-traversal guard (`path.basename` + `path.resolve` + root boundary check) before any per-skill `rmSync`/`mkdirSync`, and a non-blocking warning when installing a skill with `risk_level: critical`.
 
 ### Changed
 - **Deduplicated skill directory-walking logic** (`scripts/lib/walk-skills.js`): `validate-skills.js`, `generate-catalog.js`, and `install-core.js` now share a single `walkSkillFiles()` implementation instead of three separate copies.
 - **`catalog.json` version resolution now prioritizes `package.json`** over a potentially stale existing `catalog.json` version, fixing a bug where the catalog could silently fall behind the actual package version.
 - **`.githooks/pre-commit` now scopes skill validation**: `npm run validate` only runs when staged files touch `skills/` or the catalog/validation scripts, reducing redundant work on unrelated commits. The test suite still runs on every commit.
+- **`router` no longer nudges cascading security audits**: disambiguated `auditor-de-seguridad` (default) vs `cyber-neo` (toolchain-specific) vs `supply-chain-auditor` (dependency-scope-specific) so overlapping SCA/secrets scans aren't run back-to-back for the same scope.
+- Added test coverage for `generate-catalog.js`'s hand-rolled YAML frontmatter parser and `create-skill.js`'s kebab-case normalization (previously untested); total suite now 304 tests (was 251).
 
 ---
 
