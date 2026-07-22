@@ -40,6 +40,11 @@ if command -v jq &>/dev/null; then
   git add package.json
 fi
 
+# Keep remote installer pinned tags in sync with the release
+sed -i.bak "s/--branch v[0-9]\+\.[0-9]\+\.[0-9]\+/--branch $TAG/" remote-install.sh remote-install.ps1
+rm -f remote-install.sh.bak remote-install.ps1.bak
+git add remote-install.sh remote-install.ps1
+
 # Create tag
 echo "Creating tag $TAG..."
 git tag -a "$TAG" -m "Release $TAG"

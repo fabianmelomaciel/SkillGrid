@@ -21,9 +21,6 @@ tokens*.json
 *.pem
 secrets*.json
 
-# Generated files (rebuild with npm run catalog)
-catalog-lite.json
-
 # Node.js
 node_modules/
 npm-debug.log*

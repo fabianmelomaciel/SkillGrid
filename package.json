@@ -32,7 +32,8 @@
     "validate": "node scripts/validate-skills.js",
     "catalog": "node scripts/generate-catalog.js",
     "test": "node tests/skills.test.js && node tests/install-core.test.js && node tests/validate.test.js && node tests/audit-loop/audit-loop.test.js",
-    "postinstall": "graphify update .",
+    "prepack": "node scripts/generate-catalog.js",
+    "postinstall": "node scripts/postinstall-graphify.js",
     "release": "bash scripts/release.sh"
   }
 }

@@ -1,0 +1,308 @@
+{
+  "version": "1.13.0",
+  "generated": "2026-07-22",
+  "summary": {
+    "total": 49,
+    "categories": {
+      "core": 32,
+      "agent": 13,
+      "design": 4
+    }
+  },
+  "skills": [
+    {
+      "name": "a2a-orchestrator",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "agente-devops",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "agent"
+    },
+    {
+      "name": "agente-ideas",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "agent"
+    },
+    {
+      "name": "audit-loop",
+      "status": "beta",
+      "risk_level": "critical",
+      "category": "agent"
+    },
+    {
+      "name": "auditor-de-marketing",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "agent"
+    },
+    {
+      "name": "auditor-de-seguridad",
+      "status": "stable",
+      "risk_level": "critical",
+      "category": "agent"
+    },
+    {
+      "name": "brainstorming",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "changelog-drafter",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "changelog-generator",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "code-simplification",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "context-engineering",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "creativo-visual",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "design"
+    },
+    {
+      "name": "cyber-neo",
+      "status": "stable",
+      "risk_level": "critical",
+      "category": "agent"
+    },
+    {
+      "name": "db-schema-detector",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "dispatching-parallel-agents",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "emil-kowalski-design",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "design"
+    },
+    {
+      "name": "executing-plans",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "execution-runtime",
+      "status": "stable",
+      "risk_level": "critical",
+      "category": "agent"
+    },
+    {
+      "name": "finishing-a-development-branch",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "gestor-documental",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "agent"
+    },
+    {
+      "name": "github-premium-aesthetics",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "design"
+    },
+    {
+      "name": "gsd-workflow",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "headroom",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "humanizer",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "impeccable-design-taste",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "design"
+    },
+    {
+      "name": "incremental-implementation",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "issue-triage",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "mcp-configurator",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "optimizador-finops",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "agent"
+    },
+    {
+      "name": "performance-profiler",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "playwright-testing",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "ponytail",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "post-merge-cleanup",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "project-manager",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "agent"
+    },
+    {
+      "name": "prompt-injection-guard",
+      "status": "stable",
+      "risk_level": "critical",
+      "category": "agent"
+    },
+    {
+      "name": "receiving-code-review",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "requesting-code-review",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "router",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "spec-driven-development",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "spec-kit",
+      "status": "stable",
+      "risk_level": "critical",
+      "category": "agent"
+    },
+    {
+      "name": "subagent-driven-development",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "supply-chain-auditor",
+      "status": "stable",
+      "risk_level": "critical",
+      "category": "agent"
+    },
+    {
+      "name": "systematic-debugging",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "test-driven-development",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "ultra-review",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "using-git-worktrees",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "verification-before-completion",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "writing-plans",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "writing-skills",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    }
+  ]
+}

@@ -24,9 +24,6 @@ jobs:
 
       - name: npm audit — dependency vulnerability gate
         run: npm audit --audit-level=high
-        continue-on-error: true
-      - name: npm audit — full report (info, never fails)
-        run: npm audit --audit-level=info || true
 
       - name: Run unit tests
         run: npm test
@@ -48,9 +45,6 @@ jobs:
 
       - name: npm audit — dependency vulnerability gate
         run: npm audit --audit-level=high
-        continue-on-error: true
-      - name: npm audit — full report (info, never fails)
-        run: npm audit --audit-level=info || true
 
       - name: Run unit tests
         run: npm test
