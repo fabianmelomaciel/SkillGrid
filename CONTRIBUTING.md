@@ -28,6 +28,11 @@ Ambos deben pasar sin errores.
 - `tests/` — tests de integridad de skills
 - `.github/workflows/` — CI y pentest automatizado
 
+## Origen de los skills
+
+- `skills/core/` contiene principalmente adaptaciones de skills públicos de Anthropic (brainstorming, systematic-debugging, test-driven-development, writing-plans, etc.). Al modificarlos, evaluá si el cambio corresponde upstream o es específico de SkillGrid.
+- El resto de `skills/` (router, ponytail, agente-ideas, auditor-de-seguridad, cyber-neo, optimizador-finops, etc.) es autoría original de SkillGrid.
+
 ## Convenciones para skills
 
 - **YAML frontmatter obligatorio** con campos: `name`, `description`, `category`, `status`, `risk_level`
