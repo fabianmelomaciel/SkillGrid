@@ -18,7 +18,8 @@ Use at the start of any conversation or task when you need to load specialized a
 
 1.  **Read Catalog:** If not already loaded, read `catalog-lite.json` (or `catalog.json` / `skills/index.json`) in the project root or active configuration directory.
 2.  **Match Task:** Match the user's request to the single most specific skill in the catalog. Matches are 1-to-1 and never cascade — loading one skill must never auto-load another:
-    *   *Security / Secrets scan* → `auditor-de-seguridad` / `cyber-neo`
+    *   *Security / Secrets scan, general SAST/OWASP audit* → `auditor-de-seguridad` (default) or `cyber-neo` (only if the user names it or needs its specific toolchain — Semgrep/Trivy/Gitleaks/Nuclei). Never run both for the same scope; they overlap heavily on SCA/secrets.
+    *   *Dependency/lockfile/CVE/license audit specifically* → `supply-chain-auditor` (skip the SCA portion of `auditor-de-seguridad`/`cyber-neo` if this already ran for the same scope)
     *   *Writing / AI editing* → `humanizer` / `gestor-documental`
     *   *SEO / CTR audits* → `auditor-de-marketing`
     *   *CI/CD / Docker config* → `agente-devops`

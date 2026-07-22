@@ -165,11 +165,15 @@ if (fs.existsSync(INDEX_PATH)) {
       };
     });
 
+    // Only bump the patch version when skill content actually changed —
+    // avoids a cosmetic version/diff on every regeneration.
+    const contentChanged = JSON.stringify(existingSkills) !== JSON.stringify(updatedSkills);
     index.skills = updatedSkills;
 
-    // Bump patch version of index.json automatically
-    const [maj, min, pat] = (index.version || '1.0.0').split('.').map(Number);
-    index.version = `${maj}.${min}.${pat + 1}`;
+    if (contentChanged) {
+      const [maj, min, pat] = (index.version || '1.0.0').split('.').map(Number);
+      index.version = `${maj}.${min}.${pat + 1}`;
+    }
 
     fs.writeFileSync(INDEX_PATH, JSON.stringify(index, null, 2) + '\n');
     console.log(`skills/index.json fully synced: v${index.version}, ${skills.length} skills`);
