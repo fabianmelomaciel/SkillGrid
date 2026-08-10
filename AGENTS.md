@@ -8,7 +8,7 @@ Read `.agents/AGENTS.md` before implementing anything. No AI signatures, no obvi
 
 ## scratch y reports
 
-Antes de generar un test, prueba manual o reporte nuevo, revisá primero si ya existe algo reutilizable en la carpeta scratch/reports del proyecto (p. ej. `scratch/`, `reports/`, o el directorio temporal indicado por el entorno) en vez de regenerarlo desde cero. Extendé o actualizá lo existente cuando cubra el mismo caso; solo creá un archivo nuevo si no hay nada equivalente. Esto evita gastar tokens repitiendo contenido ya producido en la sesión o en sesiones previas.
+Antes de generar un test, prueba manual o reporte nuevo, revisǭ primero si ya existe algo reutilizable en la carpeta scratch/reports del proyecto (p. ej. `scratch/`, `reports/`, o el directorio temporal indicado por el entorno) en vez de regenerarlo desde cero. ExtendǸ o actualizǭ lo existente cuando cubra el mismo caso; solo creǭ un archivo nuevo si no hay nada equivalente. Esto evita gastar tokens repitiendo contenido ya producido en la sesi��n o en sesiones previas.
 
 ## graphify
 
