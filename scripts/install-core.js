@@ -4,10 +4,6 @@ const path = require("path");
 const { execSync, execFileSync } = require("child_process");
 const { walkSkillFiles } = require("./lib/walk-skills");
 
-let installOmnirouteMain = (() => {
-  try { return require("./install-omniroute").main; } catch (e) { return null; }
-})();
-
 const ROOT = path.resolve(__dirname, "..");
 const SKILLS_DIR = path.join(ROOT, "skills");
 const MODELS_JSON = path.join(ROOT, "models.json");
@@ -344,20 +340,13 @@ function main() {
     else if (args[i] === "--generate-codex") opts.generateCodex = true;
     else if (args[i] === "--platform" && args[i + 1]) opts.platform = args[++i];
     else if (args[i] === "--deps-only") opts.depsOnly = true;
-    else if (args[i] === "--setup-omniroute") opts.setupOmniroute = true;
-    else if (args[i] === "--no-omniroute") opts.noOmniroute = true;
+
     else if (args[i] === "--help" || args[i] === "-h") { printHelp(); return; }
   }
 
   console.log("\n=== SkillGrid Installer Core ===\n");
 
   if (opts.depsOnly) { checkDependencies(); return; }
-
-  if (opts.setupOmniroute) {
-    log("Modo --setup-omniroute: solo config de OmniRoute", "ok");
-    maybeSetupOmniroute(opts);
-    return;
-  }
 
   checkDependencies();
 
@@ -379,7 +368,6 @@ function main() {
     const fallback = path.join(require("os").homedir(), ".skillgrid");
     log(`No platform detected. Installing to: ${fallback}`, "warn");
     installSkills(fallback, ROOT, "", opts.profile);
-    maybeSetupOmniroute(opts);
     return;
   }
 
@@ -392,42 +380,6 @@ function main() {
 
   if (platforms.some(p => p.name === "opencode")) {
     generateAgents(ROOT);
-  }
-
-  maybeSetupOmniroute(opts);
-}
-
-function maybeSetupOmniroute(opts) {
-  try {
-    const home = require("os").homedir();
-    const sgDir = path.join(home, ".skillgrid");
-    const marker = path.join(sgDir, ".omniroute-installed");
-
-    if (opts.noOmniroute) {
-      log("OmniRoute: saltado por --no-omniroute", "info");
-      return;
-    }
-    if (!opts.setupOmniroute && fs.existsSync(marker)) {
-      log("OmniRoute ya configurado (marca presente). Usá --setup-omniroute para re-forzar.", "info");
-      return;
-    }
-    if (!installOmnirouteMain) {
-      log("No se pudo cargar scripts/install-omniroute.js — omitiendo OmniRoute", "err");
-      return;
-    }
-
-    log("Configurando OmniRoute...", "ok");
-    Promise.resolve(installOmnirouteMain())
-      .then((res) => {
-        if (res && res.ran) {
-          fs.mkdirSync(sgDir, { recursive: true });
-          fs.writeFileSync(marker, String(Date.now()));
-          log("Marca de instalación de OmniRoute creada", "ok");
-        }
-      })
-      .catch((e) => log(`OmniRoute setup: ${e.message}`, "err"));
-  } catch (e) {
-    log(`OmniRoute setup: ${e.message}`, "err");
   }
 }
 
@@ -444,8 +396,6 @@ Usage:
   node scripts/install-core.js --platform opencode      Override platform detection
   node scripts/install-core.js --deps-only              Check dependencies only
   node scripts/install-core.js --install-codegraph      Auto-install CodeGraph
-  node scripts/install-core.js --setup-omniroute        Force OmniRoute gateway setup
-  node scripts/install-core.js --no-omniroute           Skip OmniRoute auto-setup
 `);
 }
 

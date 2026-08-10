@@ -5,8 +5,6 @@ param(
     [string]$Profile = "all",
     [switch]$AutoInstallCodeGraph,
     [switch]$GenerateCodex,
-    [switch]$SetupOmniroute,
-    [switch]$NoOmniroute,
     [switch]$Help
 )
 
@@ -28,8 +26,6 @@ USO:
   .\install.ps1 -AutoInstallCodeGraph         - Instala codegraph automaticamente si falta
   .\install.ps1 -GenerateCodex                - Genera CODEX.md en instalaciones no-skill-root
   .\install.ps1 -Profile "minimal"            - Instala solo skills del perfil
-  .\install.ps1 -SetupOmniroute               - Fuerza el setup de OmniRoute
-  .\install.ps1 -NoOmniroute                  - Saltea el auto-setup de OmniRoute
   .\install.ps1 -Help                         - Muestra esta ayuda
 "@ -ForegroundColor Cyan
     exit 0
@@ -53,8 +49,6 @@ if ($Language) { $argsList += "--language"; $argsList += "`"$Language`"" }
 if ($Profile -and $Profile -ne "all") { $argsList += "--profile"; $argsList += "`"$Profile`"" }
 if ($AutoInstallCodeGraph) { $argsList += "--install-codegraph" }
 if ($GenerateCodex) { $argsList += "--generate-codex" }
-if ($SetupOmniroute) { $argsList += "--setup-omniroute" }
-if ($NoOmniroute) { $argsList += "--no-omniroute" }
 
 if (-not $TargetDir -and -not $ProjectDir) {
     $detected = @()
