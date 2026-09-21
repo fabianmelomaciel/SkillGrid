@@ -18,6 +18,25 @@ const fixtures = [
   "project-stack-undetected",
 ];
 
+function findPwshBinary() {
+  for (const bin of ["pwsh", "powershell"]) {
+    try {
+      execSync(process.platform === "win32" ? `where ${bin}` : `command -v ${bin}`, { stdio: "ignore" });
+      return bin;
+    } catch {
+      // not found, try next
+    }
+  }
+  return null;
+}
+
+const pwshBin = findPwshBinary();
+if (!pwshBin) {
+  console.log("  SKIP: audit-loop fixtures — no PowerShell binary (pwsh/powershell) found on this machine");
+  console.log("\n0 passed, 0 failed");
+  process.exit(0);
+}
+
 let passed = 0;
 let failed = 0;
 
@@ -29,7 +48,7 @@ for (const name of fixtures) {
   }
 
   const answersPath = join(fixturePath, ".fixture-answers.json");
-  let cmd = `powershell -ExecutionPolicy Bypass -File "${scriptPath}" -FixturePath "${fixturePath}"`;
+  let cmd = `${pwshBin} -ExecutionPolicy Bypass -File "${scriptPath}" -FixturePath "${fixturePath}"`;
   if (existsSync(answersPath)) {
     cmd += ` -AnswersPath "${answersPath}"`;
   }
