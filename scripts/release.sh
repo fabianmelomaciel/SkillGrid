@@ -38,14 +38,15 @@ echo "Running validation and tests..."
 npm run validate
 npm test
 
-# Update version in package.json
-if command -v jq &>/dev/null; then
-  jq ".version = \"$VERSION\"" package.json > package.json.tmp
-  mv package.json.tmp package.json
-else
-  echo "Error: jq is required to bump package.json's version."
-  exit 1
-fi
+# Update version in package.json. Node does this (not jq) because node is already
+# a hard requirement of this whole toolchain, while jq is not preinstalled on
+# macOS or most Windows setups.
+node -e "
+  const fs = require('fs');
+  const p = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
+  p.version = '$VERSION';
+  fs.writeFileSync('package.json', JSON.stringify(p, null, 2) + '\n');
+"
 git add package.json
 
 # Keep remote installer pinned tags in sync with the release
