@@ -8,7 +8,6 @@
       "skills": [
         "brainstorming",
         "changelog-drafter",
-        "changelog-generator",
         "code-simplification",
         "context-engineering",
         "db-schema-detector",
@@ -108,12 +107,12 @@
     "superpowers": {
       "label": "Superpowers Framework",
       "description": "Full development methodology (~26 skills, ~40K tokens)",
-      "skills": ["brainstorming", "changelog-drafter", "changelog-generator", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "headroom", "incremental-implementation", "issue-triage", "playwright-testing", "post-merge-cleanup", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills"]
+      "skills": ["brainstorming", "changelog-drafter", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "headroom", "incremental-implementation", "issue-triage", "playwright-testing", "post-merge-cleanup", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills"]
     },
     "strict": {
       "label": "Full Suite + Auditors",
       "description": "Everything including all agents (50 skills, ~78K tokens)",
-      "skills": ["a2a-orchestrator", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "brainstorming", "changelog-drafter", "changelog-generator", "code-simplification", "context-engineering", "creativo-visual", "cyber-neo", "db-schema-detector", "dispatching-parallel-agents", "emil-kowalski-design", "executing-plans", "execution-runtime", "finishing-a-development-branch", "gestor-documental", "github-premium-aesthetics", "gsd-workflow", "hack-audit", "headroom", "humanizer", "impeccable-design-taste", "incremental-implementation", "issue-triage", "mcp-configurator", "optimizador-finops", "performance-profiler", "playwright-testing", "post-merge-cleanup", "project-manager", "prompt-injection-guard", "receiving-code-review", "requesting-code-review", "router", "spec-driven-development", "spec-kit", "subagent-driven-development", "supply-chain-auditor", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills"]
+      "skills": ["a2a-orchestrator", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "brainstorming", "changelog-drafter", "code-simplification", "context-engineering", "creativo-visual", "cyber-neo", "db-schema-detector", "dispatching-parallel-agents", "emil-kowalski-design", "executing-plans", "execution-runtime", "finishing-a-development-branch", "gestor-documental", "github-premium-aesthetics", "gsd-workflow", "hack-audit", "headroom", "humanizer", "impeccable-design-taste", "incremental-implementation", "issue-triage", "mcp-configurator", "optimizador-finops", "performance-profiler", "playwright-testing", "post-merge-cleanup", "project-manager", "prompt-injection-guard", "receiving-code-review", "requesting-code-review", "router", "spec-driven-development", "spec-kit", "subagent-driven-development", "supply-chain-auditor", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills"]
     },
     "testing": {
       "label": "QA & Testing",

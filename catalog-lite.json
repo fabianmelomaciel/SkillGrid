@@ -2,9 +2,9 @@
   "version": "1.13.0",
   "generated": "2026-09-21",
   "summary": {
-    "total": 50,
+    "total": 49,
     "categories": {
-      "core": 32,
+      "core": 31,
       "agent": 14,
       "design": 4
     }
@@ -54,12 +54,6 @@
     },
     {
       "name": "changelog-drafter",
-      "status": "stable",
-      "risk_level": "safe",
-      "category": "core"
-    },
-    {
-      "name": "changelog-generator",
       "status": "stable",
       "risk_level": "safe",
       "category": "core"

@@ -2,9 +2,9 @@
   "version": "1.13.0",
   "generated": "2026-09-21",
   "summary": {
-    "total": 50,
+    "total": 49,
     "categories": {
-      "core": 32,
+      "core": 31,
       "agent": 14,
       "design": 4
     }
@@ -61,14 +61,7 @@
     },
     {
       "name": "changelog-drafter",
-      "description": "Auto-generates CHANGELOG.md drafts post-tag by reading git log (read-only). Creates PRs with changelog proposals. Includes security gates for safe operation.",
-      "category": "core",
-      "status": "stable",
-      "risk_level": "safe"
-    },
-    {
-      "name": "changelog-generator",
-      "description": "Genera notas de lanzamiento (Changelogs) automatizadas y legibles para el usuario final analizando el historial de Git (commits). Clasifica los cambios en categorías lógicas y actualiza el archivo CHANGELOG.md.",
+      "description": "Generates CHANGELOG.md drafts from git log — post-tag, by date range, or by commit count — with jargon-to-user-language translation. Writes only on a dedicated branch and opens a PR; never commits to the default branch. Includes security gates for safe operation.",
       "category": "core",
       "status": "stable",
       "risk_level": "safe"

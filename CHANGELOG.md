@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+- **`changelog-generator` skill** (total skills: 50 → 49): duplicaba a `changelog-drafter` — ambos leían `git log` y actualizaban `CHANGELOG.md` con categorías Keep a Changelog, sin ninguna desambiguación en el router (a diferencia del clúster de seguridad, donde el router elige explícitamente entre skills solapadas). `changelog-generator` era autoría original de SkillGrid (junio); `changelog-drafter`, agregado después (julio) como adaptación de un skill de Anthropic con gates de seguridad, nunca se vinculó al primero. `README.md` ya listaba solo `changelog-drafter` como skill activa.
+
+### Changed
+- **`changelog-drafter`**: corregido bug de auto-contradicción (declaraba `write` prohibido pero su propio workflow necesitaba escribir el borrador); ahora permite `write`/`git commit` únicamente sobre una rama nueva, nunca sobre la rama por defecto. Incorpora de `changelog-generator` la traducción de jerga técnica a lenguaje de usuario, consultas flexibles de `git log` (por tag, rango de fechas, o últimos N commits) y una matriz de severidad para categorización incorrecta.
+
 ### Added
 - **`hack-audit` agent skill** (total skills: 49 → 50, agents: 13 → 14): pentest autónomo con explotación real. A diferencia de `auditor-de-seguridad` y `cyber-neo` (solo análisis estático), este agente mapea vectores de ataque desde el código y después los explota de verdad contra el target en ejecución — sin proof-of-concept funcionando, el hallazgo no entra al informe. Cubre las cinco clases fijas de siempre: Injection, XSS, SSRF, autenticación rota y autorización rota. Incluye gate obligatorio de autorización + no-producción antes de tocar cualquier target, y un veredicto fail-closed producción-vs-muestra sobre el código antes de tratar cualquier hallazgo como real. Agregado a los bundles `devops` y al perfil `strict`. Suite de tests: 299 → 304.
 - **`hack-audit`: cobertura de superficie local + módulo SSH**: nueva Fase 0.5 mapea todo lo que escucha en la máquina (`ss`/`netstat` + proceso dueño) antes de acotar el alcance, no solo la URL que le pasaron; nueva sección 4.1 cubre revisión de hardening SSH (`sshd_config`, `ssh-audit`) bajo las mismas reglas de no-fuerza-bruta. Integración opcional con herramientas externas ya instaladas (`nmap`, `nikto`, `sqlmap`, `ffuf`, `nuclei`, `ssh-audit`) para ampliar cobertura, con fallback nativo si no están.
