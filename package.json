@@ -1,8 +1,15 @@
 {
   "name": "skillgrid",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "Portable AI assistant skills collection for opencode, antigravity, and AI coding tools",
-  "keywords": ["opencode", "antigravity", "skills", "ai-coding", "vibecoding", "security-auditor"],
+  "keywords": [
+    "opencode",
+    "antigravity",
+    "skills",
+    "ai-coding",
+    "vibecoding",
+    "security-auditor"
+  ],
   "author": "Fabian Melo Maciel",
   "license": "MIT",
   "engines": {
