@@ -213,6 +213,10 @@ def parse_llm_output(raw_output: str) -> AgentAction:
 
 `iso27001_controls` comes from `skills/shared/iso27001-mapping.md` ("Prompt injection / manipulación de contexto LLM" row). Omit the field on a finding rather than guess a control that doesn't fit.
 
+### HTML Dashboard
+
+Copy `${CLAUDE_SKILL_DIR}/reports/prompt-injection-template.html`, fill `{{PROJECT_NAME}}`, `{{SCAN_DATE}}`, the severity counts and `{{INJECTION_RESISTANT}}` (`summary.injection_resistant`), and `{{EXECUTIVE_SUMMARY}}`. Fill `<!-- SURFACES_PLACEHOLDER -->` with one `.surface-chip` per entry in `llm_surfaces_found`, and `<!-- FINDINGS_PLACEHOLDER -->` with one `.finding-card` per entry in `findings` (severity badge, `auto_fixable` badge when true, `type`, `file`, finding, remediation). Fill `<!-- ISO27001_PLACEHOLDER -->` from each finding's `iso27001_controls` — delete the whole block (including its `<h3>`) if `findings` is empty. Save as `reports/prompt-injection-<date>.html` next to the JSON.
+
 ---
 
 ## Verification Gate
@@ -223,7 +227,7 @@ Before completing:
 - [ ] At least one penetration test attempted per attack type (with safe payloads)
 - [ ] Report JSON saved to `reports/prompt-injection-<date>.json`
 - [ ] Each finding tagged with `iso27001_controls` per `skills/shared/iso27001-mapping.md`
-- [ ] HTML dashboard generated with clickable `file:///` link
+- [ ] HTML dashboard generated from `reports/prompt-injection-template.html` and opened in the default browser per `skills/shared/open-report.md` (OS-specific open command, silent-fail if no GUI, always print the `file:///` link regardless)
 
 ---
 
@@ -237,6 +241,6 @@ Before completing:
 
 > **Reference:** [OWASP LLM Top 10 2025](https://owasp.org/www-project-top-10-for-large-language-model-applications/) · [MITRE ATLAS](https://atlas.mitre.org/)
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **ISO 27001 Mapping:** `skills/shared/iso27001-mapping.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **ISO 27001 Mapping:** `skills/shared/iso27001-mapping.md` | **Open Report:** `skills/shared/open-report.md`
 
 > Modules: `skills/shared/modules-footer.md`
