@@ -29,10 +29,11 @@ if [ -z "$_NON_GRAPH" ]; then
 fi
 
 # Detect the correct Python interpreter (handles uv tool, pipx, venv, system installs).
-# _PINNED was recorded at hook-install time; tried first so the hook works even
-# when the graphify launcher is not on PATH (common in GUI clients and CI).
+# _PINNED is left empty on purpose: `graphify hook install` records the installing
+# machine's interpreter path here, which must not be committed. The probes below
+# resolve the interpreter per machine instead.
 GRAPHIFY_PYTHON=""
-_PINNED='C:\Users\fabia\AppData\Roaming\uv\tools\graphifyy\Scripts\python.exe'
+_PINNED=''
 if [ -n "$_PINNED" ] && [ -x "$_PINNED" ] && "$_PINNED" -c "import graphify" 2>/dev/null; then
     GRAPHIFY_PYTHON="$_PINNED"
 fi
