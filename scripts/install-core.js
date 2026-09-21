@@ -124,9 +124,10 @@ function installSkills(targetDir, sourceDir, platform, profile) {
     const dst = path.join(skillsRoot, special);
     if (fs.existsSync(src)) {
       fs.rmSync(dst, { recursive: true, force: true });
-      fs.mkdirSync(dst, { recursive: true });
-      try { execFileSync("xcopy", [src, dst, "/E", "/I", "/Y"], { stdio: "ignore", windowsHide: true }); }
-      catch { try { execFileSync("cp", ["-r", `${src}/`, `${dst}/`], { stdio: "ignore" }); } catch (e) { /* ignore fallback error */ } }
+      // fs.cpSync copies CONTENTS into dst, unlike shelling out to `cp -r src/ dst/`
+      // on an already-existing dst (nests src/ itself inside dst/, e.g. shared/shared/*)
+      // or `xcopy` (not present on Linux/macOS at all). No external command needed.
+      fs.cpSync(src, dst, { recursive: true });
     }
   }
 
