@@ -60,11 +60,14 @@ jobs:
         with:
           python-version: '3.12'
 
+      # Pinned: baselines in .skillspector/ were reviewed against this version.
       - name: Install NVIDIA SkillSpector
-        run: pip install git+https://github.com/NVIDIA/SkillSpector.git
+        run: pip install "git+https://github.com/NVIDIA/SkillSpector.git@v2.11.2"
 
+      # One scan per skill (--baseline can't be combined with --recursive).
+      # Reviewed false positives live in .skillspector/<skill>.yaml; new findings fail the job.
       - name: Scan skills with SkillSpector
-        run: skillspector scan ./skills/ --no-llm
+        run: bash scripts/skillspector-gate.sh skills
 
   docker-build:
     runs-on: ubuntu-latest

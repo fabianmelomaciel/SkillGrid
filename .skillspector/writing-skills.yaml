@@ -1,0 +1,25 @@
+# SkillSpector baseline for 'writing-skills' — accepted HIGH/CRITICAL findings (heuristic false positives).
+# Only findings matching BOTH id and path are suppressed; anything new still fails CI.
+# Regenerate/review with: skillspector scan skills/.../writing-skills --no-llm
+version: 2
+scanner_version: "2.11.2"
+rules:
+  - id: "RA1"
+    path: "SKILL.md"
+    reason: "Keyword false positives: the skill is about authoring skills ('write skill', partial file refs, ~/.claude/skills examples). Reviewed 2026-09-21."
+  - id: "RA1"
+    path: "references/*"
+    reason: "Keyword false positives: the skill is about authoring skills ('write skill', partial file refs, ~/.claude/skills examples). Reviewed 2026-09-21."
+  - id: "RA1"
+    path: "testing-skills-with-subagents.md"
+    reason: "Keyword false positives: the skill is about authoring skills ('write skill', partial file refs, ~/.claude/skills examples). Reviewed 2026-09-21."
+  - id: "AE1"
+    path: "SKILL.md"
+    reason: "Keyword false positives: the skill is about authoring skills ('write skill', partial file refs, ~/.claude/skills examples). Reviewed 2026-09-21."
+  - id: "RA1"
+    path: "anthropic-best-practices.md"
+    reason: "Keyword false positives: the skill is about authoring skills ('write skill', partial file refs, ~/.claude/skills examples). Reviewed 2026-09-21."
+  - id: "AS1"
+    path: "examples/*"
+    reason: "Keyword false positives: the skill is about authoring skills ('write skill', partial file refs, ~/.claude/skills examples). Reviewed 2026-09-21."
+fingerprints: []

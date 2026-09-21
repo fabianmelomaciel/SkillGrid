@@ -1,0 +1,21 @@
+title = "SkillGrid gitleaks config"
+
+[extend]
+useDefault = true
+
+# SkillGrid ships security-audit skills (cyber-neo, auditor-de-seguridad) and
+# audit-loop test fixtures. Those files intentionally contain FAKE credentials
+# (e.g. `sk-1234567890`, `AKIA1234567890ABCD`) and secret-detection regexes
+# (e.g. `-----BEGIN RSA PRIVATE KEY-----`) as reference material / scanner input.
+# Reviewed 2026-09-21: none of the flagged values is a real secret.
+# Real secrets elsewhere in the repo are still caught by the default rules;
+# TruffleHog (--only-verified) additionally covers these paths.
+[allowlist]
+description = "Intentional fake secrets in security-skill references, scanner and test fixtures"
+paths = [
+  '''skills/cyber-neo/references/.*''',
+  '''skills/cyber-neo/scripts/scan_secrets\.py''',
+  '''tests/audit-loop/fixtures/.*''',
+  '''docs/plans/.*''',
+  '''scratch/.*''',
+]

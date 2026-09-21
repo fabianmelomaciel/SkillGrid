@@ -1,0 +1,13 @@
+# SkillSpector baseline for 'project-manager' — accepted HIGH/CRITICAL findings (heuristic false positives).
+# Only findings matching BOTH id and path are suppressed; anything new still fails CI.
+# Regenerate/review with: skillspector scan skills/.../project-manager --no-llm
+version: 2
+scanner_version: "2.11.2"
+rules:
+  - id: "PE3"
+    path: "SKILL.md"
+    reason: ".env file names appear only in report-format text; AE1 refers to on-demand reference files. Reviewed 2026-09-21."
+  - id: "AE1"
+    path: "SKILL.md"
+    reason: ".env file names appear only in report-format text; AE1 refers to on-demand reference files. Reviewed 2026-09-21."
+fingerprints: []

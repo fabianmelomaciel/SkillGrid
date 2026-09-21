@@ -1,0 +1,13 @@
+# SkillSpector baseline for 'systematic-debugging' — accepted HIGH/CRITICAL findings (heuristic false positives).
+# Only findings matching BOTH id and path are suppressed; anything new still fails CI.
+# Regenerate/review with: skillspector scan skills/.../systematic-debugging --no-llm
+version: 2
+scanner_version: "2.11.2"
+rules:
+  - id: "PE3"
+    path: "SKILL.md"
+    reason: "Keyword false positives on debugging prose/commands ('Keychain state', 'Capture context'). Reviewed 2026-09-21."
+  - id: "E4"
+    path: "defense-in-depth.md"
+    reason: "Keyword false positives on debugging prose/commands ('Keychain state', 'Capture context'). Reviewed 2026-09-21."
+fingerprints: []

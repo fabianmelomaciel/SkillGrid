@@ -1,0 +1,10 @@
+# SkillSpector baseline for 'mcp-configurator' — accepted HIGH/CRITICAL findings (heuristic false positives).
+# Only findings matching BOTH id and path are suppressed; anything new still fails CI.
+# Regenerate/review with: skillspector scan skills/.../mcp-configurator --no-llm
+version: 2
+scanner_version: "2.11.2"
+rules:
+  - id: "AS1"
+    path: "SKILL.md"
+    reason: "Documented purpose of the skill is reading/editing MCP client config files (~/.claude, ~/.gemini, ...); access is user-directed. Reviewed 2026-09-21."
+fingerprints: []
