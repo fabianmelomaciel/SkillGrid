@@ -137,6 +137,10 @@ After classifying findings, offer the following options:
 
 `iso27001_controls` comes from `skills/shared/iso27001-mapping.md` ("Dependencias / cadena de suministro / CVEs" row applies to categories `cve`, `deprecated` and `transitive`; license findings map instead to A.5.20/A.5.31). Omit the field on a finding rather than guess a control that doesn't fit.
 
+### HTML Dashboard
+
+Copy `${CLAUDE_SKILL_DIR}/reports/supply-chain-template.html`, fill `{{PROJECT_NAME}}`, `{{SCAN_DATE}}`, `{{PACKAGE_MANAGER}}`, the severity counts and `{{LOCKFILE_STATUS}}` from `summary`, and `{{EXECUTIVE_SUMMARY}}` with a one-paragraph synthesis. Replace `<!-- FINDINGS_PLACEHOLDER -->` with one `.finding-card` per entry in `findings` (severity badge, `auto_fixable` badge when true, category, detail, fix). Fill `<!-- ISO27001_PLACEHOLDER -->` from each finding's `iso27001_controls` — delete the whole block (including its `<h3>`) if `findings` is empty. Save as `reports/supply-chain-<date>.html` next to the JSON.
+
 ---
 
 ## Verification Gate
@@ -148,7 +152,7 @@ Before completing audit:
 - [ ] Deprecated packages identified and alternatives researched
 - [ ] Report JSON generated under `reports/supply-chain-<date>.json`
 - [ ] Each finding tagged with `iso27001_controls` per `skills/shared/iso27001-mapping.md` (omit the field, don't guess, if none fits)
-- [ ] HTML dashboard generated (dark mode, glassmorphism) with clickable `file:///` link
+- [ ] HTML dashboard generated from `reports/supply-chain-template.html` and opened in the default browser per `skills/shared/open-report.md` (OS-specific open command, silent-fail if no GUI, always print the `file:///` link regardless)
 
 ## 🔁 Follow-Up
 
@@ -157,6 +161,6 @@ After audit, offer `@audit-loop` integration:
 - **No**: report stays as static document
 - **Ver plan**: shows what auto-fixes would be applied (🟢), which need CEO OK (🟡), which are never touched (🔴)
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **ISO 27001 Mapping:** `skills/shared/iso27001-mapping.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **ISO 27001 Mapping:** `skills/shared/iso27001-mapping.md` | **Open Report:** `skills/shared/open-report.md`
 
 > Modules: `skills/shared/modules-footer.md`

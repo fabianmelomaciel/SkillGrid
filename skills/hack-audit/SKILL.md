@@ -202,6 +202,8 @@ Escribí `Informe-de-Seguridad.md` siguiendo **al pie de la letra** la estructur
 
 Resumen ejecutivo, nota de metodología (aclará que es una evaluación asistida por IA con explotación real — no reemplaza un pentest humano experto), y después los hallazgos ordenados por severidad. Por cada uno: título, clase, mapeo OWASP aproximado, ubicación afectada, pasos de reproducción numerados, los archivos de evidencia a los que apunta, impacto y remediación. Si se saltó una fase, decilo explícitamente (sin repo → sin fuente caja blanca; target de producción → sin explotación) en vez de insinuar cobertura completa.
 
+**Dashboard HTML.** Además de `Informe-de-Seguridad.md`, copiá `${CLAUDE_SKILL_DIR}/reports/hack-audit-template.html` y completá sus placeholders (`{{PROJECT_NAME}}`, `{{SCAN_DATE}}`, contadores por severidad, `{{DISCARDED_COUNT}}`, `{{EXECUTIVE_SUMMARY}}`) con los mismos datos que el `.md`. Rellená `<!-- FINDINGS_PLACEHOLDER -->` con un `.finding-card` por hallazgo confirmado (severidad, clase, ubicación, impacto, remediación, pasos de reproducción, referencia a `evidencia/`), `<!-- DISCARDED_PLACEHOLDER -->` con la sección 4 y `<!-- NOTCOVERED_PLACEHOLDER -->` con la sección 5. Rellená `<!-- SSH_PLACEHOLDER -->` solo si hubo acceso SSH en alcance (si no, borrá el bloque completo) y `<!-- ISO27001_PLACEHOLDER -->` con la tabla de la sección 7 (borrá el bloque completo si no hubo hallazgos confirmados). Guardá como `Informe-de-Seguridad.html` junto al `.md`, y abrilo en el navegador por defecto per `skills/shared/open-report.md` — imprimí siempre el link `file:///` al final, se haya abierto solo o no.
+
 ---
 
 ## INTEGRACIÓN CON OTRAS SKILLS
@@ -237,7 +239,7 @@ Si te encontrás pensando alguna de estas, estás cortando camino:
 | "Uso un payload agresivo, totalmente destructivo no es" | Si dudás si algo es destructivo, no lo corras — bajá la intensidad del PoC. |
 | "El usuario me pidió que no quede rastro en el servidor" | No. Borrar logs es evasión de detección, no pentesting — quedan afuera de este agente sin excepción. |
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **ISO 27001 Mapping:** `skills/shared/iso27001-mapping.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **ISO 27001 Mapping:** `skills/shared/iso27001-mapping.md` | **Open Report:** `skills/shared/open-report.md`
 
 ## Modules
 
