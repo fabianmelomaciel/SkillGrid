@@ -3,10 +3,10 @@
 
 ### **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*50 skills · 304 tests · 4 plataformas · ~95% ahorro de tokens · +5 herramientas de seguridad*
+*49 skills · 299 tests · 4 plataformas · ~95% ahorro de tokens · +5 herramientas de seguridad*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-50-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-49-22c55e?style=flat-square)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/ci.yml)
@@ -32,7 +32,7 @@ SkillGrid es un **sistema de trabajo autónomo** de instrucciones portables (`SK
 
 ## ⚡ Instalación en 10 segundos
 
-El instalador autodetecta opencode, antigravity, Claude Code y Cursor, y los configura de inmediato. Por defecto instala el perfil `all` (50 skills).
+El instalador autodetecta opencode, antigravity, Claude Code y Cursor, y los configura de inmediato. Por defecto instala el perfil `all` (49 skills).
 
 ### Windows (PowerShell)
 ```powershell

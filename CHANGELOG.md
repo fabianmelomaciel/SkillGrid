@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.14.0] - 2026-09-21
+
+### Fixed
+- **Instaladores remotos rotos para todo usuario nuevo**: `remote-install.sh`/`remote-install.ps1` (los comandos de "Instalación en 10 segundos" del README) apuntaban a `--branch v1.13.0`, un tag que nunca se pusheó a GitHub — `scripts/release.sh` lo creaba localmente pero solo *imprimía* la instrucción de pushearlo, nunca lo hacía. El mismo patrón dejó sin tag las versiones 1.10.0 a 1.13.0. `release.sh` ahora comitea, taguea y pushea (`git push origin main` + `git push origin <tag>`) automáticamente, corre `npm run validate`/`npm test` como gate antes de taguear, y regenera `catalog.json`/`catalog-lite.json`/`skills/index.json` (antes quedaban con la versión vieja). Los instaladores remotos ahora caen a `main` si el tag fijado llega a faltar, en vez de fallar directo.
+- **`AGENTS.md`: texto corrupto en la sección "scratch y reports"** — mojibake introducido en `e835fce`, con dos caracteres irrecuperables (reemplazados por U+FFFD). Reescrito en español rioplatense correcto.
+- **`CONTRIBUTING.md`: comando de setup roto** — `npx opencode install` no es un paquete real (404 en el registro de npm) y este repo no define `bin`; reemplazado por `./install.sh` / `.\install.ps1`.
+- Conteos desactualizados en `README.md`/`CONTRIBUTING.md` (50 → 49 skills, 304 → 299 tests tras la eliminación de `changelog-generator`).
 
 ### Removed
 - **`changelog-generator` skill** (total skills: 50 → 49): duplicaba a `changelog-drafter` — ambos leían `git log` y actualizaban `CHANGELOG.md` con categorías Keep a Changelog, sin ninguna desambiguación en el router (a diferencia del clúster de seguridad, donde el router elige explícitamente entre skills solapadas). `changelog-generator` era autoría original de SkillGrid (junio); `changelog-drafter`, agregado después (julio) como adaptación de un skill de Anthropic con gates de seguridad, nunca se vinculó al primero. `README.md` ya listaba solo `changelog-drafter` como skill activa.

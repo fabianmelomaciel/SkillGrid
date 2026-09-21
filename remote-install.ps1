@@ -25,8 +25,15 @@ $targetDir = Join-Path -Path $tempRoot -ChildPath ("skillgrid-" + [guid]::NewGui
 
 Write-Host "Clonando SkillGrid en directorio temporal: $targetDir" -ForegroundColor Cyan
 
-    # WARNING: Pinned to release tag for supply chain safety. Update tag when releasing new versions.
-    git clone --depth 1 --branch v1.13.0 https://github.com/fabianmelomaciel/SkillGrid.git "$targetDir"
+# WARNING: Pinned to release tag for supply chain safety. Updated automatically by
+# scripts/release.sh on each release. Falls back to main if the tag is ever missing
+# (e.g. a release was cut but not pushed) so onboarding never hard-fails.
+$pinnedTag = "v1.14.0"
+git clone --depth 1 --branch $pinnedTag https://github.com/fabianmelomaciel/SkillGrid.git "$targetDir" 2>$null
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "ADVERTENCIA: no se encontro el tag $pinnedTag. Usando main como respaldo." -ForegroundColor Yellow
+    git clone --depth 1 --branch main https://github.com/fabianmelomaciel/SkillGrid.git "$targetDir"
+}
 
 # Run the installer
 try {

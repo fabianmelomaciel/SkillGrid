@@ -7,7 +7,8 @@
 ```bash
 git clone https://github.com/fabianmelomaciel/SkillGrid.git
 cd SkillGrid
-npx opencode install  # o instalación manual según README.md
+npm install
+./install.sh        # o .\install.ps1 en Windows — ver README.md para perfiles y opciones
 ```
 
 ## Antes de hacer commit
@@ -16,7 +17,7 @@ Ejecuta siempre:
 
 ```bash
 npm run validate   # validación de estructura YAML de skills
-npm test           # 304 tests de integridad
+npm test           # tests de integridad (ver conteo actual en CHANGELOG.md)
 ```
 
 Ambos deben pasar sin errores.

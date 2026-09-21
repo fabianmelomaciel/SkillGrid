@@ -60,12 +60,18 @@ if [ "$AUTO_INSTALL_CODEGRAPH" -eq 1 ]; then ARGS+=(--install-codegraph); fi
 if [ "$GENERATE_CODEX" -eq 1 ]; then ARGS+=(--generate-codex); fi
 
 if [ -z "$TARGET_DIR" ] && [ -z "$PROJECT_DIR" ]; then
+    # Informational preview only — the actual detection (and what gets installed)
+    # happens in scripts/install-core.js's detectPlatforms(). Keep this list in sync
+    # with that function so the preview never undersells what will really run.
     DETECTED=()
     [ -d "$HOME/.config/opencode" ] && DETECTED+=("opencode")
+    [ -d "$HOME/.config/antigravity" ] && DETECTED+=("antigravity")
     [ -d "$HOME/.gemini/config" ] && DETECTED+=("antigravity (gemini)")
     [ -d "$HOME/.gemini/antigravity-ide" ] && DETECTED+=("antigravity-ide")
-    [ -d "$HOME/.config/antigravity" ] && DETECTED+=("antigravity")
+    [ -d "$HOME/.antigravity" ] && DETECTED+=("antigravity")
+    [ -d "$HOME/.antigravity-ide" ] && DETECTED+=("antigravity-ide")
     [ -d "$HOME/.claude" ] && DETECTED+=("claude-code")
+    [ -d "$HOME/.cursor" ] && DETECTED+=("cursor")
     if [ ${#DETECTED[@]} -gt 0 ]; then
         echo "Detectado: ${DETECTED[*]}"
     fi

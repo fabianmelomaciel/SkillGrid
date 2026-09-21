@@ -22,8 +22,14 @@ trap 'rm -rf "$TARGET" 2>/dev/null || true' EXIT
 
 echo "Clonando SkillGrid en directorio temporal: $TARGET..."
 
-# WARNING: Pinned to release tag for supply chain safety. Update tag when releasing new versions.
-git clone --depth 1 --branch v1.13.0 https://github.com/fabianmelomaciel/SkillGrid.git "$TARGET"
+# WARNING: Pinned to release tag for supply chain safety. Updated automatically by
+# scripts/release.sh on each release. Falls back to main if the tag is ever missing
+# (e.g. a release was cut but not pushed) so onboarding never hard-fails.
+PINNED_TAG="v1.14.0"
+if ! git clone --depth 1 --branch "$PINNED_TAG" https://github.com/fabianmelomaciel/SkillGrid.git "$TARGET" 2>/dev/null; then
+    echo "ADVERTENCIA: no se encontró el tag $PINNED_TAG. Usando main como respaldo."
+    git clone --depth 1 --branch main https://github.com/fabianmelomaciel/SkillGrid.git "$TARGET"
+fi
 
 # Run the installer
 echo "Ejecutando instalador local..."

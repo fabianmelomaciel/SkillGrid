@@ -51,12 +51,18 @@ if ($AutoInstallCodeGraph) { $argsList += "--install-codegraph" }
 if ($GenerateCodex) { $argsList += "--generate-codex" }
 
 if (-not $TargetDir -and -not $ProjectDir) {
+    # Informational preview only — the actual detection (and what gets installed)
+    # happens in scripts\install-core.js's detectPlatforms(). Keep this list in sync
+    # with that function so the preview never undersells what will really run.
     $detected = @()
     if (Test-Path "$env:USERPROFILE\.config\opencode") { $detected += "opencode" }
     if (Test-Path "$env:USERPROFILE\.config\antigravity") { $detected += "antigravity" }
     if (Test-Path "$env:USERPROFILE\.gemini\config") { $detected += "antigravity (gemini)" }
     if (Test-Path "$env:USERPROFILE\.gemini\antigravity-ide") { $detected += "antigravity-ide" }
+    if (Test-Path "$env:USERPROFILE\.antigravity") { $detected += "antigravity" }
+    if (Test-Path "$env:USERPROFILE\.antigravity-ide") { $detected += "antigravity-ide" }
     if (Test-Path "$env:USERPROFILE\.claude") { $detected += "claude-code" }
+    if (Test-Path "$env:USERPROFILE\.cursor") { $detected += "cursor" }
     if ($detected.Count -gt 0) { Write-Host "Detectado: $($detected -join ', ')" -ForegroundColor Green }
 }
 

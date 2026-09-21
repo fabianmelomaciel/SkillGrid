@@ -33,25 +33,46 @@ if ! grep -q "## \[$VERSION\]" CHANGELOG.md; then
   exit 1
 fi
 
+# Never tag a broken release
+echo "Running validation and tests..."
+npm run validate
+npm test
+
 # Update version in package.json
 if command -v jq &>/dev/null; then
   jq ".version = \"$VERSION\"" package.json > package.json.tmp
   mv package.json.tmp package.json
-  git add package.json
+else
+  echo "Error: jq is required to bump package.json's version."
+  exit 1
 fi
+git add package.json
 
 # Keep remote installer pinned tags in sync with the release
 sed -i.bak "s/--branch v[0-9]\+\.[0-9]\+\.[0-9]\+/--branch $TAG/" remote-install.sh remote-install.ps1
 rm -f remote-install.sh.bak remote-install.ps1.bak
 git add remote-install.sh remote-install.ps1
 
-# Create tag
+# catalog.json / catalog-lite.json / skills/index.json embed package.json's version
+node scripts/generate-catalog.js
+git add catalog.json catalog-lite.json skills/index.json
+
+# Commit before tagging — an annotated tag on an empty commit would point at the
+# PREVIOUS release and ship none of the bump above.
+git commit -m "chore: release $TAG"
+
 echo "Creating tag $TAG..."
 git tag -a "$TAG" -m "Release $TAG"
 
+# Push commit and tag together — a tag created but left unpushed means the pinned
+# remote-install.sh/remote-install.ps1 one-liners break for every new user until
+# someone notices and pushes it by hand.
+echo "Pushing main and $TAG to origin..."
+git push origin main
+git push origin "$TAG"
+
 echo ""
-echo "Release $TAG ready."
-echo "Run: git push origin main --tags"
+echo "Release $TAG pushed."
 echo ""
-echo "Then create a GitHub Release:"
+echo "Create a GitHub Release:"
 echo "  gh release create $TAG --generate-notes"
