@@ -24,7 +24,7 @@
 SkillGrid es un **sistema de trabajo autónomo** de instrucciones portables (`SKILL.md`) que enseña a tus agentes de IA a activarse, ejecutar y detenerse eficientemente, optimizando la precisión y reduciendo costos.
 
 *   🔁 **Bucle de reparación cerrado** — los agentes auditan y corrigen fallos en ciclos autónomos, sin que tengas que intervenir.
-*   🧠 **CODEX, memoria persistente entre sesiones.** El agente recuerda el contexto de tu proyecto y no te obliga a repetir explicaciones.
+*   🧠 **CODEX, memoria persistente entre sesiones.** Un `CODEX.md` local (nunca se comitea) que el agente escribe y relee en cada tarea, para no obligarte a repetir el contexto de tu proyecto de una sesión a otra.
 *   🛡️ Auditoría integrada de **NVIDIA SkillSpector** + pentest automatizado en cada PR — la seguridad viene incorporada, no como agregado.
 *   📦 Instalás solo el perfil de skills que tu equipo necesita, nada más.
 
@@ -87,9 +87,9 @@ Metodologías avanzadas para garantizar la calidad del código:
 *   `test-driven-development` y `playwright-testing` - Ciclo Red-Green-Refactor y pruebas E2E.
 *   `verification-before-completion` - Pruebas obligatorias antes de finalizar tareas.
 *   `humanizer` - Remueve patrones y clichés de escritura de IA para lograr textos más naturales.
-*   `changelog-drafter` **[NUEVO]** - Auto-genera borradores de CHANGELOG.md post-tag con gates de seguridad (read-only, anti-loop).
-*   `issue-triage` **[NUEVO]** - Clasifica issues de GitHub por heurísticas, read-only por defecto.
-*   `post-merge-cleanup` **[NUEVO]** - Escanea branches stale post-merge, modo report-only con whitelist y gate humano.
+*   `changelog-drafter` - Genera borradores de CHANGELOG.md (post-tag o a demanda) con gates de seguridad: read-only salvo por una rama nueva, PR siempre, nunca push directo.
+*   `issue-triage` - Clasifica issues de GitHub por heurísticas, read-only por defecto.
+*   `post-merge-cleanup` - Escanea branches stale post-merge, modo report-only con whitelist y gate humano.
 
 ### 🎨 Design Engineering (4 Skills)
 *   `impeccable-design-taste` - Auditoría visual de tipografía, colores, espaciados y accesibilidad.
@@ -104,7 +104,7 @@ Metodologías avanzadas para garantizar la calidad del código:
 *   `prompt-injection-guard` - Protección contra inyecciones y jailbreaks.
 *   `audit-loop` - Bucle cerrado para resolver vulnerabilidades y findings automáticamente.
 *   `agente-ideas` - Consejo deliberativo de 3 etapas con 3 subagentes paralelos (Simplicidad, Seguridad, Performance) y early-exit gate por convergencia.
-*   `cyber-neo` **[MEJORADO]** - Ahora con **Semgrep**, **Trivy**, **Gitleaks**, **TruffleHog** (secretos), **Checkov** (IaC), **Bandit** (Python SAST), **Safety** (SCA Python) y **Nuclei** (vulnerabilidades web).
+*   `cyber-neo` - Corre herramientas reales (**Semgrep**, **Trivy**, **Gitleaks**, **TruffleHog**, **Checkov**, **Bandit**, **Safety**, **Nuclei**) en vez de solo patrones. Complementa a `auditor-de-seguridad`; el router elige uno u otro según el pedido, nunca los dos juntos.
 
 ---
 
@@ -126,6 +126,8 @@ SkillGrid aplica sus propias skills de seguridad a sí mismo mediante un pipelin
 
 ## 📈 Ahorro de Tokens del ~95% con CodeGraph
 
+**CodeGraph** y **Graphify** (más abajo) son dos herramientas externas distintas, no la misma cosa con dos nombres: CodeGraph es la que instala y sincroniza automáticamente cada skill al arrancar (obligatoria, sin pedir permiso); Graphify es una capa opcional encima, para consultas de grafo más ricas (`graphify query`, `graphify path`) y reglas de IDE. Podés usar solo CodeGraph.
+
 SkillGrid combina **CodeGraph** (indexación local) con políticas estrictas de eficiencia para minimizar el context flooding:
 
 *   **Reducción del Contexto (-89.5%):** Lee solo el código necesario.
@@ -146,11 +148,13 @@ SkillGrid combina **CodeGraph** (indexación local) con políticas estrictas de 
 
 ---
 
-## 🔍 Grafo de Conocimiento con Graphify (Token Reduction)
+## 🔍 Grafo de Conocimiento con Graphify (opcional)
 
-SkillGrid ahora soporta e integra nativamente **Graphify** para convertir la base de código del proyecto en un grafo de conocimiento consultable localmente, optimizando la comprensión del agente y reduciendo los tokens de entrada hasta en un **70%**.
+Capa opcional sobre CodeGraph: convierte el proyecto en un grafo consultable (`graphify query`, `graphify path`) con reglas de IDE propias, reduciendo hasta un **70%** los tokens de entrada en consultas puntuales. Los archivos autogenerados (`graphify-out/`) ya están excluidos en `.gitignore` y `.graphifyignore`.
 
-### ⚡ Instalación y Uso Rápido
+<details>
+<summary><strong>⚡ Instalación, uso e integración con IDEs</strong></summary>
+
 1. **Instalar CLI:**
    ```bash
    uv tool install graphifyy
@@ -165,27 +169,28 @@ SkillGrid ahora soporta e integra nativamente **Graphify** para convertir la bas
    graphify query "¿Cómo se inicializa el router de SkillGrid?" --budget 1500
    ```
 
-### 🤖 Integración con Asistentes e IDEs
-Puedes automatizar la lectura del grafo instalando las reglas específicas para tu asistente en tu proyecto local:
+**Reglas de IDE** — instala la lectura automática del grafo para tu asistente:
 *   **Antigravity:** `graphify antigravity install`
 *   **VS Code (Copilot):** `graphify vscode install`
 *   **Cursor:** `graphify cursor install`
 *   **Claude Code:** `graphify claude install`
-
-*Los archivos autogenerados (`graphify-out/`) están excluidos por defecto en `.gitignore` y `.graphifyignore`.*
+</details>
 
 ---
 
 ## 🔄 Ralph Loop: Ejecución Autónoma
-SkillGrid incluye un orquestador para ejecutar agentes de forma iterativa y autónoma sobre un archivo de tareas (`task.md`):
+
+<details>
+<summary><strong>Orquestador para ejecutar agentes de forma iterativa sobre un archivo de tareas (<code>task.md</code>)</strong></summary>
 
 ```powershell
 .\scripts\ralph-loop.ps1 -AgentCommand "antigravity-ide" -TaskFile "task.md"
 ```
+</details>
 
 ---
 
 ## 📄 Historial de Cambios y Licencia
 
-*   Para consultar los detalles de cada versión (incluyendo la última v1.13.0), revisa el [CHANGELOG.md](CHANGELOG.md).
+*   Para consultar los detalles de cada versión, revisa el [CHANGELOG.md](CHANGELOG.md).
 *   **Licencia:** MIT — [Fabian Melo Maciel](https://github.com/fabianmelomaciel).

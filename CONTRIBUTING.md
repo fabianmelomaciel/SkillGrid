@@ -28,6 +28,8 @@ Ambos deben pasar sin errores.
 - `scripts/` — utilidades de validación, generación de catálogo e instalación
 - `tests/` — tests de integridad de skills
 - `.github/workflows/` — CI y pentest automatizado
+- `.skillspector/<skill>.yaml` — baselines que suprimen falsos positivos conocidos de NVIDIA SkillSpector por skill (ver `scripts/skillspector-gate.sh`)
+- `.gitleaks.toml` — allowlist de secretos falsos positivos (ejemplos de credenciales en referencias de skills de seguridad, fixtures de test)
 
 ## Origen de los skills
 
@@ -39,13 +41,14 @@ Ambos deben pasar sin errores.
 - **YAML frontmatter obligatorio** con campos: `name`, `description`, `category`, `status`, `risk_level`
 - Secciones: `## Core` (contenido principal), `## Modules` (footers con etiquetas `[model:*]` / `[platform:*]`)
 - Referenciar protocolos compartidos: `anti-rationalization.md`, `risk-assessment.md`, `verification-gate.md`, `codegraph-startup.md`, `codex-learning-loop.md`
+- Si tu skill dispara un falso positivo en `skillspector-scan` (esperable en skills de seguridad que documentan patrones de ataque como referencia), agregá una regla puntual a `.skillspector/<tu-skill>.yaml` con el `id` y `path` exactos — no silencies de más
 
 ## Flujo de trabajo
 
 - Rama base: `main`
 - Crea ramas desde `main`: `feature/<nombre>` o `fix/<nombre>`
 - Los PRs se hacen a `main`
-- Revisa `CODEX.md` para contexto actual del proyecto
+- `CODEX.md` es memoria local por máquina (listado en `.gitignore`, no existe en un clone nuevo) — si ya tenés uno de trabajar en el repo antes, revisalo; si no, no hace falta crearlo a mano
 
 ## Licencia
 
