@@ -277,16 +277,19 @@ The report MUST include:
 5. **Dependency Vulnerabilities** — table if SCA ran, or note about missing tools
 6. **Supply Chain Assessment** — lock file status, dependency pinning, CI/CD
 7. **Scan Metadata** — scanner version, duration, tools used, files scanned/skipped, coverage %
+8. **ISO/IEC 27001:2022 mapping** — per `skills/shared/iso27001-mapping.md`, only the categories with real findings this run (omit the whole section if there were none), closed with the fixed disclaimer from that file
 
 Assign finding IDs sequentially: CN-001, CN-002, etc. Order by severity (critical first), then OWASP category.
 
 ### Step 7.6: Save Report
 
-Write the report to: `~/Desktop/cyber-neo-report-{project-name}-{YYYY-MM-DD}.md`
+Write the markdown report to: `~/Desktop/cyber-neo-report-{project-name}-{YYYY-MM-DD}.md`
+
+Then render the same findings into the HTML dashboard: copy `${CLAUDE_SKILL_DIR}/reports/cyber-neo-template.html`, replace `{{PROJECT_NAME}}`, `{{SCAN_DATE}}`, `{{CRITICAL_COUNT}}`, `{{HIGH_COUNT}}`, `{{MEDIUM_COUNT}}`, `{{LOW_COUNT}}` and `{{EXECUTIVE_SUMMARY}}`, and replace the block between `<!-- FINDINGS_PLACEHOLDER_START -->`/`_END` with one `.finding-card` per finding (severity badge, title, file:line, description, remediation, evidence). If Step 7.5 produced an ISO 27001 section, fill the block between `<!-- ISO27001_PLACEHOLDER_START -->`/`_END` with its rows; **if there were no findings, delete that whole block** (`<h3>` + `<div class="executive-summary">`) rather than leaving an empty table. Save as `~/Desktop/cyber-neo-report-{project-name}-{YYYY-MM-DD}.html`.
 
 Where `{project-name}` is the directory name of the target project.
 
-Tell the user: "Security report saved to ~/Desktop/cyber-neo-report-{name}-{date}.md"
+Per `skills/shared/open-report.md`: open the `.html` dashboard in the default browser (OS-appropriate command, silent-fail if there's no GUI), then regardless of whether that succeeded, tell the user: "Security report saved to ~/Desktop/cyber-neo-report-{name}-{date}.md (and .html)" with a clickable `file:///` link to the `.html` file.
 
 ### Step 7.7: Highlight Key Actions
 
@@ -358,7 +361,7 @@ If you find yourself thinking any of these, you are cutting corners:
 | "I already found enough issues" | Complete all phases. The one you skip might be the critical one. |
 | "The framework probably handles this" | Verify it. Frameworks have defaults that can be disabled. |
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **Open Report:** `skills/shared/open-report.md` | **ISO 27001 Mapping:** `skills/shared/iso27001-mapping.md`
 
 > Modules: `skills/shared/modules-footer.md`
 

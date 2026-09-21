@@ -128,11 +128,14 @@ After classifying findings, offer the following options:
       "cve_id": "CVE-2021-23337",
       "cvss": 7.2,
       "fix": "npm install lodash@4.17.21",
-      "auto_fixable": true
+      "auto_fixable": true,
+      "iso27001_controls": ["A.5.19", "A.5.20", "A.8.8"]
     }
   ]
 }
 ```
+
+`iso27001_controls` comes from `skills/shared/iso27001-mapping.md` ("Dependencias / cadena de suministro / CVEs" row applies to categories `cve`, `deprecated` and `transitive`; license findings map instead to A.5.20/A.5.31). Omit the field on a finding rather than guess a control that doesn't fit.
 
 ---
 
@@ -144,6 +147,7 @@ Before completing audit:
 - [ ] All direct dependencies scanned for license
 - [ ] Deprecated packages identified and alternatives researched
 - [ ] Report JSON generated under `reports/supply-chain-<date>.json`
+- [ ] Each finding tagged with `iso27001_controls` per `skills/shared/iso27001-mapping.md` (omit the field, don't guess, if none fits)
 - [ ] HTML dashboard generated (dark mode, glassmorphism) with clickable `file:///` link
 
 ## 🔁 Follow-Up
@@ -153,6 +157,6 @@ After audit, offer `@audit-loop` integration:
 - **No**: report stays as static document
 - **Ver plan**: shows what auto-fixes would be applied (🟢), which need CEO OK (🟡), which are never touched (🔴)
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **ISO 27001 Mapping:** `skills/shared/iso27001-mapping.md`
 
 > Modules: `skills/shared/modules-footer.md`

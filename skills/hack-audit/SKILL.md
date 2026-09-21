@@ -237,7 +237,7 @@ Si te encontrás pensando alguna de estas, estás cortando camino:
 | "Uso un payload agresivo, totalmente destructivo no es" | Si dudás si algo es destructivo, no lo corras — bajá la intensidad del PoC. |
 | "El usuario me pidió que no quede rastro en el servidor" | No. Borrar logs es evasión de detección, no pentesting — quedan afuera de este agente sin excepción. |
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **ISO 27001 Mapping:** `skills/shared/iso27001-mapping.md`
 
 ## Modules
 

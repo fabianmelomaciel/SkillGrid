@@ -54,3 +54,21 @@ Listá cada comando ejecutado por SSH: host, comando, hora, resultado. Esta
 sección es evidencia de transparencia, no un log a esconder — si en algún
 momento no se registró un comando, decilo explícitamente en vez de omitir
 la sección entera.
+
+## 7. Mapeo a ISO/IEC 27001:2022 (solo si hubo hallazgos con PoC confirmado)
+
+Última sección, siempre al final. Omitila entera si la sección 3 quedó vacía
+(cero hallazgos confirmados) — no hay nada que mapear. Si hubo hallazgos, por
+cada **Clase** de la sección 3 buscá su fila en
+`skills/shared/iso27001-mapping.md` (Injection, XSS, SSRF, Autenticación
+rota, Autorización rota y Endurecimiento SSH ya están ahí con los mismos
+nombres que usás en "Clase") y armá una tabla:
+
+| Hallazgo | Clase | Control(es) ISO/IEC 27001:2022 |
+|---|---|---|
+| (título del hallazgo) | injection | A.8.28, A.8.26, A.8.29 |
+
+Cerrá siempre con la aclaración fija de `iso27001-mapping.md`: "Este mapeo es
+orientativo para priorizar remediación según el Anexo A de ISO/IEC
+27001:2022; no constituye una certificación ni reemplaza una auditoría
+formal de cumplimiento."

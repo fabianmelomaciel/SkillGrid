@@ -155,7 +155,8 @@ This agent MUST complete ALL of the following before reporting completion:
 
 Return JSON with: `project`, `scan_date`, `summary` (critical/high/medium/low counts, passed/failed categories), `findings` array (each: `id, severity, category, file, finding, remediation, code_snippet`, `cwe_id` (optional), `mitre_technique_id` (optional)), and `executive_summary`.
 
-- [ ] Include framework mapping references in findings (from references/mitre-attack.md)
+- [ ] Include framework mapping references in findings (from references/mitre-attack.md, includes MITRE ATT&CK, NIST CSF 2.0 and ISO/IEC 27001:2022 Anexo A)
+- [ ] Close the HTML dashboard with a `## Mapeo a ISO/IEC 27001:2022` section per `references/mitre-attack.md`'s usage note — only categories with real findings this run, never a full dump
 
 ### Integration
 
@@ -178,13 +179,13 @@ When loaded via `finishing-a-development-branch`, run automatically before marki
 4. ALWAYS provide remediation steps per finding
 5. ALWAYS use the JSON report format
 6. ALWAYS cross-reference related findings
-7. ALWAYS output a clickable `file:///` link to the HTML report dashboard at the end of your message
+7. ALWAYS open the HTML report dashboard in the default browser at the end of the run, per `skills/shared/open-report.md` (OS-specific open command, silent-fail if no GUI, always print the `file:///` link regardless)
 8. **CHESTERTON'S FENCE & ANCHORING (CRITICAL — OVERRIDES SCANNER OUTPUT):** Do NOT propose refactoring or restructuring of working components (e.g., credentials stored in database tables, custom configuration managers, or webhooks) to environment variables (.env) unless there is a **verified, active security vulnerability** (such as plain-text hardcoded API keys in source files, unauthenticated endpoints exposing secrets, or SQL injections that leak credentials). The static scanner may flag database-stored configs as findings — **override the scanner** if the mechanism is securely implemented.
 9. **CHECK BEFORE PROPOSING (MANDATORY — applies to every finding):** Before listing anything as a vulnerability or suggesting any refactor, search the codebase (via grep/CodeGraph) to verify if the feature/protection is already securely implemented. Refactoring functioning architecture without a proven security vulnerability wastes time, tokens, and risks regression. **If the scanner finds a pattern but the context shows it's securely handled, suppress that finding.**
 10. **VERIFY EXISTING STATE (MANDATORY):** Before drafting ANY audit finding, search the codebase to verify if the feature/protection is already implemented. If a database-based configuration settings table exists and handles credentials securely (hashed, encrypted, access-controlled), do NOT recommend moving them to `.env` as a security requirement. This applies to: webhook secrets, payment gateways configs, API keys, OAuth tokens, and any other credentials stored in application-managed storage.
 11. **NO ARCHITECTURE OPINIONS:** Do not recommend architectural changes (e.g., "move from MySQL to PostgreSQL", "switch from REST to GraphQL", "convert from monolith to microservices") unless they are directly required to fix a verified, active security vulnerability. Architecture opinions belong to the CEO and PM, not the security auditor.
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **Open Report:** `skills/shared/open-report.md`
 
 ### Follow-Up: Audit Repair Loop
 

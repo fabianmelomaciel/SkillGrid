@@ -204,11 +204,14 @@ def parse_llm_output(raw_output: str) -> AgentAction:
       "finding": "User input f-string concatenated directly into system prompt",
       "remediation": "Isolate user input to 'user' role message. Never interpolate into system prompt.",
       "owasp_ref": "LLM01:2025",
-      "auto_fixable": true
+      "auto_fixable": true,
+      "iso27001_controls": ["A.8.26", "A.5.10", "A.8.28"]
     }
   ]
 }
 ```
+
+`iso27001_controls` comes from `skills/shared/iso27001-mapping.md` ("Prompt injection / manipulación de contexto LLM" row). Omit the field on a finding rather than guess a control that doesn't fit.
 
 ---
 
@@ -219,6 +222,7 @@ Before completing:
 - [ ] All 6 checklist categories verified
 - [ ] At least one penetration test attempted per attack type (with safe payloads)
 - [ ] Report JSON saved to `reports/prompt-injection-<date>.json`
+- [ ] Each finding tagged with `iso27001_controls` per `skills/shared/iso27001-mapping.md`
 - [ ] HTML dashboard generated with clickable `file:///` link
 
 ---
@@ -233,6 +237,6 @@ Before completing:
 
 > **Reference:** [OWASP LLM Top 10 2025](https://owasp.org/www-project-top-10-for-large-language-model-applications/) · [MITRE ATLAS](https://atlas.mitre.org/)
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **ISO 27001 Mapping:** `skills/shared/iso27001-mapping.md`
 
 > Modules: `skills/shared/modules-footer.md`

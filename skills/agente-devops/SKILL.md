@@ -62,10 +62,7 @@ You MUST check off every item before completing your audit:
 - [ ] Check `.gitignore` and `.dockerignore` for configuration safety.
 - [ ] Generate standard secure Docker/Compose scaffolding if missing.
 - [ ] Generate the premium HTML dashboard report under `reports/`.
-- [ ] **Mandatory Closing Rule:** Print a direct, clickable `file:///` markdown link to the generated HTML report dashboard at the very end of your final message. Format this URL dynamically based on the current Operating System:
-  - **Windows**: Use `file:///` followed by the absolute path with forward slashes (e.g., `file:///C:/path/to/report.html`).
-  - **Linux/macOS**: Use `file:///` followed by the absolute path (e.g., `file:///home/user/path/to/report.html`).
-  This ensures the link is clickable in any terminal or IDE.
+- [ ] **Mandatory Closing Rule:** open the HTML report dashboard in the default browser at the very end, per `skills/shared/open-report.md` (OS-specific open command, silent-fail if no GUI, always print the `file:///` link regardless).
 - [ ] Return the structured JSON final report.
 
 ---
@@ -104,6 +101,6 @@ To ensure cumulative learning in the user's environment:
 2. **Apply Lessons:** Adhere strictly to the environment specifications, base OS, Docker daemon settings, and gotchas documented.
 3. **Log Learnings (Write CODEX):** If you discover any unique environment constraints (e.g., local firewall blocks on Docker ports, volume permission conflicts on Windows/Powershell, or CI runner memory limits), append a short log entry under `## 💻 Mission Logs & Tactical Learnings` detailing the Date, the SCM Challenge, and the Solution applied.
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **Open Report:** `skills/shared/open-report.md`
 
 > Modules: `skills/shared/modules-footer.md`
