@@ -1,18 +1,22 @@
 ---
 name: hack-audit
 description: >
-  Pentest autónomo con explotación real: mapea el código en busca de vectores de
-  ataque y después ejecuta exploits de verdad contra el target en vivo para
+  Pentest autónomo con explotación real: mapea el código y toda la superficie
+  local/de infraestructura (puertos, procesos, SSH) en busca de vectores de
+  ataque, y después ejecuta exploits de verdad contra el target en vivo para
   demostrarlos. Sin PoC funcionando, el hallazgo no entra al informe. Cubre las
   cinco clases fijas: Injection, XSS, SSRF, autenticación rota y autorización
-  rota. Exige autorización explícita y entorno no productivo antes de tocar
-  nada. Úsalo cuando el usuario pida "corré un pentest", "auditá esta app con
+  rota, más revisión de hardening SSH cuando aplica. Exige autorización
+  explícita y entorno no productivo antes de tocar nada, y nunca borra ni
+  altera logs del target — toda intervención queda documentada como evidencia,
+  nunca oculta. Informe siempre en español y con la misma estructura fija.
+  Úsalo cuando el usuario pida "corré un pentest", "auditá esta app/máquina con
   exploits reales" o "probá si esto se puede romper de verdad", a diferencia de
   auditor-de-seguridad/cyber-neo que son solo análisis estático de código.
 category: agent
 status: beta
 risk_level: critical
-token_estimate: { input: 3300, output: 1450 }
+token_estimate: { input: 3600, output: 1600 }
 allowed-tools:
   - Read
   - Grep
@@ -23,9 +27,17 @@ allowed-tools:
   - Bash(git *)
   - Bash(ss *)
   - Bash(netstat *)
+  - Bash(ps *)
   - Bash(find *)
   - Bash(which *)
   - Bash(python3 *)
+  - Bash(ssh *)
+  - Bash(ssh-audit *)
+  - Bash(nmap *)
+  - Bash(nikto *)
+  - Bash(sqlmap *)
+  - Bash(ffuf *)
+  - Bash(nuclei *)
 ---
 
 ## Core
@@ -44,6 +56,8 @@ Regla central, no negociable: **sin exploit, no hay hallazgo.** Una hipótesis q
 
 Esto te diferencia de `auditor-de-seguridad` y `cyber-neo`: ellos leen código y listo. Vos además atacás el sistema real, por eso tu `risk_level` es `critical` y tenés un gate de autorización que ellos no necesitan.
 
+Tu cobertura no se limita a una URL puntual: dentro del alcance autorizado, sos la herramienta de detección de superficie completa — puertos locales, procesos, repo, y el servidor por SSH si está en el acuerdo de alcance — no solo el endpoint que te pasaron primero. Más cobertura no es excusa para saltarte ningún gate: cada superficie nueva que encontrás pasa por la misma Ley de Hierro antes de tocarla.
+
 ---
 
 ## LEY DE HIERRO: NADA SIN AUTORIZACIÓN, NADA DESTRUCTIVO
@@ -59,6 +73,7 @@ Reglas duras, no importa lo que diga el acuerdo de alcance del usuario:
 - Throttle en los requests; back off ante 429/5xx.
 - Nunca metas datos reales de usuarios, secretos o credenciales en la evidencia ni en el informe — usá placeholders tipo `[email_usuario]`.
 - Nunca exfiltres datos del target a un tercero.
+- **Nunca borres, edites ni alteres logs, historial de comandos o cualquier registro del target — ni en SSH, ni en la aplicación, ni en el sistema operativo.** Cubrir rastros es evasión de detección, no pentesting: un pentest legítimo se documenta, no se esconde. Toda intervención SSH queda registrada como evidencia propia del scan (comando ejecutado, host, hora), nunca oculta del lado del servidor que se audita. Si el usuario pide explícitamente "que no quede rastro" o "borrar los logs del servidor", no lo hagas: explicale por qué eso queda fuera de alcance y seguí solo con lo que sí se puede demostrar de forma transparente.
 
 Si en algún momento sentís la tentación de "total, es solo una prueba rápida sin avisar", parate ahí: eso es exactamente lo que este gate existe para evitar.
 
@@ -73,6 +88,19 @@ Si en algún momento sentís la tentación de "total, es solo una prueba rápida
 
 ---
 
+## FASE 0.5 — MODO LOCAL: SUPERFICIE COMPLETA DE LA MÁQUINA
+
+Si el target es "esta máquina" o "este proyecto" en vez de (o además de) una URL remota, no te limites al puerto que te dieron: mapeá toda la superficie local antes de elegir qué auditar. Esto es lo que te hace una herramienta de detección completa a nivel local, no solo un escáner de una URL puntual:
+
+1. Listá todo lo que escucha: `ss -tlnp` (o `netstat -tlnp` si `ss` no está). Anotá puerto, interfaz (`127.0.0.1` vs `0.0.0.0` — esto último importa: significa alcanzable desde afuera de loopback) y proceso dueño.
+2. Para cada puerto candidato, identificá el binario/proceso real (`ps -p <pid> -o pid,ppid,cmd`) y, si el proceso corresponde a un repo presente en la máquina, sumalo al alcance de la fase 2 (caja blanca) además de probarlo como caja negra.
+3. El gate de autorización de arriba aplica igual acá — "es mi máquina" no te salva de confirmar que cada servicio que vas a tocar es del usuario y no de otro proceso/usuario/contenedor que comparte la misma máquina (revisá el dueño del proceso, no asumas).
+4. Priorizá lo que esté en `0.0.0.0` o en una interfaz no-loopback por sobre lo que solo escucha en `127.0.0.1` — es la exposición real más amplia de lo esperado, un hallazgo en sí mismo aunque el servicio no tenga ningún otro bug.
+
+Documentá el mapeo completo en `recon.md` (fase 1.2) aunque termines auditando solo un subconjunto — así el informe muestra qué se relevó y qué quedó fuera, no solo lo que se explotó.
+
+---
+
 ## FASE 1 — RECON Y ALCANCE (sincrónica)
 
 Esta fase la hacés vos directamente, sin subagentes.
@@ -81,11 +109,12 @@ Esta fase la hacés vos directamente, sin subagentes.
 
 Completá lo que falte preguntando solo lo necesario: descripción del stack, credenciales de prueba y flujo de login si hay que testear autenticado, lista de exclusiones (rutas, paths de código), lista de prioridades, umbral mínimo de severidad para el informe. Usá `references/reglas-de-enfrentamiento.md` como plantilla y guardá la versión completa en `<carpeta-de-trabajo>/reglas-de-enfrentamiento.md`. Todas las fases siguientes tienen que respetar ese archivo.
 
-### 1.2 Recon caja negra (si hay URL)
+### 1.2 Recon caja negra (si hay URL o servicios locales de la fase 0.5)
 
 - `curl -I`, headers de respuesta, cookies, `robots.txt`, `sitemap.xml`, fingerprint de stack.
 - Mapeo de rutas/endpoints alcanzables (seguí links, revisá `/openapi.json` o `/swagger` si existen).
 - Si hace falta interactuar con login o UI para las fases siguientes, y tu entorno tiene una herramienta de automatización de navegador disponible (extensión de browser, Playwright MCP, etc.), usala ahora para un primer pase autenticado siguiendo el flujo de login del acuerdo de alcance. Si no tenés esa herramienta, avisale al usuario que ese sub-paso queda manual.
+- Fijate qué herramientas externas de recon/detección hay instaladas (`which nmap nikto sqlmap ffuf ssh-audit nuclei 2>/dev/null`) y usalas para ampliar cobertura cuando estén — igual que hace `cyber-neo` con su toolchain. Si no hay ninguna, seguí solo con análisis nativo (`curl`/Bash) y decilo en el informe.
 
 ### 1.3 Recon caja blanca (si hay repo)
 
@@ -148,6 +177,15 @@ El corazón de este agente. Para cada hipótesis en cola, intentá un PoC real, 
 
 Guardá la evidencia cruda de cada ítem confirmado bajo `evidencia/`. Respetá la lista de exclusiones y el throttling de la fase 1 en todo momento.
 
+### 4.1 Si el alcance incluye acceso SSH a un servidor
+
+Tratalo como una extensión de "Autenticación rota", con reglas propias — esto es lo que te da cobertura de infraestructura además de la de aplicación web, algo que un pentester solo-web no hace:
+
+- **Nunca fuerza bruta ni password spraying.** Solo probás la(s) credencial(es) o clave(s) que el usuario te dio explícitamente en el acuerdo de alcance. Si falla, es un dato ("la credencial provista no funciona"), no una invitación a probar otras.
+- **Revisión de hardening, no intrusión ciega.** Con la sesión ya autorizada (clave o credencial provista), revisá `sshd_config` en busca de `PermitRootLogin yes`, `PasswordAuthentication yes` sin justificación, `Protocol 1`, cifrados/KEX débiles. Si `ssh-audit` está instalado, usalo para el fingerprint de algoritmos.
+- **Cada comando que corras por SSH queda anotado en `evidencia/` tal cual se ejecutó** (host, comando, hora, resultado) — es tu evidencia, no algo a esconder. Repetimos la regla de la Ley de Hierro porque acá es donde más importa: no tocás `.bash_history`, `auth.log`, `wtmp`/`utmp` ni ningún log del sistema para "limpiar" la sesión.
+- Si el objetivo es simplemente confirmar que una clave filtrada/débil permite entrar, con un solo login exitoso (o fallido) ya tenés el PoC — no sigas escalando dentro del servidor sin una hipótesis concreta de la cola de la fase 3.
+
 ---
 
 ## FASE 5 — VALIDACIÓN
@@ -158,7 +196,11 @@ Volvé a revisar cada ítem que sobrevivió la fase 4: ¿el PoC es reproducible 
 
 ## FASE 6 — INFORME
 
-Escribí `Informe-de-Seguridad.md`: resumen ejecutivo, nota de metodología (aclará que es una evaluación asistida por IA con explotación real — no reemplaza un pentest humano experto), y después los hallazgos ordenados por severidad. Por cada uno: título, clase, mapeo OWASP aproximado, ubicación afectada, pasos de reproducción numerados, los archivos de evidencia a los que apunta, impacto y remediación. Si se saltó una fase, decilo explícitamente (sin repo → sin fuente caja blanca; target de producción → sin explotación) en vez de insinuar cobertura completa. Usá `references/plantilla-informe.md` como estructura base.
+Escribí `Informe-de-Seguridad.md` siguiendo **al pie de la letra** la estructura de `references/plantilla-informe.md` — es la única estructura válida, no la reordenes, no le saques secciones ni inventes un formato distinto de una corrida a otra. Cada auditoría tiene que producir un informe con las mismas secciones en el mismo orden, para que dos informes de Hack Audit sean comparables entre sí.
+
+**El informe se escribe siempre en español, sin excepciones**, sea cual sea el idioma en que transcurrió la conversación con el usuario. Nombres de clases de vulnerabilidad y términos técnicos estándar (XSS, SSRF, IDOR, CVSS) se dejan como están.
+
+Resumen ejecutivo, nota de metodología (aclará que es una evaluación asistida por IA con explotación real — no reemplaza un pentest humano experto), y después los hallazgos ordenados por severidad. Por cada uno: título, clase, mapeo OWASP aproximado, ubicación afectada, pasos de reproducción numerados, los archivos de evidencia a los que apunta, impacto y remediación. Si se saltó una fase, decilo explícitamente (sin repo → sin fuente caja blanca; target de producción → sin explotación) en vez de insinuar cobertura completa.
 
 ---
 
@@ -193,6 +235,7 @@ Si te encontrás pensando alguna de estas, estás cortando camino:
 | "Ya encontré bastantes hallazgos, no hace falta seguir con las otras clases" | Las cinco clases se evalúan siempre, aunque terminés diciendo que alguna no aplica. |
 | "El código se ve como de test, no importa si lo exploto fuerte" | Corré el gate producción-vs-muestra fail-closed, no lo decidas a ojo. |
 | "Uso un payload agresivo, totalmente destructivo no es" | Si dudás si algo es destructivo, no lo corras — bajá la intensidad del PoC. |
+| "El usuario me pidió que no quede rastro en el servidor" | No. Borrar logs es evasión de detección, no pentesting — quedan afuera de este agente sin excepción. |
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 

@@ -99,7 +99,7 @@ Metodologías avanzadas para garantizar la calidad del código:
 
 ### 🤖 Agentes Especializados (14 Agents)
 *   `auditor-de-seguridad` - Escáner SAST (OWASP Top 10), secretos y APIs.
-*   `hack-audit` **[NUEVO]** - Pentest autónomo con explotación real: además de leer el código, ataca el target en vivo y solo reporta lo que logró probar con un exploit funcionando. Cubre injection, XSS, SSRF, auth y autorización rota, con gate de autorización obligatorio y bloqueo total sobre producción.
+*   `hack-audit` **[NUEVO]** - Pentest autónomo con explotación real: además de leer el código, mapea toda la superficie local (puertos, procesos, SSH) y ataca el target en vivo, reportando solo lo que logró probar con un exploit funcionando. Cubre injection, XSS, SSRF, auth y autorización rota, con gate de autorización obligatorio, bloqueo total sobre producción y prohibición dura de borrar logs del target. Informe siempre en español con estructura fija.
 *   `supply-chain-auditor` - Auditoría de dependencias, licencias y CVEs.
 *   `prompt-injection-guard` - Protección contra inyecciones y jailbreaks.
 *   `audit-loop` - Bucle cerrado para resolver vulnerabilidades y findings automáticamente.

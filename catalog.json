@@ -166,7 +166,7 @@
     },
     {
       "name": "hack-audit",
-      "description": "Pentest autónomo con explotación real: mapea el código en busca de vectores de ataque y después ejecuta exploits de verdad contra el target en vivo para demostrarlos. Sin PoC funcionando, el hallazgo no entra al informe. Cubre las cinco clases fijas: Injection, XSS, SSRF, autenticación rota y autorización rota. Exige autorización explícita y entorno no productivo antes de tocar nada. Úsalo cuando el usuario pida \"corré un pentest\", \"auditá esta app con exploits reales\" o \"probá si esto se puede romper de verdad\", a diferencia de auditor-de-seguridad/cyber-neo que son solo análisis estático de código.",
+      "description": "Pentest autónomo con explotación real: mapea el código y toda la superficie local/de infraestructura (puertos, procesos, SSH) en busca de vectores de ataque, y después ejecuta exploits de verdad contra el target en vivo para demostrarlos. Sin PoC funcionando, el hallazgo no entra al informe. Cubre las cinco clases fijas: Injection, XSS, SSRF, autenticación rota y autorización rota, más revisión de hardening SSH cuando aplica. Exige autorización explícita y entorno no productivo antes de tocar nada, y nunca borra ni altera logs del target — toda intervención queda documentada como evidencia, nunca oculta. Informe siempre en español y con la misma estructura fija. Úsalo cuando el usuario pida \"corré un pentest\", \"auditá esta app/máquina con exploits reales\" o \"probá si esto se puede romper de verdad\", a diferencia de auditor-de-seguridad/cyber-neo que son solo análisis estático de código.",
       "category": "agent",
       "status": "beta",
       "risk_level": "critical"

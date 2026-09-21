@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **`hack-audit` agent skill** (total skills: 49 → 50, agents: 13 → 14): pentest autónomo con explotación real. A diferencia de `auditor-de-seguridad` y `cyber-neo` (solo análisis estático), este agente mapea vectores de ataque desde el código y después los explota de verdad contra el target en ejecución — sin proof-of-concept funcionando, el hallazgo no entra al informe. Cubre las cinco clases fijas de siempre: Injection, XSS, SSRF, autenticación rota y autorización rota. Incluye gate obligatorio de autorización + no-producción antes de tocar cualquier target, y un veredicto fail-closed producción-vs-muestra sobre el código antes de tratar cualquier hallazgo como real. Agregado a los bundles `devops` y al perfil `strict`. Suite de tests: 299 → 304.
+- **`hack-audit`: cobertura de superficie local + módulo SSH**: nueva Fase 0.5 mapea todo lo que escucha en la máquina (`ss`/`netstat` + proceso dueño) antes de acotar el alcance, no solo la URL que le pasaron; nueva sección 4.1 cubre revisión de hardening SSH (`sshd_config`, `ssh-audit`) bajo las mismas reglas de no-fuerza-bruta. Integración opcional con herramientas externas ya instaladas (`nmap`, `nikto`, `sqlmap`, `ffuf`, `nuclei`, `ssh-audit`) para ampliar cobertura, con fallback nativo si no están.
+- **`hack-audit`: regla dura anti-evasión de logs**: prohibición explícita de borrar/alterar logs, historial de comandos o registros del target (SSH, app o sistema) para ocultar la intervención — toda acción queda documentada como evidencia propia del scan, nunca oculta del lado del servidor auditado.
+- **`hack-audit`: informe estandarizado**: `references/plantilla-informe.md` pasa a ser la única estructura válida (mismo orden de secciones en toda corrida) y el informe se escribe siempre en español, sin excepción, sea cual sea el idioma de la conversación.
 
 ---
 
