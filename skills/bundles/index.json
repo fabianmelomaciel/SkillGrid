@@ -1,6 +1,6 @@
 {
-  "version": "1.1.0",
-  "description": "Role-based skill bundles for SkillGrid (48 skills). Use these when setting up a new user or project.",
+  "version": "1.2.0",
+  "description": "Role-based skill bundles for SkillGrid (50 skills). Use these when setting up a new user or project.",
   "bundles": {
     "core": {
       "label": "Core Development",
@@ -46,6 +46,7 @@
         "auditor-de-seguridad",
         "cyber-neo",
         "execution-runtime",
+        "hack-audit",
         "optimizador-finops",
         "prompt-injection-guard",
         "supply-chain-auditor"
@@ -111,8 +112,8 @@
     },
     "strict": {
       "label": "Full Suite + Auditors",
-      "description": "Everything including all agents (48 skills, ~75K tokens)",
-      "skills": ["a2a-orchestrator", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "brainstorming", "changelog-drafter", "changelog-generator", "code-simplification", "context-engineering", "creativo-visual", "cyber-neo", "db-schema-detector", "dispatching-parallel-agents", "emil-kowalski-design", "executing-plans", "execution-runtime", "finishing-a-development-branch", "gestor-documental", "github-premium-aesthetics", "gsd-workflow", "headroom", "humanizer", "impeccable-design-taste", "incremental-implementation", "issue-triage", "mcp-configurator", "optimizador-finops", "performance-profiler", "playwright-testing", "post-merge-cleanup", "project-manager", "prompt-injection-guard", "receiving-code-review", "requesting-code-review", "router", "spec-driven-development", "spec-kit", "subagent-driven-development", "supply-chain-auditor", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills"]
+      "description": "Everything including all agents (50 skills, ~78K tokens)",
+      "skills": ["a2a-orchestrator", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "brainstorming", "changelog-drafter", "changelog-generator", "code-simplification", "context-engineering", "creativo-visual", "cyber-neo", "db-schema-detector", "dispatching-parallel-agents", "emil-kowalski-design", "executing-plans", "execution-runtime", "finishing-a-development-branch", "gestor-documental", "github-premium-aesthetics", "gsd-workflow", "hack-audit", "headroom", "humanizer", "impeccable-design-taste", "incremental-implementation", "issue-triage", "mcp-configurator", "optimizador-finops", "performance-profiler", "playwright-testing", "post-merge-cleanup", "project-manager", "prompt-injection-guard", "receiving-code-review", "requesting-code-review", "router", "spec-driven-development", "spec-kit", "subagent-driven-development", "supply-chain-auditor", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills"]
     },
     "testing": {
       "label": "QA & Testing",

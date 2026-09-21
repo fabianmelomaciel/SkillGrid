@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **`hack-audit` agent skill** (total skills: 49 → 50, agents: 13 → 14): pentest autónomo con explotación real. A diferencia de `auditor-de-seguridad` y `cyber-neo` (solo análisis estático), este agente mapea vectores de ataque desde el código y después los explota de verdad contra el target en ejecución — sin proof-of-concept funcionando, el hallazgo no entra al informe. Cubre las cinco clases fijas de siempre: Injection, XSS, SSRF, autenticación rota y autorización rota. Incluye gate obligatorio de autorización + no-producción antes de tocar cualquier target, y un veredicto fail-closed producción-vs-muestra sobre el código antes de tratar cualquier hallazgo como real. Agregado a los bundles `devops` y al perfil `strict`. Suite de tests: 299 → 304.
+
+---
+
 ## [1.13.0] - 2026-07-22
 
 ### Fixed

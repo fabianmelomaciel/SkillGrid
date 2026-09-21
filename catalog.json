@@ -1,11 +1,11 @@
 {
   "version": "1.13.0",
-  "generated": "2026-07-22",
+  "generated": "2026-09-21",
   "summary": {
-    "total": 49,
+    "total": 50,
     "categories": {
       "core": 32,
-      "agent": 13,
+      "agent": 14,
       "design": 4
     }
   },
@@ -163,6 +163,13 @@
       "category": "core",
       "status": "stable",
       "risk_level": "safe"
+    },
+    {
+      "name": "hack-audit",
+      "description": "Pentest autónomo con explotación real: mapea el código en busca de vectores de ataque y después ejecuta exploits de verdad contra el target en vivo para demostrarlos. Sin PoC funcionando, el hallazgo no entra al informe. Cubre las cinco clases fijas: Injection, XSS, SSRF, autenticación rota y autorización rota. Exige autorización explícita y entorno no productivo antes de tocar nada. Úsalo cuando el usuario pida \"corré un pentest\", \"auditá esta app con exploits reales\" o \"probá si esto se puede romper de verdad\", a diferencia de auditor-de-seguridad/cyber-neo que son solo análisis estático de código.",
+      "category": "agent",
+      "status": "beta",
+      "risk_level": "critical"
     },
     {
       "name": "headroom",

@@ -3,10 +3,10 @@
 
 ### **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*49 skills · 304 tests · 4 plataformas · ~95% ahorro de tokens · +5 herramientas de seguridad*
+*50 skills · 304 tests · 4 plataformas · ~95% ahorro de tokens · +5 herramientas de seguridad*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-49-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-50-22c55e?style=flat-square)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/ci.yml)
@@ -32,7 +32,7 @@ SkillGrid es un **sistema de trabajo autónomo** de instrucciones portables (`SK
 
 ## ⚡ Instalación en 10 segundos
 
-El instalador autodetecta opencode, antigravity, Claude Code y Cursor, y los configura de inmediato. Por defecto instala el perfil `all` (49 skills).
+El instalador autodetecta opencode, antigravity, Claude Code y Cursor, y los configura de inmediato. Por defecto instala el perfil `all` (50 skills).
 
 ### Windows (PowerShell)
 ```powershell
@@ -97,8 +97,9 @@ Metodologías avanzadas para garantizar la calidad del código:
 *   `github-premium-aesthetics` - Bento grids, mesh gradients y UI modernas.
 *   `creativo-visual` - Director creativo visual: generación de assets, favicons, OG images y paletas de marca.
 
-### 🤖 Agentes Especializados (13 Agents)
+### 🤖 Agentes Especializados (14 Agents)
 *   `auditor-de-seguridad` - Escáner SAST (OWASP Top 10), secretos y APIs.
+*   `hack-audit` **[NUEVO]** - Pentest autónomo con explotación real: además de leer el código, ataca el target en vivo y solo reporta lo que logró probar con un exploit funcionando. Cubre injection, XSS, SSRF, auth y autorización rota, con gate de autorización obligatorio y bloqueo total sobre producción.
 *   `supply-chain-auditor` - Auditoría de dependencias, licencias y CVEs.
 *   `prompt-injection-guard` - Protección contra inyecciones y jailbreaks.
 *   `audit-loop` - Bucle cerrado para resolver vulnerabilidades y findings automáticamente.

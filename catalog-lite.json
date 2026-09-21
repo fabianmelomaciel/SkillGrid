@@ -1,11 +1,11 @@
 {
   "version": "1.13.0",
-  "generated": "2026-07-22",
+  "generated": "2026-09-21",
   "summary": {
-    "total": 49,
+    "total": 50,
     "categories": {
       "core": 32,
-      "agent": 13,
+      "agent": 14,
       "design": 4
     }
   },
@@ -141,6 +141,12 @@
       "status": "stable",
       "risk_level": "safe",
       "category": "core"
+    },
+    {
+      "name": "hack-audit",
+      "status": "beta",
+      "risk_level": "critical",
+      "category": "agent"
     },
     {
       "name": "headroom",
