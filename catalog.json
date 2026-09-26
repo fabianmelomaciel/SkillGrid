@@ -1,5 +1,5 @@
 {
-  "version": "1.15.0",
+  "version": "1.16.0",
   "generated": "2026-09-26",
   "summary": {
     "total": 43,
@@ -26,7 +26,7 @@
     },
     {
       "name": "agente-ideas",
-      "description": "Agente experto en deliberación y consenso. Resuelve decisiones complejas o ambiguas con un consejo de 3 etapas optimizado.",
+      "description": "Úsalo cuando el CEO o otro agente plantea una decisión técnica compleja, ambigua o de alto riesgo y hace falta consenso antes de implementar.",
       "category": "agent",
       "status": "stable",
       "risk_level": "safe"

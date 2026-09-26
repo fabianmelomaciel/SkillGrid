@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.16.0] - 2026-09-26
+
+### Fixed
+- **`agente-ideas`: auditoría propia con consejo completo (Ranking: 1º B Simpleza 8/10, 2º C Seguridad 8/10, 3º A FinOps 7/10)** — se corrigieron los tres bloqueos que hacían el protocolo inexecutable en proyectos reales:
+  - **`Complete` inalcanzable**: la regla exigía `npm run gate` + GO de `env-preflight` incluso cuando el proyecto no tenía suite ni repo git (todo quedaba `Blocked`). Ahora está ramificada: sin cambios en archivos → `Evidence: sin cambios en el repo` sin pedir GO; con cambios → comando de verificación real del proyecto (verificado con `npm run` antes de citarlo) y GO solo si hubo escritura.
+  - **Ruta de contexto muerta**: `catalog-lite.json` se leía sin comprobar que existiera y `graphify query` se invocaba sin `--budget` (default de la CLI: 2000 tokens, por encima del tope de 1200 declarado). Ahora es una cascada con existencia verificada, `--budget 1000` explícito y argumento literal sin expansión de shell.
+  - **Header `## Deliberaciones` sin garantía**: si `CODEX.md` no existía o no tenía el header, la lookup fallaba. Ahora se crea antes de anclar (con GO si el entorno es `desconocido`).
+- **Early-exit del Stage 2 era inalcanzable**: el contrato de salida obligaba a ≥1 `risk` por propuesta mientras el gate exigía *zero observations*. El veto queda solo para observaciones de seguridad con severidad `bloqueante`, que la perspectiva B debe etiquetar explícitamente.
+- **Consejo Expandido inalcanzable**: la fila "Critical/Architectural" existía en Size Rules pero no en el Complexity Gate. El gate ahora tiene 4 filas, eje único (complejidad **OR** riesgo) y `≤100 LOC **y** ≤3 archivos` para la fila Simple; Size Rules pasa a referenciarse al gate, incluyendo la fila "Estándar (reducido)" para el caso moderado (Stage 1 → Stage 3, sin Stage 2).
+- **Presupuesto por encima del techo de sesión**: ≤60K input por deliberación contra `SKILLGRID_MAX_TOKENS_PER_SESSION=50000`. Ahora ≤40K input / ≤8K output con el techo de sesión explícito.
+
+### Changed
+- **`agente-ideas`**: description en CSO («Úsalo cuando…», sin resumir el workflow); secciones nuevas `When NOT to Use` y `Common Mistakes`; Stage 1 con `subagent_type: general` y toolset read-only; postura de confianza extendida a `CODEX.md`, `graphify-out/*`, `catalog-lite.json` y salidas de herramientas (además del repo); handoff con `Fecha`, enum `Degraded` en Title Case y `Branch: n/a — sin repo git`; caminos definidos para 2 propuestas válidas, 4to validador del consejo Expandido y rechazo del plan por el CEO (un solo ciclo por sesión); `bash` habilitado para consultas de contexto de solo lectura; `token_estimate` recalculado (1770 → 2850).
+- **`skills/shared/codegraph-startup.md`**: la instalación global de `codegraph` (`npm install -g` / `uv` / `pip --user`) deja de ser automática — reporta `codegraph: ausente` y espera OK explícito del CEO. **Impacta a las 43 skills**: elimina la contradicción con la regla de «sin comandos irreversibles sin aprobación» y cierra un vector de supply-chain.
+- **`skills/bundles/index.json`**: recuento corregido de 42 → 43 skills.
+
 ## [1.15.0] - 2026-09-26
 
 ### Added

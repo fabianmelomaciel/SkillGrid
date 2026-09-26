@@ -1,6 +1,6 @@
 {
   "version": "1.2.0",
-  "description": "Role-based skill bundles for SkillGrid (42 skills). Use these when setting up a new user or project.",
+  "description": "Role-based skill bundles for SkillGrid (43 skills). Use these when setting up a new user or project.",
   "bundles": {
     "core": {
       "label": "Core Development",

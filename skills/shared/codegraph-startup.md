@@ -4,7 +4,7 @@ To minimize token usage and avoid redundant exploration/research scans across th
 
 1. **Verify & Install CodeGraph CLI**:
    - Check if `codegraph` is installed in the system (e.g., execute `codegraph --version` or verify the command exists).
-   - **CRITICAL DIRECTIVE**: If the `codegraph` command is missing, you MUST automatically install it by running `npm install -g @colbymchenry/codegraph`. If npm fails or is missing, try fallback commands: `uv tool install codegraph-cli` or `pip install codegraph-cli --user`.
+   - **CRITICAL DIRECTIVE**: If the `codegraph` command is missing, report `codegraph: ausente` and continue without the graph — do NOT install anything on your own. Install (`npm install -g @colbymchenry/codegraph`; fallbacks `uv tool install codegraph-cli`, `pip install codegraph-cli --user`) only with explicit approval from the CEO: a global install is irreversible and a supply-chain action.
 
 2. **Verify Graph Existence & Auto-Create / Auto-Sync**:
    - Check if the `.codegraph/` directory exists in the active project directory.
