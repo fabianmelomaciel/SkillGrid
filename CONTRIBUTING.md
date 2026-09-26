@@ -33,11 +33,12 @@ Ambos deben pasar sin errores.
 
 ## Origen de los skills
 
-- `skills/core/` contiene principalmente adaptaciones de skills públicos de Anthropic (brainstorming, systematic-debugging, test-driven-development, writing-plans, etc.). Al modificarlos, evaluá si el cambio corresponde upstream o es específico de SkillGrid.
+- Los skills con `category: core` en el frontmatter son principalmente adaptaciones de skills públicos de Anthropic (brainstorming, systematic-debugging, test-driven-development, writing-plans, etc.). Al modificarlos, evaluá si el cambio corresponde upstream o es específico de SkillGrid.
 - El resto de `skills/` (router, ponytail, agente-ideas, auditor-de-seguridad, cyber-neo, optimizador-finops, etc.) es autoría original de SkillGrid.
 
 ## Convenciones para skills
 
+- Todo skill vive en `skills/<nombre>/`, sin subcarpetas por categoría. La taxonomía la da `category:` en el frontmatter, no la carpeta física (`scripts/lib/walk-skills.js` recorre cualquier profundidad, así que la carpeta no aporta nada al tooling).
 - **YAML frontmatter obligatorio** con campos: `name`, `description`, `category`, `status`, `risk_level`
 - Secciones: `## Core` (contenido principal), `## Modules` (footers con etiquetas `[model:*]` / `[platform:*]`)
 - Referenciar protocolos compartidos: `anti-rationalization.md`, `risk-assessment.md`, `verification-gate.md`, `codegraph-startup.md`, `codex-learning-loop.md`

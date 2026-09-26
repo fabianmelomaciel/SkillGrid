@@ -26,7 +26,7 @@ Use this skill when starting a new workspace analysis or project session where a
 *   **CRITICAL DIRECTIVE**: Never log, cache, or output database passwords. All passwords must remain strictly in memory during execution.
 
 ### Step 2: Database Introspection (Hot / Cold Fallback)
-*   Execute the local introspector utility (`node skills/core/db-schema-detector/scripts/db-detector.js`):
+*   Execute the local introspector utility (`node skills/db-schema-detector/scripts/db-detector.js`):
     *   **Hot Introspection**: The script attempts connection to the local database using PHP PDO or CLI clients with a strict 3-second connection timeout.
     *   **Cold Introspection**: If the database is unreachable, the script automatically parses local migrations (`database/migrations/`, `migrations/`), SQL DDL dumps, or ORM schemas (Prisma, Eloquent) to reconstruct the tables.
 *   Check Cache Lifecycle: Only run the database introspector if `.codegraph/db_schema.json` is missing or if the MD5 hashes of the migration files/`.env` file have changed.

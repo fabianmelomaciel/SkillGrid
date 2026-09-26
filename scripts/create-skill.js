@@ -70,8 +70,8 @@ async function main() {
 
   rl.close();
 
-  // Create paths
-  const targetDir = path.join(SKILLS_DIR, category, name);
+  // Create paths — flat layout: category lives in frontmatter, not in the folder path
+  const targetDir = path.join(SKILLS_DIR, name);
   const targetFile = path.join(targetDir, 'SKILL.md');
 
   if (fs.existsSync(targetDir)) {

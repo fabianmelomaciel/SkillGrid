@@ -282,7 +282,7 @@ Capa opcional sobre CodeGraph: convierte el proyecto en un grafo consultable (`g
 
 ## 🙏 Atribución
 
-*   `skills/core/` contiene adaptaciones de skills públicos de **[Anthropic](https://github.com/anthropics)** (`brainstorming`, `systematic-debugging`, `test-driven-development`, `writing-plans`, etc.) — detalle en [CONTRIBUTING.md](CONTRIBUTING.md).
+*   Los skills con `category: core` contienen adaptaciones de skills públicos de **[Anthropic](https://github.com/anthropics)** (`brainstorming`, `systematic-debugging`, `test-driven-development`, `writing-plans`, etc.) — detalle en [CONTRIBUTING.md](CONTRIBUTING.md).
 *   Guards de calidad del pipeline (`no_new_skips`, `no_deleted_tests`) inspirados en **[intrepideai/donegate](https://github.com/intrepideai/donegate)**.
 
 ---

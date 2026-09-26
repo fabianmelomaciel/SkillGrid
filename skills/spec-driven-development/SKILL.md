@@ -173,7 +173,7 @@ Break the plan into discrete, implementable tasks:
   - Files: [Which files will be touched]
 ```
 
-Execute tasks one at a time following `skills/core/incremental-implementation/SKILL.md` (`incremental-implementation`) and `skills/core/test-driven-development/SKILL.md` (`test-driven-development`). Use `skills/core/context-engineering/SKILL.md` (`context-engineering`) to load the right spec sections and source files at each step rather than flooding the agent with the entire spec.
+Execute tasks one at a time following `skills/incremental-implementation/SKILL.md` (`incremental-implementation`) and `skills/test-driven-development/SKILL.md` (`test-driven-development`). Use `skills/context-engineering/SKILL.md` (`context-engineering`) to load the right spec sections and source files at each step rather than flooding the agent with the entire spec.
 
 ## Keeping the Spec Alive
 The spec is a living document, not a one-time artifact:
