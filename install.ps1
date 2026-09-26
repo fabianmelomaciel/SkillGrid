@@ -43,10 +43,10 @@ if (-not (Test-Path -LiteralPath $coreScript)) {
 }
 
 $argsList = @()
-if ($TargetDir) { $argsList += "--target"; $argsList += "`"$TargetDir`"" }
-if ($ProjectDir) { $argsList += "--project"; $argsList += "`"$ProjectDir`"" }
-if ($Language) { $argsList += "--language"; $argsList += "`"$Language`"" }
-if ($Profile -and $Profile -ne "all") { $argsList += "--profile"; $argsList += "`"$Profile`"" }
+if ($TargetDir) { $argsList += "--target"; $argsList += $TargetDir }
+if ($ProjectDir) { $argsList += "--project"; $argsList += $ProjectDir }
+if ($Language) { $argsList += "--language"; $argsList += $Language }
+if ($Profile -and $Profile -ne "all") { $argsList += "--profile"; $argsList += $Profile }
 if ($AutoInstallCodeGraph) { $argsList += "--install-codegraph" }
 if ($GenerateCodex) { $argsList += "--generate-codex" }
 
@@ -67,5 +67,4 @@ if (-not $TargetDir -and -not $ProjectDir) {
 }
 
 Write-Host "`nEjecutando: node scripts\install-core.js $($argsList -join ' ')" -ForegroundColor Gray
-$cmd = "node `"$coreScript`" $($argsList -join ' ')"
-Invoke-Expression $cmd
+& node $coreScript @argsList

@@ -312,7 +312,7 @@ function calcTokens(projectDir) {
 
 function installProjectRules(source, project, lang) {
   try {
-    execSync(`node "${path.join(ROOT, "scripts", "install-tasks.js")}" install-rules "${source}" "${project}" "${lang}"`, { stdio: "inherit", windowsHide: true });
+    execFileSync(process.execPath, [path.join(ROOT, "scripts", "install-tasks.js"), "install-rules", source, project, lang], { stdio: "inherit", windowsHide: true });
   } catch {
     log("Node.js required for project rules", "err");
   }
@@ -322,7 +322,7 @@ function generateAgents(source) {
   const agentsDir = path.join(require("os").homedir(), ".config", "opencode", "agents");
   fs.mkdirSync(agentsDir, { recursive: true });
   try {
-    execSync(`node "${path.join(ROOT, "scripts", "install-tasks.js")}" generate-agents "${source}" "${agentsDir}"`, { stdio: "inherit", windowsHide: true });
+    execFileSync(process.execPath, [path.join(ROOT, "scripts", "install-tasks.js"), "generate-agents", source, agentsDir], { stdio: "inherit", windowsHide: true });
     log("Agents generated", "ok");
   } catch {
     log("Node.js required for agent generation", "err");

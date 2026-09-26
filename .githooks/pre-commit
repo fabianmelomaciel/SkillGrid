@@ -124,6 +124,8 @@ if echo "$STAGED" | grep -qE '^(skills/|scripts/(validate-skills|generate-catalo
   fi
 fi
 
+node "$(dirname "$0")/../scripts/check-graphify-freshness.js" || true
+
 echo -e "${YELLOW}[pre-commit] Running test suite...${NC}"
 if ! npm test; then
   echo -e "${RED}[pre-commit] BLOCKED — Test suite failed.${NC}"
