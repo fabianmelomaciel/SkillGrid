@@ -145,14 +145,17 @@ function run() {
       sortedSkills.forEach(s => {
         const existing = existingSkills[s.name] || {};
 
-        let costTier = existing.cost_tier;
-        if (!costTier && s.token_estimate && s.token_estimate.input) {
+        // Recompute the tier from the current estimate every run — keeping the
+        // stored one goes stale as soon as token_estimate changes.
+        let costTier;
+        if (s.token_estimate && s.token_estimate.input) {
           const inputTokens = s.token_estimate.input;
           if (inputTokens <= 2500) costTier = 'low';
           else if (inputTokens <= 4500) costTier = 'medium';
           else costTier = 'high';
+        } else {
+          costTier = existing.cost_tier || 'low';
         }
-        if (!costTier) costTier = 'low';
 
         updatedSkills[s.name] = {
           name: s.name,
@@ -204,6 +207,68 @@ function run() {
       console.warn(`Warning: could not sync skills/index.json — ${e.message}`);
     }
   }
+
+  updateReadmeCatalog(skills);
+}
+
+const README_PATH = path.join(ROOT, 'README.md');
+const CATALOG_BEGIN = '<!-- catalog:begin -->';
+const CATALOG_END = '<!-- catalog:end -->';
+
+const CATEGORY_META = {
+  core: { emoji: '🔧', title: 'Desarrollo Core', noun: 'Skills' },
+  design: { emoji: '🎨', title: 'Design Engineering', noun: 'Skills' },
+  agent: { emoji: '🤖', title: 'Agentes Especializados', noun: 'Agents' },
+};
+
+function truncateText(text, max = 90) {
+  if (!text) return '—';
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max - 1);
+  const sp = cut.lastIndexOf(' ');
+  return (sp > 40 ? cut.slice(0, sp) : cut) + '…';
+}
+
+function buildReadmeSection(skills, total) {
+  const byCat = {};
+  skills.forEach(s => {
+    const cat = s.category || 'other';
+    (byCat[cat] = byCat[cat] || []).push(s);
+  });
+  const preferred = ['core', 'design', 'agent'];
+  const cats = [
+    ...preferred.filter(c => byCat[c]),
+    ...Object.keys(byCat).filter(c => !preferred.includes(c)).sort(),
+  ];
+
+  let out = `*~Tokens = contexto que consume la skill al activarse (medido del frontmatter de cada \`SKILL.md\`). Las ${total} completas, en [catalog.json](catalog.json).*\n`;
+  for (const cat of cats) {
+    const meta = CATEGORY_META[cat] || { emoji: '📋', title: cat.charAt(0).toUpperCase() + cat.slice(1), noun: 'Skills' };
+    const list = [...byCat[cat]].sort((a, b) => a.name.localeCompare(b.name));
+    out += `\n### ${meta.emoji} ${meta.title} (${list.length} ${meta.noun})\n\n`;
+    out += '| Skill | Para qué | ~Tokens |\n|---|---|---:|\n';
+    for (const s of list) {
+      const desc = truncateText((s.description || '').replace(/\s+/g, ' ').trim()).replace(/\|/g, '\\|');
+      const tok = s.token_estimate && s.token_estimate.input ? s.token_estimate.input : '—';
+      out += `| \`${s.name}\` | ${desc} | ${tok} |\n`;
+    }
+  }
+  return out;
+}
+
+function updateReadmeCatalog(skills) {
+  if (!fs.existsSync(README_PATH)) return;
+  const readme = fs.readFileSync(README_PATH, 'utf-8');
+  const bi = readme.indexOf(CATALOG_BEGIN);
+  const ei = readme.indexOf(CATALOG_END);
+  if (bi === -1 || ei === -1 || ei < bi) {
+    console.warn('Warning: README catalog markers not found, skipping README sync');
+    return;
+  }
+  const section = '\n' + buildReadmeSection(skills, skills.length) + '';
+  const out = readme.slice(0, bi + CATALOG_BEGIN.length) + section + readme.slice(ei);
+  fs.writeFileSync(README_PATH, out, 'utf-8');
+  console.log(`README catalog section synced (${skills.length} skills)`);
 }
 
 if (require.main === module) {

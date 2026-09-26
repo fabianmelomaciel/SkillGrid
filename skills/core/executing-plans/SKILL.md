@@ -4,7 +4,7 @@ description: Use when you have a written implementation plan to execute in a sep
 category: core
 status: stable
 risk_level: safe
-token_estimate: { input: 988, output: 395 }
+token_estimate: { input: 748, output: 395 }
 ---
 
 ## Core

@@ -4,7 +4,7 @@ description: "Generates CHANGELOG.md drafts from git log — post-tag, by date r
 category: core
 status: stable
 risk_level: safe
-token_estimate: { input: 640, output: 260 }
+token_estimate: { input: 911, output: 260 }
 ---
 
 ## Core

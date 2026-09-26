@@ -4,7 +4,7 @@ description: Úsalo para auditar el crecimiento del sitio web, SEO on-page, marc
 category: agent
 status: stable
 risk_level: safe
-token_estimate: { input: 5320, output: 2128 }
+token_estimate: { input: 3738, output: 2128 }
 ---
 
 ## Core

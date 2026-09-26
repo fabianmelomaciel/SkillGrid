@@ -4,7 +4,7 @@ description: "Detects local databases and generates cached schemas in CodeGraph 
 category: core
 status: stable
 risk_level: safe
-token_estimate: { input: 1379, output: 552 }
+token_estimate: { input: 1128, output: 552 }
 ---
 
 ## Core

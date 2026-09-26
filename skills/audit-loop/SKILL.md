@@ -190,11 +190,22 @@ You are activated as a follow-up of:
 
 | CEO Trigger | Action |
 |-------------|--------|
-| "I don't like this design" | Load `impeccable-design-taste` + `emil-kowalski-design`. Pause loop. |
+| "I don't like this design" | Load `emil-kowalski-design` + `github-premium-aesthetics`. Pause loop. |
 | "That's wrong, revert" | Execute `revert` on the last fix. |
 | "Show me the code" / "View the file" | `read` + show to CEO |
 | "Apply only the safe ones" | Skip all yellows, only greens. |
 | "Manual iteration" | REQUIRES OK for EVERYTHING (nothing is auto-repairable). |
+
+---
+
+## Multi-Perspective Review
+
+Antes de cerrar un commit con riesgo (auth, validación, multi-archivo, diff grande), review en paralelo antes del merge:
+
+1. **Scope:** `git diff` (o `git diff main...`), archivos y rangos tocados.
+2. **Fan-out con `task()`:** Simplicidad (legibilidad, DRY, naming), Seguridad (OWASP, secretos, auth), Performance/FinOps (queries, loops, memoria). Si el diff toca UI/CSS, sumá un auditor de diseño (`emil-kowalski-design`).
+3. **Sintetizá un solo reporte:** findings bloqueantes vs no bloqueantes + scores 1-10 de simplicidad, seguridad y performance.
+4. **Veredicto:** `PASS` | `PASS WITH RECOMMENDATIONS` | `BLOCK`. Blocking = no merge; non-blocking = plan de seguimiento.
 
 ---
 
@@ -225,6 +236,8 @@ Before declaring an iteration complete, verify:
 - [ ] State snapshot follows the expected format (`iter=X/3 | applied=N | ...`)
 
 **If even ONE item is missing, the iteration is NOT complete.**
+
+That checklist is about the iteration itself; the definition of done for the whole task is `skills/shared/verification-gate.md` — this skill doesn't get to renegotiate it.
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 

@@ -4,7 +4,7 @@ description: "Use when designing, writing, debugging, or auditing Playwright E2E
 category: core
 status: stable
 risk_level: safe
-token_estimate: { input: 2000, output: 800 }
+token_estimate: { input: 1117, output: 800 }
 ---
 
 ## Core

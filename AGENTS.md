@@ -6,6 +6,10 @@ Read `.agents/VOICE.md` before writing any code comment. All comments must sound
 
 Read `.agents/AGENTS.md` before implementing anything. No AI signatures, no obvious comments, names humanas.
 
+## env preflight
+
+Antes de tocar cualquier archivo del proyecto, corré el preflight: rama y estado de git, `.gitignore`, `.git/info/exclude`, `git check-ignore -v` por destino y drift (`git ls-files -ci --exclude-standard`). El detalle está en `skills/shared/env-preflight.md`. Sin la línea de GO no se escribe nada — si el entorno es ambiguo, se asume producción y solo se lee.
+
 ## scratch y reports
 
 Antes de generar un test, prueba manual o reporte nuevo, revisá primero si ya existe algo reutilizable en la carpeta scratch/reports del proyecto (p. ej. `scratch/`, `reports/`, o el directorio temporal indicado por el entorno) en vez de regenerarlo desde cero. Extendé o actualizá lo existente cuando cubra el mismo caso; solo creá un archivo nuevo si no hay nada equivalente. Esto evita gastar tokens repitiendo contenido ya producido en la sesión o en sesiones previas.

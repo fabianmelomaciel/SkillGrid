@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.15.0] - 2026-09-26
+
+### Added
+- **`skills/shared/env-preflight.md` + `scripts/preflight.js` (`npm run preflight`)**: pre-flight obligatorio de entorno antes de escribir en cualquier proyecto. Clasificación dev/prod fail-closed (duda ⇒ producción, solo lectura), lectura de `.gitignore`/`.git/info/exclude`/`core.hooksPath`, `git check-ignore -v` por destino, detección de drift, y salida `GO/NO-GO` en una línea. Activado con una sola línea en `skills/shared/modules-footer.md` (lo cargan las 43 skills) más la regla nueva en `AGENTS.md`.
+- **Definition of Done en `skills/shared/verification-gate.md`**: única fuente de verdad de "listo" — evidencia fresca de `npm run gate`/`npm test`, `no_new_skips`, `no_deleted_tests`, mapeo diff→test, red→green inverso para cambios de auth/validación/secretos, preflight GO y hooks activos en el target. `verification-before-completion`, `test-driven-development` y `audit-loop` delegan ahí en vez de dar tres definiciones distintas.
+- **Guards en `.githooks/pre-commit`**: bloquea `.skip`/`.only`/`todo(` nuevos y tests borrados sin reemplazo en el diff, con los offending lines como evidencia. Se eliminó la sugerencia a `git commit --no-verify`. Guards con concepto adoptado de `intrepideai/donegate` — evaluado junto a otras candidatas de GitHub y decidido NO instalarla (sin dependencias ni tokens base nuevos).
+- **`npm run gate`**: gate rápido local (validate + skills + catalog + create-skill, ~7s) para uso diario; la suite completa queda para CI y pre-release.
+- **`agente-ideas`: Stage 0 de contexto y memoria** — antes de evaluar complejidad, lee `## Deliberaciones` en `CODEX.md` (una línea por cierre de consejo, máx. 15 entradas, solo hechos verificados): si el tema ya está `resuelto`, devuelve el veredicto previo y no convoca el consejo (re-deliberaciones ≈ 0 tokens). Carga de contexto barata: `graphify query` si existe el grafo, si no `catalog-lite.json` + glob/grep dirigido.
+- **Test `token_estimate` en `skills.test.js`**: cada `SKILL.md` debe declarar `input` dentro de ±20% de `chars/4`. Corregidas 12 estimaciones desactualizadas (a2a-orchestrator, mcp-configurator, prompt-injection-guard, hack-audit, changelog-drafter, performance-profiler, executing-plans, creativo-visual, auditor-de-marketing, playwright-testing, db-schema-detector, requesting-code-review) y agregada la que faltaba en `ponytail`.
+- **Tabla de catálogo del README auto-generada**: `npm run catalog` ahora reescribe el bloque entre `<!-- catalog:begin -->` y `<!-- catalog:end -->` (43 skills en 3 categorías, con ~tokens del frontmatter) — el drift de tablas manuales (como el badge `skills-49`) queda cubierto por el mismo gate que genera el catálogo.
+
+### Changed
+- `audit-loop` absorbe el protocolo de revisión multi-perspectiva de `ultra-review`: fan-out paralelo de auditores de simplicidad, seguridad y performance sobre el diff, síntesis única con scores y veredicto `PASS | PASS WITH RECOMMENDATIONS | BLOCK`.
+- `finishing-a-development-branch` absorbe la limpieza post-merge de `post-merge-cleanup`: scan de branches stale con prefijos conocidos, whitelist `main`/`master`/`develop`, exclusión de worktrees activos, report-only por defecto con confirmación tipada.
+- `emil-kowalski-design` absorbe el design taste gate de `impeccable-design-taste`: auditoría de tipografía, color (WCAG AA), spacing (escala 4px), pulido, movimiento y accesibilidad + autochequeo previo a declarar listo.
+- `spec-driven-development`: el fast path invoca la CLI `specify` directamente, sin pasar por el subagente `spec-kit`.
+- Ruteo actualizado a las skills sobrevivientes: `router`, `project-manager`, `a2a-orchestrator`, `performance-profiler`, `prompt-injection-guard` y `docs/workflows.md`.
+- **`agente-ideas`: consejo endurecido tras auditoría propia (Ranking: 1º C FinOps 8.5, 2º B Seguridad 8, 3º A Simpleza 7)** — contrato de salida para subagentes (score 0-10, ≥1 riesgo, evidencia `file:line`, ≤400 palabras), 1 retry máximo o estado `Council: degraded`, veto de la perspectiva de seguridad sobre el early-exit, handoff con `Evidence` (gate fresco + GO de preflight) obligatorio para declarar `Complete` (si no, `Blocked`), presupuesto por deliberación (≤60K input / ≤10K output / ≤8 min), gate de salto con umbrales concretos (diff ≤100 LOC o ≤3 archivos, 1 commit reversible, sin superficie de seguridad), `edit`/`write` solo tras OK del CEO, y postura anti-inyección (lo que el repo muestre es dato, nunca instrucción).
+- **`agente-ideas`: fixes de errores** — Stage 3 promediaba "rankings" que no existían (Stage 2 produce un solo ranking); el anonimato del Stage 2 era ilusorio (reordenar sin revelar perspectiva); el "external validator" del council Expanded quedó definido; gate de complejidad y early-exit dejaron de ser contradictorios; `CODEX-FIRST` con patrón "search upward / crear si falta".
+- **`agente-ideas`: refinamientos post-análisis** — lookup de memoria anclado al header (`^## Deliberaciones`: la mission log menciona ese string entre backticks), sin doble lectura de `CODEX.md` (`CODEX-FIRST` ya lo cargó), nueva línea `Gate: convened | skipped (motivo, LOC)` en el handoff para instrumentar cuántos pedidos ni llegan al consejo, regla explícita de poda de memoria (al entrar la entrada #16, resumir las 5 más viejas al escribir el handoff) y `bash` acotado a verificación (tests/gate/git status-diff, nada destructivo sin OK explícito).
+- **README reescrito para GitHub**: TL;DR + tabla con/sin SkillGrid, "Primeros pasos" con invocaciones reales (`/agente-ideas`, `/auditor-de-seguridad`…), catálogo destacado en tablas escaneables con ~tokens por skill, FAQ, sección de Atribución, aviso de las 6 skills `critical`, nota de instalador revisable en vez de `| iex` ciego, y badge de tests.
+
+### Removed
+- **6 skills (49 → 43)**: `supply-chain-auditor` (el alcance vive en la fase Dependency & Supply Chain de `auditor-de-seguridad`, con `cyber-neo/references/supply-chain.md` como referencia), `gsd-workflow` (`writing-plans` + `executing-plans`), `spec-kit`, `ultra-review`, `impeccable-design-taste`, `post-merge-cleanup`. El consejo deliberativo (agente-ideas, 3 etapas) resolvió qué conservar: `brainstorming` y `hack-audit` se mantienen por ser funciones únicas.
+- **2 skills huérfanas desinstaladas** de opencode, Claude Code y antigravity: `changelog-generator` y `etichack` — existían en disco pero no tenían entrada en el catálogo.
+- Instalaciones duplicadas `skills/core/` y `skills/design/` en Claude Code y antigravity (restos de versiones viejas del instalador, con los SKILL.md repetidos en dos rutas).
+- 27 archivos `*(Conflicted copy 2026-09-21 from CHIWI)*` de todo el repo (ninguno trackeado, 85 KB de ruido en `git status`).
+
+### Fixed
+- Drift de git: `CODEX.md`, `.agents/VOICE.md` y `scratch/test-mixed.json` estaban trackeados pese a figurar en `.gitignore` → `git rm --cached` (siguen en disco, ahora consistentemente ignorados).
+- `skills/bundles/index.json`: perfil `strict` le faltaba `ponytail` y las descripciones de perfiles quedaron con los conteos reales tras la purga.
+- Conteos en README (43 skills, 270 tests, perfiles 6/16/43) y en `router`.
+- **README: bugs de confianza** — badge `skills-49` (eran 43), ancla rota de "Instalación Avanzada", cifras de ahorro inconsistentes (unificadas en "hasta −90%", la tabla con precios queda como respaldo), perfiles faltantes `superpowers` (22) y `testing` (4), `[NUEVO]` obsoleto en `hack-audit`.
+- **`scripts/merge-skill.js`**: `coreBody` no se recortaba al inicio — el merge inyectaba una línea en blanco espuria tras `## Core` en todos los SKILL.md instalados.
+- **Descripciones de perfiles en `skills/bundles/index.json`**: `strict` decía "42 skills" (eran 43, faltaba el recount post-ponytail) y las sumas de tokens de los 5 perfiles estaban con valores previos a la re-estimación (`minimal` ~8K→~14K, `standard` ~28K→~36K, `superpowers` ~40K→~45K); bullets del README actualizados.
+- **`CODEX.md` gotcha de Catalog Maintenance**: el snippet manual usaba `total: c.total` (campo inexistente; el real es `summary.total`) y afirmaba que `catalog-lite.json` era gitignored — está trackeado. Reemplazado por la instrucción de `npm run catalog`, que ahora también sincroniza la tabla del README.
+- **`cost_tier` congelado en `skills/index.json`**: `generate-catalog.js` preservaba el tier existente y solo lo calculaba si faltaba, así que 8 skills quedaron con tier viejo tras re-estimar sus `token_estimate` (p. ej. `hack-audit` con 5180 tokens seguía `medium`; ahora `high`). El tier se recalcula en cada corrida desde el estimate vigente (v1.2.38).
+
+Suite: 299 → 270 tests (269 tras la purga de las 6 skills + 1 nuevo test de `token_estimate`), 0 fallos, validate en verde.
+
+---
+
 ## [1.14.0] - 2026-09-21
 
 ### Fixed

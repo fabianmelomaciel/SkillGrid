@@ -1,12 +1,12 @@
 {
-  "version": "1.2.35",
-  "generated": "2026-09-21",
+  "version": "1.2.39",
+  "generated": "2026-09-26",
   "summary": {
-    "total": 49,
+    "total": 43,
     "categories": {
-      "core": 31,
-      "agent": 14,
-      "design": 4
+      "core": 28,
+      "agent": 12,
+      "design": 3
     }
   },
   "skills": {
@@ -17,7 +17,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 1500,
+        "input": 2459,
         "output": 600
       },
       "cost_tier": "low",
@@ -46,8 +46,8 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 1100,
-        "output": 500
+        "input": 1770,
+        "output": 700
       },
       "cost_tier": "low",
       "invokes": [
@@ -65,7 +65,7 @@
         "input": 2730,
         "output": 1092
       },
-      "cost_tier": "low",
+      "cost_tier": "medium",
       "invokes": []
     },
     "auditor-de-marketing": {
@@ -75,10 +75,10 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 5320,
+        "input": 3738,
         "output": 2128
       },
-      "cost_tier": "high",
+      "cost_tier": "medium",
       "invokes": [
         "audit-loop"
       ]
@@ -121,7 +121,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 640,
+        "input": 911,
         "output": 260
       },
       "cost_tier": "low",
@@ -160,7 +160,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 4660,
+        "input": 3436,
         "output": 1864
       },
       "cost_tier": "medium",
@@ -178,7 +178,7 @@
         "input": 4153,
         "output": 1703
       },
-      "cost_tier": "low",
+      "cost_tier": "medium",
       "invokes": []
     },
     "db-schema-detector": {
@@ -188,7 +188,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 1379,
+        "input": 1128,
         "output": 552
       },
       "cost_tier": "low",
@@ -229,7 +229,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 988,
+        "input": 748,
         "output": 395
       },
       "cost_tier": "low",
@@ -293,21 +293,6 @@
       "cost_tier": "low",
       "invokes": []
     },
-    "gsd-workflow": {
-      "name": "gsd-workflow",
-      "description": "Use when executing complex, multi-step coding tasks where context rot or token limits could degrade performance.",
-      "category": "core",
-      "status": "stable",
-      "risk_level": "safe",
-      "token_estimate": {
-        "input": 1141,
-        "output": 468
-      },
-      "cost_tier": "low",
-      "invokes": [
-        "subagent-driven-development"
-      ]
-    },
     "hack-audit": {
       "name": "hack-audit",
       "description": "Pentest autónomo con explotación real: mapea el código y toda la superficie local/de infraestructura (puertos, procesos, SSH) en busca de vectores de ataque, y después ejecuta exploits de verdad contra el target en vivo para demostrarlos. Sin PoC funcionando, el hallazgo no entra al informe. Cubre las cinco clases fijas: Injection, XSS, SSRF, autenticación rota y autorización rota, más revisión de hardening SSH cuando aplica. Exige autorización explícita y entorno no productivo antes de tocar nada, y nunca borra ni altera logs del target — toda intervención queda documentada como evidencia, nunca oculta. Informe siempre en español y con la misma estructura fija. Úsalo cuando el usuario pida \"corré un pentest\", \"auditá esta app/máquina con exploits reales\" o \"probá si esto se puede romper de verdad\", a diferencia de auditor-de-seguridad/cyber-neo que son solo análisis estático de código.",
@@ -315,10 +300,10 @@
       "status": "beta",
       "risk_level": "critical",
       "token_estimate": {
-        "input": 3600,
+        "input": 5180,
         "output": 1600
       },
-      "cost_tier": "medium",
+      "cost_tier": "high",
       "invokes": [
         "audit-loop"
       ]
@@ -348,21 +333,6 @@
       },
       "cost_tier": "low",
       "invokes": []
-    },
-    "impeccable-design-taste": {
-      "name": "impeccable-design-taste",
-      "description": "Use for any frontend design work, UI generation, or design review where quality must be premium. Activates comprehensive design auditing across typography, color, spacing, motion, and accessibility. Trigger on \"make this beautiful\", \"premium design\", \"review my UI quality\", \"this feels generic\", or any design-first request.",
-      "category": "design",
-      "status": "stable",
-      "risk_level": "safe",
-      "token_estimate": {
-        "input": 1536,
-        "output": 614
-      },
-      "cost_tier": "low",
-      "invokes": [
-        "emil-kowalski-design"
-      ]
     },
     "incremental-implementation": {
       "name": "incremental-implementation",
@@ -399,7 +369,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 1300,
+        "input": 2059,
         "output": 500
       },
       "cost_tier": "low",
@@ -427,7 +397,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 1400,
+        "input": 1876,
         "output": 600
       },
       "cost_tier": "low",
@@ -440,7 +410,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 2000,
+        "input": 1117,
         "output": 800
       },
       "cost_tier": "low",
@@ -456,21 +426,8 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 2000,
-        "output": 800
-      },
-      "cost_tier": "low",
-      "invokes": []
-    },
-    "post-merge-cleanup": {
-      "name": "post-merge-cleanup",
-      "description": "Scans for stale branches eligible for cleanup after merge. Report-only by default — lists candidates but never deletes without human confirmation.",
-      "category": "core",
-      "status": "stable",
-      "risk_level": "safe",
-      "token_estimate": {
-        "input": 611,
-        "output": 251
+        "input": 467,
+        "output": 210
       },
       "cost_tier": "low",
       "invokes": []
@@ -485,7 +442,7 @@
         "input": 2800,
         "output": 1200
       },
-      "cost_tier": "high",
+      "cost_tier": "medium",
       "invokes": [
         "brainstorming",
         "writing-plans",
@@ -500,10 +457,10 @@
       "status": "stable",
       "risk_level": "critical",
       "token_estimate": {
-        "input": 1800,
+        "input": 2834,
         "output": 900
       },
-      "cost_tier": "low",
+      "cost_tier": "medium",
       "invokes": []
     },
     "receiving-code-review": {
@@ -526,7 +483,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 1050,
+        "input": 843,
         "output": 420
       },
       "cost_tier": "low",
@@ -560,19 +517,6 @@
         "writing-plans"
       ]
     },
-    "spec-kit": {
-      "name": "spec-kit",
-      "description": "Envuelve la CLI Spec-Kit de GitHub (`specify`) para opencode; genera especificaciones, planes y artefactos de tareas mediante herramientas de Desarrollo Guiado por Especificaciones en lugar de redactarlos manualmente. Requiere Python 3.11+ y `uv`.",
-      "category": "agent",
-      "status": "stable",
-      "risk_level": "critical",
-      "token_estimate": {
-        "input": 800,
-        "output": 400
-      },
-      "cost_tier": "low",
-      "invokes": []
-    },
     "subagent-driven-development": {
       "name": "subagent-driven-development",
       "description": "Use when executing implementation plans with independent tasks in the current session",
@@ -590,19 +534,6 @@
         "incremental-implementation"
       ]
     },
-    "supply-chain-auditor": {
-      "name": "supply-chain-auditor",
-      "description": "Audita la cadena de suministro de software de un proyecto: dependencias de npm/pip/composer, integridad del archivo lock, CVEs, conformidad de licencias y riesgo transitivo. Úsalo antes de fusionar a la rama principal, al añadir nuevas dependencias o como parte de un gate post-instalación de CI/CD.",
-      "category": "agent",
-      "status": "stable",
-      "risk_level": "critical",
-      "token_estimate": {
-        "input": 1600,
-        "output": 800
-      },
-      "cost_tier": "low",
-      "invokes": []
-    },
     "systematic-debugging": {
       "name": "systematic-debugging",
       "description": "Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes",
@@ -613,7 +544,7 @@
         "input": 2955,
         "output": 1182
       },
-      "cost_tier": "low",
+      "cost_tier": "medium",
       "invokes": []
     },
     "test-driven-development": {
@@ -628,21 +559,6 @@
       },
       "cost_tier": "low",
       "invokes": []
-    },
-    "ultra-review": {
-      "name": "ultra-review",
-      "description": "Use when you need to perform a deep, multi-perspective automated audit of code changes prior to committing or merging.",
-      "category": "core",
-      "status": "stable",
-      "risk_level": "safe",
-      "token_estimate": {
-        "input": 1219,
-        "output": 500
-      },
-      "cost_tier": "medium",
-      "invokes": [
-        "dispatching-parallel-agents"
-      ]
     },
     "using-git-worktrees": {
       "name": "using-git-worktrees",
@@ -695,7 +611,7 @@
         "input": 2751,
         "output": 1100
       },
-      "cost_tier": "low",
+      "cost_tier": "medium",
       "invokes": []
     }
   }

@@ -1,6 +1,6 @@
 {
   "name": "skillgrid",
-  "version": "1.14.0",
+  "version": "1.15.0",
   "description": "Portable AI assistant skills collection for opencode, antigravity, and AI coding tools",
   "keywords": [
     "opencode",
@@ -37,6 +37,8 @@
   ],
   "scripts": {
     "validate": "node scripts/validate-skills.js",
+    "preflight": "node scripts/preflight.js",
+    "gate": "node scripts/validate-skills.js && node tests/skills.test.js && node tests/generate-catalog.test.js && node tests/create-skill.test.js",
     "catalog": "node scripts/generate-catalog.js",
     "test": "node tests/skills.test.js && node tests/install-core.test.js && node tests/validate.test.js && node tests/generate-catalog.test.js && node tests/create-skill.test.js && node tests/audit-loop/audit-loop.test.js",
     "prepack": "node scripts/generate-catalog.js",

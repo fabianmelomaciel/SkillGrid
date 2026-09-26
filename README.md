@@ -3,16 +3,17 @@
 
 ### **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*49 skills · 299 tests · 4 plataformas · ~95% ahorro de tokens · +5 herramientas de seguridad*
+*43 skills · 270 tests · gate 7s · 4 plataformas · hasta −90% ahorro de tokens · 5 jobs de seguridad en CI*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-49-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-43-22c55e?style=flat-square)](catalog.json)
+[![Tests](https://img.shields.io/badge/tests-270-3b82f6?style=flat-square)](package.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/ci.yml)
 [![Security Pentest](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/pentest.yml?branch=main&label=Security%20Pentest&style=flat-square&color=dc2626)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/pentest.yml)
 
-**[⚡ Instalación Rápida](#-instalación-en-10-segundos) | [🛠️ Uso Avanzado](#%EF%B8%8F-instalación-avanzada) | [🔒 Security Pipeline](#-security-pipeline) | [📄 Changelog](CHANGELOG.md)**
+**[⚡ Instalación Rápida](#-instalación-en-10-segundos) | [🛠️ Uso Avanzado](#-instalación-avanzada-y-perfiles) | [🔒 Security Pipeline](#-security-pipeline) | [📄 Changelog](CHANGELOG.md)**
 
 ⭐ **[Dale una estrella al repo](https://github.com/fabianmelomaciel/SkillGrid/stargazers)** si te resulta útil — ayuda a que más gente lo encuentre.
 </div>
@@ -25,14 +26,27 @@ SkillGrid es un **sistema de trabajo autónomo** de instrucciones portables (`SK
 
 *   🔁 **Bucle de reparación cerrado** — los agentes auditan y corrigen fallos en ciclos autónomos, sin que tengas que intervenir.
 *   🧠 **CODEX, memoria persistente entre sesiones.** Un `CODEX.md` local (nunca se comitea) que el agente escribe y relee en cada tarea, para no obligarte a repetir el contexto de tu proyecto de una sesión a otra.
-*   🛡️ Auditoría integrada de **NVIDIA SkillSpector** + pentest automatizado en cada PR — la seguridad viene incorporada, no como agregado.
+*   🛡️ Auditoría integrada de **NVIDIA SkillSpector** en CI + pentest automatizado en cada PR — la seguridad viene incorporada, no como agregado.
 *   📦 Instalás solo el perfil de skills que tu equipo necesita, nada más.
+
+### ⚡ TL;DR
+
+*   **43 skills listas para invocar** — `/brainstorming`, `/agente-ideas`, `/auditor-de-seguridad`… en opencode, Claude Code, Cursor y antigravity.
+*   **Se audita a sí mismo** — su propio `gate` (43 skills, 270 tests) y un pipeline de seguridad en cada PR.
+*   **Memoria y eficiencia** — `CODEX.md` local + CodeGraph: hasta **−90%** de tokens por sesión de trabajo.
+
+| | Sin SkillGrid | Con SkillGrid |
+|---|---|---|
+| **Contexto** | Repetís el proyecto en cada sesión | El agente lee su `CODEX.md` y sigue |
+| **Calidad** | Bugs que llegan a `main` | Tests + `gate` antes de cada commit |
+| **Seguridad** | Auditoría cuando te acordás | SkillSpector + 5 jobs de seguridad en cada PR |
+| **Costo** | Contexto completo en cada tarea | Catálogo de ~1.4K tok/sesión, −90% con CodeGraph |
 
 ---
 
 ## ⚡ Instalación en 10 segundos
 
-El instalador autodetecta opencode, antigravity, Claude Code y Cursor, y los configura de inmediato. Por defecto instala el perfil `all` (49 skills).
+El instalador autodetecta opencode, antigravity, Claude Code y Cursor, y los configura de inmediato. Por defecto instala el perfil `all` (43 skills).
 
 ### Windows (PowerShell)
 ```powershell
@@ -44,6 +58,24 @@ irm https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-ins
 curl -fsSL https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.sh | bash
 ```
 
+> 💡 **Para entornos serios, no pegues `main` en vivo:** bajá el instalador, revisalo y ejecutalo:
+> ```powershell
+> irm https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.ps1 -OutFile install.ps1
+> Get-Content install.ps1   # leelo antes de correrlo
+> .\install.ps1
+> ```
+
+### 🚀 Primeros pasos
+
+Con las skills instaladas, escribí su nombre en tu agente:
+
+| Querés… | Invocación |
+|---|---|
+| Decidir algo complejo de tu proyecto | `/agente-ideas` |
+| Auditar seguridad (OWASP Top 10, secretos, deps) | `/auditor-de-seguridad` |
+| Diseñar una feature antes de tocar código | `/brainstorming` |
+| Cerrar el ciclo auditar → corregir → re-auditar | `/audit-loop` |
+
 ---
 
 ## 🛠️ Instalación Avanzada y Perfiles
@@ -51,11 +83,13 @@ curl -fsSL https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/rem
 <details>
 <summary><strong>📦 Perfiles Disponibles (Instalación Parcial)</strong></summary>
 
-Puedes seleccionar perfiles específicos para limitar el consumo de tokens y adecuar el entorno de tu agente:
+Podés seleccionar perfiles específicos para limitar el consumo de tokens y adecuar el entorno de tu agente:
 
-*   `minimal`: Solo gates mínimos de seguridad (~5 skills).
-*   `standard`: Flujo de desarrollo completo del día a día (~17 skills).
-*   `strict`: Suite completa con todos los auditores activos (~39 skills).
+*   `minimal`: Solo gates mínimos de seguridad (6 skills, ~14K tokens).
+*   `standard`: Flujo de desarrollo completo del día a día (16 skills, ~36K tokens).
+*   `superpowers`: Metodología completa de desarrollo (22 skills, ~45K tokens).
+*   `testing`: Enfocado en QA: E2E, TDD y debugging (4 skills, ~8K tokens).
+*   `strict`: Suite completa con todos los auditores activos (43 skills, ~94K tokens).
 
 ```bash
 # Ejemplo en Bash
@@ -79,38 +113,78 @@ Genera automáticamente archivos de reglas optimizados en tu proyecto local:
 
 ## 🗺️ Catálogo de Skills Destacadas
 
-### 🔧 Desarrollo Core (31 Skills)
-Metodologías avanzadas para garantizar la calidad del código:
-*   `brainstorming` - Diseño y alineación de features antes de escribir código.
-*   `spec-driven-development` - Creación de especificaciones técnicas precisas.
-*   `writing-plans` y `incremental-implementation` - Planificación e implementación incremental.
-*   `test-driven-development` y `playwright-testing` - Ciclo Red-Green-Refactor y pruebas E2E.
-*   `verification-before-completion` - Pruebas obligatorias antes de finalizar tareas.
-*   `humanizer` - Remueve patrones y clichés de escritura de IA para lograr textos más naturales.
-*   `changelog-drafter` - Genera borradores de CHANGELOG.md (post-tag o a demanda) con gates de seguridad: read-only salvo por una rama nueva, PR siempre, nunca push directo.
-*   `issue-triage` - Clasifica issues de GitHub por heurísticas, read-only por defecto.
-*   `post-merge-cleanup` - Escanea branches stale post-merge, modo report-only con whitelist y gate humano.
+<!-- catalog:begin -->
+*~Tokens = contexto que consume la skill al activarse (medido del frontmatter de cada `SKILL.md`). Las 43 completas, en [catalog.json](catalog.json).*
 
-### 🎨 Design Engineering (4 Skills)
-*   `impeccable-design-taste` - Auditoría visual de tipografía, colores, espaciados y accesibilidad.
-*   `emil-kowalski-design` - Animaciones fluidas de micro-interacciones (≤300ms) y rendimiento percibido.
-*   `github-premium-aesthetics` - Bento grids, mesh gradients y UI modernas.
-*   `creativo-visual` - Director creativo visual: generación de assets, favicons, OG images y paletas de marca.
+### 🔧 Desarrollo Core (28 Skills)
 
-### 🤖 Agentes Especializados (14 Agents)
-*   `auditor-de-seguridad` - Escáner SAST (OWASP Top 10), secretos y APIs.
-*   `hack-audit` **[NUEVO]** - Pentest autónomo con explotación real: además de leer el código, mapea toda la superficie local (puertos, procesos, SSH) y ataca el target en vivo, reportando solo lo que logró probar con un exploit funcionando. Cubre injection, XSS, SSRF, auth y autorización rota, con gate de autorización obligatorio, bloqueo total sobre producción y prohibición dura de borrar logs del target. Informe siempre en español con estructura fija.
-*   `supply-chain-auditor` - Auditoría de dependencias, licencias y CVEs.
-*   `prompt-injection-guard` - Protección contra inyecciones y jailbreaks.
-*   `audit-loop` - Bucle cerrado para resolver vulnerabilidades y findings automáticamente.
-*   `agente-ideas` - Consejo deliberativo de 3 etapas con 3 subagentes paralelos (Simplicidad, Seguridad, Performance) y early-exit gate por convergencia.
-*   `cyber-neo` - Corre herramientas reales (**Semgrep**, **Trivy**, **Gitleaks**, **TruffleHog**, **Checkov**, **Bandit**, **Safety**, **Nuclei**) en vez de solo patrones. Complementa a `auditor-de-seguridad`; el router elige uno u otro según el pedido, nunca los dos juntos.
+| Skill | Para qué | ~Tokens |
+|---|---|---:|
+| `a2a-orchestrator` | Orquesta flujos de trabajo multi-agente usando el protocolo Agent-to-Agent (A2A), el… | 2459 |
+| `brainstorming` | You MUST use this before any creative work - creating features, building components,… | 3054 |
+| `changelog-drafter` | Generates CHANGELOG.md drafts from git log — post-tag, by date range, or by commit count… | 911 |
+| `code-simplification` | Simplifies code for clarity. Use when refactoring code for clarity without changing… | 3786 |
+| `context-engineering` | Optimizes agent context setup. Use when starting a new session, when agent output… | 3347 |
+| `db-schema-detector` | Detects local databases and generates cached schemas in CodeGraph to save tokens and… | 1128 |
+| `dispatching-parallel-agents` | Use when facing 2+ independent tasks that can be worked on without shared state or… | 2012 |
+| `executing-plans` | Use when you have a written implementation plan to execute in a separate session with… | 748 |
+| `finishing-a-development-branch` | Use when implementation is complete, all tests pass, and you need to decide how to… | 2112 |
+| `headroom` | Reduce el uso de tokens del LLM comprimiendo el contexto, logs, salidas de herramientas… | 869 |
+| `humanizer` | Remove signs of AI-generated writing from text. Use when editing or reviewing text to… | 2000 |
+| `incremental-implementation` | Delivers changes incrementally. Use when implementing any feature or change that touches… | 2491 |
+| `issue-triage` | Classifies open GitHub issues by heuristics (keywords, template matching) and proposes… | 597 |
+| `mcp-configurator` | Configura servidores del Protocolo de Contexto de Modelos (MCP) para extender las… | 2059 |
+| `performance-profiler` | Measure-first performance engineering. Use before merging features that touch UI, API… | 1876 |
+| `playwright-testing` | Use when designing, writing, debugging, or auditing Playwright E2E and component tests. | 1117 |
+| `ponytail` | Úsalo antes de escribir código nuevo para forzar la opción más chica posible (YAGNI,… | 467 |
+| `receiving-code-review` | Use when receiving code review feedback, before implementing suggestions, especially if… | 1927 |
+| `requesting-code-review` | Use when completing tasks, implementing major features, or before merging to verify work… | 843 |
+| `router` | Dynamically load specific skills based on the user request by querying catalog-lite.json… | 800 |
+| `spec-driven-development` | Creates specs before coding. Use when starting a new project, feature, or significant… | 2206 |
+| `subagent-driven-development` | Use when executing implementation plans with independent tasks in the current session | 3480 |
+| `systematic-debugging` | Use when encountering any bug, test failure, or unexpected behavior, before proposing… | 2955 |
+| `test-driven-development` | Use when implementing any feature or bugfix, before writing implementation code | 2444 |
+| `using-git-worktrees` | Use when starting feature work that needs isolation from current workspace or before… | 2343 |
+| `verification-before-completion` | Use when about to claim work is complete, fixed, or passing, before committing or… | 1586 |
+| `writing-plans` | Use when you have a spec or requirements for a multi-step task, before touching code | 1870 |
+| `writing-skills` | Use when creating new skills, editing existing skills, or verifying skills work before… | 2751 |
+
+### 🎨 Design Engineering (3 Skills)
+
+| Skill | Para qué | ~Tokens |
+|---|---|---:|
+| `creativo-visual` | Visual Creative Director for AI image generation and optimization. Translates basic… | 3436 |
+| `emil-kowalski-design` | Use when building, reviewing, or auditing any UI component to apply Emil Kowalski's… | 1777 |
+| `github-premium-aesthetics` | Implements cutting-edge GitHub/Vercel-inspired UI patterns including Bento grids,… | 1649 |
+
+### 🤖 Agentes Especializados (12 Agents)
+
+| Skill | Para qué | ~Tokens |
+|---|---|---:|
+| `agente-devops` | Úsalo para auditar, generar y gestionar configuraciones seguras de contenedores Docker… | 1916 |
+| `agente-ideas` | Agente experto en deliberación y consenso. Resuelve decisiones complejas o ambiguas con… | 1770 |
+| `audit-loop` | Orquesta el bucle cerrado: auditar → corregir → re-auditar → iterar. Se activa como… | 2730 |
+| `auditor-de-marketing` | Úsalo para auditar el crecimiento del sitio web, SEO on-page, marcado de esquema,… | 3738 |
+| `auditor-de-seguridad` | Úsalo al finalizar el desarrollo, antes del despliegue, después de la generación de… | 3435 |
+| `cyber-neo` | Análisis integral de ciberseguridad para cualquier proyecto local. Escanea… | 4153 |
+| `execution-runtime` | Gestiona entornos de ejecución seguros y aislados (como Docker, WASM o microVMs) para… | 950 |
+| `gestor-documental` | Úsalo para diseñar, auditar, dar formato y validar documentos técnicos y científicos de… | 1738 |
+| `hack-audit` | Pentest autónomo con explotación real: mapea el código y toda la superficie local/de… | 5180 |
+| `optimizador-finops` | Úsalo para auditar la utilización de recursos computacionales, la eficiencia de las APIs… | 1813 |
+| `project-manager` | Agente Project Manager. El CEO da la dirección; el PM planifica, delega, revisa y reporta. | 2800 |
+| `prompt-injection-guard` | Defiende contra ataques de inyección de prompts en aplicaciones potenciadas por IA.… | 2834 |
+<!-- catalog:end -->
+
+> ⚠️ **Skills `critical` (6):** `audit-loop`, `auditor-de-seguridad`, `cyber-neo`, `execution-runtime`, `hack-audit` y `prompt-injection-guard` ejecutan herramientas reales (bash, escaneos, exploits). Usalas **solo con autorización explícita y en entornos no productivos**.
 
 ---
 
 ## 🔒 Security Pipeline
 
 SkillGrid aplica sus propias skills de seguridad a sí mismo mediante un pipeline de CI dedicado (`.github/workflows/pentest.yml`). Se ejecuta automáticamente en cada **Pull Request hacia `main`** y de forma **programada cada domingo**.
+
+<details>
+<summary><strong>🔍 Ver los 5 jobs del pipeline</strong></summary>
 
 | Job | Herramienta | Cobertura |
 |:---|:---|:---|
@@ -121,16 +195,17 @@ SkillGrid aplica sus propias skills de seguridad a sí mismo mediante un pipelin
 | 🔗 **Supply Chain** | OpenSSF Scorecard | Puntuación de 18 prácticas de seguridad del proyecto |
 
 > Todos los resultados se suben como **SARIF** a la pestaña **Security → Code Scanning** de GitHub para trazabilidad centralizada.
+</details>
 
 ---
 
-## 📈 Ahorro de Tokens del ~95% con CodeGraph
+## 📈 Ahorro de Tokens (hasta −90%) con CodeGraph
 
-**CodeGraph** y **Graphify** (más abajo) son dos herramientas externas distintas, no la misma cosa con dos nombres: CodeGraph es la que instala y sincroniza automáticamente cada skill al arrancar (obligatoria, sin pedir permiso); Graphify es una capa opcional encima, para consultas de grafo más ricas (`graphify query`, `graphify path`) y reglas de IDE. Podés usar solo CodeGraph.
+**CodeGraph** (obligatoria, corre sola al arrancar cada skill) y **Graphify** (capa opcional con `graphify query` / `graphify path`) son herramientas distintas: podés usar solo CodeGraph.
 
 SkillGrid combina **CodeGraph** (indexación local) con políticas estrictas de eficiencia para minimizar el context flooding:
 
-*   **Reducción del Contexto (-89.5%):** Lee solo el código necesario.
+*   **Reducción del contexto (≈ −90% en proyectos grandes):** lee solo el código necesario.
 *   **Políticas de Refactorización:** Segmentación automática de archivos que superen las 300 líneas.
 *   **Filtros de Seguridad:** Evita re-lecturas duplicadas y bucles infinitos de ejecución.
 
@@ -140,11 +215,15 @@ SkillGrid combina **CodeGraph** (indexación local) con políticas estrictas de 
 
 *Escenario ilustrativo basado en un proyecto de referencia con y sin CodeGraph; el ahorro real varía según el tamaño y estructura de tu repo.*
 
-> 💡 **Tip: baja el umbral de auto-compact.** Por defecto Claude Code compacta el contexto recién al ~83-90% de uso, momento en el que ya gastaste una cantidad enorme de tokens leyendo/escribiendo antes de comprimir. Bajalo a un valor más conservador (60-70%) agregando esto a tu `~/.claude/settings.json` (afecta todas tus sesiones, no solo este proyecto):
-> ```json
-> { "env": { "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "65" } }
-> ```
-> Esto fuerza la compactación antes, evitando quedarte sin presupuesto a mitad de una tarea larga.
+<details>
+<summary><strong>💡 Tip: baja el umbral de auto-compact</strong></summary>
+
+Por defecto Claude Code compacta el contexto recién al ~83-90% de uso, momento en el que ya gastaste una cantidad enorme de tokens leyendo/escribiendo antes de comprimir. Bajalo a un valor más conservador (60-70%) agregando esto a tu `~/.claude/settings.json` (afecta todas tus sesiones, no solo este proyecto):
+```json
+{ "env": { "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "65" } }
+```
+Esto fuerza la compactación antes, evitando quedarte sin presupuesto a mitad de una tarea larga.
+</details>
 
 ---
 
@@ -187,6 +266,24 @@ Capa opcional sobre CodeGraph: convierte el proyecto en un grafo consultable (`g
 .\scripts\ralph-loop.ps1 -AgentCommand "antigravity-ide" -TaskFile "task.md"
 ```
 </details>
+
+---
+
+## ❓ FAQ
+
+*   **¿Requisitos?** — Node.js ≥ 18 y git. Nada más: las skills son texto.
+*   **¿Funciona sin conexión?** — Sí, una vez instaladas. Solo necesitás red para instalar o actualizar.
+*   **¿Cuánto cuesta?** — SkillGrid es MIT (gratis). Pagás solo los tokens de tu modelo.
+*   **¿Cómo actualizo?** — Volvé a correr el mismo comando de instalación; reinstala sobre lo anterior.
+*   **¿Qué son las skills `critical`?** — Las 6 que ejecutan herramientas reales (ver recuadro en el catálogo). Solo con autorización y entorno no productivo.
+*   **¿Puede el agente commitear cualquier cosa?** — No: el hook `pre-commit` valida secretos, tests borrados, skips nuevos y el `gate` antes de cada commit.
+
+---
+
+## 🙏 Atribución
+
+*   `skills/core/` contiene adaptaciones de skills públicos de **[Anthropic](https://github.com/anthropics)** (`brainstorming`, `systematic-debugging`, `test-driven-development`, `writing-plans`, etc.) — detalle en [CONTRIBUTING.md](CONTRIBUTING.md).
+*   Guards de calidad del pipeline (`no_new_skips`, `no_deleted_tests`) inspirados en **[intrepideai/donegate](https://github.com/intrepideai/donegate)**.
 
 ---
 

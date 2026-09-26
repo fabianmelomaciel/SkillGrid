@@ -71,8 +71,7 @@ Reference table only — none of these trigger automatically. Only delegate when
 - **gestor-documental** — APA docs, requirements specs, formal reports
 - **auditor-de-seguridad** — SAST, secrets scan, dependency audit, infra review
 - **agente-ideas** — complex/ambiguous architecture decisions, consensus deliberation
-- **impeccable-design-taste** — premium frontend UI/UX (landing, dashboard, panel, refactor visual)
-- **emil-kowalski-design** — animation/micro-interaction polish, perceived performance
+- **emil-kowalski-design** — premium frontend UI/UX (tipografía, color, espaciado, accesibilidad) + animación y perceived performance
 - **github-premium-aesthetics** — bento grids, mesh gradients, glassmorphism, fluid motion
 - **creativo-visual** — image generation, favicons, social cards, brand assets
 
@@ -98,11 +97,11 @@ When design signals are detected, ALWAYS attach the corresponding design agent i
 
 | If task is... | Delegate via task() |
 |----------------|---------------------|
-| **New page/component/screen** (any language/framework) | `impeccable-design-taste` + `emil-kowalski-design` |
-| **Landing / marketing page** | `impeccable-design-taste` + `auditor-de-marketing` |
-| **Dashboard / admin panel** | `impeccable-design-taste` + `github-premium-aesthetics` |
+| **New page/component/screen** (any language/framework) | `emil-kowalski-design` |
+| **Landing / marketing page** | `emil-kowalski-design` + `auditor-de-marketing` |
+| **Dashboard / admin panel** | `emil-kowalski-design` + `github-premium-aesthetics` |
 | **Animation / interaction refactor** | `emil-kowalski-design` |
-| **Design refactor / "make it pretty"** | `impeccable-design-taste` + `emil-kowalski-design` |
+| **Design refactor / "make it pretty"** | `emil-kowalski-design` |
 | **Image / favicon / social card generation** | `creativo-visual` |
 | **Premium visual section (bento, mesh, glass)** | `github-premium-aesthetics` |
 
@@ -114,7 +113,7 @@ When the CEO request triggers design detection:
 CEO → PM:
   Detect: [design signals matched]
   Plan:
-    1. [task]. delegating design to impeccable-design-taste + emil-kowalski-design
+    1. [task]. delegating design to emil-kowalski-design
     2. [task]. delegating implementation to general (if needed)
   Review: verify WCAG AA, animation rules, and premium checklist
 ```

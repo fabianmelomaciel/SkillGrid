@@ -4,7 +4,7 @@ description: Visual Creative Director for AI image generation and optimization. 
 category: design
 status: stable
 risk_level: safe
-token_estimate: { input: 4660, output: 1864 }
+token_estimate: { input: 3436, output: 1864 }
 ---
 
 ## Core

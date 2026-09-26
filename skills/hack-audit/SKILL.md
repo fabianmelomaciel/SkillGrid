@@ -16,7 +16,7 @@ description: >
 category: agent
 status: beta
 risk_level: critical
-token_estimate: { input: 3600, output: 1600 }
+token_estimate: { input: 5180, output: 1600 }
 allowed-tools:
   - Read
   - Grep

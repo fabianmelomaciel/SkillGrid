@@ -4,6 +4,7 @@ description: "Úsalo antes de escribir código nuevo para forzar la opción más
 category: core
 status: stable
 risk_level: safe
+token_estimate: { input: 467, output: 210 }
 ---
 
 ## Core

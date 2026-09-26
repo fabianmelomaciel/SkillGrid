@@ -4,7 +4,7 @@ description: Orquesta flujos de trabajo multi-agente usando el protocolo Agent-t
 category: core
 status: stable
 risk_level: safe
-token_estimate: { input: 1500, output: 600 }
+token_estimate: { input: 2459, output: 600 }
 ---
 
 ## Core
@@ -99,7 +99,7 @@ Agents run in order, each consuming the output of the previous:
 ```
 Orchestrator
     │
-    ├─→ Agent A (supply-chain-auditor) ──→ CVE Report
+    ├─→ Agent A (dep + CVE scan) ──→ CVE Report
     │                                          │
     ├─→ Agent B (auditor-de-seguridad) ────────┤
     │                                          │
@@ -231,7 +231,7 @@ This skill orchestrates SkillGrid's existing agent skills across processes:
 
 | A2A Network | Agents | Trigger |
 |-------------|--------|---------|
-| **Full Audit Pipeline** | `auditor-de-seguridad` + `supply-chain-auditor` + `auditor-de-marketing` | On PR merge |
+| **Full Audit Pipeline** | `auditor-de-seguridad` + `auditor-de-marketing` | On PR merge |
 | **Deploy Gate** | `agente-devops` + `auditor-de-seguridad` + `performance-profiler` | Before production deploy |
 | **Deliberation Network** | `agente-ideas` (3 perspective agents) | On architectural decisions |
 

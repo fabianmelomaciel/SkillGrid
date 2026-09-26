@@ -1,12 +1,12 @@
 {
-  "version": "1.14.0",
-  "generated": "2026-09-21",
+  "version": "1.15.0",
+  "generated": "2026-09-26",
   "summary": {
-    "total": 49,
+    "total": 43,
     "categories": {
-      "core": 31,
-      "agent": 14,
-      "design": 4
+      "core": 28,
+      "agent": 12,
+      "design": 3
     }
   },
   "skills": [
@@ -151,13 +151,6 @@
       "risk_level": "safe"
     },
     {
-      "name": "gsd-workflow",
-      "description": "Use when executing complex, multi-step coding tasks where context rot or token limits could degrade performance.",
-      "category": "core",
-      "status": "stable",
-      "risk_level": "safe"
-    },
-    {
       "name": "hack-audit",
       "description": "Pentest autónomo con explotación real: mapea el código y toda la superficie local/de infraestructura (puertos, procesos, SSH) en busca de vectores de ataque, y después ejecuta exploits de verdad contra el target en vivo para demostrarlos. Sin PoC funcionando, el hallazgo no entra al informe. Cubre las cinco clases fijas: Injection, XSS, SSRF, autenticación rota y autorización rota, más revisión de hardening SSH cuando aplica. Exige autorización explícita y entorno no productivo antes de tocar nada, y nunca borra ni altera logs del target — toda intervención queda documentada como evidencia, nunca oculta. Informe siempre en español y con la misma estructura fija. Úsalo cuando el usuario pida \"corré un pentest\", \"auditá esta app/máquina con exploits reales\" o \"probá si esto se puede romper de verdad\", a diferencia de auditor-de-seguridad/cyber-neo que son solo análisis estático de código.",
       "category": "agent",
@@ -175,13 +168,6 @@
       "name": "humanizer",
       "description": "Remove signs of AI-generated writing from text. Use when editing or reviewing text to make it sound more natural and human-written.",
       "category": "core",
-      "status": "stable",
-      "risk_level": "safe"
-    },
-    {
-      "name": "impeccable-design-taste",
-      "description": "Use for any frontend design work, UI generation, or design review where quality must be premium. Activates comprehensive design auditing across typography, color, spacing, motion, and accessibility. Trigger on \"make this beautiful\", \"premium design\", \"review my UI quality\", \"this feels generic\", or any design-first request.",
-      "category": "design",
       "status": "stable",
       "risk_level": "safe"
     },
@@ -235,13 +221,6 @@
       "risk_level": "safe"
     },
     {
-      "name": "post-merge-cleanup",
-      "description": "Scans for stale branches eligible for cleanup after merge. Report-only by default — lists candidates but never deletes without human confirmation.",
-      "category": "core",
-      "status": "stable",
-      "risk_level": "safe"
-    },
-    {
       "name": "project-manager",
       "description": "Agente Project Manager. El CEO da la dirección; el PM planifica, delega, revisa y reporta.",
       "category": "agent",
@@ -284,25 +263,11 @@
       "risk_level": "safe"
     },
     {
-      "name": "spec-kit",
-      "description": "Envuelve la CLI Spec-Kit de GitHub (`specify`) para opencode; genera especificaciones, planes y artefactos de tareas mediante herramientas de Desarrollo Guiado por Especificaciones en lugar de redactarlos manualmente. Requiere Python 3.11+ y `uv`.",
-      "category": "agent",
-      "status": "stable",
-      "risk_level": "critical"
-    },
-    {
       "name": "subagent-driven-development",
       "description": "Use when executing implementation plans with independent tasks in the current session",
       "category": "core",
       "status": "stable",
       "risk_level": "safe"
-    },
-    {
-      "name": "supply-chain-auditor",
-      "description": "Audita la cadena de suministro de software de un proyecto: dependencias de npm/pip/composer, integridad del archivo lock, CVEs, conformidad de licencias y riesgo transitivo. Úsalo antes de fusionar a la rama principal, al añadir nuevas dependencias o como parte de un gate post-instalación de CI/CD.",
-      "category": "agent",
-      "status": "stable",
-      "risk_level": "critical"
     },
     {
       "name": "systematic-debugging",
@@ -314,13 +279,6 @@
     {
       "name": "test-driven-development",
       "description": "Use when implementing any feature or bugfix, before writing implementation code",
-      "category": "core",
-      "status": "stable",
-      "risk_level": "safe"
-    },
-    {
-      "name": "ultra-review",
-      "description": "Use when you need to perform a deep, multi-perspective automated audit of code changes prior to committing or merging.",
       "category": "core",
       "status": "stable",
       "risk_level": "safe"

@@ -1,3 +1,7 @@
+## Env Preflight
+
+Antes de escribir en un proyecto, corré `skills/shared/env-preflight.md` (clasificación de entorno, `.gitignore`, restricciones y `git check-ignore` por destino). Sin su línea de GO, no se toca nada.
+
 ## Modules
 
 [model:gemini-1.5-flash]

@@ -37,13 +37,12 @@ auditor-de-seguridad + auditor-de-marketing + optimizador-finops → gestor-docu
 ## Rediseno UI (Design Pipeline)
 
 ```
-brainstorming → impeccable-design-taste → emil-kowalski-design → incremental-implementation
+brainstorming → emil-kowalski-design → incremental-implementation
 ```
 
 1. **brainstorming**: Define objetivos de diseno con el CEO
-2. **impeccable-design-taste**: Audita tipografia, color, espaciado, accesibilidad
-3. **emil-kowalski-design**: Revisa animaciones, micro-interacciones, perceived performance
-4. **incremental-implementation**: Implementa cambios de UI en pasos revisables
+2. **emil-kowalski-design**: Audita tipografia, color, espaciado, accesibilidad, animaciones y perceived performance
+3. **incremental-implementation**: Implementa cambios de UI en pasos revisables
 
 ## Loop de reparación post-auditoría (Audit → Fix)
 
@@ -77,21 +76,20 @@ agente-devops → auditor-de-seguridad → audit-loop
 ## 🔒 AI Security Gate (LLM Apps) — v1.6
 
 ```
-prompt-injection-guard → auditor-de-seguridad → supply-chain-auditor → audit-loop
+prompt-injection-guard → auditor-de-seguridad → audit-loop
 ```
 
 1. **prompt-injection-guard**: Audita todas las superficies LLM del proyecto (chatbots, RAG pipelines, tool agents) contra OWASP LLM01:2025
-2. **auditor-de-seguridad**: Escanea el código de aplicación (SAST, OWASP web Top 10, secrets)
-3. **supply-chain-auditor**: Verifica CVEs en dependencias, lockfile integrity, licencias del SDK de IA
-4. **audit-loop**: Repara automáticamente lo que sea seguro, escala lo crítico al CEO
+2. **auditor-de-seguridad**: Escanea el código de aplicación (SAST, OWASP web Top 10, secrets) y la supply chain (CVEs en dependencias, lockfile integrity, licencias del SDK de IA)
+3. **audit-loop**: Repara automáticamente lo que sea seguro, escala lo crítico al CEO
 
 ## 📦 Supply Chain Gate (Pre-Merge) — v1.6
 
 ```
-supply-chain-auditor → audit-loop
+auditor-de-seguridad (Dependency & Supply Chain) → audit-loop
 ```
 
-1. **supply-chain-auditor**: `npm install <dep>` → CVE scan + license check + lockfile verify + deprecated check
+1. **auditor-de-seguridad**: `npm install <dep>` → CVE scan + license check + lockfile verify + deprecated check (`scanners/dep-audit.ps1`)
 2. **audit-loop**: auto-aplica `npm audit fix --only=patch`, escala breaking changes y licencias incompatibles
 
 ## ⚡ Performance Gate (Pre-Merge UI Features) — v1.6
@@ -119,12 +117,12 @@ a2a-orchestrator → [Agent A (seguridad) ‖ Agent B (performance) ‖ Agent C 
 ## 🛡️ LLM App Hardening (Full Stack) — v1.6
 
 ```
-brainstorming → spec-driven-development → [prompt-injection-guard + supply-chain-auditor] (paralelo) → mcp-configurator → audit-loop → agente-devops
+brainstorming → spec-driven-development → [prompt-injection-guard + auditor-de-seguridad] (paralelo) → mcp-configurator → audit-loop → agente-devops
 ```
 
 1. **brainstorming**: define arquitectura de la app LLM (RAG, agentic, chatbot, etc.)
 2. **spec-driven-development**: documenta requerimientos de seguridad y límites del sistema
-3. **prompt-injection-guard** + **supply-chain-auditor** (en paralelo): auditoría de seguridad completa antes del primer deploy
+3. **prompt-injection-guard** + **auditor-de-seguridad** (en paralelo): auditoría de seguridad completa antes del primer deploy
 4. **mcp-configurator**: conecta al agente de desarrollo con los MCP servers necesarios (DB, GitHub, tools)
 5. **audit-loop**: repara hallazgos seguros, escala críticos
 6. **agente-devops**: genera Dockerfile y pipeline CI/CD con todos los gates de seguridad incorporados

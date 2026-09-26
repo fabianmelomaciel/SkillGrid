@@ -142,6 +142,21 @@ Run this on any UI component before marking work done:
 
 ---
 
+## Static Design Taste Gate
+
+Animation aside, any visual output clears this before it's done:
+
+- [ ] Typography: no reflex default fonts; balanced headings in sentence case
+- [ ] Color: WCAG AA contrast (≥4.5:1); no neon gradients or default purple glow
+- [ ] Spacing/layout: 4px base scale; at most one uppercase eyebrow per section; one layout family per page
+- [ ] Polish: tinted shadows, no nested cards, no side-stripe borders or gradient text
+- [ ] Accessibility: 44×44px touch targets, `:focus-visible`, semantic tag hierarchy
+- [ ] Hero fits the initial viewport; positive brand palettes over neon fills
+
+Any "no" → fix it before declaring completion.
+
+---
+
 ## Taste Development Protocol
 
 When reviewing your own work, ask:

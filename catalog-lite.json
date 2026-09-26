@@ -1,12 +1,12 @@
 {
-  "version": "1.14.0",
-  "generated": "2026-09-21",
+  "version": "1.15.0",
+  "generated": "2026-09-26",
   "summary": {
-    "total": 49,
+    "total": 43,
     "categories": {
-      "core": 31,
-      "agent": 14,
-      "design": 4
+      "core": 28,
+      "agent": 12,
+      "design": 3
     }
   },
   "skills": [
@@ -131,12 +131,6 @@
       "category": "design"
     },
     {
-      "name": "gsd-workflow",
-      "status": "stable",
-      "risk_level": "safe",
-      "category": "core"
-    },
-    {
       "name": "hack-audit",
       "status": "beta",
       "risk_level": "critical",
@@ -153,12 +147,6 @@
       "status": "stable",
       "risk_level": "safe",
       "category": "core"
-    },
-    {
-      "name": "impeccable-design-taste",
-      "status": "stable",
-      "risk_level": "safe",
-      "category": "design"
     },
     {
       "name": "incremental-implementation",
@@ -203,12 +191,6 @@
       "category": "core"
     },
     {
-      "name": "post-merge-cleanup",
-      "status": "stable",
-      "risk_level": "safe",
-      "category": "core"
-    },
-    {
       "name": "project-manager",
       "status": "stable",
       "risk_level": "safe",
@@ -245,22 +227,10 @@
       "category": "core"
     },
     {
-      "name": "spec-kit",
-      "status": "stable",
-      "risk_level": "critical",
-      "category": "agent"
-    },
-    {
       "name": "subagent-driven-development",
       "status": "stable",
       "risk_level": "safe",
       "category": "core"
-    },
-    {
-      "name": "supply-chain-auditor",
-      "status": "stable",
-      "risk_level": "critical",
-      "category": "agent"
     },
     {
       "name": "systematic-debugging",
@@ -270,12 +240,6 @@
     },
     {
       "name": "test-driven-development",
-      "status": "stable",
-      "risk_level": "safe",
-      "category": "core"
-    },
-    {
-      "name": "ultra-review",
       "status": "stable",
       "risk_level": "safe",
       "category": "core"

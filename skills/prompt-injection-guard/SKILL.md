@@ -4,7 +4,7 @@ description: Defiende contra ataques de inyección de prompts en aplicaciones po
 category: agent
 status: stable
 risk_level: critical
-token_estimate: { input: 1800, output: 900 }
+token_estimate: { input: 2834, output: 900 }
 ---
 
 ## Core
@@ -236,7 +236,7 @@ Before completing:
 | After finding... | Escalate to... |
 |-----------------|----------------|
 | Auth or session bypass via injection | `auditor-de-seguridad` |
-| Supply chain risk in AI SDK | `supply-chain-auditor` |
+| Supply chain risk in AI SDK | `auditor-de-seguridad` |
 | Auto-repair of safe findings | `audit-loop` |
 
 > **Reference:** [OWASP LLM Top 10 2025](https://owasp.org/www-project-top-10-for-large-language-model-applications/) · [MITRE ATLAS](https://atlas.mitre.org/)

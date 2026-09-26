@@ -4,7 +4,7 @@ description: Configura servidores del Protocolo de Contexto de Modelos (MCP) par
 category: core
 status: stable
 risk_level: safe
-token_estimate: { input: 1300, output: 500 }
+token_estimate: { input: 2059, output: 500 }
 ---
 
 ## Core

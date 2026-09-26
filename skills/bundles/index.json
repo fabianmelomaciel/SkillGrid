@@ -1,6 +1,6 @@
 {
   "version": "1.2.0",
-  "description": "Role-based skill bundles for SkillGrid (50 skills). Use these when setting up a new user or project.",
+  "description": "Role-based skill bundles for SkillGrid (42 skills). Use these when setting up a new user or project.",
   "bundles": {
     "core": {
       "label": "Core Development",
@@ -14,14 +14,12 @@
         "dispatching-parallel-agents",
         "executing-plans",
         "finishing-a-development-branch",
-        "gsd-workflow",
         "headroom",
         "incremental-implementation",
         "issue-triage",
         "mcp-configurator",
         "performance-profiler",
         "playwright-testing",
-        "post-merge-cleanup",
         "receiving-code-review",
         "requesting-code-review",
         "router",
@@ -29,7 +27,6 @@
         "subagent-driven-development",
         "systematic-debugging",
         "test-driven-development",
-        "ultra-review",
         "using-git-worktrees",
         "verification-before-completion",
         "writing-plans",
@@ -47,8 +44,7 @@
         "execution-runtime",
         "hack-audit",
         "optimizador-finops",
-        "prompt-injection-guard",
-        "supply-chain-auditor"
+        "prompt-injection-guard"
       ]
     },
     "design": {
@@ -57,8 +53,7 @@
       "skills": [
         "creativo-visual",
         "emil-kowalski-design",
-        "github-premium-aesthetics",
-        "impeccable-design-taste"
+        "github-premium-aesthetics"
       ]
     },
     "testing": {
@@ -80,8 +75,7 @@
         "agente-ideas",
         "audit-loop",
         "gestor-documental",
-        "project-manager",
-        "spec-kit"
+        "project-manager"
       ]
     },
     "marketing": {
@@ -96,28 +90,124 @@
   "profiles": {
     "minimal": {
       "label": "Minimal Safety Gates",
-      "description": "Only essential safety gates (~6 skills, ~8K tokens)",
-      "skills": ["brainstorming", "context-engineering", "router", "systematic-debugging", "verification-before-completion", "writing-plans"]
+      "description": "Only essential safety gates (6 skills, ~14K tokens)",
+      "skills": [
+        "brainstorming",
+        "context-engineering",
+        "router",
+        "systematic-debugging",
+        "verification-before-completion",
+        "writing-plans"
+      ]
     },
     "standard": {
       "label": "Full Development Workflow",
-      "description": "Standard development workflow (~18 skills, ~28K tokens)",
-      "skills": ["brainstorming", "code-simplification", "context-engineering", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "incremental-implementation", "receiving-code-review", "requesting-code-review", "router", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "verification-before-completion", "writing-plans"]
+      "description": "Standard development workflow (16 skills, ~36K tokens)",
+      "skills": [
+        "brainstorming",
+        "code-simplification",
+        "context-engineering",
+        "dispatching-parallel-agents",
+        "executing-plans",
+        "finishing-a-development-branch",
+        "incremental-implementation",
+        "receiving-code-review",
+        "requesting-code-review",
+        "router",
+        "spec-driven-development",
+        "subagent-driven-development",
+        "systematic-debugging",
+        "test-driven-development",
+        "verification-before-completion",
+        "writing-plans"
+      ]
     },
     "superpowers": {
       "label": "Superpowers Framework",
-      "description": "Full development methodology (~26 skills, ~40K tokens)",
-      "skills": ["brainstorming", "changelog-drafter", "code-simplification", "context-engineering", "db-schema-detector", "dispatching-parallel-agents", "executing-plans", "finishing-a-development-branch", "gsd-workflow", "headroom", "incremental-implementation", "issue-triage", "playwright-testing", "post-merge-cleanup", "receiving-code-review", "requesting-code-review", "spec-driven-development", "subagent-driven-development", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills"]
+      "description": "Full development methodology (22 skills, ~45K tokens)",
+      "skills": [
+        "brainstorming",
+        "changelog-drafter",
+        "code-simplification",
+        "context-engineering",
+        "db-schema-detector",
+        "dispatching-parallel-agents",
+        "executing-plans",
+        "finishing-a-development-branch",
+        "headroom",
+        "incremental-implementation",
+        "issue-triage",
+        "playwright-testing",
+        "receiving-code-review",
+        "requesting-code-review",
+        "spec-driven-development",
+        "subagent-driven-development",
+        "systematic-debugging",
+        "test-driven-development",
+        "using-git-worktrees",
+        "verification-before-completion",
+        "writing-plans",
+        "writing-skills"
+      ]
     },
     "strict": {
       "label": "Full Suite + Auditors",
-      "description": "Everything including all agents (50 skills, ~78K tokens)",
-      "skills": ["a2a-orchestrator", "agente-devops", "agente-ideas", "audit-loop", "auditor-de-marketing", "auditor-de-seguridad", "brainstorming", "changelog-drafter", "code-simplification", "context-engineering", "creativo-visual", "cyber-neo", "db-schema-detector", "dispatching-parallel-agents", "emil-kowalski-design", "executing-plans", "execution-runtime", "finishing-a-development-branch", "gestor-documental", "github-premium-aesthetics", "gsd-workflow", "hack-audit", "headroom", "humanizer", "impeccable-design-taste", "incremental-implementation", "issue-triage", "mcp-configurator", "optimizador-finops", "performance-profiler", "playwright-testing", "post-merge-cleanup", "project-manager", "prompt-injection-guard", "receiving-code-review", "requesting-code-review", "router", "spec-driven-development", "spec-kit", "subagent-driven-development", "supply-chain-auditor", "systematic-debugging", "test-driven-development", "ultra-review", "using-git-worktrees", "verification-before-completion", "writing-plans", "writing-skills"]
+      "description": "Everything including all agents (43 skills, ~94K tokens)",
+      "skills": [
+        "a2a-orchestrator",
+        "agente-devops",
+        "agente-ideas",
+        "audit-loop",
+        "auditor-de-marketing",
+        "auditor-de-seguridad",
+        "brainstorming",
+        "changelog-drafter",
+        "code-simplification",
+        "context-engineering",
+        "creativo-visual",
+        "cyber-neo",
+        "db-schema-detector",
+        "dispatching-parallel-agents",
+        "emil-kowalski-design",
+        "executing-plans",
+        "execution-runtime",
+        "finishing-a-development-branch",
+        "gestor-documental",
+        "github-premium-aesthetics",
+        "hack-audit",
+        "headroom",
+        "humanizer",
+        "incremental-implementation",
+        "issue-triage",
+        "mcp-configurator",
+        "optimizador-finops",
+        "performance-profiler",
+        "playwright-testing",
+        "ponytail",
+        "project-manager",
+        "prompt-injection-guard",
+        "receiving-code-review",
+        "requesting-code-review",
+        "router",
+        "spec-driven-development",
+        "subagent-driven-development",
+        "systematic-debugging",
+        "test-driven-development",
+        "using-git-worktrees",
+        "verification-before-completion",
+        "writing-plans",
+        "writing-skills"
+      ]
     },
     "testing": {
       "label": "QA & Testing",
-      "description": "E2E, TDD and debugging skills (~4 skills, ~8K tokens)",
-      "skills": ["playwright-testing", "test-driven-development", "systematic-debugging", "verification-before-completion"]
+      "description": "E2E, TDD and debugging skills (4 skills, ~8K tokens)",
+      "skills": [
+        "playwright-testing",
+        "test-driven-development",
+        "systematic-debugging",
+        "verification-before-completion"
+      ]
     }
   }
 }

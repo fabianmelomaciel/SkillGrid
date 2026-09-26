@@ -83,7 +83,35 @@ done
 if [ "$FOUND" -eq 1 ]; then
   echo ""
   echo -e "${RED}Commit blocked. Clean your code from secrets or AI remnants before committing.${NC}"
-  echo "  If this is a false positive, use: git commit --no-verify"
+  echo "  Un falso positivo se muestra al CEO y se resuelve en el código, no salteando el hook."
+  exit 1
+fi
+
+# Definition of Done guards (skills/shared/verification-gate.md)
+DIFF_TESTS=$(git diff --cached -U0 -- '*.test.js' '*.spec.js' 'tests/**' 2>/dev/null || true)
+if [ -n "$DIFF_TESTS" ]; then
+  ADDED_SKIPS=$(echo "$DIFF_TESTS" | grep -E '^\+' | grep -vE '^\+\+\+' | grep -Ec '\.skip\(|\.only\(|\btodo\(' || true)
+  ADDED_SKIPS=${ADDED_SKIPS:-0}
+  if [ "$ADDED_SKIPS" -gt 0 ]; then
+    echo -e "${RED}[pre-commit] BLOCKED — skip/only/todo nuevo en tests:${NC}"
+    echo "$DIFF_TESTS" | grep -E '^\+' | grep -vE '^\+\+\+' | grep -E '\.skip\(|\.only\(|\btodo\(' | head -5
+    FOUND=1
+  fi
+
+  REMOVED_TESTS=$(echo "$DIFF_TESTS" | grep -E '^-' | grep -vE '^---' | grep -Ec '\btest\(|\bit\(|\bdescribe\(' || true)
+  ADDED_TESTS=$(echo "$DIFF_TESTS" | grep -E '^\+' | grep -vE '^\+\+\+' | grep -Ec '\btest\(|\bit\(|\bdescribe\(' || true)
+  REMOVED_TESTS=${REMOVED_TESTS:-0}
+  ADDED_TESTS=${ADDED_TESTS:-0}
+  if [ "$REMOVED_TESTS" -gt "$ADDED_TESTS" ]; then
+    echo -e "${RED}[pre-commit] BLOCKED — se borran tests sin reemplazo (quitás $REMOVED_TESTS, agregás $ADDED_TESTS):${NC}"
+    echo "$DIFF_TESTS" | grep -E '^-' | grep -vE '^---' | grep -E '\btest\(|\bit\(|\bdescribe\(' | head -5
+    FOUND=1
+  fi
+fi
+
+if [ "$FOUND" -eq 1 ]; then
+  echo ""
+  echo -e "${RED}Commit blocked by verification-gate DoD guards.${NC}"
   exit 1
 fi
 

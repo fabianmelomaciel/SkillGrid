@@ -198,6 +198,24 @@ test('merge-skill.js: resolves platform from models.json', () => {
   check(out.includes('[model:gemini-1.5-flash]'), 'should resolve antigravity -> gemini-1.5-flash');
 });
 
+test('token_estimate: present and within 20% of chars/4', () => {
+  const offenders = [];
+  for (const dir of skillDirs) {
+    const skillPath = path.join(dir, 'SKILL.md');
+    const content = fs.readFileSync(skillPath, 'utf-8');
+    const name = path.relative(SKILLS_DIR, dir);
+    const m = content.match(/token_estimate:\s*\{\s*input:\s*(\d+)/);
+    if (!m) { offenders.push(`${name}: missing token_estimate`); continue; }
+    const est = parseInt(m[1], 10);
+    const calc = Math.round(content.length / 4);
+    const ratio = est / calc;
+    if (ratio < 0.8 || ratio > 1.2) {
+      offenders.push(`${name}: input ${est} vs chars/4 ${calc} (ratio ${ratio.toFixed(2)})`);
+    }
+  }
+  check(offenders.length === 0, offenders.join('; '));
+});
+
 console.log(`\n${passed} passed, ${failed} failed\n`);
 
 if (failed > 0) {

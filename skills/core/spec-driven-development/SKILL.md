@@ -12,13 +12,13 @@ token_estimate: { input: 2206, output: 882 }
 # Spec-Driven Development
 
 ## Spec Kit Integration (Fast Path)
-If GitHub Spec-Kit (`specify` CLI) is available, delegate artifact generation to the `spec-kit` subagent for automated scaffolding. This saves tokens and produces structured artifacts faster.
+If GitHub Spec-Kit (`specify` CLI) is available, use it directly for automated scaffolding instead of redactando a mano. This saves tokens and produces structured artifacts faster.
 
 ### Detection
-Run `Get-Command specify` (PowerShell) or `command -v specify` (bash). If `specify` is found, delegate to `spec-kit` subagent instead of using manual instructions below. The subagent will:
+Run `Get-Command specify` (PowerShell) or `command -v specify` (bash). If `specify` is found:
 1. Run `specify init . --integration opencode --force` (if not initialized)
-2. Generate constitution → spec → plan → tasks using Spec Kit templates
-3. Return control to this skill for human review gates
+2. Generate constitution → spec → plan → tasks with `specify constitution`, `specify spec`, `specify plan`, `specify tasks`
+3. Seguí con este skill para los review gates humanos
 
 ### Manual Init (if `specify` not installed)
 ```bash

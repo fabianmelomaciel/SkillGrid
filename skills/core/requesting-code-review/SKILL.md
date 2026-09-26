@@ -4,7 +4,7 @@ description: Use when completing tasks, implementing major features, or before m
 category: core
 status: stable
 risk_level: safe
-token_estimate: { input: 1050, output: 420 }
+token_estimate: { input: 843, output: 420 }
 ---
 
 ## Core

@@ -197,6 +197,15 @@ git worktree prune  # Self-healing: clean up any stale registrations
 
 **Otherwise:** The host environment (harness) owns this workspace. Do NOT remove it. If your platform provides a workspace-exit tool, use it. Otherwise, leave the workspace in place.
 
+## Post-Merge: Limpieza de Branches (report-only)
+
+Después de mergear, escaneá branches stale con estas reglas:
+
+- **Elegibles:** solo prefijos conocidos (`feature/`, `fix/`, `loop/`) y realmente fusionados: `git branch --merged main`.
+- **Jamás se borran:** `main`, `master`, `develop`.
+- **Excluir** branches referenciados por worktrees activos: `git worktree list`.
+- **Por defecto solo se reporta.** Borrar requiere OK del CEO, el mensaje exacto `confirm delete N branches`, e instrucciones de rollback impresas antes.
+
 ## Quick Reference
 
 | Option | Merge | Push | Keep Worktree | Cleanup Branch |

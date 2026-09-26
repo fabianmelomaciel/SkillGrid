@@ -4,7 +4,7 @@ description: Measure-first performance engineering. Use before merging features 
 category: core
 status: stable
 risk_level: safe
-token_estimate: { input: 1400, output: 600 }
+token_estimate: { input: 1876, output: 600 }
 ---
 
 ## Core
@@ -211,10 +211,10 @@ Before completing:
 
 | If you find... | Suggest... |
 |----------------|-----------|
-| Security issue in dependency | `@supply-chain-auditor` |
+| Security issue in dependency | `@auditor-de-seguridad` |
 | Architectural change needed (e.g., switch to SSR) | `@brainstorming` + `@spec-driven-development` |
 | Fix is complex and multi-file | `@incremental-implementation` |
-| Large refactor risk | `@ultra-review` before merging |
+| Large refactor risk | `@audit-loop` before merging |
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 

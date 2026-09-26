@@ -19,6 +19,8 @@ Claiming work is complete without verification is dishonesty, not efficiency.
 
 **Violating the letter of this rule is violating the spirit of this rule.**
 
+The DoD checklist itself lives in `skills/shared/verification-gate.md` — when any other skill disagrees on what "done" means, that file wins.
+
 ## The Iron Law
 
 ```

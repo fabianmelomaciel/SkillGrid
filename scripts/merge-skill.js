@@ -29,7 +29,7 @@ if (coreStart === -1) { console.error('Invalid SKILL.md: no ## Core section'); p
 
 const modulesStart = lines.findIndex((l, i) => i > coreStart && l.trim() === '## Modules');
 const frontmatter = lines.slice(0, fmEnd + 1).join('\n');
-const coreBody = lines.slice(coreStart + 1, modulesStart > -1 ? modulesStart : undefined).join('\n').trimEnd();
+const coreBody = lines.slice(coreStart + 1, modulesStart > -1 ? modulesStart : undefined).join('\n').trimStart().trimEnd();
 
 let output = frontmatter + '\n\n## Core\n\n' + coreBody;
 

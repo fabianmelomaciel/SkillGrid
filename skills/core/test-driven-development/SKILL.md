@@ -362,6 +362,8 @@ Otherwise → not TDD
 
 No exceptions without your human partner's permission.
 
+TDD supplies the method; whether the task is actually done is decided by `skills/shared/verification-gate.md`.
+
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 
 > Modules: `skills/shared/modules-footer.md`
