@@ -341,8 +341,18 @@ function main() {
     else if (args[i] === "--generate-codex") opts.generateCodex = true;
     else if (args[i] === "--platform" && args[i + 1]) opts.platform = args[++i];
     else if (args[i] === "--deps-only") opts.depsOnly = true;
+    else if (args[i] === "--detect-only") opts.detectOnly = true;
 
     else if (args[i] === "--help" || args[i] === "-h") { printHelp(); return; }
+  }
+
+  if (opts.detectOnly) {
+    // Single source of truth for the "Detectado: ..." preview line — install.ps1
+    // and install.sh just run this and print whatever it outputs, instead of
+    // reimplementing detectPlatforms() as a shell/PowerShell path-check list.
+    const names = detectPlatforms().map(p => p.name);
+    if (names.length > 0) console.log(`Detectado: ${names.join(", ")}`);
+    return;
   }
 
   console.log("\n=== SkillGrid Installer Core ===\n");
@@ -397,6 +407,7 @@ Usage:
   node scripts/install-core.js --platform opencode      Override platform detection
   node scripts/install-core.js --deps-only              Check dependencies only
   node scripts/install-core.js --install-codegraph      Auto-install CodeGraph
+  node scripts/install-core.js --detect-only            Print "Detectado: ..." preview and exit
 `);
 }
 
