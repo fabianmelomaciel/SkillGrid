@@ -73,6 +73,7 @@ Reglas duras, no importa lo que diga el acuerdo de alcance del usuario:
 - Throttle en los requests; back off ante 429/5xx.
 - Nunca metas datos reales de usuarios, secretos o credenciales en la evidencia ni en el informe — usá placeholders tipo `[email_usuario]`.
 - Nunca exfiltres datos del target a un tercero.
+- Nada de subir el repo, el objetivo ni la evidencia a servicios de terceros (SaaS de escaneo, subida de código a la nube, agentes remotos): todo corre local. Si una herramienta necesita una API key, va por variable de entorno — nunca en el comando ni en un archivo de config en disco.
 - **Nunca borres, edites ni alteres logs, historial de comandos o cualquier registro del target — ni en SSH, ni en la aplicación, ni en el sistema operativo.** Cubrir rastros es evasión de detección, no pentesting: un pentest legítimo se documenta, no se esconde. Toda intervención SSH queda registrada como evidencia propia del scan (comando ejecutado, host, hora), nunca oculta del lado del servidor que se audita. Si el usuario pide explícitamente "que no quede rastro" o "borrar los logs del servidor", no lo hagas: explicale por qué eso queda fuera de alcance y seguí solo con lo que sí se puede demostrar de forma transparente.
 
 Si en algún momento sentís la tentación de "total, es solo una prueba rápida sin avisar", parate ahí: eso es exactamente lo que este gate existe para evitar.
@@ -107,14 +108,14 @@ Esta fase la hacés vos directamente, sin subagentes.
 
 ### 1.1 Alcance y reglas de enfrentamiento
 
-Completá lo que falte preguntando solo lo necesario: descripción del stack, credenciales de prueba y flujo de login si hay que testear autenticado, lista de exclusiones (rutas, paths de código), lista de prioridades, umbral mínimo de severidad para el informe. Usá `references/reglas-de-enfrentamiento.md` como plantilla y guardá la versión completa en `<carpeta-de-trabajo>/reglas-de-enfrentamiento.md`. Todas las fases siguientes tienen que respetar ese archivo.
+Completá lo que falte preguntando solo lo necesario: descripción del stack, credenciales de prueba y flujo de login si hay que testear autenticado, lista de exclusiones (rutas, paths de código), lista de prioridades, umbral mínimo de severidad para el informe. Usá `references/reglas-de-enfrentamiento.md` como plantilla y guardá la versión completa en `<carpeta-de-trabajo>/reglas-de-enfrentamiento.md`. Todas las fases siguientes tienen que respetar ese archivo. Nada de lo que genere la corrida (`recon.md`, `hipotesis.md`, `evidencia/`, informes) se commitea en el repo auditado — ya está en el `.gitignore` de SkillGrid, y si el target es un repo ajeno, agregalo al suyo local antes de terminar.
 
 ### 1.2 Recon caja negra (si hay URL o servicios locales de la fase 0.5)
 
 - `curl -I`, headers de respuesta, cookies, `robots.txt`, `sitemap.xml`, fingerprint de stack.
 - Mapeo de rutas/endpoints alcanzables (seguí links, revisá `/openapi.json` o `/swagger` si existen).
 - Si hace falta interactuar con login o UI para las fases siguientes, y tu entorno tiene una herramienta de automatización de navegador disponible (extensión de browser, Playwright MCP, etc.), usala ahora para un primer pase autenticado siguiendo el flujo de login del acuerdo de alcance. Si no tenés esa herramienta, avisale al usuario que ese sub-paso queda manual.
-- Fijate qué herramientas externas de recon/detección hay instaladas (`which nmap nikto sqlmap ffuf ssh-audit nuclei 2>/dev/null`) y usalas para ampliar cobertura cuando estén — igual que hace `cyber-neo` con su toolchain. Si no hay ninguna, seguí solo con análisis nativo (`curl`/Bash) y decilo en el informe.
+- Fijate qué herramientas externas de recon/detección hay instaladas (`which nmap nikto sqlmap ffuf ssh-audit nuclei 2>/dev/null`) y usalas para ampliar cobertura cuando estén — igual que hace `cyber-neo` con su toolchain. Si no hay ninguna, seguí solo con análisis nativo (`curl`/Bash) y decilo en el informe. Si querés instalar una que falte, hacelo con versión pineada y checksum verificado; nada de bajar un instalador remoto y pasarlo por bash.
 
 ### 1.3 Recon caja blanca (si hay repo)
 
@@ -141,7 +142,7 @@ Solo si hay repo en alcance. Mapeá desde el código:
 
 Si dudás en algún punto, la respuesta es `PRODUCCIÓN`. Este veredicto define si los hallazgos de código se explotan o no — no te lo saltees.
 
-Para un repo grande, paralelizá el barrido: lanzá unos pocos subagentes con la tool `Agent`, uno por directorio o por clase de vulnerabilidad, cada uno devolviendo una lista corta de `{archivo, razón}`. Mantenelo en un puñado de subagentes — es para ganar velocidad, no un requisito fijo.
+Para un repo grande, paralelizá el barrido: lanzá unos pocos subagentes con la tool `Agent`, uno por directorio o por clase de vulnerabilidad, cada uno devolviendo una lista corta de `{archivo, razón}`. Mantenelo en un puñado de subagentes — es para ganar velocidad, no un requisito fijo. Contra el techo de presupuesto de la sesión (`SKILLGRID_MAX_TOKENS_PER_SESSION`): si te acercás, cortá la cola y reportá cobertura parcial en vez de seguir lanzando agentes.
 
 Guardá `modelo-de-amenazas.md`: entidades, fronteras de confianza, el veredicto, y ubicaciones candidatas por clase.
 

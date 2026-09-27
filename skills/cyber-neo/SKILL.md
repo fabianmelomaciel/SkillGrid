@@ -121,6 +121,16 @@ Apply scanning tiers:
 - **Medium (1,000–10,000 files):** Targeted scan — prioritize `src/`, `app/`, `lib/`, `api/`, config files, entry points. Skip generated code, assets, vendored deps.
 - **Large (10,000+ files):** Critical-path scan — focus on API routes, auth middleware, configuration, dependency manifests, Dockerfiles, CI workflows. Report scan coverage percentage in the final report.
 
+**Delta scope:** if the request is about a branch or PR instead of the whole repo, list the changed files first and apply the tiers only to them:
+
+```bash
+git diff --name-only origin/main...HEAD
+```
+
+Config files the diff touches indirectly (routes, imports, manifests) still get pulled in — a one-line route change can shift an entire endpoint's risk.
+
+**Token budget:** decide the run's token ceiling up front (never above `SKILLGRID_MAX_TOKENS_PER_SESSION`) and track it across subagents. When the ceiling is close, stop launching agents and report the coverage you did get instead of overspending.
+
 ### Step 1.3: Load Reference Files and Resolve Paths
 
 **IMPORTANT:** Read the reference files NOW and store their contents. You will inject the relevant contents into each subagent prompt in Phases 2–6, because subagents cannot access `${CLAUDE_SKILL_DIR}` paths.

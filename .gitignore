@@ -33,6 +33,13 @@ npm-debug.log*
 # Scratch/reports working area (local artifacts, not versioned)
 scratch/
 
+# Scan working artifacts (generated per target, never committed)
+evidencia/
+recon.md
+hipotesis.md
+modelo-de-amenazas.md
+Informe-de-Seguridad.*
+
 # Python (leftover venvs, caches)
 .venv*/
 __pycache__/
