@@ -49,9 +49,22 @@ node -e "
 "
 git add package.json
 
-# Keep remote installer pinned tags in sync with the release
-sed -i.bak "s/--branch v[0-9]\+\.[0-9]\+\.[0-9]\+/--branch $TAG/" remote-install.sh remote-install.ps1
-rm -f remote-install.sh.bak remote-install.ps1.bak
+# Keep remote installer pinned tags in sync with the release. Los instaladores
+# pinean por variable (PINNED_TAG / $pinnedTag), no por un literal --branch v...,
+# asi que un sed sobre --branch no los encontraria y dejaria el pin viejo.
+# Si el patron no matchea, esto falla en vez de publicar un release con pin stale.
+node -e '
+  const fs = require("fs");
+  const TAG = process.argv[1];
+  const upd = (file, re) => {
+    const src = fs.readFileSync(file, "utf8");
+    const out = src.replace(re, m => m.replace(/v[\d.]+/, TAG));
+    if (out === src) { console.error("ERROR: pin no encontrado en " + file); process.exit(1); }
+    fs.writeFileSync(file, out);
+  };
+  upd("remote-install.sh", /^PINNED_TAG="v[\d.]+"$/m);
+  upd("remote-install.ps1", /^\$pinnedTag = "v[\d.]+"$/m);
+' "$TAG"
 git add remote-install.sh remote-install.ps1
 
 # catalog.json / catalog-lite.json / skills/index.json embed package.json's version
