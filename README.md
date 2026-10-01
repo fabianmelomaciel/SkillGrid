@@ -3,11 +3,11 @@
 
 ### **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*43 skills · 270 tests · gate 7s · 4 plataformas · hasta −90% ahorro de tokens · 5 jobs de seguridad en CI*
+*43 skills · 274 tests · gate 7s · 4 plataformas · hasta −90% ahorro de tokens · 5 jobs de seguridad en CI*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-43-22c55e?style=flat-square)](catalog.json)
-[![Tests](https://img.shields.io/badge/tests-270-3b82f6?style=flat-square)](package.json)
+[![Tests](https://img.shields.io/badge/tests-274-3b82f6?style=flat-square)](package.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/ci.yml)
@@ -26,13 +26,14 @@ SkillGrid es un **sistema de trabajo autónomo** de instrucciones portables (`SK
 
 *   🔁 **Bucle de reparación cerrado** — los agentes auditan y corrigen fallos en ciclos autónomos, sin que tengas que intervenir.
 *   🧠 **CODEX, memoria persistente entre sesiones.** Un `CODEX.md` local (nunca se comitea) que el agente escribe y relee en cada tarea, para no obligarte a repetir el contexto de tu proyecto de una sesión a otra.
+*   🧭 **`EVOLUCION.md`, mejoras con plazo.** Cada error detectado queda como fila con su evidencia; cuando se corrige, sale de la lista y queda como historial. El `gate` no deja cerrar una fila sin prueba.
 *   🛡️ Auditoría integrada de **NVIDIA SkillSpector** en CI + pentest automatizado en cada PR — la seguridad viene incorporada, no como agregado.
 *   📦 Instalás solo el perfil de skills que tu equipo necesita, nada más.
 
 ### ⚡ TL;DR
 
 *   **43 skills listas para invocar** — `/brainstorming`, `/agente-ideas`, `/auditor-de-seguridad`… en opencode, Claude Code, Cursor y antigravity.
-*   **Se audita a sí mismo** — su propio `gate` (43 skills, 270 tests) y un pipeline de seguridad en cada PR.
+*   **Se audita a sí mismo** — su propio `gate` (43 skills, 274 tests) y un pipeline de seguridad en cada PR.
 *   **Memoria y eficiencia** — `CODEX.md` local + CodeGraph: hasta **−90%** de tokens por sesión de trabajo.
 
 | | Sin SkillGrid | Con SkillGrid |

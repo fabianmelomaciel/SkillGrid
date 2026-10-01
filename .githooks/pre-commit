@@ -126,6 +126,11 @@ fi
 
 node "$(dirname "$0")/../scripts/check-graphify-freshness.js" || true
 
+if ! node "$(dirname "$0")/../scripts/check-evolution.js"; then
+  echo -e "${RED}[pre-commit] BLOCKED — EVOLUCION.md mal formado, o un fix que no movió su fila.${NC}"
+  exit 1
+fi
+
 echo -e "${YELLOW}[pre-commit] Running test suite...${NC}"
 if ! npm test; then
   echo -e "${RED}[pre-commit] BLOCKED — Test suite failed.${NC}"

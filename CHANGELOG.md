@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **`EVOLUCION.md` — lista de evolución del proyecto** (agente-ideas, consejo en 3 etapas: 1º C FinOps 8/10, 2º A Simpleza 7/10, 3º B Seguridad 7/10). Un error detectado queda como fila en `## Abiertas` con su evidencia, y cuando se corrige se mueve a `## Cerradas` con `archivo:línea` o test — no se borra, es el historial. Nace con 8 filas sacadas del análisis de 8 proyectos hermanos de `www/` (E1 ya cerrada: el pin-check de los instaladores remotos pasó a correr en el gate local y no solo en CI). `scripts/check-evolution.js` valida formato, ids únicos, prioridades, fechas y que ningún cierre quede sin evidencia verificable (máximo 20 cerradas antes de comprimir); corre en `npm run gate`, en el pre-commit y en CI. Regla anti re-análisis agregada en `AGENTS.md` y como item del DoD en `skills/shared/verification-gate.md`: lo que ya está listado no se re-reporta y lo cerrado no se re-analiza.
+
+### Changed
+- `npm test` suma `tests/check-evolution.test.js` (4 tests: el archivo real del repo más los tres caminos rotos) — 270 → 274 tests. README actualizado en hero, badge y TL;DR.
+
 ## [1.16.0] - 2026-09-26
 
 ### Fixed

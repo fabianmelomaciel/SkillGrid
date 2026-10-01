@@ -14,6 +14,10 @@ Antes de tocar cualquier archivo del proyecto, corré el preflight: rama y estad
 
 Antes de generar un test, prueba manual o reporte nuevo, revisá primero si ya existe algo reutilizable en la carpeta scratch/reports del proyecto (p. ej. `scratch/`, `reports/`, o el directorio temporal indicado por el entorno) en vez de regenerarlo desde cero. Extendé o actualizá lo existente cuando cubra el mismo caso; solo creá un archivo nuevo si no hay nada equivalente. Esto evita gastar tokens repitiendo contenido ya producido en la sesión o en sesiones previas.
 
+## lista de evolución
+
+`EVOLUCION.md` es lo que este proyecto todavía debe mejorar. Antes de emitir una auditoría, un reporte o un plan nuevo, leé `## Abiertas`: lo que ya está listado no se re-reporta y lo cerrado no se re-analiza. Hallazgo nuevo = fila nueva; fix terminado = fila movida a `## Cerradas` con `archivo:línea`. Si la fila no se movió, el fix no está terminado. El formato lo valida `npm run gate`.
+
 ## graphify
 
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.

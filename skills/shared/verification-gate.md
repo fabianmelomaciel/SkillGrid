@@ -31,6 +31,7 @@ Before proposing ANY refactoring or architectural change, the following MUST be 
 - [ ] **No deleted tests.** Tests removed must be at least replaced (removed ≤ added), same as donegate's `no_deleted_tests`.
 - [ ] **Diff→test mapping.** Every source file touched by the diff is imported or asserted by at least one test. Changed file with no test exercising it → NOT DONE.
 - [ ] **Red→green inverse.** For validation/auth/secrets changes: revert the fix locally, confirm the test FAILS, restore it and confirm PASS. Both outputs are the evidence.
+- [ ] **Evolution list.** Los hallazgos de esta tarea quedaron como fila en `EVOLUCION.md` (`## Abiertas`) y cada mejora que este diff cerró movió su fila a `## Cerradas` con evidencia `file:line`. Fila sin mover → NOT DONE.
 - [ ] **Preflight GO.** Anything outside this repo needs the `env-preflight.md` line first.
 - [ ] **Hooks active in the target.** `git config core.hooksPath` set — otherwise local gates do not exist there.
 

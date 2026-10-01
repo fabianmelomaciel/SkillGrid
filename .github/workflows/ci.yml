@@ -25,6 +25,9 @@ jobs:
       - name: Verify remote installer pin matches an existing release tag
         run: node scripts/check-remote-install-pin.js
 
+      - name: Validate evolution list
+        run: node scripts/check-evolution.js
+
   validate-skills:
     runs-on: windows-latest
     steps:
