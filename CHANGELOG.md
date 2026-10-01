@@ -5,13 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.17.0] - 2026-10-01
 
 ### Added
 - **`EVOLUCION.md` — lista de evolución del proyecto** (agente-ideas, consejo en 3 etapas: 1º C FinOps 8/10, 2º A Simpleza 7/10, 3º B Seguridad 7/10). Un error detectado queda como fila en `## Abiertas` con su evidencia, y cuando se corrige se mueve a `## Cerradas` con `archivo:línea` o test — no se borra, es el historial. Nace con 8 filas sacadas del análisis de 8 proyectos hermanos de `www/` (E1 ya cerrada: el pin-check de los instaladores remotos pasó a correr en el gate local y no solo en CI). `scripts/check-evolution.js` valida formato, ids únicos, prioridades, fechas y que ningún cierre quede sin evidencia verificable (máximo 20 cerradas antes de comprimir); corre en `npm run gate`, en el pre-commit y en CI. Regla anti re-análisis agregada en `AGENTS.md` y como item del DoD en `skills/shared/verification-gate.md`: lo que ya está listado no se re-reporta y lo cerrado no se re-analiza.
 
 ### Changed
 - `npm test` suma `tests/check-evolution.test.js` (4 tests: el archivo real del repo más los tres caminos rotos) — 270 → 274 tests. README actualizado en hero, badge y TL;DR.
+
+### Fixed
+- **Supply chain (E2): los instaladores remotos ya no caen a `main`.** Si el tag pineado no existe, `remote-install.sh`/`.ps1` abortan con error en vez de clonar la rama mutable — era un fail-open que anulaba el pin (el guard de CI sólo comprobaba que el tag existiera).
+- **Secrets scan en push directo (E3).** `pentest.yml` no tenía `on: push` y el flujo del repo es commit directo a `main`: TruffleHog + Gitleaks + CodeQL solo corrían en PRs que nunca se abren y en el cron semanal. Ahora dispara en cada push a `main` (ignorando `.md`); el comentario del job de TruffleHog ya contemplaba el rango "push".
+- **7 patrones de secretos rotos (E4).** grep 3.0 no interpreta `\x27`: `["\x27]` era la clase de los literales `"` `\` `x` `2` `7`, así que cualquier valor con una `x`, un `2` o un `7` adentro no matcheaba (un `password\s*=\s*"..."` con dígitos pasaba de largo). Se reescribieron con `${SQ}` armada por concatenación, más 3 patrones nuevos sin vendor delante (`DB_PASS=`, `TOKEN=`, `API_KEY: "..."`). Verificado con red→green: 4/4 casos sintéticos bloqueados, 0 falsos positivos en 369 archivos trackeados.
 
 ## [1.16.0] - 2026-09-26
 

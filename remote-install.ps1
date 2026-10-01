@@ -26,13 +26,13 @@ $targetDir = Join-Path -Path $tempRoot -ChildPath ("skillgrid-" + [guid]::NewGui
 Write-Host "Clonando SkillGrid en directorio temporal: $targetDir" -ForegroundColor Cyan
 
 # WARNING: Pinned to release tag for supply chain safety. Updated automatically by
-# scripts/release.sh on each release. Falls back to main if the tag is ever missing
-# (e.g. a release was cut but not pushed) so onboarding never hard-fails.
+# scripts/release.sh on each release. Si el tag no existe se aborta: caer a main
+# es clonar una rama mutable y es exactamente lo que el pin viene a evitar.
 $pinnedTag = "v1.16.0"
-git clone --depth 1 --branch $pinnedTag https://github.com/fabianmelomaciel/SkillGrid.git "$targetDir" 2>$null
+git clone --depth 1 --branch $pinnedTag https://github.com/fabianmelomaciel/SkillGrid.git "$targetDir"
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "ADVERTENCIA: no se encontro el tag $pinnedTag. Usando main como respaldo." -ForegroundColor Yellow
-    git clone --depth 1 --branch main https://github.com/fabianmelomaciel/SkillGrid.git "$targetDir"
+    Write-Error "No se pudo clonar el tag $pinnedTag (tag inexistente o red caida). No se instala desde main sin el pin."
+    exit 1
 }
 
 # Run the installer

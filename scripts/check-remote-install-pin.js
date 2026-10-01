@@ -39,7 +39,7 @@ try {
 if (!tags) {
   console.error(
     `ERROR: el tag pineado ${shTag} no existe en el repo. ` +
-    `Los instaladores remotos caerian a 'main' en vez de clonar un release fijo.`
+    `Sin el tag los instaladores remotos abortan en vez de instalar una rama mutable.`
   );
   process.exit(1);
 }

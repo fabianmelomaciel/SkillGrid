@@ -24,14 +24,15 @@ Cómo se usa:
 
 ## Abiertas
 
-- E2 | supply-chain | Los instaladores remotos caen a `main` si falta el tag: clon mutáble sin pin | P0 | 2026-10-01 | remote-install.sh:31, remote-install.ps1:35
-- E3 | seguridad | El secrets-scan no corre en push directo a `main` (solo pull_request/schedule) | P0 | 2026-10-01 | .github/workflows/pentest.yml:3
-- E4 | seguridad | Patrones de secretos del pre-commit angostos: `DB_PASS=` o cualquier credencial genérica no matchea | P1 | 2026-10-01 | .githooks/pre-commit:10
-- E5 | docs | README hardcodea conteos (43 skills / 270 tests) y vuelan cada vez que cambian | P1 | 2026-10-01 | README.md:6, README.md:10, README.md:35
+- E5 | docs | README hardcodea conteos (43 skills / 274 tests) que vuelan cada vez que cambian | P1 | 2026-10-01 | README.md:6, README.md:10, README.md:35
 - E6 | tests | Falta test de consistencia docs vs `catalog.json` — la clase de drift ya se repitió 4 veces | P1 | 2026-10-01 | CODEX.md:88
 - E7 | memoria | CODEX.md sin presupuesto de tamaño (22KB; la entrada de v1.15.0 sola tiene 2295 chars) | P2 | 2026-10-01 | CODEX.md:83
 - E8 | ci | El check de evolución no corre en CI cuando el commit es solo `.md` (`paths-ignore: '**.md'`); lo cubre el pre-commit local | P2 | 2026-10-01 | .github/workflows/ci.yml:6
+- E9 | secrets | Cualquier commit que toque docs con claves de ejemplo (AWS de ejemplo, headers PEM) queda bloqueado por el pre-commit | P2 | 2026-10-01 | skills/auditor-de-seguridad/reports/audit-example.html:477
 
 ## Cerradas
 
 - E1 | calidad | El pin-check de los instaladores remotos solo corría en CI, nunca en el gate local | P1 | 2026-10-01 | .github/workflows/ci.yml:26 | cerrado 2026-10-01 | package.json:41
+- E2 | supply-chain | Los instaladores remotos caían a `main` si faltaba el tag: clon mutable sin pin | P0 | 2026-10-01 | remote-install.sh:31, remote-install.ps1:35 | cerrado 2026-10-01 | remote-install.sh:32, remote-install.ps1:35
+- E3 | seguridad | El secrets-scan no corría en push directo a `main` (solo pull_request/schedule) | P0 | 2026-10-01 | .github/workflows/pentest.yml:3 | cerrado 2026-10-01 | .github/workflows/pentest.yml:4
+- E4 | seguridad | Patrones de secretos rotos: grep 3.0 no entiende `\x27` (7 patrones casi muertos) y `DB_PASS=` nunca matcheaba | P1 | 2026-10-01 | .githooks/pre-commit:13 | cerrado 2026-10-01 | .githooks/pre-commit:12, .githooks/pre-commit:34

@@ -7,6 +7,9 @@ RED='\033[0;31m'; YELLOW='\033[1;33m'; NC='\033[0m'
 FOUND=0
 
 # Patterns that must never be committed
+# grep 3.0 no entiende \x27 (lo toma como los literales x, 2 y 7), así que la
+# comilla simple se arma con ${SQ} — sin eso, los patrones de credenciales no matcheaban
+SQ="'"
 PATTERNS=(
   # Generic secret keys
   'AKIA[0-9A-Z]{16}'                          # AWS Access Key ID
@@ -19,14 +22,18 @@ PATTERNS=(
   'github_pat_[0-9a-zA-Z_]{82}'             # GitHub fine-grained PAT
   'Bearer [a-zA-Z0-9\-\._~\+\/]{40,}'        # Generic Bearer token (min 40 chars)
   # Hard-coded credentials
-  'password\s*=\s*["\x27][^"\x27]{8,}'      # password = "..."
-  'secret\s*=\s*["\x27][^"\x27]{8,}'        # secret = "..."
-  'api_key\s*=\s*["\x27][^"\x27]{8,}'       # api_key = "..."
-  'private_key\s*=\s*["\x27][^"\x27]{8,}'   # private_key = "..."
+  "password\s*=\s*[\"${SQ}][^\"${SQ}]{8,}"        # password = "..."
+  "secret\s*=\s*[\"${SQ}][^\"${SQ}]{8,}"          # secret = "..."
+  "api_key\s*=\s*[\"${SQ}][^\"${SQ}]{8,}"         # api_key = "..."
+  "private_key\s*=\s*[\"${SQ}][^\"${SQ}]{8,}"     # private_key = "..."
   # Private key headers (use literal match to avoid grep flag interpretation)
   'BEGIN (RSA |EC |OPENSSH |PGP )?PRIVATE KEY'
   # .env-style assignments with actual values (not placeholders)
   '^(ANTHROPIC|OPENAI|GITHUB|AWS|GCP|AZURE|STRIPE)_[A-Z_]+=.{10,}'
+  # Mismo caso sin vendor delante (DB_PASS=..., TOKEN=...): antes pasaba de largo
+  "^[A-Z0-9_]*(PASS|PWD|SECRET|TOKEN|APIKEY|API_KEY|ACCESS_KEY|CREDENTIAL)[A-Z0-9_]*=\s*[\"${SQ}][^\"${SQ}]{8,}[\"${SQ}]"
+  "^[A-Z0-9_]*(PASS|PWD|SECRET|TOKEN|APIKEY|API_KEY|ACCESS_KEY|CREDENTIAL)[A-Z0-9_]*=\s*[^\"${SQ}[:space:]\$][^[:space:]]{11,}"
+  "^[A-Z0-9_]*(PASS|PWD|SECRET|TOKEN|APIKEY|API_KEY|ACCESS_KEY|CREDENTIAL)[A-Z0-9_]*:\s*[\"${SQ}][^\"${SQ}]{8,}[\"${SQ}]"
 )
 
 # Files staged for commit
