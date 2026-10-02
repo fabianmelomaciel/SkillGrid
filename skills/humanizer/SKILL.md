@@ -4,7 +4,7 @@ description: "Remove signs of AI-generated writing from text. Use when editing o
 category: core
 status: stable
 risk_level: safe
-token_estimate: { input: 2000, output: 800 }
+token_estimate: { input: 2400, output: 800 }
 ---
 
 ## Core
@@ -119,6 +119,26 @@ Avoiding AI patterns is only half the job. Sterile, voiceless writing is just as
 
 ### 14. Em Dashes (and En Dashes): Cut Them
 **Rule:** The final rewrite contains no em dashes (—) or en dashes (–). Replace them with period, comma, colon, parentheses, or restructure.
+
+## TECHNICAL CLEANUP (Optional)
+
+Some AI pipelines embed invisible Unicode provenance marks in generated text. Optionally strip them before the pattern pass. Scope: only content you own or are authorized to process — using cleanup to pass AI text off as human-written (academic work, platform ToS) is out of scope.
+
+**Layer A — invisible controls (Python 3 stdlib, no dependencies).** Remove characters no human types:
+
+- Zero-width/invisible: `U+00AD`, `U+034F`, `U+200B`–`U+200F`, `U+2060`, `U+FEFF`
+- Bidi/format controls: `U+202A`–`U+202E`, `U+2066`–`U+2069`
+- Tag characters: `U+E0000`–`U+E007F`
+
+Strip from a file (stdin → stdout, works with any shell pipe):
+
+```bash
+python -c "import sys,re; sys.stdout.write(re.sub(r'[\u00ad\u034f\u200b-\u200f\u202a-\u202e\u2060\u2066-\u2069\U000e0000-\U000e007f\ufeff]','',sys.stdin.read()))" < draft.txt > clean.txt
+```
+
+PowerShell: `Get-Content draft.txt -Raw | python -c "import sys,re; sys.stdout.write(re.sub(r'[\u00ad\u034f\u200b-\u200f\u202a-\u202e\u2060\u2066-\u2069\U000e0000-\U000e007f\ufeff]','',sys.stdin.read()))" | Set-Content clean.txt`
+
+**Layer B/C — statistical watermarks and file metadata (C2PA/EXIF).** Not fixable by regex. Statistical marks are addressed by this rewrite pass itself; file metadata requires external tooling (exiftool/c2patool), which needs explicit approval, version pin, and SHA-256 verification before each execution per supply-chain policy. Out of scope until then.
 
 ## Tools
 
