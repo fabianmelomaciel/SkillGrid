@@ -94,7 +94,7 @@ Upon receiving the 3 proposals:
 ### Stage 3: Synthesis (Chairman Decides)
 1. Take the Stage 2 ranking as the base (or the Stage 1 consensus if the early-exit fired).
 2. Synthesize the final plan, merging the best aspects of each proposal and incorporating critical security fixes.
-3. Present the plan in Spanish to the CEO for approval. Delegating execution to `project-manager` is optional and manual — only do it if the CEO approves the plan AND explicitly asks for delegated execution. Never invoke `project-manager` automatically.
+3. Present the plan in Spanish to the CEO for approval. El plan cierra con el bloque "Agente recomendado": quién se usa según lo pedido — ejecución → `project-manager`, validación → `auditor-de-seguridad`, marketing → `auditor-de-marketing`, costos → `optimizador-finops`, infra/CI → `agente-devops` — siempre de la lista cerrada de skills con `category: agent`; si el nombre no existe, se reporta, no se inventa. La delegación es solo una sugerencia dentro del plan: jamás se auto-invoca un subagente (el fan-out del Stage 1 no se toca) y el despacho recién sale con OK explícito del CEO. Si este skill corre como subagente generado, entregá la sugerencia — no despaches `task`.
 4. Si el CEO rechaza el plan: anotá `estado: abierto` en `## Deliberaciones` y cerrá. Un solo ciclo de deliberación por sesión — no se re-delibera acá; se retoma en la siguiente sesión con el presupuesto restante.
 
 ## Session Handoff (MANDATORY — printed to the CEO, in Spanish, at close)
@@ -110,7 +110,7 @@ Ranking: [1º, 2º, 3º]
 Branch: [git branch | n/a — sin repo git]
 Modified: [archivos sin commit]
 Evidence: [comando de verificación real + su salida, o "sin cambios en el repo"]
-Next (suggestion, not an automatic action): 1. Delegar plan a `/project-manager` si el CEO lo pide 2. [siguiente paso]
+Next (suggestion, not an automatic action): 1. [agente recomendado en el plan] — despachar solo con OK explícito del CEO (p. ej. `/project-manager`) 2. [siguiente paso]
 ```
 
 Regla de status — comprobá en este orden:

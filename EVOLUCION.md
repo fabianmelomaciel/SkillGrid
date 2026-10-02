@@ -29,6 +29,10 @@ Cómo se usa:
 - E7 | memoria | CODEX.md sin presupuesto de tamaño (22KB; la entrada de v1.15.0 sola tiene 2295 chars) | P2 | 2026-10-01 | CODEX.md:83
 - E8 | ci | El check de evolución no corre en CI cuando el commit es solo `.md` (`paths-ignore: '**.md'`); lo cubre el pre-commit local | P2 | 2026-10-01 | .github/workflows/ci.yml:6
 - E9 | secrets | Cualquier commit que toque docs con claves de ejemplo (AWS de ejemplo, headers PEM) queda bloqueado por el pre-commit | P2 | 2026-10-01 | skills/auditor-de-seguridad/reports/audit-example.html:477
+- E11 | hooks | Enforcement que hoy es solo texto: bloquear .md/.txt innecesarios, avisar console.log al Stop, reminder antes de git push, formateo y typecheck post-edit | P1 | 2026-10-02 | rules/common/hooks.md:1
+- E12 | memoria | El learning loop es manual: nada persiste contexto entre sesiones ni sugiere la fila de CODEX al cerrar | P1 | 2026-10-02 | skills/shared/codex-learning-loop.md:7
+- E13 | compact | Sin sugerencia de compactación en intervalos lógicos: la sesión se acerca al límite sin aviso previo | P2 | 2026-10-02 | rules/common/performance.md:20
+- E14 | commands | El handoff sugiere comandos slash (p. ej. /project-manager) pero SkillGrid no instala ningún command de opencode | P2 | 2026-10-02 | skills/agente-ideas/SKILL.md:113
 
 ## Cerradas
 
@@ -36,3 +40,4 @@ Cómo se usa:
 - E2 | supply-chain | Los instaladores remotos caían a `main` si faltaba el tag: clon mutable sin pin | P0 | 2026-10-01 | remote-install.sh:31, remote-install.ps1:35 | cerrado 2026-10-01 | remote-install.sh:32, remote-install.ps1:35
 - E3 | seguridad | El secrets-scan no corría en push directo a `main` (solo pull_request/schedule) | P0 | 2026-10-01 | .github/workflows/pentest.yml:3 | cerrado 2026-10-01 | .github/workflows/pentest.yml:4
 - E4 | seguridad | Patrones de secretos rotos: grep 3.0 no entiende `\x27` (7 patrones casi muertos) y `DB_PASS=` nunca matcheaba | P1 | 2026-10-01 | .githooks/pre-commit:13 | cerrado 2026-10-01 | .githooks/pre-commit:12, .githooks/pre-commit:34
+- E10 | skill | Stage 3 no recomendaba qué agente usar según el pedido y rules/common no traía regla de economía de tokens ni CODEX-first para IDEs | P2 | 2026-10-02 | skills/agente-ideas/SKILL.md:97 | cerrado 2026-10-02 | skills/agente-ideas/SKILL.md:97, rules/common/token-economy.md:1
