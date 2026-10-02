@@ -411,7 +411,7 @@ Usage:
   node scripts/install-core.js                         Auto-detect & install
   node scripts/install-core.js --target <dir>           Install to custom path
   node scripts/install-core.js --project <dir>          Setup CodeGraph + project rules
-  node scripts/install-core.js --project <dir> --language php
+  node scripts/install-core.js --project <dir> --language php  Override rules language for install-rules (default: common)
   node scripts/install-core.js --profile minimal        Install by profile
   node scripts/install-core.js --platform opencode      Override platform detection
   node scripts/install-core.js --deps-only              Check dependencies only

@@ -130,7 +130,7 @@ Genera automáticamente archivos de reglas optimizados en tu proyecto local:
 | `executing-plans` | Use when you have a written implementation plan to execute in a separate session with… | 748 |
 | `finishing-a-development-branch` | Use when implementation is complete, all tests pass, and you need to decide how to… | 2112 |
 | `headroom` | Reduce el uso de tokens del LLM comprimiendo el contexto, logs, salidas de herramientas… | 869 |
-| `humanizer` | Remove signs of AI-generated writing from text. Use when editing or reviewing text to… | 2000 |
+| `humanizer` | Remove signs of AI-generated writing from text. Use when editing or reviewing text to… | 2400 |
 | `incremental-implementation` | Delivers changes incrementally. Use when implementing any feature or change that touches… | 2491 |
 | `issue-triage` | Classifies open GitHub issues by heuristics (keywords, template matching) and proposes… | 597 |
 | `mcp-configurator` | Configura servidores del Protocolo de Contexto de Modelos (MCP) para extender las… | 2059 |

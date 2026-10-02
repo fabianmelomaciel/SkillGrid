@@ -22,6 +22,7 @@
   "files": [
     "skills/",
     "scripts/",
+    "commands/",
     "docs/",
     "models.json",
     "catalog.json",

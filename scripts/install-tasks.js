@@ -115,7 +115,7 @@ const TASKS = {
     const [scriptDir, projectDir] = args;
     const commandsSrcDir = path.join(scriptDir, 'commands');
     if (!fs.existsSync(commandsSrcDir)) {
-      console.log(`  [-] No se encuentra el directorio de commands: commands/`);
+      console.log('  [-] No se encuentra el directorio de commands: commands/');
       return;
     }
     const destDir = path.join(projectDir, '.opencode', 'commands');
