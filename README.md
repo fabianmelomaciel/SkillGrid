@@ -3,11 +3,10 @@
 
 ### **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
 
-*43 skills · 274 tests · gate 7s · 4 plataformas · hasta −90% ahorro de tokens · 5 jobs de seguridad en CI*
+*43 skills · tests en cada commit · gate 7s · 4 plataformas · hasta −90% ahorro de tokens · 5 jobs de seguridad en CI*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-43-22c55e?style=flat-square)](catalog.json)
-[![Tests](https://img.shields.io/badge/tests-274-3b82f6?style=flat-square)](package.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/ci.yml)
@@ -33,7 +32,7 @@ SkillGrid es un **sistema de trabajo autónomo** de instrucciones portables (`SK
 ### ⚡ TL;DR
 
 *   **43 skills listas para invocar** — `/brainstorming`, `/agente-ideas`, `/auditor-de-seguridad`… en opencode, Claude Code, Cursor y antigravity.
-*   **Se audita a sí mismo** — su propio `gate` (43 skills, 274 tests) y un pipeline de seguridad en cada PR.
+*   **Se audita a sí mismo** — su propio `gate` (43 skills, suite completa) y un pipeline de seguridad en cada PR.
 *   **Memoria y eficiencia** — `CODEX.md` local + CodeGraph: hasta **−90%** de tokens por sesión de trabajo.
 
 | | Sin SkillGrid | Con SkillGrid |

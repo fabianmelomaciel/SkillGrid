@@ -46,6 +46,9 @@ for file in $STAGED; do
   case "$file" in
     *.png|*.jpg|*.gif|*.ico|*.woff*|*.ttf|*.eot|*.svg|*.pdf|*.db) continue ;;
     *.min.js|package-lock.json|yarn.lock) continue ;;
+    # Reportes de ejemplo, catálogos de patrones y el scanner traen claves
+    # falsas a propósito: bloquearlos hacía imposible tocar docs de auditoría (E9)
+    .gitleaks.toml|skills/*/reports/*|skills/*/references/*|skills/*/scripts/scan_secrets.py) continue ;;
   esac
 
   for pattern in "${PATTERNS[@]}"; do

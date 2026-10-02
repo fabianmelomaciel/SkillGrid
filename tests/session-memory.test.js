@@ -106,6 +106,59 @@ console.log('\nTesting session-memory plugin...\n');
     check(!fs.existsSync(path.join(raiz, '.opencode', 'state', 'last-session.md')), 'escribió con un evento que no era idle');
   });
 
+  await test('dispose sin escribir nada deja el nudge pendiente y el system transform lo empuja', async () => {
+    const raiz = carpeta();
+    const plugin = await SessionMemory({ directory: raiz });
+    await plugin.dispose();
+    const marca = path.join(raiz, '.opencode', 'state', 'codex-pendiente');
+    check(fs.existsSync(marca), 'dispose no dejó la marca de pendiente');
+    check(fs.readFileSync(marca, 'utf8').includes('/codex-log'), 'la marca no menciona /codex-log');
+    const output = { system: [] };
+    await plugin['experimental.chat.system.transform']({}, output);
+    check(output.system.length === 1, 'el system transform no empujó el nudge');
+    check(output.system[0].includes('/codex-log'), 'el nudge no menciona /codex-log');
+  });
+
+  await test('dispose con CODEX escrito no deja pendiente y borra la marca vieja', async () => {
+    const raiz = carpeta();
+    fs.writeFileSync(path.join(raiz, 'CODEX.md'), '# CODEX\n');
+    const plugin = await SessionMemory({ directory: raiz });
+    const marca = path.join(raiz, '.opencode', 'state', 'codex-pendiente');
+    fs.mkdirSync(path.dirname(marca), { recursive: true });
+    fs.writeFileSync(marca, 'Pendiente: vieja\n');
+    fs.writeFileSync(path.join(raiz, 'CODEX.md'), '# CODEX\n- log nuevo\n');
+    fs.utimesSync(path.join(raiz, 'CODEX.md'), new Date(), new Date(Date.now() + 2000));
+    await plugin.dispose();
+    check(!fs.existsSync(marca), 'la marca vieja no se borró aunque CODEX se escribió después');
+    const output = { system: [] };
+    await plugin['experimental.chat.system.transform']({}, output);
+    check(output.system.length === 0, 'empujó el nudge con CODEX al día');
+  });
+
+  await test('el nudge se apaga solo cuando la sesión siguiente sí escribe', async () => {
+    const raiz = carpeta();
+    const plugin = await SessionMemory({ directory: raiz });
+    await plugin.dispose();
+    const marca = path.join(raiz, '.opencode', 'state', 'codex-pendiente');
+    check(fs.existsSync(marca), 'falta la marca inicial');
+    fs.writeFileSync(path.join(raiz, 'CODEX.md'), '# CODEX\n- aprendizaje\n');
+    fs.utimesSync(path.join(raiz, 'CODEX.md'), new Date(), new Date(Date.now() + 2000));
+    const output = { system: [] };
+    await plugin['experimental.chat.system.transform']({}, output);
+    check(output.system.length === 0, 'sigue empujando el nudge después de escribir');
+    check(!fs.existsSync(marca), 'no borró la marca cuando CODEX se actualizó');
+  });
+
+  await test('session.created solo evalúa la sesión anterior, no la primera', async () => {
+    const raiz = carpeta();
+    const plugin = await SessionMemory({ directory: raiz });
+    const marca = path.join(raiz, '.opencode', 'state', 'codex-pendiente');
+    await plugin.event({ event: { type: 'session.created' } });
+    check(!fs.existsSync(marca), 'la primera sesión no puede dejar pendiente: no hubo sesión previa');
+    await plugin.event({ event: { type: 'session.created' } });
+    check(fs.existsSync(marca), 'la segunda sesión debía marcar a la primera por no escribir');
+  });
+
   TEMP.forEach((dir) => fs.rmSync(dir, { recursive: true, force: true }));
 
   console.log(`\n${passed} passed, ${failed} failed\n`);

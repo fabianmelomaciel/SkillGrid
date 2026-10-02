@@ -1,0 +1,33 @@
+name: Docs Check
+
+# ci.yml y pentest.yml ignoran los commits solo-.md para no gastar minutos de CI.
+# Este workflow cubre ese hueco (E8): un commit que solo toca docs igual valida
+# la lista de evolución, los frontmatter de las skills y los números del README.
+on:
+  push:
+    branches: [main]
+    paths: ['**.md']
+  pull_request:
+    branches: [main]
+    paths: ['**.md']
+
+jobs:
+  docs-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+
+      - name: Validate evolution list
+        run: node scripts/check-evolution.js
+
+      - name: Validate skills frontmatter
+        run: node scripts/validate-skills.js
+
+      - name: Validate README vs catalog
+        run: node tests/docs-consistency.test.js
