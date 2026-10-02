@@ -3,6 +3,7 @@
  *
  * Usage:
  *   node scripts/install-tasks.js install-rules <source> <project> <language>
+ *   node scripts/install-tasks.js install-commands <source> <project>
  *   node scripts/install-tasks.js generate-agents <source> <agentsDir>
  *   node scripts/install-tasks.js token-audit <source>
  */
@@ -108,6 +109,22 @@ const TASKS = {
 
     installRulesFromFolder('common', 'common');
     if (language !== 'common') installRulesFromFolder(language, language);
+  },
+
+  'install-commands': (args) => {
+    const [scriptDir, projectDir] = args;
+    const commandsSrcDir = path.join(scriptDir, 'commands');
+    if (!fs.existsSync(commandsSrcDir)) {
+      console.log(`  [-] No se encuentra el directorio de commands: commands/`);
+      return;
+    }
+    const destDir = path.join(projectDir, '.opencode', 'commands');
+    fs.mkdirSync(destDir, { recursive: true });
+    fs.readdirSync(commandsSrcDir).forEach(file => {
+      if (path.extname(file).toLowerCase() !== '.md') return;
+      fs.copyFileSync(path.join(commandsSrcDir, file), path.join(destDir, file));
+      console.log(`    [+] Command: ${file}`);
+    });
   },
 
   'generate-agents': (args) => {
@@ -242,6 +259,6 @@ if (TASKS[taskName]) {
   TASKS[taskName](taskArgs);
 } else {
   console.error(`Unknown task: ${taskName}`);
-  console.error('Available tasks: install-rules, generate-agents, token-audit');
+  console.error('Available tasks: install-rules, install-commands, generate-agents, token-audit');
   process.exit(1);
 }

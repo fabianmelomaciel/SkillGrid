@@ -318,6 +318,14 @@ function installProjectRules(source, project, lang) {
   }
 }
 
+function installCommands(source, project) {
+  try {
+    execFileSync(process.execPath, [path.join(ROOT, "scripts", "install-tasks.js"), "install-commands", source, project], { stdio: "inherit", windowsHide: true });
+  } catch {
+    log("Node.js required for project commands", "err");
+  }
+}
+
 function generateAgents(source) {
   const agentsDir = path.join(require("os").homedir(), ".config", "opencode", "agents");
   fs.mkdirSync(agentsDir, { recursive: true });
@@ -365,6 +373,7 @@ function main() {
     setupGitIgnores(path.resolve(opts.project));
     setupProjectCodeGraph(opts.project);
     installProjectRules(ROOT, opts.project, opts.language || "");
+    installCommands(ROOT, opts.project);
     calcTokens(opts.project);
     return;
   }

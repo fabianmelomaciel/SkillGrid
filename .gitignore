@@ -11,6 +11,9 @@ Thumbs.db
 # Claude Code project config (machine-local)
 .claude/
 
+# opencode session breadcrumb (local)
+.opencode/state/
+
 # Secrets & credentials (never commit)
 .env
 .env.*
