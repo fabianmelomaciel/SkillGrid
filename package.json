@@ -40,7 +40,7 @@
     "preflight": "node scripts/preflight.js",
     "gate": "node scripts/validate-skills.js && node scripts/check-evolution.js && node scripts/check-remote-install-pin.js && node tests/skills.test.js && node tests/generate-catalog.test.js && node tests/create-skill.test.js",
     "catalog": "node scripts/generate-catalog.js",
-    "test": "node tests/skills.test.js && node tests/install-core.test.js && node tests/install-tasks.test.js && node tests/validate.test.js && node tests/generate-catalog.test.js && node tests/create-skill.test.js && node tests/check-evolution.test.js && node tests/audit-loop/audit-loop.test.js",
+    "test": "node tests/skills.test.js && node tests/install-core.test.js && node tests/install-tasks.test.js && node tests/session-memory.test.js && node tests/validate.test.js && node tests/generate-catalog.test.js && node tests/create-skill.test.js && node tests/check-evolution.test.js && node tests/audit-loop/audit-loop.test.js",
     "prepack": "node scripts/generate-catalog.js",
     "postinstall": "node scripts/postinstall-graphify.js",
     "release": "bash scripts/release.sh"

@@ -27,6 +27,13 @@ Dispatch a code reviewer subagent to catch issues before they cascade. The revie
 - Before refactoring (baseline check)
 - After fixing complex bug
 
+## Batch Gate (cuánto gasta cada lote)
+
+- **L0 — siempre, sin dispatch:** la suite/gate local y `git diff --stat`. Si el lote es chico y verde, no hay dispatch.
+- **L1 — un dispatch de review** (diff acotado a los archivos tocados, salida ≤400 palabras) si el lote cruza una de: ≥4 archivos o ≥150 LOC · paths de auth, secrets, schema, CI o entrypoints · una clase de bug que ya se repitió (ver `EVOLUCION.md`).
+- **L2 — fan-out de 3 perspectivas** solo si L1 devuelve BLOCK y el commit está por ir a main.
+- Con menos de 15K de presupuesto de sesión restante, degradá a L0 y declaralo en el handoff.
+
 ## How to Request
 
 **1. Get git SHAs:**

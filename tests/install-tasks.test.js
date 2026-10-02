@@ -49,6 +49,21 @@ test('sin directorio commands no revienta y lo avisa', () => {
   check((r.stdout || '').includes('No se encuentra'), `no avisó: ${r.stdout}`);
 });
 
+test('commands/ y .opencode/commands/ están sincronizadas', () => {
+  const srcDir = path.join(ROOT, 'commands');
+  const dstDir = path.join(ROOT, '.opencode', 'commands');
+  const fuentes = fs.readdirSync(srcDir).filter((f) => path.extname(f).toLowerCase() === '.md');
+  check(fuentes.length > 0, 'no hay commands en la raíz');
+  fuentes.forEach((f) => {
+    const destino = path.join(dstDir, f);
+    check(fs.existsSync(destino), `falta .opencode/commands/${f}`);
+    check(
+      fs.readFileSync(path.join(srcDir, f), 'utf8') === fs.readFileSync(destino, 'utf8'),
+      `${f} difiere entre commands/ y .opencode/commands/`,
+    );
+  });
+});
+
 TEMP.forEach((dir) => fs.rmSync(dir, { recursive: true, force: true }));
 
 console.log(`\n${passed} passed, ${failed} failed\n`);

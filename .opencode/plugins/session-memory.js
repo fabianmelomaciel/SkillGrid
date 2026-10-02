@@ -16,11 +16,15 @@ function ultimasLineas(texto, max) {
 }
 
 function seccion(texto, header) {
-  const idx = texto.indexOf(header);
-  if (idx < 0) return '';
-  const resto = texto.slice(idx);
-  const fin = resto.indexOf('\n## ', 4);
-  return fin > 0 ? resto.slice(0, fin) : resto;
+  // anclado a línea: el header aparece citado en prosa antes que como heading
+  const lineas = texto.replace(/\r/g, '').split('\n');
+  const ini = lineas.findIndex((l) => l.trim() === header);
+  if (ini < 0) return '';
+  let fin = lineas.length;
+  for (let i = ini + 1; i < lineas.length; i++) {
+    if (lineas[i].startsWith('## ')) { fin = i; break; }
+  }
+  return lineas.slice(ini, fin).join('\n');
 }
 
 export const SessionMemory = async ({ directory }) => {
@@ -34,10 +38,9 @@ export const SessionMemory = async ({ directory }) => {
 
         const codex = path.join(raiz, 'CODEX.md');
         if (fs.existsSync(codex)) {
-          const txt = fs.readFileSync(codex, 'utf8');
-          const idx = txt.indexOf('## Deliberaciones');
-          if (idx >= 0) {
-            pedazos.push('## Deliberaciones (para seguir desde donde estábamos)\n' + ultimasLineas(txt.slice(idx), LINEAS_CODEX));
+          const delib = seccion(fs.readFileSync(codex, 'utf8'), '## Deliberaciones');
+          if (delib.trim() !== '') {
+            pedazos.push('## Deliberaciones (para seguir desde donde estábamos)\n' + ultimasLineas(delib, LINEAS_CODEX));
           }
         }
 

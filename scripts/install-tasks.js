@@ -120,10 +120,10 @@ const TASKS = {
     }
     const destDir = path.join(projectDir, '.opencode', 'commands');
     fs.mkdirSync(destDir, { recursive: true });
-    fs.readdirSync(commandsSrcDir).forEach(file => {
-      if (path.extname(file).toLowerCase() !== '.md') return;
-      fs.copyFileSync(path.join(commandsSrcDir, file), path.join(destDir, file));
-      console.log(`    [+] Command: ${file}`);
+    fs.readdirSync(commandsSrcDir, { withFileTypes: true }).forEach(entry => {
+      if (!entry.isFile() || path.extname(entry.name).toLowerCase() !== '.md') return;
+      fs.copyFileSync(path.join(commandsSrcDir, entry.name), path.join(destDir, entry.name));
+      console.log(`    [+] Command: ${entry.name}`);
     });
   },
 
