@@ -86,7 +86,7 @@ You MUST check off every item before completing your audit:
 - [ ] Scan API connections, retry mechanisms, and local caching.
 - [ ] Run recursion/infinite loop checks on agent/loop controls.
 - [ ] Quantify estimated token savings (in percent or absolute value).
-- [ ] Generate the premium HTML dashboard report under `reports/`.
+- [ ] Generate the premium HTML dashboard report under `reports/`, HTML-escaping every dynamic value (findings, paths, config snippets) per `skills/shared/report-security.md` before inserting it.
 - [ ] **Mandatory Closing Rule:** open the HTML report dashboard in the default browser at the very end, per `skills/shared/open-report.md` (OS-specific open command, silent-fail if no GUI, always print the `file:///` link regardless).
 - [ ] Return the structured JSON final report.
 
@@ -131,6 +131,6 @@ You found N findings. Some are auto-repairable (lint, types, AI remnants, patch 
 
 > **Referencia:** `skills/audit-loop/SKILL.md` para la lógica completa del loop.
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **Open Report:** `skills/shared/open-report.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **Open Report:** `skills/shared/open-report.md` | **Report Security:** `skills/shared/report-security.md`
 
 > Modules: `skills/shared/modules-footer.md`

@@ -295,7 +295,7 @@ Assign finding IDs sequentially: CN-001, CN-002, etc. Order by severity (critica
 
 Write the markdown report to: `~/Desktop/cyber-neo-report-{project-name}-{YYYY-MM-DD}.md`
 
-Then render the same findings into the HTML dashboard: copy `${CLAUDE_SKILL_DIR}/reports/cyber-neo-template.html`, replace `{{PROJECT_NAME}}`, `{{SCAN_DATE}}`, `{{CRITICAL_COUNT}}`, `{{HIGH_COUNT}}`, `{{MEDIUM_COUNT}}`, `{{LOW_COUNT}}` and `{{EXECUTIVE_SUMMARY}}`, and replace the block between `<!-- FINDINGS_PLACEHOLDER_START -->`/`_END` with one `.finding-card` per finding (severity badge, title, file:line, description, remediation, evidence). If Step 7.5 produced an ISO 27001 section, fill the block between `<!-- ISO27001_PLACEHOLDER_START -->`/`_END` with its rows; **if there were no findings, delete that whole block** (`<h3>` + `<div class="executive-summary">`) rather than leaving an empty table. Save as `~/Desktop/cyber-neo-report-{project-name}-{YYYY-MM-DD}.html`.
+Then render the same findings into the HTML dashboard: copy `${CLAUDE_SKILL_DIR}/reports/cyber-neo-template.html`, replace `{{PROJECT_NAME}}`, `{{SCAN_DATE}}`, `{{CRITICAL_COUNT}}`, `{{HIGH_COUNT}}`, `{{MEDIUM_COUNT}}`, `{{LOW_COUNT}}` and `{{EXECUTIVE_SUMMARY}}`, and replace the block between `<!-- FINDINGS_PLACEHOLDER_START -->`/`_END` with one `.finding-card` per finding (severity badge, title, file:line, description, remediation, evidence) — HTML-escape every dynamic value per `skills/shared/report-security.md` before inserting it. If Step 7.5 produced an ISO 27001 section, fill the block between `<!-- ISO27001_PLACEHOLDER_START -->`/`_END` with its rows; **if there were no findings, delete that whole block** (`<h3>` + `<div class="executive-summary">`) rather than leaving an empty table. Save as `~/Desktop/cyber-neo-report-{project-name}-{YYYY-MM-DD}.html`.
 
 Where `{project-name}` is the directory name of the target project.
 
@@ -371,7 +371,7 @@ If you find yourself thinking any of these, you are cutting corners:
 | "I already found enough issues" | Complete all phases. The one you skip might be the critical one. |
 | "The framework probably handles this" | Verify it. Frameworks have defaults that can be disabled. |
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **Open Report:** `skills/shared/open-report.md` | **ISO 27001 Mapping:** `skills/shared/iso27001-mapping.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **Open Report:** `skills/shared/open-report.md` | **ISO 27001 Mapping:** `skills/shared/iso27001-mapping.md` | **Report Security:** `skills/shared/report-security.md`
 
 > Modules: `skills/shared/modules-footer.md`
 

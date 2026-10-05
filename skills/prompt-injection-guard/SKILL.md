@@ -228,6 +228,7 @@ Before completing:
 - [ ] Report JSON saved to `reports/prompt-injection-<date>.json`
 - [ ] Each finding tagged with `iso27001_controls` per `skills/shared/iso27001-mapping.md`
 - [ ] HTML dashboard generated from `reports/prompt-injection-template.html` and opened in the default browser per `skills/shared/open-report.md` (OS-specific open command, silent-fail if no GUI, always print the `file:///` link regardless)
+- [ ] Any dynamic value written into the template's placeholders (payloads tested, scan output, file paths) HTML-escaped per `skills/shared/report-security.md` before insertion
 
 ---
 
@@ -241,6 +242,6 @@ Before completing:
 
 > **Reference:** [OWASP LLM Top 10 2025](https://owasp.org/www-project-top-10-for-large-language-model-applications/) · [MITRE ATLAS](https://atlas.mitre.org/)
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **ISO 27001 Mapping:** `skills/shared/iso27001-mapping.md` | **Open Report:** `skills/shared/open-report.md`
+> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **ISO 27001 Mapping:** `skills/shared/iso27001-mapping.md` | **Open Report:** `skills/shared/open-report.md` | **Report Security:** `skills/shared/report-security.md`
 
 > Modules: `skills/shared/modules-footer.md`
