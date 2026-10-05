@@ -49,6 +49,14 @@ test('EVOLUCION.md del repo está bien formado', () => {
   check(r.status === 0, `exit ${r.status}: ${(r.stderr || '').trim()}`);
 });
 
+test('el ledger no se cuela ni al paquete ni al instalador', () => {
+  const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+  const sePublica = (pkg.files || []).some((f) => f.replace(/\/$/, '') === 'EVOLUCION.md');
+  check(!sePublica, 'EVOLUCION.md está en files de package.json: los usuarios recibirían el historial');
+  const installer = fs.readFileSync(path.join(ROOT, 'scripts', 'install-core.js'), 'utf8');
+  check(!installer.includes('EVOLUCION'), 'install-core.js toca EVOLUCION.md: el ledger es del desarrollador, no del usuario');
+});
+
 test('una fila corta (campos de menos) hace fallar', () => {
   const rota = VALIDA.replace('- E2 | supply-chain | el instalador cae a main si falta el tag | P0 | 2026-10-01 | remote-install.sh:31', '- E2 | supply-chain | cortada | P0 | 2026-10-01');
   const r = correr(rota);

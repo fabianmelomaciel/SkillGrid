@@ -18,6 +18,10 @@ Antes de generar un test, prueba manual o reporte nuevo, revisá primero si ya e
 
 `EVOLUCION.md` es lo que este proyecto todavía debe mejorar. Antes de emitir una auditoría, un reporte o un plan nuevo, leé `## Abiertas`: lo que ya está listado no se re-reporta y lo cerrado no se re-analiza. Hallazgo nuevo = fila nueva; fix terminado = fila movida a `## Cerradas` con `archivo:línea`. Si la fila no se movió, el fix no está terminado. El formato lo valida `npm run gate`.
 
+Regla dura: el ledger es solo del desarrollador, en dev — nunca se publica en el paquete ni se instala en consumidores (el usuario recibe la evolución ya aplicada, no el historial). No se rompe: `tests/check-evolution.test.js` la valida en el gate.
+
+Cierre del ciclo: evolución terminada y todo resuelto → instalar en el IDE local del equipo, commit y push a GitHub.
+
 ## graphify
 
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.

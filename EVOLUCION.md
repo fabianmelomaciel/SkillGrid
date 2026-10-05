@@ -2,6 +2,8 @@
 
 Lo que este proyecto todavía tiene que mejorar. Se registra el error con su evidencia, se corrige, y la fila sale de `## Abiertas` para `## Cerradas` — no se borra nunca, es el historial.
 
+Es del desarrollador y vive en dev: no se publica en el paquete npm ni se copia en la instalación — el usuario recibe la evolución ya aplicada (reglas, skills, tests), no el historial. Regla que no se rompe: `tests/check-evolution.test.js` hace fallar el gate si el ledger se cuela al paquete o al instalador.
+
 Formato de fila:
 
 ```
@@ -21,8 +23,11 @@ Cómo se usa:
 3. Antes de emitir una auditoría, un reporte o un plan nuevo: leer `## Abiertas`. Lo que ya está listado no se re-reporta y lo cerrado no se re-analiza.
 4. Más de 20 cerradas → comprimir las más viejas en una sola línea (`- E1..E4 | archivadas ...`).
 5. `node scripts/check-evolution.js` valida el formato y corre en `npm run gate`, en el pre-commit y en CI.
+6. Evolución terminada y todo resuelto → instalar en el IDE local del equipo, commit y push a GitHub. Sin ese pase el fix no llega a ningún lado.
 
 ## Abiertas
+
+- E21 | supply-chain | Acciones de GitHub y docker pineadas por tag mutable (actions/checkout@v7, codeql-action@v4, docker/*) mientras las de terceros van por SHA | P2 | 2026-10-05 | .github/workflows/ci.yml:16
 
 ## Cerradas
 
@@ -44,3 +49,5 @@ Cómo se usa:
 - E12 | memoria | Persistencia entre sesiones resuelta con el plugin session-memory; falta el nudge automático de /codex-log al cerrar la sesión | P1 | 2026-10-02 | skills/shared/codex-learning-loop.md:7 | cerrado 2026-10-02 | tests/session-memory.test.js:109
 - E17 | mensajes | El help del instalador quedó con la línea `--language php` sin descripción (copy-paste del review de a0aab20) y install-commands loguea un template literal sin interpolación | P2 | 2026-10-02 | scripts/install-core.js:414, scripts/install-tasks.js:118 | cerrado 2026-10-02 | scripts/install-core.js:414, scripts/install-tasks.js:118
 - E18 | supply-chain | `package.json` no incluye `commands/` en `files`: el paquete npm se publica sin comandos y `install-commands` no hace nada para consumidores npm (menor #8 del review de a0aab20) | P2 | 2026-10-02 | package.json:22 | cerrado 2026-10-02 | package.json:25
+- E19 | docs | Sin sección [Unreleased] en CHANGELOG: los 8 commits posteriores a v1.17.0 quedaron sin registrar y el próximo release habría que reconstruirlos a mano | P1 | 2026-10-05 | CHANGELOG.md:8 | cerrado 2026-10-05 | CHANGELOG.md:8
+- E20 | seguridad | Inyección HTML/script al interpolar hallazgos, paths y código escaneado sin escapar en los dashboards de reporte | P1 | 2026-10-05 | skills/auditor-de-seguridad/reports/dashboard-template.html:421 | cerrado 2026-10-05 | skills/shared/report-security.md:1

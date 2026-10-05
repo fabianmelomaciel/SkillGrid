@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Installable opencode commands** (`task install-commands`, E14) and the `/codex-log` command.
+- **`session-memory` plugin**: injects open `CODEX.md` / `EVOLUCION.md` items at session start and compaction, keeps a session breadcrumb, and nudges `/codex-log` on dispose (E12).
+- **`rules/common/hooks.md`** — warn-only hook recipes for consumers (E11); **`rules/common/token-economy.md`** — CODEX-first and token-economy rules for every IDE (agente-ideas Stage 3).
+- **`skills/shared/report-security.md`** — HTML-escaping rule for the report dashboards, referenced from every report-producing skill (E20).
+- **Docs Check workflow** (`.github/workflows/ci-md.yml`) so `.md`-only commits still run the docs and evolution checks (E8).
+- Tests: docs-vs-catalog consistency (E6), `CODEX.md` budget (E7), `install-commands` and `session-memory` (E16).
+
+### Changed
+- **`agente-ideas`**: Stage 3 closes with a recommended agent from a closed list — dispatch only with explicit CEO approval.
+- **`requesting-code-review`**: skeptic mode and L0/L1/L2 batch gate.
+- **opencode.json**: compaction `auto` + `prune` (E13).
+- **humanizer**: `TECHNICAL CLEANUP` section for invisible Unicode marks.
+- README free of hardcoded counts (E5); pre-commit secrets scan allowlists example keys (E9).
+
+### Fixed
+- **HTML/script injection in the report dashboards**: dynamic values (findings, paths, scanned snippets) are now escaped per `skills/shared/report-security.md` (E20).
+- **`session-memory` heading anchor**: `seccion()` matched the prose mention instead of the heading (E15).
+- **Installer**: `--language php` help line has a description again, `install-commands` no longer logs a plain template literal, and `commands/` ships in npm `files` (E17, E18).
+
 ## [1.17.0] - 2026-10-01
 
 ### Added
