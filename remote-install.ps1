@@ -28,7 +28,7 @@ Write-Host "Clonando SkillGrid en directorio temporal: $targetDir" -ForegroundCo
 # WARNING: Pinned to release tag for supply chain safety. Updated automatically by
 # scripts/release.sh on each release. Si el tag no existe se aborta: caer a main
 # es clonar una rama mutable y es exactamente lo que el pin viene a evitar.
-$pinnedTag = "v1.17.0"
+$pinnedTag = "v1.18.0"
 git clone --depth 1 --branch $pinnedTag https://github.com/fabianmelomaciel/SkillGrid.git "$targetDir"
 if ($LASTEXITCODE -ne 0) {
     Write-Error "No se pudo clonar el tag $pinnedTag (tag inexistente o red caida). No se instala desde main sin el pin."
