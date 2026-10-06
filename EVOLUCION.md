@@ -27,15 +27,12 @@ Cómo se usa:
 
 ## Abiertas
 
-- E21 | supply-chain | Acciones de GitHub y docker pineadas por tag mutable (actions/checkout@v7, codeql-action@v4, docker/*) mientras las de terceros van por SHA | P2 | 2026-10-05 | .github/workflows/ci.yml:16
-- E22 | secretos | El pre-commit no cubre storageState.json de Playwright (JWT/cookies de sesión) — patrón ausente en el scanner | P2 | 2026-10-06 | .githooks/pre-commit:13
-
 ## Cerradas
 
-- E1 | calidad | El pin-check de los instaladores remotos solo corría en CI, nunca en el gate local | P1 | 2026-10-01 | .github/workflows/ci.yml:26 | cerrado 2026-10-01 | package.json:41
-- E2 | supply-chain | Los instaladores remotos caían a `main` si faltaba el tag: clon mutable sin pin | P0 | 2026-10-01 | remote-install.sh:31, remote-install.ps1:35 | cerrado 2026-10-01 | remote-install.sh:32, remote-install.ps1:35
-- E3 | seguridad | El secrets-scan no corría en push directo a `main` (solo pull_request/schedule) | P0 | 2026-10-01 | .github/workflows/pentest.yml:3 | cerrado 2026-10-01 | .github/workflows/pentest.yml:4
+- E1..E3 | archivadas 2026-10-06 — pin-check local (E1), instaladores fail-open sin tag (E2), secrets-scan sin `on: push` (E3); cerradas 2026-10-01, detalle en el historial de git
 - E4 | seguridad | Patrones de secretos rotos: grep 3.0 no entiende `\x27` (7 patrones casi muertos) y `DB_PASS=` nunca matcheaba | P1 | 2026-10-01 | .githooks/pre-commit:13 | cerrado 2026-10-01 | .githooks/pre-commit:12, .githooks/pre-commit:34
+- E21 | supply-chain | Acciones de GitHub y docker pineadas por tag mutable (actions/checkout@v7, codeql-action@v4, docker/*) mientras las de terceros van por SHA | P2 | 2026-10-05 | .github/workflows/ci.yml:16 | cerrado 2026-10-06 | tests/action-pins.test.js:31 (28 uses a SHA de 40 hex + permissions/contents read + persist-credentials en los 12 checkouts)
+- E22 | secretos | El pre-commit no cubre storageState.json de Playwright (JWT/cookies de sesión) — patrón ausente en el scanner | P2 | 2026-10-06 | .githooks/pre-commit:13 | cerrado 2026-10-06 | .githooks/pre-commit:58, tests/action-pins.test.js:63
 - E10 | skill | Stage 3 no recomendaba qué agente usar según el pedido y rules/common no traía regla de economía de tokens ni CODEX-first para IDEs | P2 | 2026-10-02 | skills/agente-ideas/SKILL.md:97 | cerrado 2026-10-02 | skills/agente-ideas/SKILL.md:97, rules/common/token-economy.md:1
 - E11 | hooks | Enforcement que hoy es solo texto y sin recetas: avisar console.log post-edit y al Stop, reminder antes de git push, formateo post-edit — todo warn-only, sin bloqueos | P1 | 2026-10-02 | rules/common/hooks.md:1 | cerrado 2026-10-02 | rules/common/hooks.md:32
 - E13 | compact | Compactación floja: la sesión se acerca al límite sin aviso; opencode solo ofrece auto+prune, sin intervalos ni hook de aviso | P2 | 2026-10-02 | rules/common/performance.md:20 | cerrado 2026-10-02 | opencode.json:1 (prune: true es el único cambio real)

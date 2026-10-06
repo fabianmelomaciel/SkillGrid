@@ -28,6 +28,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`session-memory` heading anchor**: `seccion()` matched the prose mention instead of the heading (E15).
 - **Installer**: `--language php` help line has a description again, `install-commands` no longer logs a plain template literal, and `commands/` ships in npm `files` (E17, E18).
 
+### Security
+- **Every GitHub Action pinned to a full commit SHA** (`ci.yml`, `ci-md.yml`, `pentest.yml`: 28 `uses:` with a `# vX` comment), plus `permissions: contents: read` at workflow level and `persist-credentials: false` on all 12 checkouts. Regression guard `tests/action-pins.test.js` runs in the `test` and `gate` chains (E21).
+- **Pre-commit blocks Playwright session state by path** (`storageState.json`, `.auth/`, `.storage/`) instead of a JWT content regex, and `.gitignore` covers `test-results/` — credentials can't land in the repo and docs keep their example keys (E22).
+
 ## [1.17.0] - 2026-10-01
 
 ### Added

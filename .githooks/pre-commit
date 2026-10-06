@@ -51,6 +51,19 @@ for file in $STAGED; do
     .gitleaks.toml|skills/*/reports/*|skills/*/references/*|skills/*/scripts/scan_secrets.py) continue ;;
   esac
 
+  # Sesión de Playwright (cookies/JWT): el nombre del archivo ya delata que hay
+  # credenciales adentro, así que se bloquea por ruta y no por contenido — un
+  # regex de JWT en PATTERNS volvería a meter falsos positivos en docs (E9)
+  case "$file" in
+    storageState.json|*/storageState.json|.auth/*|*/.auth/*|.storage/*|*/.storage/*)
+      echo -e "${RED}[pre-commit] BLOCKED — Playwright session state (E22):${NC}"
+      echo "  File   : $file"
+      echo "  Guard  : storageState/.auth/.storage es sesión de verdad, va en .gitignore"
+      FOUND=1
+      continue
+      ;;
+  esac
+
   for pattern in "${PATTERNS[@]}"; do
     match=$(git show ":$file" 2>/dev/null | grep -Eon -e "$pattern" | head -1 || true)
     if [ -n "$match" ]; then

@@ -24,6 +24,12 @@ tokens*.json
 *.pem
 secrets*.json
 
+# Playwright session state (E22 — cookies/JWT de sesión, nunca al repo)
+test-results/
+.storage/
+.auth/
+storageState.json
+
 # Node.js
 node_modules/
 npm-debug.log*
