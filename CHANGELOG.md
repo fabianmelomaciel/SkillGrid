@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **k6 absorbed into `performance-profiler`** (own load-test script with `http_req_duration` / `checks` thresholds, `--out json` to compare runs, and a written-authorization rule before hitting any external host) plus a **CLI/MCP-for-agents section in `playwright-testing`** (`@playwright/mcp` domain allowlist, `playwright install` behind explicit confirmation, pinned package/browser versions, `storageState` kept out of tracked files).
 - **Installable opencode commands** (`task install-commands`, E14) and the `/codex-log` command.
 - **`session-memory` plugin**: injects open `CODEX.md` / `EVOLUCION.md` items at session start and compaction, keeps a session breadcrumb, and nudges `/codex-log` on dispose (E12).
 - **`rules/common/hooks.md`** — warn-only hook recipes for consumers (E11); **`rules/common/token-economy.md`** — CODEX-first and token-economy rules for every IDE (agente-ideas Stage 3).

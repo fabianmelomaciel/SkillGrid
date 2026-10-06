@@ -4,7 +4,7 @@ description: "Use when designing, writing, debugging, or auditing Playwright E2E
 category: core
 status: stable
 risk_level: safe
-token_estimate: { input: 1117, output: 800 }
+token_estimate: { input: 1344, output: 960 }
 ---
 
 ## Core
@@ -97,6 +97,15 @@ Before completing test implementation, verify:
 - [ ] No hardcoded wait timeouts (`waitForTimeout`) are used
 - [ ] Accessibility locators (`getByRole`) are prioritized
 - [ ] HTML elements have appropriate role attributes where lacking
+
+---
+
+## 7. CLI y MCP para agentes
+
+- **`@playwright/mcp`**: cuando un agente va a navegar por MCP, levantalo con allowlist de dominios (`npx @playwright/mcp --allow-domains "localhost,mi-app.com"`). Sin la lista, el browser del agente pega en cualquier host.
+- **`npx playwright install`** baja binarios al sistema: solo con confirmación explícita del usuario, nunca como paso automático de un script o de un pipeline.
+- **Pin de versión**: `@playwright/test` y los browsers quedan pineados en `package.json` con versión exacta (sin `^`). Sin pin, una release nueva mueve los engines y las capturas de visual regression saltan todas.
+- **`storageState`**: cookies y JWT de sesión van a una ruta gitignored (`test-results/.storage/user.json`) o se pasan en memoria (`browser.newContext({ storageState })`), nunca a un archivo trackeado — el pre-commit no cubre ese patrón (E22 en `EVOLUCION.md`).
 
 ---
 

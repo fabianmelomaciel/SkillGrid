@@ -4,7 +4,7 @@ description: Measure-first performance engineering. Use before merging features 
 category: core
 status: stable
 risk_level: safe
-token_estimate: { input: 1876, output: 600 }
+token_estimate: { input: 2169, output: 690 }
 ---
 
 ## Core
@@ -96,10 +96,43 @@ ls -la .next/static/chunks/*.js | sort -k5 -rn | head -20
 ```bash
 # Using curl for single endpoint timing
 curl -o /dev/null -s -w "Connect: %{time_connect}s | TTFB: %{time_starttransfer}s | Total: %{time_total}s\n" http://localhost:3000/api/endpoint
-
-# Using Apache Bench for load testing
-ab -n 100 -c 10 http://localhost:3000/api/endpoint
 ```
+
+**Load testing — k6 es la herramienta principal.** Script de ejemplo (`load-test.js`):
+
+```js
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+
+export const options = {
+  stages: [
+    { duration: '30s', target: 20 }, // sube de a poco, sin pico de golpe
+    { duration: '1m', target: 20 },
+    { duration: '15s', target: 0 },
+  ],
+  thresholds: {
+    http_req_duration: ['p(95)<500ms'],
+    checks: ['rate>0.95'],
+  },
+};
+
+const BASE = __ENV.BASE_URL || 'http://localhost:3000';
+
+export default function () {
+  const res = http.get(`${BASE}/api/endpoint`);
+  check(res, { 'status 200': (r) => r.status === 200 });
+  sleep(1);
+}
+```
+
+```bash
+k6 run load-test.js                                       # sale con código distinto de 0 si un threshold no se cumple
+k6 run --out json=reports/load-$(date +%Y%m%d).json load-test.js   # salida parseable para comparar corridas
+```
+
+**Regla de targets:** por defecto solo `localhost` o entorno propio. Un host externo se toca únicamente con autorización escrita del dueño del sistema, confirmada antes del primer request — mismo gate que `hack-audit`, sin excepciones por "es solo una prueba rápida".
+
+Sin k6 instalado: `ab -n 100 -c 10 http://localhost:3000/api/endpoint`
 
 ### 4. 🗃️ Database Query Profiling
 

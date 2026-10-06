@@ -28,6 +28,7 @@ Cómo se usa:
 ## Abiertas
 
 - E21 | supply-chain | Acciones de GitHub y docker pineadas por tag mutable (actions/checkout@v7, codeql-action@v4, docker/*) mientras las de terceros van por SHA | P2 | 2026-10-05 | .github/workflows/ci.yml:16
+- E22 | secretos | El pre-commit no cubre storageState.json de Playwright (JWT/cookies de sesión) — patrón ausente en el scanner | P2 | 2026-10-06 | .githooks/pre-commit:13
 
 ## Cerradas
 

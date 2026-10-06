@@ -134,8 +134,8 @@ Genera automáticamente archivos de reglas optimizados en tu proyecto local:
 | `incremental-implementation` | Delivers changes incrementally. Use when implementing any feature or change that touches… | 2491 |
 | `issue-triage` | Classifies open GitHub issues by heuristics (keywords, template matching) and proposes… | 597 |
 | `mcp-configurator` | Configura servidores del Protocolo de Contexto de Modelos (MCP) para extender las… | 2059 |
-| `performance-profiler` | Measure-first performance engineering. Use before merging features that touch UI, API… | 1876 |
-| `playwright-testing` | Use when designing, writing, debugging, or auditing Playwright E2E and component tests. | 1117 |
+| `performance-profiler` | Measure-first performance engineering. Use before merging features that touch UI, API… | 2169 |
+| `playwright-testing` | Use when designing, writing, debugging, or auditing Playwright E2E and component tests. | 1344 |
 | `ponytail` | Úsalo antes de escribir código nuevo para forzar la opción más chica posible (YAGNI,… | 467 |
 | `receiving-code-review` | Use when receiving code review feedback, before implementing suggestions, especially if… | 1927 |
 | `requesting-code-review` | Use when completing tasks, implementing major features, or before merging to verify work… | 843 |

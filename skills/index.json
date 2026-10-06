@@ -1,6 +1,6 @@
 {
-  "version": "1.2.41",
-  "generated": "2026-10-02",
+  "version": "1.2.42",
+  "generated": "2026-10-06",
   "summary": {
     "total": 43,
     "categories": {
@@ -397,8 +397,8 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 1876,
-        "output": 600
+        "input": 2169,
+        "output": 690
       },
       "cost_tier": "low",
       "invokes": []
@@ -410,8 +410,8 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 1117,
-        "output": 800
+        "input": 1344,
+        "output": 960
       },
       "cost_tier": "low",
       "invokes": [
