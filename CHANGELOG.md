@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.18.0] - 2026-10-06
+
 ### Added
 - **k6 absorbed into `performance-profiler`** (own load-test script with `http_req_duration` / `checks` thresholds, `--out json` to compare runs, and a written-authorization rule before hitting any external host) plus a **CLI/MCP-for-agents section in `playwright-testing`** (`@playwright/mcp` domain allowlist, `playwright install` behind explicit confirmation, pinned package/browser versions, `storageState` kept out of tracked files).
 - **Installable opencode commands** (`task install-commands`, E14) and the `/codex-log` command.
