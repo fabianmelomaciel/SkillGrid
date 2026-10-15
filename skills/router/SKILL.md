@@ -27,6 +27,11 @@ Use at the start of any conversation or task when you need to load specialized a
     *   *Architecture consensus* â†’ `agente-ideas`
     *   *Performance / Web Vitals* â†’ `performance-profiler`
 3.  **Lazy Load Skill:** Load the selected skill's rules by reading its instructions file (e.g., `skills/<skill-name>/SKILL.md`) using `read` or `view`.
+3.5 **Cost gate before loading:** Once the candidate skill is picked, check its `cost_tier` in `skills/index.json`:
+    *   On a keyword tie between two skills, prefer the one with `cost_tier: low`.
+    *   If the session budget is nearly exhausted (<2K tokens left), do not load `cost_tier: high` — pick the low/medium alternative or answer without the skill.
+    *   `risk_level: critical` beats `cost_tier`: never demote or skip a security-critical skill to save tokens; the user asked for an audit, the audit runs.
+    *   Never load two skills of the same category in one turn (anti-cascade — one match, one load).
 4.  **Execute:** Proceed with the loaded skill's specific workflow.
 
 ## Tools

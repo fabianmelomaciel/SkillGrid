@@ -159,6 +159,62 @@ console.log('\nTesting session-memory plugin...\n');
     check(fs.existsSync(marca), 'la segunda sesión debía marcar a la primera por no escribir');
   });
 
+  await test('compactación inyecta el plan con tareas sin cerrar (E26)', async () => {
+    const raiz = carpeta();
+    const plans = path.join(raiz, 'docs', 'SkillGrid', 'plans');
+    fs.mkdirSync(plans, { recursive: true });
+    fs.writeFileSync(path.join(plans, '2026-10-15-rediseño.md'), [
+      '# Plan', '',
+      '## Tarea 1',
+      '- [x] hecha',
+      '## Tarea 2',
+      '- [ ] pendiente',
+      '',
+    ].join('\n'));
+    const plugin = await SessionMemory({ directory: raiz });
+    const output = { context: [] };
+    await plugin['experimental.session.compacting']({}, output);
+    const joined = output.context.join('\n');
+    check(joined.includes('2026-10-15-rediseño.md'), 'no menciona el plan abierto');
+    check(joined.includes('1 tarea'), 'no cuenta las tareas sin tildar');
+  });
+
+  await test('un plan totalmente tildado no se inyecta', async () => {
+    const raiz = carpeta();
+    const plans = path.join(raiz, 'docs', 'SkillGrid', 'plans');
+    fs.mkdirSync(plans, { recursive: true });
+    fs.writeFileSync(path.join(plans, '2026-10-01-cerrado.md'), '# Plan\n\n- [x] todo hecho\n');
+    const plugin = await SessionMemory({ directory: raiz });
+    const output = { context: [] };
+    await plugin['experimental.session.compacting']({}, output);
+    check(!output.context.join('\n').includes('cerrado.md'), 'inyectó un plan sin pendientes');
+  });
+
+  await test('el system transform avisa del plan abierto junto al nudge', async () => {
+    const raiz = carpeta();
+    const plans = path.join(raiz, 'docs', 'SkillGrid', 'plans');
+    fs.mkdirSync(plans, { recursive: true });
+    fs.writeFileSync(path.join(plans, '2026-10-15-viaje.md'), '# Plan\n\n- [ ] arrancar\n');
+    const plugin = await SessionMemory({ directory: raiz });
+    const output = { system: [] };
+    await plugin['experimental.chat.system.transform']({}, output);
+    check(output.system.some((s) => s.includes('2026-10-15-viaje.md')), 'no empujó el aviso del plan');
+  });
+
+  await test('plan viejo (>14 días) no se inyecta', async () => {
+    const raiz = carpeta();
+    const plans = path.join(raiz, 'docs', 'SkillGrid', 'plans');
+    fs.mkdirSync(plans, { recursive: true });
+    const viejo = path.join(plans, '2026-01-01-viejo.md');
+    fs.writeFileSync(viejo, '# Plan\n\n- [ ] pendiente de enero\n');
+    const pasada = new Date(Date.now() - 20 * 86400000);
+    fs.utimesSync(viejo, pasada, pasada);
+    const plugin = await SessionMemory({ directory: raiz });
+    const output = { context: [] };
+    await plugin['experimental.session.compacting']({}, output);
+    check(!output.context.join('\n').includes('viejo.md'), 'inyectó un plan vencido');
+  });
+
   TEMP.forEach((dir) => fs.rmSync(dir, { recursive: true, force: true }));
 
   console.log(`\n${passed} passed, ${failed} failed\n`);

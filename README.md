@@ -114,9 +114,9 @@ Genera automáticamente archivos de reglas optimizados en tu proyecto local:
 ## 🗺️ Catálogo de Skills Destacadas
 
 <!-- catalog:begin -->
-*~Tokens = contexto que consume la skill al activarse (medido del frontmatter de cada `SKILL.md`). Las 43 completas, en [catalog.json](catalog.json).*
+*~Tokens = contexto que consume la skill al activarse (medido del frontmatter de cada `SKILL.md`). Las 44 completas, en [catalog.json](catalog.json).*
 
-### 🔧 Desarrollo Core (28 Skills)
+### 🔧 Desarrollo Core (29 Skills)
 
 | Skill | Para qué | ~Tokens |
 |---|---|---:|
@@ -137,6 +137,7 @@ Genera automáticamente archivos de reglas optimizados en tu proyecto local:
 | `performance-profiler` | Measure-first performance engineering. Use before merging features that touch UI, API… | 2169 |
 | `playwright-testing` | Use when designing, writing, debugging, or auditing Playwright E2E and component tests. | 1344 |
 | `ponytail` | Úsalo antes de escribir código nuevo para forzar la opción más chica posible (YAGNI,… | 467 |
+| `preinstall-audit` | Audits third-party skills and MCP servers from disk before installing them — local… | 765 |
 | `receiving-code-review` | Use when receiving code review feedback, before implementing suggestions, especially if… | 1927 |
 | `requesting-code-review` | Use when completing tasks, implementing major features, or before merging to verify work… | 843 |
 | `router` | Dynamically load specific skills based on the user request by querying catalog-lite.json… | 800 |

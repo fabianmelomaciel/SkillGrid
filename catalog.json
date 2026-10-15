@@ -1,10 +1,10 @@
 {
   "version": "1.18.0",
-  "generated": "2026-10-06",
+  "generated": "2026-10-15",
   "summary": {
-    "total": 43,
+    "total": 44,
     "categories": {
-      "core": 28,
+      "core": 29,
       "agent": 12,
       "design": 3
     }
@@ -218,6 +218,13 @@
       "description": "Úsalo antes de escribir código nuevo para forzar la opción más chica posible (YAGNI, reuso, stdlib, one-liner) y recién como último recurso implementar desde cero. Reduce tokens de salida y código innecesario en tareas de feature/fix.",
       "category": "core",
       "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "preinstall-audit",
+      "description": "Audits third-party skills and MCP servers from disk before installing them — local rules, no network, no external registries.",
+      "category": "core",
+      "status": "beta",
       "risk_level": "safe"
     },
     {

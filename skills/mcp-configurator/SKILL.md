@@ -144,6 +144,7 @@ Template for Cursor (`.cursor/mcp.json`):
 > [!WARNING]
 > Never commit MCP configs with secrets to version control.
 
+- [ ] Third-party server or skill scanned first → `node scripts/scan-third-party.js <ruta>` (see `preinstall-audit`)
 - [ ] No API keys hardcoded in config files that go to VCS → use env vars or `.env`
 - [ ] Filesystem server: restrict to project directory only, not `~` or `/`
 - [ ] GitHub token: use fine-grained PAT with minimum required scopes

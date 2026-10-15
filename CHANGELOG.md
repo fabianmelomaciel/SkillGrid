@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.19.0] - 2026-10-15
+
+### Added
+- **Pre-auditoría offline de skills y MCP de terceros (E23, agente-ideas 3 etapas)** — `scripts/scan-third-party.js`: escáner 100% local (sin red, sin registry) con 7 reglas propias: inyección de contexto, instrucciones encubiertas, tuberías a shell, exfiltración de entorno, llaves privadas, tokens en texto plano y drift de manifest (`name:` ≠ carpeta). Supresiones en `.thirdparty-ignore.json` con `regla`/`ruta`/`motivo` — nada genérico, todo lo suprimido sale igual como aviso. Skill nueva **`preinstall-audit`** (flujo antes de instalar material ajeno) y checklist de `mcp-configurator` con el paso de escaneo previo. Tests: 8 en `tests/preinstall-audit.test.js`.
+- **Router con `cost_tier` (E24)** — `skills/router/SKILL.md` ahora consume el tier que el catálogo ya calculaba: en empate gana el `low`, con presupuesto <2K no se carga `high`, y `risk_level: critical` vence al tier (nunca se saltea una auditoría por ahorrar tokens). Anti-cascada explícita: una skill por categoría. Tests: `tests/router.test.js` (7).
+- **`session-memory`: plan abierto en el breadcrumb (E26)** — la compactación y el system transform ahora inyectan el plan más reciente de `docs/SkillGrid/plans/` con tareas `- [ ]` sin cerrar (<14 días): un crash a mitad de `executing-plans` ya no cuesta reescribir el plan. Tests: +4 en `tests/session-memory.test.js`.
+
+### Changed
+- **CI unificado (E25)** — los jobs `validate-skills` (windows, 2x minutos) y `validate-linux` se fusionaron en un solo `validate` ubuntu. **`docker-build` se movió a `.github/workflows/docker-build.yml`** con path-filter nativo: solo despierta con cambios en `skills/cyber-neo/**` o en su propio workflow. Cero acciones nuevas, mismos SHAs pineados.
+
+### Security
+- El material de terceros deja de instalarse a ciegas: inyección de prompt, credenciales embebidas y ejecución remota se detectan antes de copiar nada al IDE (hueco que SkillSpector solo cubría sobre las skills propias del repo).
+
 ## [1.18.0] - 2026-10-06
 
 ### Added

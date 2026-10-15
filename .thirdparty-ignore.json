@@ -1,0 +1,6 @@
+[
+  { "regla": "inyeccion-contexto", "ruta": "prompt-injection-guard", "motivo": "Skill propia: el ejemplo del patrón es el contenido mismo de la skill" },
+  { "regla": "tuberia-a-shell", "ruta": "cyber-neo/references", "motivo": "Catálogo propio de patrones de ataque para detección" },
+  { "regla": "llave-privada", "ruta": "cyber-neo/references", "motivo": "Catálogo propio de patrones de secretos (claves de ejemplo documentadas)" },
+  { "regla": "token-declarado", "ruta": "cyber-neo/references", "motivo": "Tokens de ejemplo documentados (AKIA...EXAMPLE)" }
+]

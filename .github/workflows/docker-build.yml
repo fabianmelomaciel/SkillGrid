@@ -1,0 +1,40 @@
+name: Docker build
+
+# El job vivía en ci.yml y corría en cada push aunque nadie tocara la
+# toolchain de cyber-neo (E25). El path-filter nativo de GitHub Actions
+# alcanza: sin cambios en esas rutas, el workflow ni se despierta.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'skills/cyber-neo/**'
+      - '.github/workflows/docker-build.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'skills/cyber-neo/**'
+      - '.github/workflows/docker-build.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+
+      - name: Build cyber-neo toolchain image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7
+        with:
+          context: ./skills/cyber-neo
+          push: false
+          tags: skillgrid/cyber-neo:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

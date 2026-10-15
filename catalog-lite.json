@@ -1,10 +1,10 @@
 {
   "version": "1.18.0",
-  "generated": "2026-10-06",
+  "generated": "2026-10-15",
   "summary": {
-    "total": 43,
+    "total": 44,
     "categories": {
-      "core": 28,
+      "core": 29,
       "agent": 12,
       "design": 3
     }
@@ -187,6 +187,12 @@
     {
       "name": "ponytail",
       "status": "stable",
+      "risk_level": "safe",
+      "category": "core"
+    },
+    {
+      "name": "preinstall-audit",
+      "status": "beta",
       "risk_level": "safe",
       "category": "core"
     },

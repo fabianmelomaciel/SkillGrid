@@ -77,6 +77,31 @@ export const SessionMemory = async ({ directory }) => {
     }
   };
 
+  // E26: el plan más reciente que todavía tiene tareas sin tildar. Va al
+  // breadcrumb de compactación y al aviso de sistema — un crash a mitad
+  // de executing-plans no debería costar re-hacer el plan entero.
+  const planPendiente = () => {
+    try {
+      const dir = path.join(raiz, 'docs', 'SkillGrid', 'plans');
+      if (!fs.existsSync(dir)) return null;
+      const TOPE_DIAS = 14;
+      let mejor = null;
+      for (const f of fs.readdirSync(dir)) {
+        if (!f.endsWith('.md')) continue;
+        const p = path.join(dir, f);
+        const st = fs.statSync(p);
+        if (Date.now() - st.mtimeMs > TOPE_DIAS * 86400000) continue;
+        const cuerpo = fs.readFileSync(p, 'utf8');
+        const abiertas = (cuerpo.match(/^- \[ \] /gm) || []).length;
+        if (abiertas === 0) continue;
+        if (!mejor || st.mtimeMs > mejor.mtimeMs) mejor = { nombre: f, abiertas, mtimeMs: st.mtimeMs };
+      }
+      return mejor;
+    } catch {
+      return null;
+    }
+  };
+
   return {
     'experimental.session.compacting': async (input, output) => {
       try {
@@ -96,6 +121,11 @@ export const SessionMemory = async ({ directory }) => {
           if (abiertas.trim() !== '') pedazos.push(abiertas.trim().slice(0, TOPE_EVOLUCION));
         }
 
+        const plan = planPendiente();
+        if (plan) {
+          pedazos.push(`Plan sin cerrar: ${plan.nombre} (${plan.abiertas} tarea(s) sin tildar) — retomar ese archivo, no reescribir el plan.`);
+        }
+
         if (pedazos.length > 0) output.context.push(pedazos.join('\n\n'));
       } catch {
         // un archivo raro no puede romper la compactación
@@ -108,6 +138,10 @@ export const SessionMemory = async ({ directory }) => {
       try {
         if (hayPendiente()) {
           output.system.push('La sesión anterior cerró sin /codex-log. Antes de dar por terminada esta tarea, corré /codex-log para guardar los aprendizajes en CODEX.md.');
+        }
+        const plan = planPendiente();
+        if (plan) {
+          output.system.push(`Hay un plan sin cerrar (${plan.nombre}, ${plan.abiertas} tarea(s) pendiente(s)). Si la tarea actual forma parte de ese plan, retomá el archivo en vez de planificar de nuevo.`);
         }
       } catch {
         // un archivo raro no puede romper el llamado
