@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   check-remote-install-pin:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -35,7 +35,7 @@ jobs:
   validate:
     # Una sola corrida por push: la duplicación en windows costaba 2x minutos
     # por el multiplier de la plataforma y los tests son Node puro (E25).
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -58,7 +58,7 @@ jobs:
         run: npm test
 
   skillspector-scan:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
