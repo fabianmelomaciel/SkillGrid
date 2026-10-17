@@ -102,6 +102,17 @@ else
   echo "Aviso: sin TTY no corre npm publish (OTP). Correlo desde una ventana interactiva: npm publish"
 fi
 
+# GitHub Release. gh usa la sesión local de GitHub (no necesita TTY); si falta
+# el CLI o el permiso, el release de git+npm ya quedó y solo avisamos.
 echo ""
-echo "Create a GitHub Release:"
-echo "  gh release create $TAG --generate-notes"
+if command -v gh >/dev/null 2>&1; then
+  echo "Creando GitHub Release $TAG..."
+  if ! gh release create "$TAG" --generate-notes; then
+    echo "Aviso: no se pudo crear el GH release. Correlo a mano: gh release create $TAG --generate-notes" >&2
+  fi
+else
+  echo "Aviso: gh CLI ausente. Creá el release a mano: gh release create $TAG --generate-notes"
+fi
+
+echo ""
+echo "Release $TAG completado (git + tag + npm + GitHub)."
