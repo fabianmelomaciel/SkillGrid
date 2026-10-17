@@ -57,7 +57,8 @@ if [ -z "$GRAPHIFY_PYTHON" ]; then
     if [ -n "$GRAPHIFY_BIN" ]; then
         case "$GRAPHIFY_BIN" in
             *.exe) _SHEBANG="" ;;
-            *)     _SHEBANG=$(head -1 "$GRAPHIFY_BIN" | sed 's/^#![[:space:]]*//') ;;
+            # tr -d '\0': acá el graphify de uv es un PE sin sufijo .exe y head tira nulls.
+            *)     _SHEBANG=$(head -1 "$GRAPHIFY_BIN" 2>/dev/null | tr -d '\0' | sed 's/^#![[:space:]]*//') ;;
         esac
         case "$_SHEBANG" in
             */env\ *) GRAPHIFY_PYTHON="${_SHEBANG#*/env }" ;;
@@ -79,10 +80,24 @@ if [ -z "$GRAPHIFY_PYTHON" ]; then
         GRAPHIFY_PYTHON="python3"
     elif command -v python >/dev/null 2>&1 && python -c "import graphify" 2>/dev/null; then
         GRAPHIFY_PYTHON="python"
-    else
-        echo "[graphify hook] could not locate a Python with graphify installed. Add the graphify bin dir to PATH or re-run 'graphify hook install' from the env where graphify lives." >&2
-        exit 0
     fi
+fi
+
+# El graphify de uv en Windows es un exe autocontenido: ningún python del sistema
+# lo importa, así que si no apareció uno mandamos el update con el binario, igual
+# que post-merge y post-checkout. Si alguien vuelve a correr graphify hook install,
+# este fallback hay que ponerlo de nuevo.
+if [ -z "$GRAPHIFY_PYTHON" ] && command -v graphify >/dev/null 2>&1; then
+    _GFY_LOG="${HOME}/.cache/graphify-rebuild.log"
+    mkdir -p "$(dirname "$_GFY_LOG")"
+    echo "[graphify hook] sin python con graphify; update en background via binario (log: $_GFY_LOG)"
+    nohup graphify update . >> "$_GFY_LOG" 2>&1 < /dev/null &
+    exit 0
+fi
+
+if [ -z "$GRAPHIFY_PYTHON" ]; then
+    echo "[graphify hook] could not locate a Python with graphify installed. Add the graphify bin dir to PATH or re-run 'graphify hook install' from the env where graphify lives." >&2
+    exit 0
 fi
 
 export GRAPHIFY_CHANGED="$CHANGED"
