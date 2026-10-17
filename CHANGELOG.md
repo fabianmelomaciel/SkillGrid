@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.20.0] - 2026-10-17
 
 ### Changed
 - **Skills de diseño actualizadas al motion stack 2026 (E28)** — `github-premium-aesthetics` suma el "Motion Stack 2026" (CSS → View Transitions → scroll-driven → Motion/GSAP → WebGL) con recetas de View Transitions (same-document con feature-detect y reduced-motion, cross-document como progressive enhancement), barra de progreso con `animation-timeline` tras `@supports`, y overlay trio (Popover API + `@starting-style` + `transition-behavior`). `emil-kowalski-design` agrega las reglas de View Transitions, scroll-driven y overlays a su tabla no negociable + checklist.
