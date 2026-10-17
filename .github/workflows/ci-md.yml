@@ -3,6 +3,8 @@ name: Docs Check
 # ci.yml y pentest.yml ignoran los commits solo-.md para no gastar minutos de CI.
 # Este workflow cubre ese hueco (E8): un commit que solo toca docs igual valida
 # la lista de evolución, los frontmatter de las skills y los números del README.
+# Desde E30 también escanea secretos (Gitleaks): un .md con una credencial
+# adentro no pasa más por el costado del pipeline de seguridad.
 on:
   push:
     branches: [main]
@@ -17,10 +19,14 @@ permissions:
 jobs:
   docs-check:
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+      pull-requests: read  # gitleaks-action lista los commits del PR
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
+          fetch-depth: 0  # Gitleaks necesita el historial para el rango de commits
           persist-credentials: false
 
       - name: Setup Node.js
@@ -31,8 +37,16 @@ jobs:
       - name: Validate evolution list
         run: node scripts/check-evolution.js
 
+      - name: Validate evolution evidence
+        run: node tests/evolution-evidence.test.js
+
       - name: Validate skills frontmatter
         run: node scripts/validate-skills.js
 
       - name: Validate README vs catalog
         run: node tests/docs-consistency.test.js
+
+      - name: Gitleaks — secrets scan (commits solo-.md)
+        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
