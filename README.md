@@ -58,6 +58,15 @@ irm https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-ins
 curl -fsSL https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.sh | bash
 ```
 
+### npm
+
+Lo mismo está publicado como paquete público, para bajarlo, auditarlo o referenciarlo desde un proyecto Node:
+
+```bash
+npm install @fabianmelomaciel/skillgrid
+# queda en node_modules/@fabianmelomaciel/skillgrid/ (install.sh, install.ps1, skills/, catálogos)
+```
+
 > 💡 **Para entornos serios, no pegues `main` en vivo:** bajá el instalador, revisalo y ejecutalo:
 > ```powershell
 > irm https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.ps1 -OutFile install.ps1
