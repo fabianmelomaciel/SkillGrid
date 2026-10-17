@@ -126,22 +126,7 @@ foreach ($f in $reportData.findings) {
     # Manejar campos descriptivos y escapar todos los campos HTML
     $escapedFinding = Escape-Html $f.finding
     $escapedFile = Escape-Html $f.file
-    
-    $fileHref = $f.file
-    if ($f.file -match '^(.*):(\d+)$') {
-        $fileHref = $Matches[1]
-    }
-    $absoluteFileHref = $fileHref
-    if (-not [string]::IsNullOrEmpty($fileHref) -and -not [System.IO.Path]::IsPathRooted($fileHref)) {
-        $absoluteFileHref = Join-Path -Path $BaseDir -ChildPath $fileHref
-    }
-    $fileUri = $absoluteFileHref.Replace("\", "/")
-    if ($fileUri.StartsWith("/")) {
-        $fileUri = "file://" + $fileUri
-    } else {
-        $fileUri = "file:///" + $fileUri
-    }
-    
+
     $description = $f.finding
     if ($f.description -and $f.description -ne $f.finding) {
         $description = $f.description
@@ -155,19 +140,19 @@ foreach ($f in $reportData.findings) {
 
     $findingsHtml += @"
         <div class="finding-card" id="card-$idIndex">
-            <div class="finding-header" onclick="toggleFinding('$idIndex')">
+            <button type="button" class="finding-header" onclick="toggleFinding('$idIndex')" aria-expanded="false" aria-controls="content-$idIndex">
                 <div class="finding-title-group">
                     <span class="badge $badgeClass">$severityText</span>
                     <span class="finding-title">$escapedFinding</span>
                 </div>
                 <div class="finding-file-group">
                     <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-                    <a href="$fileUri" target="_blank" onclick="event.stopPropagation();">$escapedFile</a>
+                    <span title="$escapedFile">$escapedFile</span>
                 </div>
                 <div class="chevron">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                 </div>
-            </div>
+            </button>
             <div id="content-$idIndex" class="finding-content">
                 <div class="finding-details-grid">
                     <div class="info-panel">

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Optimización FinOps - SkillGrid</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0b0c10;
@@ -27,7 +26,7 @@
         }
 
         body {
-            font-family: 'Outfit', sans-serif;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             background-image: radial-gradient(circle at 10% 20%, rgba(241, 196, 15, 0.05) 0%, transparent 40%),
                               radial-gradient(circle at 90% 80%, rgba(31, 40, 51, 0.2) 0%, transparent 50%);
@@ -92,7 +91,6 @@
             padding: 2rem;
             backdrop-filter: blur(10px);
             text-align: center;
-            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
@@ -109,7 +107,6 @@
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
             border-color: var(--primary);
             box-shadow: 0 10px 25px var(--primary-glow);
         }
@@ -158,12 +155,17 @@
 
         .finding-header {
             padding: 1.5rem;
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: rgba(255, 255, 255, 0.02);
             cursor: pointer;
             user-select: none;
+            border: none;
+            font: inherit;
+            color: inherit;
+            text-align: left;
         }
 
         .finding-title-group {
@@ -195,6 +197,10 @@
             padding: 1.5rem;
             border-top: 1px solid var(--border-color);
             display: none;
+        }
+
+        .finding-body.open {
+            display: block;
         }
 
         .finding-meta {
@@ -237,7 +243,9 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 0.75rem;
-            transition: all 0.2s ease;
+            transition: background-color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                        color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                        border-color 0.2s cubic-bezier(0.2, 0, 0, 1);
         }
 
         .copy-btn:hover {
@@ -273,6 +281,59 @@
         .visible {
             display: block;
         }
+
+        /* MOTION:INICIO — bloque idéntico en los 8 templates; lo exige tests/motion-block.test.js */
+        @media (prefers-reduced-motion: no-preference) {
+            @keyframes sg-enter {
+                from {
+                    opacity: 0;
+                    transform: translateY(14px);
+                }
+            }
+
+            body > .container,
+            #claude-content {
+                animation: sg-enter 0.4s cubic-bezier(0.2, 0, 0, 1) both;
+            }
+
+            .findings-list > * {
+                animation: sg-enter 0.35s cubic-bezier(0.2, 0, 0, 1) both;
+            }
+
+            .findings-list > *:nth-child(1) { animation-delay: 0.06s; }
+            .findings-list > *:nth-child(2) { animation-delay: 0.12s; }
+            .findings-list > *:nth-child(3) { animation-delay: 0.18s; }
+            .findings-list > *:nth-child(n+4) { animation-delay: 0.24s; }
+
+            .finding-content.open,
+            .finding-body.open {
+                animation: sg-enter 0.3s cubic-bezier(0.2, 0, 0, 1);
+            }
+
+            .stat-card {
+                transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+                            box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                            border-color 0.2s cubic-bezier(0.2, 0, 0, 1);
+            }
+
+            @media (hover: hover) {
+                .stat-card:hover {
+                    transform: scale(1.02);
+                }
+            }
+
+            .stat-card:active {
+                transform: scale(0.96);
+                transition-duration: 0.15s;
+                transition-timing-function: ease-out;
+            }
+        }
+
+        .finding-header:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: -2px;
+        }
+        /* MOTION:FIN */
     </style>
 </head>
 <body>
@@ -303,13 +364,13 @@
         <div class="findings-list" id="findings-container">
             <!-- Inserted programmatically by the FinOps Agent -->
             <div class="finding-item">
-                <div class="finding-header" onclick="toggleBody(this)">
+                <button type="button" class="finding-header" onclick="toggleBody(this)" aria-expanded="false">
                     <div class="finding-title-group">
                         <span class="severity-badge sev-high">High Risk</span>
                         <span class="finding-title">Prompts del Sistema Redundantes e Ineficientes</span>
                     </div>
                     <span class="toggle-icon">▼</span>
-                </div>
+                </button>
                 <div class="finding-body">
                     <div class="finding-meta">
                         Ubicación: <span>skills/subagent-driven-development/SKILL.md</span><br>
@@ -343,11 +404,8 @@ Eliminar repeticiones de formateo y consolidar pautas en listas directas.</code>
             const item = headerElement.parentElement;
             const body = item.querySelector('.finding-body');
             headerElement.classList.toggle('active');
-            if (body.style.display === 'block') {
-                body.style.display = 'none';
-            } else {
-                body.style.display = 'block';
-            }
+            const open = body.classList.toggle('open');
+            headerElement.setAttribute('aria-expanded', open ? 'true' : 'false');
         }
 
         function copyCode(btn) {

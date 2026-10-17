@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reporte de Prompt Injection — prompt-injection-guard (SkillGrid)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -23,7 +22,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text);
             padding: 2.5rem 1.5rem;
@@ -148,12 +147,18 @@
 
         .finding-header {
             padding: 1.5rem;
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
             flex-wrap: wrap;
             gap: 1rem;
+            background: none;
+            border: none;
+            font: inherit;
+            color: inherit;
+            text-align: left;
         }
 
         .finding-title-group { display: flex; align-items: center; gap: 1.25rem; flex-grow: 1; }
@@ -205,13 +210,67 @@
 
         .chevron { transition: transform 0.2s; color: var(--text-muted); }
         .finding-card.active-card .chevron { transform: rotate(185deg); }
+
+        /* MOTION:INICIO — bloque idéntico en los 8 templates; lo exige tests/motion-block.test.js */
+        @media (prefers-reduced-motion: no-preference) {
+            @keyframes sg-enter {
+                from {
+                    opacity: 0;
+                    transform: translateY(14px);
+                }
+            }
+
+            body > .container,
+            #claude-content {
+                animation: sg-enter 0.4s cubic-bezier(0.2, 0, 0, 1) both;
+            }
+
+            .findings-list > * {
+                animation: sg-enter 0.35s cubic-bezier(0.2, 0, 0, 1) both;
+            }
+
+            .findings-list > *:nth-child(1) { animation-delay: 0.06s; }
+            .findings-list > *:nth-child(2) { animation-delay: 0.12s; }
+            .findings-list > *:nth-child(3) { animation-delay: 0.18s; }
+            .findings-list > *:nth-child(n+4) { animation-delay: 0.24s; }
+
+            .finding-content.open,
+            .finding-body.open {
+                animation: sg-enter 0.3s cubic-bezier(0.2, 0, 0, 1);
+            }
+
+            .stat-card {
+                transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+                            box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                            border-color 0.2s cubic-bezier(0.2, 0, 0, 1);
+            }
+
+            @media (hover: hover) {
+                .stat-card:hover {
+                    transform: scale(1.02);
+                }
+            }
+
+            .stat-card:active {
+                transform: scale(0.96);
+                transition-duration: 0.15s;
+                transition-timing-function: ease-out;
+            }
+        }
+
+        .finding-header:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: -2px;
+        }
+        /* MOTION:FIN */
     </style>
     <script>
         function toggleFinding(id) {
             const card = document.getElementById('card-' + id);
             const content = document.getElementById('content-' + id);
-            content.classList.toggle('open');
+            const open = content.classList.toggle('open');
             card.classList.toggle('active-card');
+            card.querySelector('.finding-header').setAttribute('aria-expanded', open ? 'true' : 'false');
         }
     </script>
 </head>
@@ -250,7 +309,7 @@
         <div class="findings-list">
             <!-- FINDINGS_PLACEHOLDER_START -->
             <div class="finding-card" id="card-1">
-                <div class="finding-header" onclick="toggleFinding('1')">
+                <button type="button" class="finding-header" onclick="toggleFinding('1')" aria-expanded="false" aria-controls="content-1">
                     <div class="finding-title-group">
                         <span class="badge badge-critical">Crítica</span>
                         <span class="badge badge-fixable">Auto-fixable</span>
@@ -258,7 +317,7 @@
                     </div>
                     <div class="finding-file-group"><span>(type) — src/chat/handler.py:42</span></div>
                     <div class="chevron"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                </div>
+                </button>
                 <div id="content-1" class="finding-content">
                     <div class="finding-details-grid">
                         <div class="info-panel">
