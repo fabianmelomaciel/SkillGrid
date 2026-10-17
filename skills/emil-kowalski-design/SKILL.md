@@ -1,10 +1,10 @@
 ---
 name: emil-kowalski-design
-description: Use when building, reviewing, or auditing any UI component to apply Emil Kowalski's design engineering principles. Enforces animation quality, micro-interaction polish, perceived performance, and accessibility standards. Trigger on requests like "make this feel polished", "review my animations", "improve UX", or any frontend UI work.
+description: Use when building, reviewing, or auditing any UI component to apply Emil Kowalski's design engineering principles. Enforces animation quality, micro-interaction polish, perceived performance, modern CSS motion (View Transitions, scroll-driven, popover overlays) and accessibility standards. Trigger on requests like "make this feel polished", "review my animations", "improve UX", or any frontend UI work.
 category: design
 status: stable
 risk_level: safe
-token_estimate: { input: 1777, output: 710 }
+token_estimate: { input: 2230, output: 710 }
 ---
 
 ## Core
@@ -35,6 +35,9 @@ You are applying the design philosophy of Emil Kowalski — the idea that **tast
 | **Origin-aware** | Popovers, dropdowns, tooltips must animate from their trigger point (`transform-origin`). |
 | **Purposeful** | Every animation must answer: "what spatial relationship does this communicate?" |
 | **Reduced motion** | `@media (prefers-reduced-motion: reduce)` MUST disable or minimize all animations. |
+| **View transitions** | Morphs between UI states via `document.startViewTransition` (Baseline 2025-10-14). Feature-detect; under reduced-motion do the DOM swap instantly without the transition. One `view-transition-name` per element, never reuse. Default root fades 150–250ms. |
+| **Scroll-driven** | `animation-timeline: scroll()/view()` only behind `@supports (animation-timeline: …)` with a usable no-JS/no-support fallback, and disabled under reduced-motion. |
+| **Overlays** | Tooltips/menús: Popover API + `@starting-style` + `transition-behavior: allow-discrete`. No JS animation code for show/hide. |
 
 ### Standard Easing Values
 
@@ -72,6 +75,15 @@ cubic-bezier(0.34, 1.56, 0.64, 1)
   transition: height 400ms ease, width 400ms ease;
 }
 ```
+
+---
+
+## Modern CSS Motion (2026)
+
+- **View Transitions API** — `document.startViewTransition(updateCallback)` for list→detail, filter reorders, theme switches. Guard: `if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) updateDOM();`. Cross-document (`@view-transition { navigation: auto }`) es progressive enhancement: Firefox todavía no.
+- **Scroll-driven animations** — progress bars y reveals ligados al scroll. Siempre con `@supports (animation-timeline: scroll())`; fuera del guard, el elemento se ve estático y funcional.
+- **Overlay trio** — `popover` + `@starting-style` + `transition-behavior: allow-discrete` reemplaza al enter/exit con JS: el browser anima el open y respeta el close discreto.
+- **Stack decision** — CSS puro para micro; View Transitions para morphs; Motion (MIT) si hay gestures/layout en JS; GSAP solo para timelines complejos (licencia no-OSI); WebGL solo si el proyecto pide 3D.
 
 ---
 
@@ -134,6 +146,9 @@ Run this on any UI component before marking work done:
 - [ ] Custom `cubic-bezier` used (no CSS defaults)
 - [ ] Origin-aware: dropdowns/popovers animate from trigger point
 - [ ] `@media (prefers-reduced-motion: reduce)` disables animations
+- [ ] View Transitions: feature-detected, reduced-motion swaps instant, `view-transition-name` único
+- [ ] Scroll-driven animations detrás de `@supports (animation-timeline: …)` con fallback estático
+- [ ] Overlays (tooltips/menús) vía Popover API + `@starting-style`, sin JS de animación
 - [ ] Buttons have `:active` scale feedback
 - [ ] Focus states visible with `:focus-visible`
 - [ ] No animation exists purely for decoration without spatial meaning

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- **Skills de diseño actualizadas al motion stack 2026 (E28)** — `github-premium-aesthetics` suma el "Motion Stack 2026" (CSS → View Transitions → scroll-driven → Motion/GSAP → WebGL) con recetas de View Transitions (same-document con feature-detect y reduced-motion, cross-document como progressive enhancement), barra de progreso con `animation-timeline` tras `@supports`, y overlay trio (Popover API + `@starting-style` + `transition-behavior`). `emil-kowalski-design` agrega las reglas de View Transitions, scroll-driven y overlays a su tabla no negociable + checklist.
 - **Motion/zoom de calidad en los 8 templates de reporte (E27)** — bloque MOTION idéntico en los 8 (reveal de entrada, stagger de hallazgos, micro-zoom en la tarjeta de severidad, `focus-visible`), todo bajo `prefers-reduced-motion: no-preference`; acordeones migrados de `<div onclick>` a `<button aria-expanded aria-controls>` (accesibles por teclado); `transition: all` → propiedades nombradas; CDN de Google Fonts eliminado (system stack) en los 8 templates. Los generadores `audit.ps1` y `generate-report-from-json.ps1` dejan de meter `<a>` dentro del `<button>` del header (HTML inválido) y calculan `$fileUri` muerto solo.
 - Tests: `tests/motion-block.test.js` (6) enchufado a `gate` y `test` — bloque MOTION byte-idéntico normalizado en los 8, sin Google Fonts CDN, sin `transition: all`, sin `div onclick`.
 

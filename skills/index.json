@@ -1,6 +1,6 @@
 {
-  "version": "1.2.43",
-  "generated": "2026-10-15",
+  "version": "1.2.44",
+  "generated": "2026-10-17",
   "summary": {
     "total": 44,
     "categories": {
@@ -211,12 +211,12 @@
     },
     "emil-kowalski-design": {
       "name": "emil-kowalski-design",
-      "description": "Use when building, reviewing, or auditing any UI component to apply Emil Kowalski's design engineering principles. Enforces animation quality, micro-interaction polish, perceived performance, and accessibility standards. Trigger on requests like \"make this feel polished\", \"review my animations\", \"improve UX\", or any frontend UI work.",
+      "description": "Use when building, reviewing, or auditing any UI component to apply Emil Kowalski's design engineering principles. Enforces animation quality, micro-interaction polish, perceived performance, modern CSS motion (View Transitions, scroll-driven, popover overlays) and accessibility standards. Trigger on requests like \"make this feel polished\", \"review my animations\", \"improve UX\", or any frontend UI work.",
       "category": "design",
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 1777,
+        "input": 2230,
         "output": 710
       },
       "cost_tier": "low",
@@ -282,12 +282,12 @@
     },
     "github-premium-aesthetics": {
       "name": "github-premium-aesthetics",
-      "description": "Implements cutting-edge GitHub/Vercel-inspired UI patterns including Bento grids, glowing borders, mesh gradients, and fluid motion.",
+      "description": "Implements cutting-edge GitHub/Vercel-inspired UI patterns including Bento grids, glowing borders, mesh gradients, fluid motion, View Transitions and scroll-driven animations.",
       "category": "design",
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 1649,
+        "input": 2300,
         "output": 676
       },
       "cost_tier": "low",

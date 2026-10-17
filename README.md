@@ -155,8 +155,8 @@ Genera automáticamente archivos de reglas optimizados en tu proyecto local:
 | Skill | Para qué | ~Tokens |
 |---|---|---:|
 | `creativo-visual` | Visual Creative Director for AI image generation and optimization. Translates basic… | 3436 |
-| `emil-kowalski-design` | Use when building, reviewing, or auditing any UI component to apply Emil Kowalski's… | 1777 |
-| `github-premium-aesthetics` | Implements cutting-edge GitHub/Vercel-inspired UI patterns including Bento grids,… | 1649 |
+| `emil-kowalski-design` | Use when building, reviewing, or auditing any UI component to apply Emil Kowalski's… | 2230 |
+| `github-premium-aesthetics` | Implements cutting-edge GitHub/Vercel-inspired UI patterns including Bento grids,… | 2300 |
 
 ### 🤖 Agentes Especializados (12 Agents)
 

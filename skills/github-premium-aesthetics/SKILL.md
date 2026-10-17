@@ -1,10 +1,10 @@
 ---
 name: github-premium-aesthetics
-description: "Implements cutting-edge GitHub/Vercel-inspired UI patterns including Bento grids, glowing borders, mesh gradients, and fluid motion."
+description: "Implements cutting-edge GitHub/Vercel-inspired UI patterns including Bento grids, glowing borders, mesh gradients, fluid motion, View Transitions and scroll-driven animations."
 category: design
 status: stable
 risk_level: safe
-token_estimate: { input: 1649, output: 676 }
+token_estimate: { input: 2300, output: 676 }
 ---
 
 ## Core
@@ -126,6 +126,79 @@ Ensure UI feels fast and premium with custom spring easing curves. Avoid browser
   from { opacity: 0; transform: translateY(12px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
+```
+
+### Step 8: Motion Stack 2026 — browser first, libraries last
+
+Pick the first rung that fits; never jump to a library when CSS or a platform API does the job.
+
+| Rung | Tool | Use when |
+|------|------|----------|
+| 1 | Pure CSS transitions/keyframes | Micro-interactions, hovers, enters ≤300ms on transform/opacity |
+| 2 | **View Transitions API** (same-document; Baseline 2025-10-14: Chrome 111, Firefox 144, Safari 18) | Morphing between UI states: list→detail, filter reorders, theme switches |
+| 3 | **Scroll-driven animations** (`animation-timeline`) | Progress bars, section reveals tied to scroll. Chrome 115+/Safari 26+, Firefox aún no — always behind `@supports` |
+| 4 | **Motion** (ex-Framer Motion, MIT, `animate` mini ≈3.2KB) | Gesture choreography, layout animations, React/Vue apps that already ship JS |
+| 5 | **GSAP** | Intricate timelines, SVG morphing, path animation. Gratis desde Webflow pero licencia estándar (no-OSI): bien en sites de cliente, mal en herramientas que compitan con Webflow |
+| 6 | WebGL / Three.js | Solo cuando el proyecto pide 3D explícitamente |
+
+**View Transitions recipe (same-document):**
+
+```js
+// Feature-detect + reduced-motion: bajo reduce, swap instantáneo sin transición
+function transitionUpdate(updateDOM) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches
+      || !document.startViewTransition) {
+    updateDOM();
+    return;
+  }
+  document.startViewTransition(updateDOM);
+}
+```
+
+```css
+.hero-media { view-transition-name: hero; }   /* único por nombre en la página */
+::view-transition-old(root) { animation: 150ms ease fade-out; }
+::view-transition-new(root) { animation: 250ms cubic-bezier(0.16, 1, 0.3, 1) fade-in; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none; }
+}
+```
+
+**Cross-document (MPA)** — progressive enhancement, Firefox todavía no:
+
+```css
+@view-transition { navigation: auto; }   /* ambos documentos deben opt-in */
+```
+
+**Scroll-driven recipe (progress bar):**
+
+```css
+.sg-progress {
+  position: fixed; inset-inline: 0; top: 0; height: 3px;
+  transform: scaleX(0); transform-origin: 0 50%;
+  background: hsla(244, 47%, 60%, 0.9);
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .sg-progress {
+      animation: sg-grow linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+@keyframes sg-grow { to { transform: scaleX(1); } }
+```
+
+**Overlay trio (tooltips/menús sin JS de animación):** Popover API + `@starting-style` + `transition-behavior: allow-discrete` — el enter anima desde el primer frame y el exit respeta `display: none` discreto:
+
+```css
+.tip {
+  opacity: 0;
+  transition: opacity 150ms cubic-bezier(0.16, 1, 0.3, 1),
+              overlay allow-discrete, display allow-discrete;
+}
+.tip:popover-open { opacity: 1; }
+@starting-style { .tip:popover-open { opacity: 0; } }
 ```
 
 ## Tools
