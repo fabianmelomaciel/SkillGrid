@@ -88,5 +88,20 @@ git push origin "$TAG"
 echo ""
 echo "Release $TAG pushed."
 echo ""
+
+# Publicar en npm. El OTP/web-auth exige TTY: sin terminal interactiva npm falla
+# con EOTP y enmascara la URL de autorizacion, asi que ahi solo avisamos y el
+# release queda completo igual (el tag de GitHub es la fuente de verdad).
+NAME=$(node -p "require('./package.json').name")
+if [ -t 1 ]; then
+  echo "Publicando $NAME@$VERSION en npm..."
+  if ! npm publish; then
+    echo "Aviso: npm publish no salio (¿OTP pendiente o version ya publicada?). Publicalo a mano: npm publish" >&2
+  fi
+else
+  echo "Aviso: sin TTY no corre npm publish (OTP). Correlo desde una ventana interactiva: npm publish"
+fi
+
+echo ""
 echo "Create a GitHub Release:"
 echo "  gh release create $TAG --generate-notes"

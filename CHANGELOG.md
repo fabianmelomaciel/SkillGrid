@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- **Canal de distribución en npm**: el paquete pasa a llamarse `@fabianmelomaciel/skillgrid` (scoped, `publishConfig.access: public`). El nombre `skillgrid` a secas pertenece a otro producto en el registro de npm. La instalación desde GitHub (`install.sh` / `remote-install.sh`) no cambia; el README suma la vía npm en la sección de instalación y `package.json` queda con `repository.url` en el formato que exige el registro (`git+https://`, via `npm pkg fix`).
+- **Canal de distribución en npm**: el paquete pasa a llamarse `@fabianmelomaciel/skillgrid` (scoped, `publishConfig.access: public`). El nombre `skillgrid` a secas pertenece a otro producto en el registro de npm. La instalación desde GitHub (`install.sh` / `remote-install.sh`) no cambia; el README suma la vía npm en la sección de instalación y `package.json` queda con `repository.url` en el formato que exige el registro (`git+https://`, via `npm pkg fix`). `scripts/release.sh` publica en npm al final del release cuando corre con TTY; sin terminal interactiva (OTP) solo avisa y el release sigue completo.
 
 ## [1.21.0] - 2026-10-17
 
