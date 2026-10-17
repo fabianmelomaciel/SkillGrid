@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Barra de progreso de lectura en los 7 templates de reporte** — `.sg-progress` fija de 3px animada con `animation-timeline: scroll(root block)` tras `@supports (animation-timeline: scroll())` y `prefers-reduced-motion: no-preference` (la receta del Motion Stack 2026, E28, aplicada a nuestros propios reportes). En browsers sin scroll-driven la barra queda invisible y el reporte intacto; `frame-template` no la lleva (no tiene scroll de documento). Test nuevo en `tests/motion-block.test.js` (7/7 con guarda, frame sin barra).
+
 ## [1.20.0] - 2026-10-17
 
 ### Changed

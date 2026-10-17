@@ -419,6 +419,29 @@
             outline-offset: -2px;
         }
         /* MOTION:FIN */
+
+        /* barra de progreso de lectura — receta scroll-driven del Motion Stack 2026 (E28) */
+        .sg-progress {
+            position: fixed;
+            inset-inline: 0;
+            top: 0;
+            height: 3px;
+            z-index: 9999;
+            transform: scaleX(0);
+            transform-origin: 0 50%;
+            background: var(--primary, #7aa2f7);
+        }
+        @supports (animation-timeline: scroll()) {
+            @media (prefers-reduced-motion: no-preference) {
+                .sg-progress {
+                    animation: sg-progress-grow linear both;
+                    animation-timeline: scroll(root block);
+                }
+            }
+        }
+        @keyframes sg-progress-grow {
+            to { transform: scaleX(1); }
+        }
     </style>
     <script>
         function toggleFinding(id) {
@@ -431,6 +454,7 @@
     </script>
 </head>
 <body>
+    <div class="sg-progress" aria-hidden="true"></div>
     <div class="container">
         <header>
             <div class="header-title">

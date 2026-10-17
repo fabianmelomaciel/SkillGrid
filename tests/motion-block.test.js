@@ -76,6 +76,18 @@ console.log('\nTesting motion-block...\n');
     check(malos.length === 0, `div onclick en: ${malos.map((f) => f.rel).join(', ')}`);
   });
 
+  await test('los 7 templates de reporte traen la barra de progreso con guarda @supports', async () => {
+    const reports = files.filter(({ rel }) => !rel.includes('frame-template'));
+    const malos = reports.filter(({ text }) =>
+      !/class="sg-progress"/.test(text)
+      || !/@supports \(animation-timeline: scroll\(\)\)/.test(text)
+      || !/animation-timeline: scroll\(root block\)/.test(text)
+      || !/aria-hidden="true"/.test(text));
+    check(malos.length === 0, `sin barra de progreso completa: ${malos.map((f) => f.rel).join(', ')}`);
+    const frame = files.find(({ rel }) => rel.includes('frame-template'));
+    check(!/sg-progress/.test(frame.text), 'frame no debe tener la barra (sin scroll de documento)');
+  });
+
   console.log(`\n${passed} passed, ${failed} failed\n`);
   if (failed > 0) process.exit(1);
 })();
