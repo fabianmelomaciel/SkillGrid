@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **`scripts/release.sh` cierra el ciclo solo**: además de tag, push y npm (con TTY), ahora crea el GitHub Release con `gh release create --generate-notes`; si falta `gh` o el permiso, avisa con el comando a mano y no rompe el release — `release.sh <versión>` desde una ventana interactiva queda como único paso.
+- **Runners CI pineados a `ubuntu-24.04`**: los 11 jobs de CI, Docs Check, Security Pentest y Docker build dejan de apuntar a `ubuntu-latest` de cara al flip a Ubuntu 26 que GitHub anuncia para el 19/10/2026. Mismo comportamiento que hoy; la migración a 26 se valida con una corrida propia en vez de caer en `main` sin avisar.
 
 ## [1.22.0] - 2026-10-17
 
