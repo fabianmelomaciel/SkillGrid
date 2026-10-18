@@ -78,6 +78,23 @@ test('el CLI snapshot no revienta sin repo git', () => {
   check(r.status === 0, `snapshot salió ${r.status}: ${r.stderr}`);
 });
 
+test('la firma del baseline detecta manipulación (E53)', () => {
+  const firma = pol.firmar('docs/a.md\n', 'secreto');
+  check(pol.firmar('docs/a.md\n', 'secreto') === firma, 'la firma debería ser estable');
+  check(pol.firmar('docs/a.md\nscripts/x.js\n', 'secreto') !== firma, 'agregar una línea debería cambiar la firma');
+  check(pol.firmar('docs/a.md\n', 'otro') !== firma, 'otro secreto debería dar otra firma');
+});
+
+test('el CLI rechaza un baseline manipulado (E53)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ralph-'));
+  const base = path.join(dir, 'base.txt');
+  check(corre('snapshot', '--cwd', dir, '--out', base, '--secret', 's3').status === 0, 'snapshot debería salir 0');
+  check(fs.readFileSync(base, 'utf8').startsWith('#sig '), 'el baseline debería quedar firmado');
+  check(corre('check', '--cwd', dir, '--baseline', base, '--secret', 's3').status === 0, 'sin tocar debería pasar');
+  fs.appendFileSync(base, 'scripts/evil.js\n');
+  check(corre('check', '--cwd', dir, '--baseline', base, '--secret', 's3').status === 1, 'manipulado debería cortar');
+});
+
 test('ralph-loop.ps1 arranca con BOM UTF-8 (si no, PS 5.1 no lee los emojis)', () => {
   const b = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'ralph-loop.ps1'));
   check(b[0] === 0xEF && b[1] === 0xBB && b[2] === 0xBF, 'falta el BOM UTF-8: el .ps1 no corre en Windows PowerShell 5.1');

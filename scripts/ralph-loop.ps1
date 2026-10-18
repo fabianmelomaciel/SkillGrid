@@ -84,7 +84,11 @@ function HasPendingTasks([string]$filePath) {
 }
 
 $baseline = Join-Path ([System.IO.Path]::GetTempPath()) ("ralph-baseline-" + [Guid]::NewGuid().ToString("N") + ".txt")
-& node $PolicyScript snapshot --out $baseline
+# Firma del baseline: la clave vive sólo acá (memoria) y viaja por argv al
+# snapshot y al check, nunca por env ni disco. El agente no la ve, así que no
+# puede agregarse rutas a mano ni vaciar el baseline (E53).
+$baselineHmac = [Guid]::NewGuid().ToString("N")
+& node $PolicyScript snapshot --out $baseline --secret $baselineHmac
 Write-Host " 🛡️  Allowlist de rutas: $AllowedPaths" -ForegroundColor DarkGray
 
 $iteration = 1
@@ -124,7 +128,7 @@ while ($keepRunning) {
     }
 
     # Guarda de rutas (S3): si el agente tocó algo fuera de la allowlist, paramos
-    $violaciones = & node $PolicyScript check --baseline $baseline --allow $AllowedPaths 2>&1
+    $violaciones = & node $PolicyScript check --baseline $baseline --allow $AllowedPaths --secret $baselineHmac 2>&1
     if ($LASTEXITCODE -ne 0) {
         Write-Host "`n🔴 [SEGURIDAD] El agente tocó rutas no permitidas. Bucle detenido." -ForegroundColor Red
         $violaciones | Where-Object { "$_".Trim() } | ForEach-Object { Write-Host "   $_" -ForegroundColor Yellow }

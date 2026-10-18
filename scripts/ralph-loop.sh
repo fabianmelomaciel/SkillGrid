@@ -74,7 +74,10 @@ EOT
 fi
 
 BASELINE="$(mktemp "${TMPDIR:-/tmp}/ralph-baseline-XXXXXX")"
-node "$POLICY_SCRIPT" snapshot --out "$BASELINE"
+# Firma del baseline: la clave vive sólo acá (memoria) y viaja por argv al
+# snapshot y al check, nunca por env ni disco (E53).
+BASELINE_HMAC="$(node -e 'process.stdout.write(require("crypto").randomUUID())')"
+node "$POLICY_SCRIPT" snapshot --out "$BASELINE" --secret "$BASELINE_HMAC"
 trap 'rm -f "$BASELINE"' EXIT
 
 has_pending_tasks() {
@@ -105,7 +108,7 @@ while [ $iteration -le $MAX_ITERATIONS ]; do
     echo -e "\n${GRAY}🔄 Agente finalizó la ejecución con código de salida: $exit_code${NC}"
 
     # Guarda de rutas (S3)
-    if ! violaciones=$(node "$POLICY_SCRIPT" check --baseline "$BASELINE" --allow "$ALLOWED_PATHS" 2>&1); then
+    if ! violaciones=$(node "$POLICY_SCRIPT" check --baseline "$BASELINE" --allow "$ALLOWED_PATHS" --secret "$BASELINE_HMAC" 2>&1); then
         echo -e "\n${RED}🔴 [SEGURIDAD] El agente tocó rutas no permitidas. Bucle detenido.${NC}"
         echo -e "${YELLOW}$violaciones${NC}"
         echo -e "${YELLOW}   Allowlist: $ALLOWED_PATHS (ampliala con el 6º argumento)${NC}"

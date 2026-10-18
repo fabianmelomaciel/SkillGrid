@@ -27,8 +27,6 @@ Cómo se usa:
 
 ## Abiertas
 
-- E53 | autonomia | El baseline del Ralph Loop vive en %TEMP% con nombre predecible: el agente puede ampliarlo con sus propias rutas cambiadas y saltear la vigilancia (vaciar no sirve, agregar sí) | P3 | 2026-10-18 | scripts/ralph-loop.ps1:86
-
 ## Cerradas
 
 - E1..E3 | archivadas 2026-10-06 — pin-check local (E1), instaladores fail-open sin tag (E2), secrets-scan sin `on: push` (E3); cerradas 2026-10-01, detalle en el historial de git
@@ -54,3 +52,4 @@ Cómo se usa:
 - E51 | autonomia | El runner del bucle (`ralph-loop.ps1`/`.sh`) quedó fuera del DENY/PROTEGIDOS: el agente podía reescribir el gate del propio bucle y el diff no cortaba | P2 | 2026-10-18 | scripts/ralph-policy.js:30 | cerrado 2026-10-18 | scripts/ralph-policy.js:30, tests/ralph-policy.test.js
 - E52 | autonomia | `.gitignore`/`.gitattributes` sin proteger: un patrón nuevo saca archivos del radar de `git ls-files --others` y ciega la 2ª capa del Ralph Loop | P2 | 2026-10-18 | scripts/ralph-policy.js:33 | cerrado 2026-10-18 | scripts/ralph-policy.js:33, tests/ralph-policy.test.js
 - E54 | docs | El encabezado de write-guard.js prometía en absoluto que el agente no puede apagarse la jaula; con la indirección por variable era falso y contradecía el "best-effort" | P3 | 2026-10-18 | .opencode/plugins/write-guard.js:6 | cerrado 2026-10-18 | .opencode/plugins/write-guard.js:8
+- E53 | autonomia | El baseline del Ralph Loop vive en %TEMP% con nombre predecible: el agente puede ampliarlo con sus propias rutas cambiadas y saltear la vigilancia (vaciar no sirve, agregar sí) | P3 | 2026-10-18 | scripts/ralph-loop.ps1:86 | cerrado 2026-10-18 | scripts/ralph-policy.js:106, tests/ralph-policy.test.js

@@ -4,6 +4,7 @@
 // si el agente tocó algo fuera de la allowlist o algo sensible, el bucle corta.
 // Lo usan ralph-loop.sh y ralph-loop.ps1.
 const fs = require('fs');
+const crypto = require('crypto');
 const { execSync } = require('child_process');
 
 const ALLOW_DEFAULT = ['.'];
@@ -99,7 +100,14 @@ function vigilar(baseline, allow, archivos) {
   return { nuevos, violaciones };
 }
 
-module.exports = { normalizar, basename, dentroDeAlguna, permitido, archivosCambiados, vigilar, DENY, ALLOW_DEFAULT };
+// Firma HMAC del baseline. El secreto lo genera el loop en memoria y lo pasa por
+// argv (nunca por env ni por disco), así el agente que corre al lado no lo ve y
+// no puede agregarse rutas cambiadas para zafar de la vigilancia (E53).
+function firmar(contenido, secret) {
+  return crypto.createHmac('sha256', String(secret || '')).update(String(contenido || '')).digest('hex');
+}
+
+module.exports = { normalizar, basename, dentroDeAlguna, permitido, archivosCambiados, vigilar, firmar, DENY, ALLOW_DEFAULT };
 
 if (require.main === module) {
   const argv = process.argv.slice(2);
@@ -118,8 +126,10 @@ if (require.main === module) {
   }
 
   if (cmd === 'snapshot') {
-    const base = archivosCambiados(cwd);
-    const texto = base.length ? base.join('\n') + '\n' : '';
+    let texto = archivosCambiados(cwd).join('\n');
+    if (texto) texto += '\n';
+    const secret = opt('--secret');
+    if (secret) texto = `#sig ${firmar(texto, secret)}\n` + texto;
     const out = opt('--out');
     if (out) fs.writeFileSync(out, texto);
     else process.stdout.write(texto);
@@ -128,8 +138,19 @@ if (require.main === module) {
 
   if (cmd === 'check') {
     const archivo = opt('--baseline');
-    let baseline = new Set();
-    try { baseline = new Set(fs.readFileSync(archivo, 'utf8').split('\n').map((s) => s.trim()).filter(Boolean)); } catch { /* sin baseline: todo es nuevo */ }
+    const secret = opt('--secret');
+    let contenido = '';
+    try { contenido = fs.readFileSync(archivo, 'utf8'); } catch { /* sin baseline: todo es nuevo */ }
+    // Si snapshot firmó, un baseline editado no valida y cortamos cerrado: así el
+    // agente no puede meterse sus propias rutas ni vaciarlo (E53).
+    let cuerpo = contenido;
+    const firma = contenido.match(/^#sig ([0-9a-f]+)\n/);
+    if (firma) cuerpo = contenido.slice(firma[0].length);
+    if (secret && (!firma || firmar(cuerpo, secret) !== firma[1])) {
+      console.error('BLOQUEADO baseline: firma ausente o inválida (posible manipulación).');
+      process.exit(1);
+    }
+    const baseline = new Set(cuerpo.split('\n').map((s) => s.trim()).filter(Boolean));
     const { violaciones } = vigilar(baseline, allow, archivosCambiados(cwd));
     if (violaciones.length) {
       for (const v of violaciones) console.error(`BLOQUEADO ${v.archivo}: ${v.motivo}`);
