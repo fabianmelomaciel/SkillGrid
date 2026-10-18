@@ -11,6 +11,13 @@ on:
 permissions:
   contents: read
 
+# Cancela corridas viejas del mismo ref en push: si llegan dos commits seguidos
+# no hace falta terminar los jobs del anterior. En PR no cancela para no matar
+# un required-check a mitad de camino (E46).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
+
 jobs:
   check-remote-install-pin:
     runs-on: ubuntu-26.04

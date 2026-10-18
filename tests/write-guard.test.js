@@ -78,6 +78,23 @@ test('el marcador de autonomía cubre las propias guardas (E43)', () => {
   check(!policy.permitido('scripts/ralph-policy.js').ok, 'la política base debería bloquear');
 });
 
+test('revisarComando frena el bash que toca la jaula o borra el repo (E44)', () => {
+  const dir = carpeta();
+  check(guard.revisarComando(dir, 'node scripts/evolve.js').ok, 'un comando normal debería pasar');
+  check(guard.revisarComando(dir, 'npm test').ok, 'npm test debería pasar');
+  check(guard.revisarComando(dir, 'git status --short').ok, 'git status debería pasar');
+  check(guard.revisarComando(dir, 'echo "listo, sin rutas raras"').ok, 'texto suelto debería pasar');
+  check(guard.revisarComando(dir, 'git add .').ok, 'el `.` suelto no debería bloquear');
+  check(!guard.revisarComando(dir, 'rm .opencode/state/autonomo').ok, 'borrar el marcador debería bloquear');
+  check(!guard.revisarComando(dir, 'Set-Content scripts/ralph-policy.js "x"').ok, 'reescribir la política debería bloquear');
+  check(!guard.revisarComando(dir, 'cat .env').ok, 'leer .env debería bloquear');
+  check(!guard.revisarComando(dir, 'rm -rf .').ok, 'borrar el repo debería bloquear');
+  check(!guard.revisarComando(dir, 'git reset --hard').ok, 'git reset --hard debería bloquear');
+  check(!guard.revisarComando(dir, 'rm .OPENCODE/state/autonomo').ok, 'el case no debería esquivar la denylist');
+  check(!guard.revisarComando(dir, 'Set-Content "scripts/ralph-policy.js" "x"').ok, 'las comillas no deberían esquivarla');
+  check(!guard.revisarComando(dir, 'rm .open*/state/autonomo').ok, 'el glob sobre la jaula debería bloquear');
+});
+
 test('el CLI de autonomía prende, consulta y apaga', () => {
   const dir = carpeta();
   check(cli(dir, 'status').stdout.trim() === 'OFF', 'debería arrancar OFF');
@@ -94,7 +111,9 @@ test('el plugin cablea el hook y delega en la guarda', () => {
   check(src.includes('tool.execute.before'), 'no engancha el hook tool.execute.before');
   check(src.includes('agent-guard.js'), 'no importa la guarda');
   check(src.includes('guard.armado') && src.includes('guard.revisar'), 'no usa armado/revisar');
-  check(/throw new Error/.test(src), 'no bloquea (no lanza) cuando la ruta viola la política');
+  check(src.includes('revisarComando'), 'no aplica la guarda también al bash (E44)');
+  check(/bash/.test(src), 'no contempla el tool bash');
+  check(/throw bloqueo\(/.test(src) && /new Error/.test(src), 'no bloquea (no lanza) cuando la ruta viola la política');
 });
 
 for (const f of TEMP) { try { fs.rmSync(f, { recursive: true, force: true }); } catch { /* ya borrado */ } }

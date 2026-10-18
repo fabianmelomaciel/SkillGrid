@@ -32,8 +32,11 @@ function basename(p) {
   return partes.length ? partes[partes.length - 1] : p;
 }
 
+// Todo a minúscula: en Windows el filesystem no distingue mayúsculas, así que
+// `.OPENCODE` es el mismo archivo que `.opencode` — sin esto, la denylist se
+// esquiva cambiando el case (E44).
 function normalizar(rel) {
-  return String(rel || '').replace(/\\/g, '/').replace(/^\.\//, '').replace(/\/+$/, '');
+  return String(rel || '').replace(/\\/g, '/').replace(/^\.\//, '').replace(/\/+$/, '').toLowerCase();
 }
 
 function dentroDeAlguna(rel, allow) {

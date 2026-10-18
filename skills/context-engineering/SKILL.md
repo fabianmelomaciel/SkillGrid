@@ -216,11 +216,25 @@ For richer context, use Model Context Protocol servers:
 | **Filesystem** | Project file access and search |
 | **GitHub** | Issue, PR, and repository context |
 
+### Think in Code
+
+Don't read 50 files into context to count something — write the script that counts it and bring back only the number. The model generates code; it doesn't process data.
+
+```
+# Before: 40 × Read() ≈ 600 KB in the context window
+# After: one command, only the summary comes back
+node -e "const fs=require('fs');for(const f of fs.readdirSync('src'))console.log(f, fs.readFileSync('src/'+f,'utf8').split('\n').length)"
+```
+
+Use it for line/function counts, dependency maps, log filtering, JSON parsing, and summarizing test or build output. The rule of thumb: if the output will run past ~20 lines, process it in a subprocess and return the digest, not the raw dump.
+
 ### Context Mode & Output Sandboxing
-To prevent raw stdout or log dumps (e.g., test runs, build outputs, large query results) from bloat-polluting the active context:
-1. **Sandbox raw tool output**: Store heavy output streams in a local SQLite database or cache files.
-2. **Summarize logs**: Present only error highlights, structural statistics, or specific warning blocks to the agent instead of dumping thousands of lines of raw text.
-3. **MCP Server Integration**: Use the `context-mode` MCP server to intercept large tool execution payloads and automatically supply high-level summaries to the agent.
+To keep raw stdout or log dumps (test runs, build outputs, large query results) from flooding the active context:
+1. **Sandbox raw tool output**: keep heavy streams in a local store (SQLite, cache files) and read them back by id.
+2. **Summarize logs**: surface error highlights, structural stats, or the specific warning blocks — not thousands of raw lines.
+3. **Think in code** (above) before reaching for a whole-file read.
+
+[Context Mode](https://github.com/mksglu/context-mode) (`ctx_execute`, `ctx_execute_file`, `ctx_search`) is the ready-made MCP server for exactly this. Two caveats before adopting it: it's source-available under the Elastic License 2.0 (not OSI — fine to use, but don't repackage it as a hosted service or strip its notices), and it installs a global npm binary plus MCP hooks that intercept every tool call. Wire it through the `mcp-configurator` skill, opt-in per user; never vendor it into a distributed package.
 
 
 ## Confusion Management

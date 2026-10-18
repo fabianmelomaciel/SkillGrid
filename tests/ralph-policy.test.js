@@ -41,6 +41,8 @@ test('permitido deja pasar lo común y bloquea la denylist', () => {
   check(!pol.permitido('.opencode/plugins/session-memory.js', ['.']).ok, '.opencode debería bloquear (memoria propia)');
   check(!pol.permitido('.thirdparty-ignore.json', ['.']).ok, 'la whitelist del scanner debería bloquear');
   check(!pol.permitido('scripts/ralph-policy.js', ['.']).ok, 'la propia guarda debería bloquear');
+  check(!pol.permitido('.OPENCODE/plugins/x.js', ['.']).ok, 'el case no debería esquivar .opencode (E44)');
+  check(!pol.permitido('scripts/RALPH-POLICY.js', ['.']).ok, 'el case no debería esquivar la guarda (E44)');
 });
 
 test('permitido bloquea lo que se sale del proyecto', () => {
