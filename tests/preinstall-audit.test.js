@@ -135,6 +135,27 @@ test('la whitelist own-resources suprime y da exit 0', () => {
   check(data.hallazgos.every(h => h.severidad === 'suprimida'), 'hallazgo sin suprimir en skills propias');
 });
 
+test('la supresión no tapa hallazgos por substring (límite de segmento)', () => {
+  const dir = carpeta();
+  fs.mkdirSync(path.join(dir, 'paquete-de-muestra-extra'));
+  const tok = `glpat-${'A'.repeat(20)}`;
+  fs.writeFileSync(path.join(dir, 'paquete-de-muestra-extra', 'notas.md'), `usa ${tok} y listo\n`);
+  const ignore = path.join(dir, 'ignore.json');
+  const env = { ...process.env, SKILLGRID_THIRDPARTY_IGNORE: ignore };
+
+  // ruta que solo es prefijo de un segmento: NO debe suprimir
+  fs.writeFileSync(ignore, JSON.stringify([{ regla: 'token-declarado', ruta: 'paquete-de-muestra', motivo: 'x' }]));
+  const res = spawnSync(process.execPath, [SCANNER, dir, '--json'], { encoding: 'utf8', env });
+  const data = JSON.parse(res.stdout);
+  check(data.hallazgos.some(h => h.regla === 'token-declarado'), 'el prefijo whitelisteado tapó el hallazgo');
+
+  // ruta que coincide exacta con el segmento: SÍ suprime
+  fs.writeFileSync(ignore, JSON.stringify([{ regla: 'token-declarado', ruta: 'paquete-de-muestra-extra', motivo: 'x' }]));
+  const res2 = spawnSync(process.execPath, [SCANNER, dir, '--json'], { encoding: 'utf8', env });
+  const data2 = JSON.parse(res2.stdout);
+  check(!data2.hallazgos.some(h => h.regla === 'token-declarado' && h.severidad !== 'suprimida'), 'la ruta real no suprimió');
+});
+
 test('ruta inexistente sale con exit 2', () => {
   const res = spawnSync(process.execPath, [SCANNER, path.join(os.tmpdir(), 'no-existe-xyz'), '--json'], { encoding: 'utf8' });
   check(res.status === 2, `exit esperado 2, llegó ${res.status}`);

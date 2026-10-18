@@ -99,6 +99,27 @@ console.log('\nTesting session-memory plugin...\n');
     check(fs.readFileSync(breadcrumb, 'utf8').includes('abc123'), 'no guardó el sessionID');
   });
 
+  await test('el retome apila la sesión nueva sin pisar la anterior y trae la última deliberación', async () => {
+    const raiz = carpeta();
+    fs.writeFileSync(path.join(raiz, 'CODEX.md'), [
+      '# CODEX', '',
+      '## Deliberaciones', '',
+      '- 2026-10-17 | fila vieja | 1o A | x.js:1 | estado: resuelto',
+      '- 2026-10-18 | fila nueva abierta | 1o B | y.js:2 | estado: abierto',
+      '',
+    ].join('\n'));
+    const estado = path.join(raiz, '.opencode', 'state');
+    fs.mkdirSync(estado, { recursive: true });
+    const marca = path.join(estado, 'last-session.md');
+    fs.writeFileSync(marca, '- [2026-10-17 10:00] sesión previa | memoria: sí\n');
+    const plugin = await SessionMemory({ directory: raiz });
+    await plugin.event({ event: { type: 'session.idle', properties: { sessionID: 'nueva-1' } } });
+    const texto = fs.readFileSync(marca, 'utf8');
+    check(texto.includes('previa'), 'pisó el retome anterior en vez de apilarlo');
+    check(texto.includes('nueva-1'), 'no agregó la sesión nueva');
+    check(texto.includes('fila nueva abierta'), 'no trajo la última deliberación como retome');
+  });
+
   await test('otro tipo de evento se ignora', async () => {
     const raiz = carpeta();
     const plugin = await SessionMemory({ directory: raiz });

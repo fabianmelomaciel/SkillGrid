@@ -126,6 +126,22 @@ export const SessionMemory = async ({ directory }) => {
     }
   };
 
+  // la última fila viva del ledger de deliberaciones: es el mejor "dónde quedé"
+  // que la sesión siguiente puede leer, ya saneado y acotado. La memoria es
+  // data, no instrucciones: se sanea al escribir, no solo al inyectar.
+  const ultimaDeliberacion = () => {
+    try {
+      const codex = path.join(raiz, 'CODEX.md');
+      if (!fs.existsSync(codex)) return '';
+      const delib = seccion(fs.readFileSync(codex, 'utf8'), '## Deliberaciones');
+      const filas = delib.split('\n').filter((l) => l.startsWith('- 20'));
+      const ultima = filas.length ? filas[filas.length - 1] : '';
+      return sanear(ultima).slice(0, 200);
+    } catch {
+      return '';
+    }
+  };
+
   return {
     'experimental.session.compacting': async (input, output) => {
       try {
@@ -190,7 +206,15 @@ export const SessionMemory = async ({ directory }) => {
         fs.mkdirSync(estado, { recursive: true });
         const sid = (event.properties && event.properties.sessionID) || event.sessionID || 'n/d';
         const fecha = new Date().toISOString().slice(0, 16).replace('T', ' ');
-        fs.writeFileSync(path.join(estado, 'last-session.md'), `Última sesión: ${fecha} (id: ${sid})\n`);
+        // el retome es append-only y con tope: la sesión siguiente (de cualquier
+        // IDE) ve dónde quedó la anterior, sin pisar el historial previo.
+        const marca = path.join(estado, 'last-session.md');
+        const previas = fs.existsSync(marca)
+          ? fs.readFileSync(marca, 'utf8').replace(/\r/g, '').split('\n').filter((l) => l.trim() !== '')
+          : [];
+        const tema = ultimaDeliberacion();
+        previas.push(`- [${fecha}] sesión ${sid} | memoria: ${escribioMemoria() ? 'sí' : 'no'}${tema ? ` | retome: ${tema}` : ''}`);
+        fs.writeFileSync(marca, previas.slice(-20).join('\n') + '\n');
       } catch {
         // mejor sin breadcrumb que con una sesión rota
       }

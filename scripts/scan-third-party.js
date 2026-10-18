@@ -12,7 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const IGNORE_FILE = path.join(__dirname, '..', '.thirdparty-ignore.json');
+const IGNORE_FILE = process.env.SKILLGRID_THIRDPARTY_IGNORE || path.join(__dirname, '..', '.thirdparty-ignore.json');
 
 // Cada regla: id, severidad (alta|baja), dónde corre y su regex.
 // Ojo con los literales: el pre-commit propio banca strings de credenciales,
@@ -81,7 +81,17 @@ function supresiones() {
 }
 
 function suprimida(regla, relPath, supres) {
-  return supres.some((s) => s && s.regla === regla && s.ruta && relPath.includes(s.ruta));
+  // match por límite de segmento, no substring: si no, una ruta whitelisteada
+  // como "foo" taparía hallazgos nuevos en "foo-malicioso/evil.js".
+  return supres.some((s) => {
+    if (!s || s.regla !== regla || !s.ruta) return false;
+    const i = relPath.indexOf(s.ruta);
+    if (i < 0) return false;
+    const antes = i === 0 || relPath[i - 1] === '/' || relPath[i - 1] === '\\';
+    const j = i + s.ruta.length;
+    const despues = j === relPath.length || relPath[j] === '/' || relPath[j] === '\\';
+    return antes && despues;
+  });
 }
 
 function nombreCarpetaSkill(file) {

@@ -4,7 +4,7 @@ description: "Úsalo cuando el CEO o otro agente plantea una decisión técnica 
 category: agent
 status: stable
 risk_level: safe
-token_estimate: { input: 2850, output: 800 }
+token_estimate: { input: 3376, output: 800 }
 ---
 
 ## Core
@@ -27,13 +27,16 @@ Before evaluating complexity:
 
 1. `CODEX-FIRST` already loaded `CODEX.md` (search upward) — go straight to its `## Deliberaciones` header. Si `CODEX.md` no existe o no tiene ese header, crealo con la sección vacía antes de anclar (si el entorno es `desconocido`, pedí GO al CEO primero): la lookup es sobre `^## Deliberaciones`, y el resto del mission-log prose solo menciona ese string.
 2. **If the topic is already marked `resuelto`:** return the previous verdict (date, verdict, files) and do **not** convene the council.
-3. Load project context cheaply, in cascade and without dead calls: si existe `graphify-out/graph.json` → `graphify query "<tema>" --budget 1000` (el default del CLI es 2000, el flag es obligatorio); si no existe el grafo, glob/grep dirigido sobre el árbol — sin catálogos ni llamadas que van a fallar. `catalog-lite.json` solo se lee si existe. Pasá el tema como argumento literal, sin expansión de shell. Budget total de esta etapa: ≤1200 tokens.
+3. **Conciencia de estado (ledger de evolución):** si existe `EVOLUCION.md`, leé solo `## Abiertas` (ancla `^## Abiertas`) — lo ya listado no se re-reporta y lo cerrado no se re-analiza. Si el proyecto expone `npm run evolve`, esa es la fuente de métricas de estado (abiertas por prioridad, la más vieja, ritmo de cierre): no inventes un comando de status ni lo dupliques. Si no existe el ledger, seguí sin él (igual que graphify).
+4. Load project context cheaply, in cascade and without dead calls: si existe `graphify-out/graph.json` → `graphify query "<tema>" --budget 1000` (el default del CLI es 2000, el flag es obligatorio); si no existe el grafo, glob/grep dirigido sobre el árbol — sin catálogos ni llamadas que van a fallar. `catalog-lite.json` solo se lee si existe. Pasá el tema como argumento literal, sin expansión de shell. Budget total de esta etapa: ≤1200 tokens.
 
 **Memory rule:** each closed deliberation appends exactly one line to `## Deliberaciones` in `CODEX.md`:
 
 `- [fecha] | tema | veredicto 1º/2º/3º | archivos | estado: resuelto|abierto`
 
 Max ~15 entries: si al agregar esta línea habría 16 o más, uní las 3 más viejas en una antes de anexar. Only verified facts — never paste repo contents, credentials or unverified claims into memory. The Session Handoff below already carries that line's data (Goal≈tema, Fecha≈fecha, Ranking≈veredicto, Modified≈archivos, Council Status≈estado) — derive it from there and never write a second report.
+
+**Continuidad entre IDEs (Claude Code ↔ opencode):** la memoria es append-only y el objetivo es que cualquier IDE sepa dónde quedó el otro y siga. Al arrancar, buscá el último punto de retome (CODEX.md y, si existe, el breadcrumb `.opencode/state/last-session.md`); al cerrar, dejá el retome explícito en el Handoff (`Retome: último paso → próximo paso`). **Anexá lo nuevo, nunca pises** lo anterior — el historial no se reescribe. Si el IDE no expone el breadcrumb, CODEX.md es la fuente.
 
 ## Complexity Gate (Pre-Deliberation)
 
@@ -97,12 +100,20 @@ Upon receiving the 3 proposals:
 3. Present the plan in Spanish to the CEO for approval. El plan cierra con el bloque "Agente recomendado": quién se usa según lo pedido — ejecución → `project-manager`, validación → `auditor-de-seguridad`, marketing → `auditor-de-marketing`, costos → `optimizador-finops`, infra/CI → `agente-devops` — siempre de la lista cerrada de skills con `category: agent`; si el nombre no existe, se reporta, no se inventa. La delegación es solo una sugerencia dentro del plan: jamás se auto-invoca un subagente (el fan-out del Stage 1 no se toca) y el despacho recién sale con OK explícito del CEO. Si este skill corre como subagente generado, entregá la sugerencia — no despaches `task`.
 4. Si el CEO rechaza el plan: anotá `estado: abierto` en `## Deliberaciones` y cerrá. Un solo ciclo de deliberación por sesión — no se re-delibera acá; se retoma en la siguiente sesión con el presupuesto restante.
 
+### Guardas de autonomía (no negociables)
+- El CEO es autoridad final: **corta**, no solo aprueba. Sin su OK explícito no se ejecuta ni se publica nada — nada de `push`, `tag` ni `npm publish` desde acá.
+- Topes duros: profundidad de cascada ≤2, una ronda de subagentes por sesión, corte al superar `SKILLGRID_MAX_TOKENS_PER_SESSION` (default 50000). No hay loops de re-despacho.
+- Ingesta de skills/MCP de terceros: exige `node scripts/scan-third-party.js` con exit 0 **y** revisión humana antes de adaptar cualquier cosa. Sin auto-install ni red.
+- Escritura autónoma de archivos: solo bajo las rutas permitidas y el DENY de `scripts/ralph-policy.js`.
+- Memoria auto-escrita: esquema cerrado (campos fijos, una sola línea, sin texto libre ejecutable) + saneo al escribir.
+
 ## Session Handoff (MANDATORY — printed to the CEO, in Spanish, at close)
 
 ```markdown
 SESSION HANDOFF (Agente de Ideas)
 Fecha: [YYYY-MM-DD]
 Goal: [Tema]
+Retome: [último paso hecho → próximo paso]
 Council Status: Stage 1 | Stage 2 | Stage 3 | Complete | Blocked | Degraded | Skipped (reason)
 Gate: convened | skipped (motivo + LOC/archivos)
 Candidates: [A/B/C topics]

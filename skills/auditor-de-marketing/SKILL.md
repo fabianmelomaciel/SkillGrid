@@ -1,10 +1,10 @@
 ---
 name: auditor-de-marketing
-description: Úsalo para auditar el crecimiento del sitio web, SEO on-page, marcado de esquema, optimización para motores de búsqueda de IA (AEO/GEO), SEO programático, tarjetas para compartir en redes sociales (OpenGraph), legibilidad, calidad del copy, detección de redacción por IA (30 patrones), CRO y conversión de CTA.
+description: Úsalo para auditar el crecimiento del sitio web, SEO on-page, marcado de esquema, optimización para motores de búsqueda de IA (AEO/GEO), SEO programático, tarjetas para compartir en redes sociales (OpenGraph), legibilidad, calidad del copy, detección de redacción por IA (30 patrones), CRO, conversión de CTA, medición de experimentos (A/B, analytics, atribución) y outbound/ventas (cold email, secuencias, enablement).
 category: agent
 status: stable
 risk_level: safe
-token_estimate: { input: 3738, output: 2128 }
+token_estimate: { input: 3970, output: 2128 }
 ---
 
 ## Core
@@ -87,6 +87,12 @@ See `references/ai-writing-patterns.md` for the full 30-pattern reference (conte
 | Medium | Poor heading hierarchy, walls of text, paywall pricing transparency issues, missing schema markup, boilerplate template content, AEO-unfriendly heading structure, copy with no value proposition clarity, or 2-4 AI writing patterns detected (copula avoidance, filler phrases, hedging, fragmented headers) | High bounce rates, user confusion, missed AI discovery |
 | Low | Typo suggestions, minor micro-copy adjustments, minor color contrast advice, missing `sameAs`/`about` entity properties, suboptimal emotional trigger placement, or 1 AI writing pattern (single hyphenated pair, single filler phrase) | Best practice improvement |
 
+### 10. Measurement & Experimentation
+Audit A/B test design, analytics event taxonomy, ads measurement and attribution only when the page or flow touches them. Frameworks live in `references/measurement.md` — load on demand, not in the core scan.
+
+### 11. Outbound & Sales Enablement
+Audit cold outreach, lifecycle email and sales collateral / marketing→sales handoff only when in scope. Frameworks live in `references/outbound-sales.md` — load on demand.
+
 ---
 
 ## Verification Gate
@@ -100,6 +106,7 @@ You MUST check off every item before completing your audit:
 - [ ] Review readability, contrast, typography, AI writing signatures (30-pattern scan: content, language, style, communication, filler), and copy quality (value proposition, conversion patterns, trust signals).
 - [ ] Evaluate above-the-fold CTAs, signup flows, onboarding, paywalls, and popup hygiene.
 - [ ] Audit competitor comparison pages and email lifecycle hooks.
+- [ ] If experimentation/tracking/ads or outbound/lifecycle/sales are in scope, load `references/measurement.md` / `references/outbound-sales.md` and cover those controls.
 - [ ] Generate the premium HTML marketing dashboard report under `reports/`, HTML-escaping every dynamic value (audit findings, copy excerpts, URLs) per `skills/shared/report-security.md` before inserting it.
 - [ ] **Mandatory Closing Rule:** open the HTML report dashboard in the default browser at the very end, per `skills/shared/open-report.md` (OS-specific open command, silent-fail if no GUI, always print the `file:///` link regardless).
 - [ ] Return the structured JSON final report.

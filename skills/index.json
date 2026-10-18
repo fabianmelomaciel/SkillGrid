@@ -1,6 +1,6 @@
 {
-  "version": "1.2.44",
-  "generated": "2026-10-17",
+  "version": "1.2.45",
+  "generated": "2026-10-18",
   "summary": {
     "total": 44,
     "categories": {
@@ -46,7 +46,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 2850,
+        "input": 3376,
         "output": 800
       },
       "cost_tier": "medium",
@@ -70,12 +70,12 @@
     },
     "auditor-de-marketing": {
       "name": "auditor-de-marketing",
-      "description": "Úsalo para auditar el crecimiento del sitio web, SEO on-page, marcado de esquema, optimización para motores de búsqueda de IA (AEO/GEO), SEO programático, tarjetas para compartir en redes sociales (OpenGraph), legibilidad, calidad del copy, detección de redacción por IA (30 patrones), CRO y conversión de CTA.",
+      "description": "Úsalo para auditar el crecimiento del sitio web, SEO on-page, marcado de esquema, optimización para motores de búsqueda de IA (AEO/GEO), SEO programático, tarjetas para compartir en redes sociales (OpenGraph), legibilidad, calidad del copy, detección de redacción por IA (30 patrones), CRO, conversión de CTA, medición de experimentos (A/B, analytics, atribución) y outbound/ventas (cold email, secuencias, enablement).",
       "category": "agent",
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 3738,
+        "input": 3970,
         "output": 2128
       },
       "cost_tier": "medium",

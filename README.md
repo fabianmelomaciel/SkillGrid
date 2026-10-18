@@ -172,9 +172,9 @@ Genera automáticamente archivos de reglas optimizados en tu proyecto local:
 | Skill | Para qué | ~Tokens |
 |---|---|---:|
 | `agente-devops` | Úsalo para auditar, generar y gestionar configuraciones seguras de contenedores Docker… | 1916 |
-| `agente-ideas` | Úsalo cuando el CEO o otro agente plantea una decisión técnica compleja, ambigua o de… | 2850 |
+| `agente-ideas` | Úsalo cuando el CEO o otro agente plantea una decisión técnica compleja, ambigua o de… | 3376 |
 | `audit-loop` | Orquesta el bucle cerrado: auditar → corregir → re-auditar → iterar. Se activa como… | 2730 |
-| `auditor-de-marketing` | Úsalo para auditar el crecimiento del sitio web, SEO on-page, marcado de esquema,… | 3738 |
+| `auditor-de-marketing` | Úsalo para auditar el crecimiento del sitio web, SEO on-page, marcado de esquema,… | 3970 |
 | `auditor-de-seguridad` | Úsalo al finalizar el desarrollo, antes del despliegue, después de la generación de… | 3435 |
 | `cyber-neo` | Análisis integral de ciberseguridad para cualquier proyecto local. Escanea… | 4153 |
 | `execution-runtime` | Gestiona entornos de ejecución seguros y aislados (como Docker, WASM o microVMs) para… | 950 |
