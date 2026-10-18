@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.23.0] - 2026-10-18
+
+### Added
+- **`agente-ideas` con conciencia de estado y continuidad de memoria cross-IDE**: Stage 0 lee `## Abiertas` del ledger y cita `npm run evolve` como fuente de estado; regla de retome (buscar el último punto al arrancar, anexar sin pisar) y campo `Retome:` en el Handoff; guardas de autonomía explícitas. `.opencode/plugins/session-memory.js` deja el breadcrumb `last-session.md` append-only (tope 20) con la última deliberación saneada.
+- **`auditor-de-marketing` absorbe medición y outbound/ventas**: §10 Measurement & Experimentation y §11 Outbound & Sales Enablement con references lazy (`references/measurement.md`, `references/outbound-sales.md`), destilados de `coreyhaines31/marketingskills` (MIT), sin sumar skills nuevas.
+
+### Fixed
+- **Guardas de autonomía auto-protegidas (E41)**: la deny-list de `ralph-policy` suma `.opencode/`, `.thirdparty-ignore.json` y `ralph-policy.js` — un agente desatendido ya no puede reescribir su propia jaula ni ampliar la whitelist del scanner.
+- **Supresión "alta" con aprobación explícita (E42)**: una fila de `.thirdparty-ignore.json` solo apaga un hallazgo grave si trae `"aprobado": true`; sin eso el scanner lo reporta igual y sale con exit 1.
+
+
 ### Changed
 - **`scripts/release.sh` cierra el ciclo solo**: además de tag, push y npm (con TTY), ahora crea el GitHub Release con `gh release create --generate-notes`; si falta `gh` o el permiso, avisa con el comando a mano y no rompe el release — `release.sh <versión>` desde una ventana interactiva queda como único paso.
 - **Runners CI validados y pineados a `ubuntu-26.04`**: los 11 jobs de CI, Docs Check, Security Pentest y Docker build dejaron de apuntar a `ubuntu-latest` de cara al flip a Ubuntu 26 que GitHub anuncia para el 19/10/2026. La migración se validó con una corrida completa en 26.04 (PR #21, 13/13 checks en verde) antes de tocar `main`, en vez de caer en el flip sin avisar.

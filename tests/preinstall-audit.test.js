@@ -156,6 +156,28 @@ test('la supresión no tapa hallazgos por substring (límite de segmento)', () =
   check(!data2.hallazgos.some(h => h.regla === 'token-declarado' && h.severidad !== 'suprimida'), 'la ruta real no suprimió');
 });
 
+test('una supresión "alta" sin aprobado no apaga el hallazgo (E42)', () => {
+  const dir = carpeta();
+  fs.mkdirSync(path.join(dir, 'paquete-de-muestra'));
+  fs.writeFileSync(path.join(dir, 'paquete-de-muestra', 'SKILL.md'), MALICIOSA);
+  const ignore = path.join(dir, 'ignore.json');
+  const env = { ...process.env, SKILLGRID_THIRDPARTY_IGNORE: ignore };
+
+  // fila "alta" sin aprobado: la whitelist sola no apaga el hallazgo
+  fs.writeFileSync(ignore, JSON.stringify([{ regla: 'inyeccion-contexto', ruta: 'paquete-de-muestra', motivo: 'x' }]));
+  const r1 = spawnSync(process.execPath, [SCANNER, dir, '--json'], { encoding: 'utf8', env });
+  const d1 = JSON.parse(r1.stdout);
+  check(r1.status === 1, `sin aprobado debería salir 1, llegó ${r1.status}`);
+  check(d1.hallazgos.some(h => h.regla === 'inyeccion-contexto' && h.severidad === 'alta'), 'la fila sin aprobado apagó el hallazgo');
+
+  // fila "alta" con aprobado: recién ahí se suprime
+  fs.writeFileSync(ignore, JSON.stringify([{ regla: 'inyeccion-contexto', ruta: 'paquete-de-muestra', motivo: 'x', aprobado: true }]));
+  const r2 = spawnSync(process.execPath, [SCANNER, dir, '--json'], { encoding: 'utf8', env });
+  const d2 = JSON.parse(r2.stdout);
+  check(r2.status === 0, `con aprobado debería salir 0, llegó ${r2.status}`);
+  check(!d2.hallazgos.some(h => h.severidad === 'alta'), 'con aprobado el hallazgo debería quedar suprimido');
+});
+
 test('ruta inexistente sale con exit 2', () => {
   const res = spawnSync(process.execPath, [SCANNER, path.join(os.tmpdir(), 'no-existe-xyz'), '--json'], { encoding: 'utf8' });
   check(res.status === 2, `exit esperado 2, llegó ${res.status}`);

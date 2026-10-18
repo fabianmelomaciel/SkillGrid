@@ -9,6 +9,10 @@
 // { "regla": "...", "ruta": "substring-del-path", "motivo": "..." }: se usa
 // para tolerar docs de seguridad propios que citan patrones de ataque a
 // propósito. Todo suprimido queda impreso igual, a nivel "aviso".
+//
+// Una supresión que tapa un hallazgo "alta" necesita además "aprobado": true.
+// Sin eso la fila se ignora y el hallazgo se reporta igual: la whitelist sola
+// no puede apagar un hallazgo grave, hace falta el OK explícito del CEO (E42).
 const fs = require('fs');
 const path = require('path');
 
@@ -80,11 +84,12 @@ function supresiones() {
   }
 }
 
-function suprimida(regla, relPath, supres) {
+function suprimida(regla, relPath, supres, severidad) {
   // match por límite de segmento, no substring: si no, una ruta whitelisteada
   // como "foo" taparía hallazgos nuevos en "foo-malicioso/evil.js".
   return supres.some((s) => {
     if (!s || s.regla !== regla || !s.ruta) return false;
+    if (severidad === 'alta' && s.aprobado !== true) return false;
     const i = relPath.indexOf(s.ruta);
     if (i < 0) return false;
     const antes = i === 0 || relPath[i - 1] === '/' || relPath[i - 1] === '\\';
@@ -163,7 +168,7 @@ function escanear(target, { base = target } = {}) {
         }
       }
       if (match === null) continue;
-      const colgada = suprimida(regla.id, rel, supres);
+      const colgada = suprimida(regla.id, rel, supres, regla.severidad);
       hallazgos.push({
         archivo: rel,
         linea,

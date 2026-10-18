@@ -17,6 +17,12 @@ const DENY = [
   { motivo: 'clave/privada', test: (p) => /\.(key|pem|pfx|p12)$/i.test(p) },
   { motivo: 'credenciales', test: (p) => /^(credentials|secrets|tokens?)($|\.)/i.test(basename(p)) },
   { motivo: 'node_modules', test: (p) => p.split('/').includes('node_modules') },
+  // Las propias guardas no se auto-modifican: si el agente desatendido pudiera
+  // reescribir la deny-list o ampliar la whitelist del scanner, la jaula se
+  // abriría sola. La memoria/plugins (.opencode) van por el mismo motivo (E41).
+  { motivo: '.opencode (plugins y memoria del agente)', test: (p) => p.split('/').includes('.opencode') },
+  { motivo: '.thirdparty-ignore.json (whitelist del scanner)', test: (p) => p === '.thirdparty-ignore.json' },
+  { motivo: 'ralph-policy.js (la propia guarda)', test: (p) => p === 'scripts/ralph-policy.js' },
 ];
 
 function basename(p) {
