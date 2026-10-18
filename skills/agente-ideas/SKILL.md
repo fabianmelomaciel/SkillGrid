@@ -97,14 +97,14 @@ Upon receiving the 3 proposals:
 ### Stage 3: Synthesis (Chairman Decides)
 1. Take the Stage 2 ranking as the base (or the Stage 1 consensus if the early-exit fired).
 2. Synthesize the final plan, merging the best aspects of each proposal and incorporating critical security fixes.
-3. Present the plan in Spanish to the CEO for approval. El plan cierra con el bloque "Agente recomendado": quién se usa según lo pedido — ejecución → `project-manager`, validación → `auditor-de-seguridad`, marketing → `auditor-de-marketing`, costos → `optimizador-finops`, infra/CI → `agente-devops` — siempre de la lista cerrada de skills con `category: agent`; si el nombre no existe, se reporta, no se inventa. La delegación es solo una sugerencia dentro del plan: jamás se auto-invoca un subagente (el fan-out del Stage 1 no se toca) y el despacho recién sale con OK explícito del CEO. Si este skill corre como subagente generado, entregá la sugerencia — no despaches `task`.
+3. Present the plan in Spanish to the CEO for approval. El plan cierra con el bloque "Agente recomendado": quién se usa según lo pedido — ejecución → `project-manager`, validación → `auditor-de-seguridad`, marketing → `auditor-de-marketing`, costos → `optimizador-finops`, infra/CI → `agente-devops` — siempre de la lista cerrada de skills con `category: agent`; si el nombre no existe, se reporta, no se inventa. **Auto-derivación ON:** al cerrar el plan podés auto-despachar UN agente de esa lista cerrada sin esperar OK, siempre que el modo autónomo esté armado (`node scripts/autonomia.js status` → `ON`); en esa corrida cada `write`/`edit` pasa por la guarda cableada `scripts/agent-guard.js` (plugin `write-guard`), que aplica la allowlist y el DENY de `ralph-policy`. Con el modo desarmado, la delegación vuelve a ser sugerencia y el despacho espera OK explícito del CEO. Si este skill corre como subagente generado, entregá la sugerencia — no despaches `task`.
 4. Si el CEO rechaza el plan: anotá `estado: abierto` en `## Deliberaciones` y cerrá. Un solo ciclo de deliberación por sesión — no se re-delibera acá; se retoma en la siguiente sesión con el presupuesto restante.
 
 ### Guardas de autonomía (no negociables)
 - El CEO es autoridad final: **corta**, no solo aprueba. Sin su OK explícito no se ejecuta ni se publica nada — nada de `push`, `tag` ni `npm publish` desde acá.
 - Topes duros: profundidad de cascada ≤2, una ronda de subagentes por sesión, corte al superar `SKILLGRID_MAX_TOKENS_PER_SESSION` (default 50000). No hay loops de re-despacho.
 - Ingesta de skills/MCP de terceros: exige `node scripts/scan-third-party.js` con exit 0 **y** revisión humana antes de adaptar cualquier cosa. Sin auto-install ni red.
-- Escritura autónoma de archivos: solo bajo las rutas permitidas y el DENY de `scripts/ralph-policy.js`.
+- Escritura autónoma de archivos: **cableada, no prosa**. Con el modo armado, el plugin `write-guard` mete cada `write`/`edit` por `scripts/agent-guard.js` → `ralph-policy` (allowlist + DENY, y las propias guardas se auto-protegen). El switch es `node scripts/autonomia.js on|off|status`.
 - Memoria auto-escrita: esquema cerrado (campos fijos, una sola línea, sin texto libre ejecutable) + saneo al escribir.
 
 ## Session Handoff (MANDATORY — printed to the CEO, in Spanish, at close)
@@ -121,7 +121,7 @@ Ranking: [1º, 2º, 3º]
 Branch: [git branch | n/a — sin repo git]
 Modified: [archivos sin commit]
 Evidence: [comando de verificación real + su salida, o "sin cambios en el repo"]
-Next (suggestion, not an automatic action): 1. [agente recomendado en el plan] — despachar solo con OK explícito del CEO (p. ej. `/project-manager`) 2. [siguiente paso]
+Next: 1. [agente recomendado en el plan] — auto-despachado si el modo autónomo está armado, si no con OK explícito del CEO (p. ej. `/project-manager`) 2. [siguiente paso]
 ```
 
 Regla de status — comprobá en este orden:

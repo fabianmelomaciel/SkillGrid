@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Auto-derivación ON con la escritura autónoma cableada (E43)**: el write-path del agente de ideas deja de descansar en prosa. El plugin `.opencode/plugins/write-guard.js` mete cada `write`/`edit` por `scripts/agent-guard.js` → `ralph-policy` (allowlist + DENY, guardas auto-protegidas) cuando el modo autónomo está armado. Switch: `node scripts/autonomia.js on|off|status` (o `SKILLGRID_AUTONOMO=1`). Desarmado, vuelve el gate manual del CEO. Test: `tests/write-guard.test.js`.
+
 ## [1.23.0] - 2026-10-18
 
 ### Added

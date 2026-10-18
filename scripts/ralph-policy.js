@@ -23,6 +23,8 @@ const DENY = [
   { motivo: '.opencode (plugins y memoria del agente)', test: (p) => p.split('/').includes('.opencode') },
   { motivo: '.thirdparty-ignore.json (whitelist del scanner)', test: (p) => p === '.thirdparty-ignore.json' },
   { motivo: 'ralph-policy.js (la propia guarda)', test: (p) => p === 'scripts/ralph-policy.js' },
+  { motivo: 'agent-guard.js (la guarda del write-path)', test: (p) => p === 'scripts/agent-guard.js' },
+  { motivo: 'autonomia.js (el switch del modo autónomo)', test: (p) => p === 'scripts/autonomia.js' },
 ];
 
 function basename(p) {

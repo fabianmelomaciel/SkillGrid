@@ -27,8 +27,6 @@ Cómo se usa:
 
 ## Abiertas
 
-- E43 | autonomia | La escritura autónoma del agente de ideas no pasa por ralph-policy: hasta que el write-path se cablee, las guardas de allowlist/DENY son prosa y la auto-derivación queda bloqueada | P1 | 2026-10-18 | skills/agente-ideas/SKILL.md:107
-
 ## Cerradas
 
 - E1..E3 | archivadas 2026-10-06 — pin-check local (E1), instaladores fail-open sin tag (E2), secrets-scan sin `on: push` (E3); cerradas 2026-10-01, detalle en el historial de git
@@ -51,3 +49,4 @@ Cómo se usa:
 - E40 | secretos | El secrets-scanner.ps1 de la skill auditor-de-seguridad (se publica al usuario) seguía con el set viejo: no detectaba glpat-, npm_, sk-proj-, sk-ant-, rk_live_, ghu_/ghs_/github_pat_ ni dckr_pat- | P2 | 2026-10-17 | skills/auditor-de-seguridad/scanners/secrets-scanner.ps1:9 | cerrado 2026-10-17 | skills/auditor-de-seguridad/scanners/secrets-scanner.ps1:17, tests/secrets-scanner-ps1.test.js:1
 - E41 | autonomia | La deny-list de ralph-policy no cubría sus propios archivos: .opencode/plugins, .thirdparty-ignore.json y ralph-policy.js quedaban afuera, así que un agente desatendido podía reescribir su propia jaula | P1 | 2026-10-18 | scripts/ralph-policy.js:11 | cerrado 2026-10-18 | scripts/ralph-policy.js:20, tests/ralph-policy.test.js
 - E42 | supply-chain | Una fila de la whitelist del scanner apagaba un hallazgo "alta" sin aprobación: la supresión sola devolvía exit 0 aunque tapara una regla grave | P2 | 2026-10-18 | scripts/scan-third-party.js:89 | cerrado 2026-10-18 | scripts/scan-third-party.js:15, tests/preinstall-audit.test.js
+- E43 | autonomia | La escritura autónoma del agente de ideas no pasaba por ralph-policy: las guardas de allowlist/DENY eran prosa y no había barrera de código en el write-path | P1 | 2026-10-18 | skills/agente-ideas/SKILL.md:107 | cerrado 2026-10-18 | .opencode/plugins/write-guard.js:1, tests/write-guard.test.js
