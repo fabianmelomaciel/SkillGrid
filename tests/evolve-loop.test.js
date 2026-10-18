@@ -72,6 +72,37 @@ test('el ciclo corre y arma el informe (no mergea nada)', () => {
   check(/Borrador:/.test(salida), 'falta el path del borrador');
 });
 
+test('calcularMetricas cuenta abiertas por prioridad y la más vieja', () => {
+  const filas = [
+    { seccion: 'Abiertas', id: 'E1', prioridad: 'P1', fecha: '2026-10-01' },
+    { seccion: 'Abiertas', id: 'E2', prioridad: 'P2', fecha: '2026-10-10' },
+    { seccion: 'Abiertas', id: 'E3', prioridad: 'P2', fecha: '2026-10-12' },
+    { seccion: 'Abiertas', id: 'E4', prioridad: '', fecha: '2026-10-12' },
+    { seccion: 'Cerradas', id: 'E0', cierre: 'cerrado 2026-10-15' },
+  ];
+  const m = loop.calcularMetricas(filas, '2026-10-17');
+  check(m.abiertas === 4, `abiertas mal: ${m.abiertas}`);
+  check(m.porPrioridad.P2 === 2 && m.porPrioridad['sin P'] === 1, `por prioridad mal: ${JSON.stringify(m.porPrioridad)}`);
+  check(m.masVieja.id === 'E1' && m.masVieja.dias === 16, `más vieja mal: ${JSON.stringify(m.masVieja)}`);
+  check(m.cerradas === 1 && m.cerradasRecientes === 1, 'cerradas mal');
+});
+
+test('armarInforme muestra las métricas del ledger', () => {
+  const txt = loop.armarInforme({
+    base: 'aaaa1111', head: 'bbbb2222', commits: [], filas: [], cands: [],
+    ledger: { ok: true }, guardas: { ok: true, violaciones: [] },
+    borrador: 'scratch/x.md',
+    metricas: loop.calcularMetricas([
+      { seccion: 'Abiertas', id: 'E9', prioridad: 'P1', fecha: '2026-10-01' },
+      { seccion: 'Cerradas', id: 'E0', cierre: 'cerrado 2026-10-16' },
+    ], '2026-10-17'),
+  });
+  check(/## Métricas/.test(txt), 'falta la sección de métricas');
+  check(/Abiertas: 1 \(P1: 1\)/.test(txt), 'faltan las abiertas por prioridad');
+  check(/Más vieja: E9/.test(txt), 'falta la más vieja');
+  check(/Cerradas: 1 — últimos 30 días: 1/.test(txt), 'faltan las cerradas');
+});
+
 // Modela la inclusión de npm: `scripts/` mete la carpeta, `!...` la saca de vuelta.
 function publicado(rel, files) {
   let incluir = false;

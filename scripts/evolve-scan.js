@@ -65,7 +65,10 @@ function filasDelLedger(texto) {
       id: c[0],
       categoria: c[1],
       mejora: c[2],
+      prioridad: c[3] || '',
+      fecha: c[4] || '',
       evidencia: c[5] || '',
+      cierre: c[6] || '',
       evidenciaCierre: c[7] || '',
     });
   }
