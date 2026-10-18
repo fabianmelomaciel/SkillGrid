@@ -13,6 +13,16 @@ $patterns = @(
     @{ pattern = 'sk_test_[0-9a-zA-Z]{24,}'; severity = 'high'; name = 'Stripe Test Key' }
     @{ pattern = 'ghp_[0-9a-zA-Z]{36}'; severity = 'critical'; name = 'GitHub PAT' }
     @{ pattern = 'gho_[0-9a-zA-Z]{36}'; severity = 'critical'; name = 'GitHub OAuth' }
+    # Tokens modernos (E40): mismo set que el pre-commit (E38).
+    @{ pattern = 'ghs_[0-9a-zA-Z]{36}'; severity = 'high'; name = 'GitHub App Install Token' }
+    @{ pattern = 'ghu_[0-9a-zA-Z]{36}'; severity = 'high'; name = 'GitHub App Token' }
+    @{ pattern = 'github_pat_[0-9a-zA-Z_]{22,255}'; severity = 'critical'; name = 'GitHub Fine-Grained PAT' }
+    @{ pattern = 'glpat-[0-9A-Za-z_-]{20,}'; severity = 'critical'; name = 'GitLab PAT' }
+    @{ pattern = 'npm_[0-9A-Za-z]{36}'; severity = 'critical'; name = 'npm Token' }
+    @{ pattern = 'sk-proj-[0-9A-Za-z_-]{20,}'; severity = 'critical'; name = 'OpenAI Project Key' }
+    @{ pattern = 'sk-ant-[0-9A-Za-z_-]{40,}'; severity = 'critical'; name = 'Anthropic Key' }
+    @{ pattern = 'rk_live_[0-9a-zA-Z]{24,}'; severity = 'critical'; name = 'Stripe Restricted Key' }
+    @{ pattern = 'dckr_pat_[0-9A-Za-z_-]{27}'; severity = 'critical'; name = 'Docker PAT' }
     @{ pattern = 'xox[bpsa]-[0-9a-zA-Z\-]{10,}'; severity = 'high'; name = 'Slack Token' }
     @{ pattern = 'SG\.[0-9a-zA-Z\-_]{22}\.[0-9a-zA-Z\-_]{43}'; severity = 'critical'; name = 'SendGrid Key' }
     @{ pattern = 'password\s*[:=]\s*["''][^"'']+["'']'; severity = 'high'; name = 'Hardcoded Password' }
