@@ -1,52 +1,85 @@
 <div align="center">
+
 # 🧠 SkillGrid
 
-### **El copiloto de IA que trabaja *con* tu cabeza, no en contra.**
+### Tu agente de IA, con **disciplina**. · Your AI agent, with **discipline**.
 
-*43 skills · tests en cada commit · gate 7s · 4 plataformas · hasta −90% ahorro de tokens · 5 jobs de seguridad en CI*
+*44 skills · memoria persistente · auto-auditoría · 4 IDEs · hasta −90% de tokens · gate en cada commit*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-43-22c55e?style=flat-square)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-44-22c55e?style=flat-square)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/ci.yml)
 [![Security Pentest](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/pentest.yml?branch=main&label=Security%20Pentest&style=flat-square&color=dc2626)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/pentest.yml)
 
-**[⚡ Instalación Rápida](#-instalación-en-10-segundos) | [🛠️ Uso Avanzado](#-instalación-avanzada-y-perfiles) | [🔒 Security Pipeline](#-security-pipeline) | [📄 Changelog](CHANGELOG.md)**
+**[🇬🇧 English](#-english) · [🇪🇸 Español](#-español) · [⚡ Install](#-install) · [🗺️ Catalog](#-catalog) · [📄 Changelog](CHANGELOG.md)**
 
-⭐ **[Dale una estrella al repo](https://github.com/fabianmelomaciel/SkillGrid/stargazers)** si te resulta útil — ayuda a que más gente lo encuentre.
+⭐ **[Dale una estrella / Star the repo](https://github.com/fabianmelomaciel/SkillGrid/stargazers)** — helps others find it.
+
 </div>
 
 ---
 
-## ¿Qué es SkillGrid?
+## 🇬🇧 English
 
-SkillGrid es un **sistema de trabajo autónomo** de instrucciones portables (`SKILL.md`) que enseña a tus agentes de IA a activarse, ejecutar y detenerse eficientemente, optimizando la precisión y reduciendo costos.
+**SkillGrid turns your AI agent into a disciplined teammate.** It's a portable set of plain-text skills (`SKILL.md`) that teaches agents to activate, execute and stop efficiently — across **opencode, Claude Code, Cursor and antigravity**. No lock-in: it's just files.
 
-*   🔁 **Bucle de reparación cerrado** — los agentes auditan y corrigen fallos en ciclos autónomos, sin que tengas que intervenir.
-*   🧠 **CODEX, memoria persistente entre sesiones.** Un `CODEX.md` local (nunca se comitea) que el agente escribe y relee en cada tarea, para no obligarte a repetir el contexto de tu proyecto de una sesión a otra.
-*   🧭 **`EVOLUCION.md`, mejoras con plazo.** Cada error detectado queda como fila con su evidencia; cuando se corrige, sale de la lista y queda como historial. El `gate` no deja cerrar una fila sin prueba.
-*   🛡️ Auditoría integrada de **NVIDIA SkillSpector** en CI + pentest automatizado en cada PR — la seguridad viene incorporada, no como agregado.
-*   📦 Instalás solo el perfil de skills que tu equipo necesita, nada más.
+### What it does
+- 🔁 **Closed repair loop** — agents audit and fix their own failures, autonomously.
+- 🧠 **Persistent memory** — a local `CODEX.md` the agent writes and re-reads, so you never re-explain your project.
+- 🧭 **Tracked evolution** — every bug becomes a row in `EVOLUCION.md` with evidence; the gate won't close it without proof.
+- 🛡️ **Security built-in** — a 5-job pentest pipeline runs on every PR (secrets, SAST, SCA, IaC, supply chain).
+- 📦 **Pick a profile** — install only the skills your team needs.
 
 ### ⚡ TL;DR
+- **44 skills, one command** — `/brainstorming`, `/agente-ideas`, `/auditor-de-seguridad`…
+- **Self-auditing** — its own gate + security on every PR.
+- **Memory + efficiency** — local `CODEX.md` + CodeGraph: up to **−90%** tokens per session.
 
-*   **43 skills listas para invocar** — `/brainstorming`, `/agente-ideas`, `/auditor-de-seguridad`… en opencode, Claude Code, Cursor y antigravity.
-*   **Se audita a sí mismo** — su propio `gate` (43 skills, suite completa) y un pipeline de seguridad en cada PR.
-*   **Memoria y eficiencia** — `CODEX.md` local + CodeGraph: hasta **−90%** de tokens por sesión de trabajo.
+| | Without SkillGrid | With SkillGrid |
+|---|---|---|
+| **Context** | Re-explain your project every session | The agent reads its `CODEX.md` and continues |
+| **Quality** | Bugs reach `main` | Tests + gate before every commit |
+| **Security** | Audits when you remember | 5 security jobs on every PR |
+| **Cost** | Full context every task | ~1.4K tokens/session, −90% with CodeGraph |
+
+### 🚀 First steps
+Once installed, just type a skill name in your agent: `/agente-ideas` (decide), `/auditor-de-seguridad` (audit), `/brainstorming` (design), `/audit-loop` (audit → fix → re-audit).
+
+---
+
+## 🇪🇸 Español
+
+**SkillGrid convierte a tu agente de IA en un compañero disciplinado.** Es un sistema portable de skills en texto plano (`SKILL.md`) que le enseña a tus agentes a activarse, ejecutar y detenerse eficientemente — en **opencode, Claude Code, Cursor y antigravity**. Sin lock-in: son solo archivos.
+
+### Qué hace
+- 🔁 **Bucle de reparación cerrado** — los agentes auditan y corrigen sus fallos en ciclos autónomos.
+- 🧠 **Memoria persistente** — un `CODEX.md` local que el agente escribe y relee, para no repetirte el contexto de tu proyecto.
+- 🧭 **Evolución con evidencia** — cada error queda como fila en `EVOLUCION.md`; el gate no deja cerrarla sin prueba.
+- 🛡️ **Seguridad incorporada** — pipeline de pentest de 5 jobs en cada PR (secretos, SAST, SCA, IaC, supply chain).
+- 📦 **Elegí un perfil** — instalá solo las skills que tu equipo necesita.
+
+### ⚡ TL;DR
+- **44 skills, un comando** — `/brainstorming`, `/agente-ideas`, `/auditor-de-seguridad`…
+- **Se audita solo** — su propio gate + seguridad en cada PR.
+- **Memoria y eficiencia** — `CODEX.md` local + CodeGraph: hasta **−90%** de tokens por sesión.
 
 | | Sin SkillGrid | Con SkillGrid |
 |---|---|---|
 | **Contexto** | Repetís el proyecto en cada sesión | El agente lee su `CODEX.md` y sigue |
-| **Calidad** | Bugs que llegan a `main` | Tests + `gate` antes de cada commit |
-| **Seguridad** | Auditoría cuando te acordás | SkillSpector + 5 jobs de seguridad en cada PR |
-| **Costo** | Contexto completo en cada tarea | Catálogo de ~1.4K tok/sesión, −90% con CodeGraph |
+| **Calidad** | Bugs que llegan a `main` | Tests + gate antes de cada commit |
+| **Seguridad** | Auditoría cuando te acordás | 5 jobs de seguridad en cada PR |
+| **Costo** | Contexto completo en cada tarea | ~1.4K tok/sesión, −90% con CodeGraph |
+
+### 🚀 Primeros pasos
+Con las skills instaladas, escribí su nombre en tu agente: `/agente-ideas` (decidir), `/auditor-de-seguridad` (auditar), `/brainstorming` (diseñar), `/audit-loop` (auditar → corregir → re-auditar).
 
 ---
 
-## ⚡ Instalación en 10 segundos
+## ⚡ Install
 
-El instalador autodetecta opencode, antigravity, Claude Code y Cursor, y los configura de inmediato. Por defecto instala el perfil `all` (43 skills).
+Auto-detects **opencode, antigravity, Claude Code and Cursor** and configures them. Default profile: `all` (44 skills).
 
 ### Windows (PowerShell)
 ```powershell
@@ -59,68 +92,48 @@ curl -fsSL https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/rem
 ```
 
 ### npm
-
-Lo mismo está publicado como paquete público, para bajarlo, auditarlo o referenciarlo desde un proyecto Node:
-
 ```bash
 npm install @fabianmelomaciel/skillgrid
-# queda en node_modules/@fabianmelomaciel/skillgrid/ (install.sh, install.ps1, skills/, catálogos)
+# → node_modules/@fabianmelomaciel/skillgrid/ (install.sh, install.ps1, skills/, catálogos)
 ```
 
-> 💡 **Para entornos serios, no pegues `main` en vivo:** bajá el instalador, revisalo y ejecutalo:
+> 💡 **For serious setups, don't pipe a live `main`:** download, read, then run.
 > ```powershell
 > irm https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/remote-install.ps1 -OutFile install.ps1
-> Get-Content install.ps1   # leelo antes de correrlo
+> Get-Content install.ps1   # read it first
 > .\install.ps1
 > ```
 
-### 🚀 Primeros pasos
-
-Con las skills instaladas, escribí su nombre en tu agente:
-
-| Querés… | Invocación |
-|---|---|
-| Decidir algo complejo de tu proyecto | `/agente-ideas` |
-| Auditar seguridad (OWASP Top 10, secretos, deps) | `/auditor-de-seguridad` |
-| Diseñar una feature antes de tocar código | `/brainstorming` |
-| Cerrar el ciclo auditar → corregir → re-auditar | `/audit-loop` |
-
----
-
-## 🛠️ Instalación Avanzada y Perfiles
-
 <details>
-<summary><strong>📦 Perfiles Disponibles (Instalación Parcial)</strong></summary>
+<summary><strong>📦 Perfiles / Profiles (partial install)</strong></summary>
 
-Podés seleccionar perfiles específicos para limitar el consumo de tokens y adecuar el entorno de tu agente:
-
-*   `minimal`: Solo gates mínimos de seguridad (6 skills, ~14K tokens).
-*   `standard`: Flujo de desarrollo completo del día a día (16 skills, ~36K tokens).
-*   `superpowers`: Metodología completa de desarrollo (22 skills, ~45K tokens).
-*   `testing`: Enfocado en QA: E2E, TDD y debugging (4 skills, ~8K tokens).
-*   `strict`: Suite completa con todos los auditores activos (43 skills, ~94K tokens).
+*   `minimal`: solo gates mínimos de seguridad (6 skills, ~14K tokens).
+*   `standard`: flujo de desarrollo del día a día (16 skills, ~36K tokens).
+*   `superpowers`: metodología completa de desarrollo (22 skills, ~45K tokens).
+*   `testing`: enfocado en QA: E2E, TDD y debugging (4 skills, ~8K tokens).
+*   `strict`: suite completa con todos los auditores activos (43 skills, ~94K tokens).
 
 ```bash
-# Ejemplo en Bash
-./install.sh --profile standard
-
-# Ejemplo en PowerShell
-.\install.ps1 -Profile standard
+./install.sh --profile standard      # Bash
+.\install.ps1 -Profile standard      # PowerShell
 ```
 </details>
 
 <details>
-<summary><strong>IDE Rules (Cursor / Copilot)</strong></summary>
+<summary><strong>🧩 IDE Rules — Cursor / Copilot</strong></summary>
 
-Genera automáticamente archivos de reglas optimizados en tu proyecto local:
+Genera reglas optimizadas dentro de tu proyecto:
 ```powershell
-.\install.ps1 -ProjectDir "C:\ruta\tu-proyecto" -Language typescript
+.\install.ps1 -ProjectDir "C:\path\tu-proyecto" -Language typescript
 ```
 </details>
 
 ---
 
-## 🗺️ Catálogo de Skills Destacadas
+## 🗺️ Catalog
+
+<details open>
+<summary><strong>📚 Las 44 skills completas · All 44 skills</strong></summary>
 
 <!-- catalog:begin -->
 *~Tokens = contexto que consume la skill al activarse (medido del frontmatter de cada `SKILL.md`). Las 44 completas, en [catalog.json](catalog.json).*
@@ -185,119 +198,46 @@ Genera automáticamente archivos de reglas optimizados en tu proyecto local:
 | `prompt-injection-guard` | Defiende contra ataques de inyección de prompts en aplicaciones potenciadas por IA.… | 2834 |
 <!-- catalog:end -->
 
+</details>
+
 > ⚠️ **Skills `critical` (6):** `audit-loop`, `auditor-de-seguridad`, `cyber-neo`, `execution-runtime`, `hack-audit` y `prompt-injection-guard` ejecutan herramientas reales (bash, escaneos, exploits). Usalas **solo con autorización explícita y en entornos no productivos**.
 
 ---
 
 ## 🔒 Security Pipeline
 
-SkillGrid aplica sus propias skills de seguridad a sí mismo mediante un pipeline de CI dedicado (`.github/workflows/pentest.yml`). Se ejecuta automáticamente en cada **Pull Request hacia `main`** y de forma **programada cada domingo**.
-
-<details>
-<summary><strong>🔍 Ver los 5 jobs del pipeline</strong></summary>
+SkillGrid audita su propio código con un pipeline de CI dedicado (`.github/workflows/pentest.yml`), en cada **Pull Request hacia `main`** y **cada domingo**.
 
 | Job | Herramienta | Cobertura |
 |:---|:---|:---|
-| 🔑 **Secrets Detection** | TruffleHog + Gitleaks | Secretos por entropía y patrones en todo el historial git |
+| 🔑 **Secrets** | TruffleHog + Gitleaks | Secretos por entropía y patrones en todo el historial git |
 | 🧪 **SAST** | Semgrep `p/owasp-top-ten` | Vulnerabilidades de código estático (OWASP Top 10) |
-| 📦 **SCA** | Trivy `fs` | CVEs en dependencias — bloquea en severidad CRITICAL |
+| 📦 **SCA** | Trivy `fs` | CVEs en dependencias — bloquea en CRITICAL |
 | 🏗️ **IaC** | Checkov | Malas configuraciones en `.github/workflows/` |
-| 🔗 **Supply Chain** | OpenSSF Scorecard | Puntuación de 18 prácticas de seguridad del proyecto |
+| 🔗 **Supply Chain** | OpenSSF Scorecard | 18 prácticas de seguridad del proyecto |
 
-> Todos los resultados se suben como **SARIF** a la pestaña **Security → Code Scanning** de GitHub para trazabilidad centralizada.
-</details>
-
----
-
-## 📈 Ahorro de Tokens (hasta −90%) con CodeGraph
-
-**CodeGraph** (obligatoria, corre sola al arrancar cada skill) y **Graphify** (capa opcional con `graphify query` / `graphify path`) son herramientas distintas: podés usar solo CodeGraph.
-
-SkillGrid combina **CodeGraph** (indexación local) con políticas estrictas de eficiencia para minimizar el context flooding:
-
-*   **Reducción del contexto (≈ −90% en proyectos grandes):** lee solo el código necesario.
-*   **Políticas de Refactorización:** Segmentación automática de archivos que superen las 300 líneas.
-*   **Filtros de Seguridad:** Evita re-lecturas duplicadas y bucles infinitos de ejecución.
-
-| Escenario | Full Scan (Sin CodeGraph) | Con CodeGraph + SkillGrid | Ahorro |
-|:---|:---:|:---:|:---:|
-| **Proyecto Grande (10K+ arch., 144MB)** | 36M tokens (~$108.41 USD) | 3.6M tokens (~$10.85 USD) | **-89.99%** |
-
-*Escenario ilustrativo basado en un proyecto de referencia con y sin CodeGraph; el ahorro real varía según el tamaño y estructura de tu repo.*
-
-<details>
-<summary><strong>💡 Tip: baja el umbral de auto-compact</strong></summary>
-
-Por defecto Claude Code compacta el contexto recién al ~83-90% de uso, momento en el que ya gastaste una cantidad enorme de tokens leyendo/escribiendo antes de comprimir. Bajalo a un valor más conservador (60-70%) agregando esto a tu `~/.claude/settings.json` (afecta todas tus sesiones, no solo este proyecto):
-```json
-{ "env": { "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "65" } }
-```
-Esto fuerza la compactación antes, evitando quedarte sin presupuesto a mitad de una tarea larga.
-</details>
-
----
-
-## 🔍 Grafo de Conocimiento con Graphify (opcional)
-
-Capa opcional sobre CodeGraph: convierte el proyecto en un grafo consultable (`graphify query`, `graphify path`) con reglas de IDE propias, reduciendo hasta un **70%** los tokens de entrada en consultas puntuales. Los archivos autogenerados (`graphify-out/`) ya están excluidos en `.gitignore` y `.graphifyignore`.
-
-<details>
-<summary><strong>⚡ Instalación, uso e integración con IDEs</strong></summary>
-
-1. **Instalar CLI:**
-   ```bash
-   uv tool install graphifyy
-   # o alternativamente: pip install graphifyy
-   ```
-2. **Generar Grafo Local:**
-   ```bash
-   graphify update .
-   ```
-3. **Consultar en CLI:**
-   ```bash
-   graphify query "¿Cómo se inicializa el router de SkillGrid?" --budget 1500
-   ```
-
-**Reglas de IDE** — instala la lectura automática del grafo para tu asistente:
-*   **Antigravity:** `graphify antigravity install`
-*   **VS Code (Copilot):** `graphify vscode install`
-*   **Cursor:** `graphify cursor install`
-*   **Claude Code:** `graphify claude install`
-</details>
-
----
-
-## 🔄 Ralph Loop: Ejecución Autónoma
-
-<details>
-<summary><strong>Orquestador para ejecutar agentes de forma iterativa sobre un archivo de tareas (<code>task.md</code>)</strong></summary>
-
-```powershell
-.\scripts\ralph-loop.ps1 -AgentCommand "antigravity-ide" -TaskFile "task.md"
-```
-</details>
+> Resultados subidos como **SARIF** a **Security → Code Scanning** para trazabilidad centralizada.
 
 ---
 
 ## ❓ FAQ
 
-*   **¿Requisitos?** — Node.js ≥ 18 y git. Nada más: las skills son texto.
-*   **¿Funciona sin conexión?** — Sí, una vez instaladas. Solo necesitás red para instalar o actualizar.
-*   **¿Cuánto cuesta?** — SkillGrid es MIT (gratis). Pagás solo los tokens de tu modelo.
-*   **¿Cómo actualizo?** — Volvé a correr el mismo comando de instalación; reinstala sobre lo anterior.
-*   **¿Qué son las skills `critical`?** — Las 6 que ejecutan herramientas reales (ver recuadro en el catálogo). Solo con autorización y entorno no productivo.
-*   **¿Puede el agente commitear cualquier cosa?** — No: el hook `pre-commit` valida secretos, tests borrados, skips nuevos y el `gate` antes de cada commit.
+*   **Requisitos / Requirements?** — Node.js ≥ 18 y git. Nada más: las skills son texto.
+*   **¿Funciona sin conexión? / Offline?** — Sí, una vez instaladas. Solo necesitás red para instalar o actualizar.
+*   **¿Cuánto cuesta? / Cost?** — MIT (gratis). Pagás solo los tokens de tu modelo.
+*   **¿Cómo actualizo? / Update?** — Volvé a correr el mismo comando de instalación; reinstala sobre lo anterior.
+*   **¿Qué son las skills `critical`?** — Las 6 que ejecutan herramientas reales. Solo con autorización y entorno no productivo.
+*   **¿Puede el agente commitear cualquier cosa?** — No: el hook `pre-commit` valida secretos, tests borrados, skips nuevos y el `gate`.
 
 ---
 
-## 🙏 Atribución
+## 🙏 Atribución / Attribution
 
-*   Los skills con `category: core` contienen adaptaciones de skills públicos de **[Anthropic](https://github.com/anthropics)** (`brainstorming`, `systematic-debugging`, `test-driven-development`, `writing-plans`, etc.) — detalle en [CONTRIBUTING.md](CONTRIBUTING.md).
-*   Guards de calidad del pipeline (`no_new_skips`, `no_deleted_tests`) inspirados en **[intrepideai/donegate](https://github.com/intrepideai/donegate)**.
+*   Las skills con `category: core` adaptan skills públicos de **[Anthropic](https://github.com/anthropics)** (`brainstorming`, `systematic-debugging`, `test-driven-development`, `writing-plans`…). Detalle en [CONTRIBUTING.md](CONTRIBUTING.md).
+*   Guards del pipeline (`no_new_skips`, `no_deleted_tests`) inspirados en **[intrepideai/donegate](https://github.com/intrepideai/donegate)**.
 
 ---
 
-## 📄 Historial de Cambios y Licencia
+## 📄 Licencia / License
 
-*   Para consultar los detalles de cada versión, revisa el [CHANGELOG.md](CHANGELOG.md).
-*   **Licencia:** MIT — [Fabian Melo Maciel](https://github.com/fabianmelomaciel).
+**MIT** — ver [CHANGELOG.md](CHANGELOG.md) para el historial · [Fabian Melo Maciel](https://github.com/fabianmelomaciel).
