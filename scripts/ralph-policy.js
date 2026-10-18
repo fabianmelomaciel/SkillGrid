@@ -25,6 +25,12 @@ const DENY = [
   { motivo: 'ralph-policy.js (la propia guarda)', test: (p) => p === 'scripts/ralph-policy.js' },
   { motivo: 'agent-guard.js (la guarda del write-path)', test: (p) => p === 'scripts/agent-guard.js' },
   { motivo: 'autonomia.js (el switch del modo autónomo)', test: (p) => p === 'scripts/autonomia.js' },
+  // Quien *aplica* la política también es jaula: si el agente reescribe el
+  // runner del bucle, la puerta queda abierta para la próxima corrida (E51).
+  { motivo: 'ralph-loop (el runner del bucle)', test: (p) => p === 'scripts/ralph-loop.ps1' || p === 'scripts/ralph-loop.sh' },
+  // Un patrón nuevo en .gitignore saca archivos del radar de `git ls-files
+  // --others`, que es la fuente de la 2ª capa del Ralph Loop (E52).
+  { motivo: '.gitignore/.gitattributes (cegarían la 2ª capa)', test: (p) => p === '.gitignore' || p === '.gitattributes' },
 ];
 
 function basename(p) {

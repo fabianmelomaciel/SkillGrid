@@ -43,6 +43,8 @@ test('permitido deja pasar lo común y bloquea la denylist', () => {
   check(!pol.permitido('scripts/ralph-policy.js', ['.']).ok, 'la propia guarda debería bloquear');
   check(!pol.permitido('.OPENCODE/plugins/x.js', ['.']).ok, 'el case no debería esquivar .opencode (E44)');
   check(!pol.permitido('scripts/RALPH-POLICY.js', ['.']).ok, 'el case no debería esquivar la guarda (E44)');
+  check(!pol.permitido('scripts/ralph-loop.ps1', ['.']).ok, 'el runner del bucle debería bloquear (E51)');
+  check(!pol.permitido('.gitignore', ['.']).ok, 'cegar la 2ª capa con .gitignore debería bloquear (E52)');
 });
 
 test('permitido bloquea lo que se sale del proyecto', () => {

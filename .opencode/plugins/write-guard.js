@@ -3,8 +3,9 @@
  * autónomo no se apoya en la buena voluntad del modelo: cada write/edit pasa
  * por ralph-policy (allowlist + DENY) antes de tocar disco. Armado con
  * `node scripts/autonomia.js on`; desarmado, no intercepta nada y el humano
- * edita libre. Las propias guardas viven en el DENY, así que el agente no
- * puede apagarse la jaula escribiendo el marcador desde adentro del modo.
+ * edita libre. Las propias guardas viven en el DENY y el bash pasa por
+ * revisarComando, así que apagarse la jaula desde adentro no es trivial — pero
+ * es best-effort, no un sandbox: los límites reales están en agent-guard.js.
  */
 import { createRequire } from 'node:module';
 

@@ -30,13 +30,16 @@ function revisar(raiz, archivo, allow) {
 // Mira un comando de shell del modo autónomo (E44). La jaula no puede depender
 // del tool: si el comando nombra una ruta protegida (las guardas, .opencode,
 // .github, .env, claves, .git) o limpia el repo a lo bruto, se frena antes de
-// correr. Es best-effort — no es un sandbox — por eso el Ralph Loop sigue
-// mirando el diff después, como segunda capa.
+// correr. Cubre el disfraz simple (case, comillas, $IFS, variables), no el
+// quoting ANSI-C (`$'\x64'`) ni la indirección por script: es best-effort, no
+// un sandbox — por eso el Ralph Loop sigue mirando el diff después, como 2ª capa.
 const DESTRUCTIVO = [
-  { motivo: 'borra el repo desde la raíz', test: (c) => /\brm\s+(?:-[A-Za-z]+\s+)*(?:\.|\*|\/)(?:\s|$)/.test(c) },
-  { motivo: 'borrado recursivo de raíz', test: (c) => /Remove-Item\b(?=[^\n]*-Recurse)/i.test(c) },
-  { motivo: 'git clean destructivo', test: (c) => /\bgit\s+clean\b[^\n]*-[A-Za-z]*f/.test(c) },
-  { motivo: 'git reset --hard', test: (c) => /\bgit\s+reset\s+--hard\b/.test(c) },
+  { motivo: 'borra el repo desde la raíz', test: (c) => /\brm\s+(?:-[A-Za-z]+\s+)*(?:\.|\*|\/)(?:\s|$)/i.test(c) },
+  { motivo: 'borrado recursivo de raíz', test: (c) => /\b(?:rm|Remove-Item)\b(?=[^\n]*-(?:Recurse|Force))/i.test(c) },
+  { motivo: 'git clean destructivo', test: (c) => /\bgit\s+clean\b[^\n]*-[A-Za-z]*f/i.test(c) },
+  { motivo: 'git reset --hard', test: (c) => /\bgit\s+reset\s+--hard\b/i.test(c) },
+  { motivo: 'git rm recursivo', test: (c) => /\bgit\s+rm\b[^\n]*-[A-Za-z]*r/i.test(c) },
+  { motivo: 'find con -delete', test: (c) => /\bfind\b[^\n]*-delete\b/i.test(c) },
 ];
 
 function tokenizaComando(comando) {
@@ -57,19 +60,21 @@ function pareceRuta(tok) {
 }
 
 // Nombres que no pueden aparecer en un bash autónomo ni disfrazados. La pasada
-// es sobre el comando entero y sin comillas, así cae también el `rm$IFS.opencode`
-// o el `.openco""de` que el shell expande a la ruta real. Los globs sobre una
-// ruta y la indirección por script (`bash scratch/x.sh`) quedan afuera: esto es
-// best-effort, no un sandbox — la segunda capa es el diff del Ralph Loop.
+// es sobre el comando entero y sin comillas, y matchea por substring (no exige
+// barra ni fin de línea): así caen el `rm$IFS.opencode`, el `.openco""de` y la
+// variable `f=.opencode; rm $f/...`, donde el nombre real queda escrito igual.
 const PROTEGIDOS = [
-  /\.opencode(\/|\\|$)/i,
-  /\.githooks(\/|\\|$)/i,
-  /\.github(\/|\\|$)/i,
-  /\.git(\/|\\|$)/i,
+  /\.opencode/i,
+  /\.githooks/i,
+  /\.github/i,
+  /\.gitignore/i,
+  /\.gitattributes/i,
+  /\.git\b/i,
   /\.thirdparty-ignore\.json/i,
   /ralph-policy\.js/i,
   /agent-guard\.js/i,
   /autonomia\.js/i,
+  /ralph-loop\.(ps1|sh)/i,
   /\bnode_modules\b/i,
   /(^|[\s"'/\\])\.env(\b|\.)/i,
 ];

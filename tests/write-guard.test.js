@@ -93,6 +93,12 @@ test('revisarComando frena el bash que toca la jaula o borra el repo (E44)', () 
   check(!guard.revisarComando(dir, 'rm .OPENCODE/state/autonomo').ok, 'el case no debería esquivar la denylist');
   check(!guard.revisarComando(dir, 'Set-Content "scripts/ralph-policy.js" "x"').ok, 'las comillas no deberían esquivarla');
   check(!guard.revisarComando(dir, 'rm .open*/state/autonomo').ok, 'el glob sobre la jaula debería bloquear');
+  check(guard.revisarComando(dir, 'find . -name x').ok, 'un find normal no debería bloquear');
+  check(!guard.revisarComando(dir, 'f=.opencode; rm $f/state/autonomo').ok, 'la indirección por variable debería bloquear (E49)');
+  check(!guard.revisarComando(dir, 'RM -Recurse -Force .').ok, 'el case no debería esquivar lo destructivo (E50)');
+  check(!guard.revisarComando(dir, 'GIT CLEAN -fd').ok, 'git clean en mayúscula debería bloquear (E50)');
+  check(!guard.revisarComando(dir, 'Set-Content scripts/ralph-loop.ps1 "x"').ok, 'reescribir el runner debería bloquear (E51)');
+  check(!guard.revisarComando(dir, 'echo x >> .gitignore').ok, 'cegar la 2ª capa con .gitignore debería bloquear (E52)');
 });
 
 test('el CLI de autonomía prende, consulta y apaga', () => {
