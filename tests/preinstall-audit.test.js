@@ -102,6 +102,25 @@ test('drift de manifest: name distinto de la carpeta es hallazgo', () => {
   check(hit, 'no detectó manifest-drift');
 });
 
+test('detecta un token moderno pegado en texto (glpat- / sk-proj-)', () => {
+  const dir = carpeta();
+  fs.mkdirSync(path.join(dir, 'paquete-de-muestra'));
+  // Los tokens se arman por concatenación: pegados, el propio pre-commit los bloquearía.
+  const cuerpo = `${LIMPIA}\n\nusa glpat-${'A'.repeat(20)} y sk-proj-${'B'.repeat(20)} y listo\n`;
+  fs.writeFileSync(path.join(dir, 'paquete-de-muestra', 'SKILL.md'), cuerpo);
+  const { data } = correr(dir);
+  const hit = data.hallazgos.find(h => h.regla === 'token-declarado' && h.severidad === 'baja');
+  check(hit, 'no detectó el token moderno');
+});
+
+test('no marca variables de entorno npm como token (falso positivo)', () => {
+  const dir = carpeta();
+  fs.mkdirSync(path.join(dir, 'paquete-de-muestra'));
+  fs.writeFileSync(path.join(dir, 'paquete-de-muestra', 'SKILL.md'), `${LIMPIA}\n\nlee npm_config_user_agent y listo\n`);
+  const { data } = correr(dir);
+  check(!data.hallazgos.find(h => h.regla === 'token-declarado'), 'marcó npm_config_user_agent como token');
+});
+
 test('la whitelist own-resources suprime y da exit 0', () => {
   check(fs.existsSync(IGNORE), 'falta .thirdparty-ignore.json');
   const lista = JSON.parse(fs.readFileSync(IGNORE, 'utf8'));

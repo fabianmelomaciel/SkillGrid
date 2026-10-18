@@ -58,7 +58,9 @@ const REGLAS = [
     severidad: 'baja',
     ext: /\.(md|txt|env|json|ya?ml)$/i,
     desc: 'Parece un token/firma real pegado en texto plano',
-    re: /(ghp_|github_pat_|xox[baprs]-|AKIA|AIza)[0-9A-Za-z\-_]{16,}/,
+    // Los prefijos modernos (E39) van con clase y no pegados por el mismo motivo
+    // que el resto. npm_ pide 36 alfanuméricos exactos para no marcar npm_config_*.
+    re: /(ghp_|gho_|ghu_|github_pat_|glpat-|xox[baprs]-|AKIA|AIza|sk-proj-|sk-ant-|sk_live_|rk_live_|dckr_pat_)[0-9A-Za-z\-_]{16,}|npm_[0-9A-Za-z]{36}/,
   },
   {
     id: 'manifest-drift',
