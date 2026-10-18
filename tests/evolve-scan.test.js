@@ -72,13 +72,43 @@ test('armarBorrador arma las secciones y no promete escribir el ledger', () => {
     commits: ['abc un commit'],
     delta: ['skills/router/SKILL.md', 'node_modules/x.js'],
     filas: [{ seccion: 'Abiertas', id: 'E99', categoria: 'ux', mejora: 'algo' }],
-    cands: ['skills/router/SKILL.md'],
+    cands: [{ archivo: 'skills/router/SKILL.md', puntos: 2, motivos: ['sin test que lo cite'] }],
   });
   check(/Candidatas de evolución/.test(txt), 'falta el título');
   check(/skills\/router\/SKILL\.md/.test(txt), 'falta el archivo del delta');
   check(!/node_modules/.test(txt), 'el ruido no debería aparecer');
   check(/E99/.test(txt), 'falta la fila abierta');
   check(/a mano/.test(txt), 'debería aclarar que se registra a mano');
+  check(/\[2\] skills\/router\/SKILL\.md/.test(txt), 'no muestra el puntaje de la candidata');
+});
+
+test('esZonaSensible marca CI, scripts y hooks', () => {
+  check(scan.esZonaSensible('.github/workflows/ci.yml'), 'ci debería ser sensible');
+  check(scan.esZonaSensible('scripts/install-core.js'), 'scripts debería ser sensible');
+  check(scan.esZonaSensible('.githooks/pre-commit'), 'hooks debería ser sensible');
+  check(!scan.esZonaSensible('skills/router/SKILL.md'), 'una skill no es zona sensible');
+});
+
+test('viajaEnPaquete modela la inclusión de npm con negación', () => {
+  const files = ['skills/', 'scripts/', '!scripts/evolve-scan.js'];
+  check(scan.viajaEnPaquete('scripts/check-evolution.js', files), 'un script hermano debería viajar');
+  check(!scan.viajaEnPaquete('scripts/evolve-scan.js', files), 'el negado no debería viajar');
+  check(!scan.viajaEnPaquete('docs/x.md', ['skills/']), 'fuera de las entradas no viaja');
+});
+
+test('puntuarCandidato suma señales y explica', () => {
+  const r = scan.puntuarCandidato('scripts/evolve-scan.js', { enPaquete: true, tieneTest: false });
+  check(r.puntos === 7, `esperaba 7 (3 sensible + 2 paquete + 2 sin test), salió ${r.puntos}`);
+  check(r.motivos.length === 3, `esperaba 3 motivos, salieron ${r.motivos.length}`);
+  const r2 = scan.puntuarCandidato('skills/x/SKILL.md', { enPaquete: false, tieneTest: true });
+  check(r2.puntos === 0, `esperaba 0, salió ${r2.puntos}`);
+});
+
+test('priorizarCandidatos ordena por puntaje y desempata por nombre', () => {
+  const ctx = { enPaquete: () => false, tieneTest: () => false };
+  const orden = scan.priorizarCandidatos(['skills/z.md', '.github/a.yml', 'skills/a.md'], ctx);
+  check(orden[0].archivo === '.github/a.yml', `primero debería ser el sensible, fue ${orden[0].archivo}`);
+  check(orden[1].archivo === 'skills/a.md' && orden[2].archivo === 'skills/z.md', 'el desempate por nombre falló');
 });
 
 test('el script corre y sale 0 (--stdout, sin efectos)', () => {

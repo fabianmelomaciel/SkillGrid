@@ -87,6 +87,47 @@ function candidatos(archivos, citados) {
   return archivos.filter((a) => !esRuido(a) && !citados.has(a));
 }
 
+// F2: priorizar barato y explicable — nada de magia ni de tokens. Tres señales:
+// si la zona es sensible (CI, scripts, hooks, instalación), si el archivo viaja
+// en el paquete npm, y si ningún test lo cita.
+const ZONAS_SENSIBLES = [
+  /^\.github\//, /^\.githooks\//, /^scripts\//, /^\.opencode\//,
+  /(^|\/)(install|remote-install|pre-commit|post-commit|audit)\.(sh|ps1|js)$/i,
+];
+
+function esZonaSensible(archivo) {
+  return ZONAS_SENSIBLES.some((rx) => rx.test(archivo));
+}
+
+// Igual que npm: una entrada `carpeta/` incluye, `!ruta` la saca de vuelta.
+function viajaEnPaquete(rel, files) {
+  let incluir = false;
+  for (const entrada of files || []) {
+    if (entrada.startsWith('!')) {
+      if (entrada.slice(1).replace(/\/$/, '') === rel) incluir = false;
+      continue;
+    }
+    const e = entrada.replace(/\/$/, '');
+    if (e === rel || rel.startsWith(e + '/')) incluir = true;
+  }
+  return incluir;
+}
+
+function puntuarCandidato(archivo, senales) {
+  const motivos = [];
+  let puntos = 0;
+  if (esZonaSensible(archivo)) { puntos += 3; motivos.push('zona sensible'); }
+  if (senales.enPaquete) { puntos += 2; motivos.push('va en el paquete npm'); }
+  if (!senales.tieneTest) { puntos += 2; motivos.push('sin test que lo cite'); }
+  return { archivo, puntos, motivos };
+}
+
+function priorizarCandidatos(archivos, contexto) {
+  return archivos
+    .map((a) => puntuarCandidato(a, { enPaquete: contexto.enPaquete(a), tieneTest: contexto.tieneTest(a) }))
+    .sort((x, y) => y.puntos - x.puntos || x.archivo.localeCompare(y.archivo));
+}
+
 function leerWatermark() {
   try { return fs.readFileSync(WATERMARK, 'utf8').trim() || null; } catch { return null; }
 }
@@ -124,11 +165,38 @@ function armarBorrador(datos) {
   for (const f of abiertas) out.push(`- ${f.id} | ${f.categoria} | ${f.mejora}`);
   out.push('');
 
-  out.push('## Archivos cambiados sin fila que los cite (posible hueco)');
-  if (cands.length === 0) out.push('- (ninguno)');
-  for (const f of cands) out.push(`- ${f}`);
+  out.push('## Candidatas ordenadas por prioridad (posible hueco, no hallazgo)');
+  if (cands.length === 0) out.push('- (ninguna)');
+  for (const c of cands) {
+    const detalle = c.motivos && c.motivos.length ? ` — ${c.motivos.join(', ')}` : '';
+    out.push(`- [${c.puntos}] ${c.archivo}${detalle}`);
+  }
   out.push('');
   return out.join('\n');
+}
+
+function leerPaquete() {
+  try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).files || []; } catch { return []; }
+}
+
+function textoDeTests() {
+  let texto = '';
+  try {
+    const dir = path.join(ROOT, 'tests');
+    for (const f of fs.readdirSync(dir)) if (f.endsWith('.js')) texto += fs.readFileSync(path.join(dir, f), 'utf8');
+  } catch {
+    // sin tests: todas las candidatas quedan como "sin test"
+  }
+  return texto;
+}
+
+function armarContexto() {
+  const files = leerPaquete();
+  const tests = textoDeTests();
+  return {
+    enPaquete: (a) => viajaEnPaquete(a, files),
+    tieneTest: (a) => tests.includes(path.basename(a)),
+  };
 }
 
 function main(argv) {
@@ -139,7 +207,7 @@ function main(argv) {
   const commits = head && base ? git(`log --oneline ${base}..${head}`).split('\n').filter(Boolean) : [];
   const delta = head && base ? git(`diff --name-only ${base} ${head}`).split('\n').filter(Boolean) : [];
   const filas = fs.existsSync(LEDGER) ? filasDelLedger(fs.readFileSync(LEDGER, 'utf8')) : [];
-  const cands = candidatos(delta, archivosCitados(filas));
+  const cands = priorizarCandidatos(candidatos(delta, archivosCitados(filas)), armarContexto());
   const borrador = armarBorrador({ fecha, base, head, commits, delta, filas, cands });
 
   if (flags.has('--stdout')) {
@@ -160,4 +228,4 @@ function main(argv) {
 
 if (require.main === module) main(process.argv.slice(2));
 
-module.exports = { esRuido, areaDe, filasDelLedger, archivosCitados, candidatos, armarBorrador };
+module.exports = { esRuido, areaDe, filasDelLedger, archivosCitados, candidatos, armarBorrador, esZonaSensible, viajaEnPaquete, puntuarCandidato, priorizarCandidatos };
