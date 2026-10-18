@@ -20,6 +20,17 @@ PATTERNS=(
   'ghp_[0-9a-zA-Z]{36}'                      # GitHub personal token
   'ghs_[0-9a-zA-Z]{36}'                      # GitHub secret
   'github_pat_[0-9a-zA-Z_]{82}'             # GitHub fine-grained PAT
+  # Tokens modernos que antes pasaban de largo (E38): OpenAI sk-proj-, GitLab,
+  # npm, Stripe live, GitHub OAuth/user y Docker. Ojo con el largo: el sk- viejo
+  # son 48 alfanuméricos, pero los sk-proj- traen guiones y no matcheaban.
+  'sk-proj-[A-Za-z0-9_-]{20,}'               # OpenAI project key
+  'glpat-[A-Za-z0-9_-]{20,}'                 # GitLab personal access token
+  'npm_[A-Za-z0-9]{36}'                      # npm access token
+  'sk_live_[A-Za-z0-9]{24,}'                 # Stripe secret key (live)
+  'rk_live_[A-Za-z0-9]{24,}'                 # Stripe restricted key (live)
+  'gho_[0-9a-zA-Z]{36}'                      # GitHub OAuth token
+  'ghu_[0-9a-zA-Z]{36}'                      # GitHub user-to-server token
+  'dckr_pat_[A-Za-z0-9_-]{27}'               # Docker personal access token
   'Bearer [a-zA-Z0-9\-\._~\+\/]{40,}'        # Generic Bearer token (min 40 chars)
   # Hard-coded credentials
   "password\s*=\s*[\"${SQ}][^\"${SQ}]{8,}"        # password = "..."
@@ -32,7 +43,7 @@ PATTERNS=(
   '^(ANTHROPIC|OPENAI|GITHUB|AWS|GCP|AZURE|STRIPE)_[A-Z_]+=.{10,}'
   # Mismo caso sin vendor delante (DB_PASS=..., TOKEN=...): antes pasaba de largo
   "^[A-Z0-9_]*(PASS|PWD|SECRET|TOKEN|APIKEY|API_KEY|ACCESS_KEY|CREDENTIAL)[A-Z0-9_]*=\s*[\"${SQ}][^\"${SQ}]{8,}[\"${SQ}]"
-  "^[A-Z0-9_]*(PASS|PWD|SECRET|TOKEN|APIKEY|API_KEY|ACCESS_KEY|CREDENTIAL)[A-Z0-9_]*=\s*[^\"${SQ}[:space:]\$][^[:space:]]{11,}"
+  "^[A-Z0-9_]*(PASS|PWD|SECRET|TOKEN|APIKEY|API_KEY|ACCESS_KEY|CREDENTIAL)[A-Z0-9_]*=\s*[^\"${SQ}\s\$]\S{11,}"
   "^[A-Z0-9_]*(PASS|PWD|SECRET|TOKEN|APIKEY|API_KEY|ACCESS_KEY|CREDENTIAL)[A-Z0-9_]*:\s*[\"${SQ}][^\"${SQ}]{8,}[\"${SQ}]"
 )
 
