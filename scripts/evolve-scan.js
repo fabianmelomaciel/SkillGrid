@@ -199,8 +199,9 @@ function armarContexto() {
   };
 }
 
-function main(argv) {
-  const flags = new Set(argv);
+// Junta el estado del ciclo en un objeto, sin tocar disco. La usa el CLI de acá
+// y también el orquestador (evolve.js).
+function correr() {
   const fecha = new Date().toISOString().slice(0, 10);
   const head = git('rev-parse HEAD');
   const base = baseDelDelta();
@@ -209,13 +210,23 @@ function main(argv) {
   const filas = fs.existsSync(LEDGER) ? filasDelLedger(fs.readFileSync(LEDGER, 'utf8')) : [];
   const cands = priorizarCandidatos(candidatos(delta, archivosCitados(filas)), armarContexto());
   const borrador = armarBorrador({ fecha, base, head, commits, delta, filas, cands });
+  return { fecha, base, head, commits, delta, filas, cands, borrador };
+}
+
+function escribirBorrador(borrador) {
+  fs.mkdirSync(path.dirname(DRAFT), { recursive: true });
+  fs.writeFileSync(DRAFT, borrador);
+  return path.relative(ROOT, DRAFT).split(path.sep).join('/');
+}
+
+function main(argv) {
+  const flags = new Set(argv);
+  const { head, commits, cands, borrador } = correr();
 
   if (flags.has('--stdout')) {
     process.stdout.write(borrador + '\n');
   } else {
-    fs.mkdirSync(path.dirname(DRAFT), { recursive: true });
-    fs.writeFileSync(DRAFT, borrador);
-    const rel = path.relative(ROOT, DRAFT).split(path.sep).join('/');
+    const rel = escribirBorrador(borrador);
     console.log(`Candidatas: ${rel} — ${commits.length} commit(s), ${cands.length} sin fila`);
   }
 
@@ -228,4 +239,4 @@ function main(argv) {
 
 if (require.main === module) main(process.argv.slice(2));
 
-module.exports = { esRuido, areaDe, filasDelLedger, archivosCitados, candidatos, armarBorrador, esZonaSensible, viajaEnPaquete, puntuarCandidato, priorizarCandidatos };
+module.exports = { esRuido, areaDe, filasDelLedger, archivosCitados, candidatos, armarBorrador, esZonaSensible, viajaEnPaquete, puntuarCandidato, priorizarCandidatos, correr, escribirBorrador };
