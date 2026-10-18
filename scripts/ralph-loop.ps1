@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Ejecuta un agente de IA en bucle autónomo (Ralph Loop) para resolver tareas de manera iterativa.
 .DESCRIPTION
@@ -15,6 +15,10 @@
     Tiempo de espera en segundos entre iteraciones. Por defecto es 5.
 .PARAMETER CustomPrompt
     Prompt enviado al agente en cada iteración.
+.PARAMETER AllowedPaths
+    Rutas que el agente puede tocar, separadas por coma. Por defecto '.' (todo el
+    proyecto). Después de cada iteración se miran los archivos que git ve cambiados
+    y, si alguno se sale de acá o cae en la denylist, el bucle se corta (S3).
 .EXAMPLE
     .\ralph-loop.ps1 -AgentCommand "claude" -TaskFile "task.md" -MaxIterations 5
 #>
@@ -24,7 +28,8 @@ param (
     [string]$TaskFile = "task.md",
     [int]$MaxIterations = 10,
     [int]$DelaySeconds = 5,
-    [string]$CustomPrompt = "Lee el archivo task.md, ejecuta la siguiente tarea pendiente. Asegúrate de marcarla con [x] cuando esté completada e incluye evidencia si aplica. Luego finaliza tu respuesta."
+    [string]$CustomPrompt = "Lee el archivo task.md, ejecuta la siguiente tarea pendiente. Asegúrate de marcarla con [x] cuando esté completada e incluye evidencia si aplica. Luego finaliza tu respuesta.",
+    [string]$AllowedPaths = "."
 )
 
 Write-Host "======================================================================" -ForegroundColor Cyan
@@ -45,6 +50,22 @@ if ($AgentCommand -notin $ALLOWED_AGENTS) {
     exit 1
 }
 
+# === SECURITY GATE: rutas (S3) ===
+# El loop no puede meter al agente en una jaula, así que la guarda es mirar qué
+# cambió después de cada iteración. Sin node (que corre la política) no se corre.
+$nodeCmd = Get-Command node -ErrorAction SilentlyContinue
+$PolicyScript = if ($PSScriptRoot) { Join-Path $PSScriptRoot "ralph-policy.js" } else { "" }
+if (-not $nodeCmd -or -not (Test-Path $PolicyScript)) {
+    Write-Host "🔴 [SEGURIDAD] Falta node o ralph-policy.js: no puedo vigilar las rutas del agente (S3)." -ForegroundColor Red
+    exit 1
+}
+$cwdFull = [System.IO.Path]::GetFullPath((Get-Location).Path)
+$taskFull = [System.IO.Path]::GetFullPath((Join-Path $cwdFull $TaskFile))
+if (-not $taskFull.StartsWith($cwdFull, [System.StringComparison]::OrdinalIgnoreCase)) {
+    Write-Host "🔴 [SEGURIDAD] El archivo de tareas queda fuera del proyecto: $taskFull" -ForegroundColor Red
+    exit 1
+}
+
 if (-not (Test-Path $TaskFile)) {
     Write-Host "⚠️ [ADVERTENCIA] No se encontró el archivo '$TaskFile'. Creando uno básico..." -ForegroundColor Yellow
     @'
@@ -61,6 +82,10 @@ function HasPendingTasks([string]$filePath) {
     # Busca patrones tipo "- [ ]" o "- [/]" que indican tareas sin completar
     return $content -match "-\s*\[\s*[ /]\s*\]"
 }
+
+$baseline = Join-Path ([System.IO.Path]::GetTempPath()) ("ralph-baseline-" + [Guid]::NewGuid().ToString("N") + ".txt")
+& node $PolicyScript snapshot --out $baseline
+Write-Host " 🛡️  Allowlist de rutas: $AllowedPaths" -ForegroundColor DarkGray
 
 $iteration = 1
 $keepRunning = $true
@@ -98,6 +123,16 @@ while ($keepRunning) {
         break
     }
 
+    # Guarda de rutas (S3): si el agente tocó algo fuera de la allowlist, paramos
+    $violaciones = & node $PolicyScript check --baseline $baseline --allow $AllowedPaths 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "`n🔴 [SEGURIDAD] El agente tocó rutas no permitidas. Bucle detenido." -ForegroundColor Red
+        $violaciones | Where-Object { "$_".Trim() } | ForEach-Object { Write-Host "   $_" -ForegroundColor Yellow }
+        Write-Host "   Allowlist: $AllowedPaths (ampliala con -AllowedPaths)" -ForegroundColor Yellow
+        Remove-Item $baseline -Force -ErrorAction SilentlyContinue
+        exit 3
+    }
+
     # Control de iteraciones
     if ($iteration -ge $MaxIterations) {
         Write-Host "⏹️ [LÍMITE] Se alcanzó el número máximo de iteraciones ($MaxIterations)." -ForegroundColor Yellow
@@ -111,4 +146,5 @@ while ($keepRunning) {
     Start-Sleep -Seconds $DelaySeconds
 }
 
+Remove-Item $baseline -Force -ErrorAction SilentlyContinue
 Write-Host "`n🏁 Bucle Ralph Loop terminado." -ForegroundColor Cyan

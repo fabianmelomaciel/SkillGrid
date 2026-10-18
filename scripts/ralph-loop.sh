@@ -9,6 +9,12 @@ TASK_FILE=${2:-"task.md"}
 MAX_ITERATIONS=${3:-10}
 DELAY_SECONDS=${4:-5}
 CUSTOM_PROMPT=${5:-"Lee el archivo task.md, ejecuta la siguiente tarea pendiente. Asegúrate de marcarla con [x] cuando esté completada e incluye evidencia si aplica. Luego finaliza tu respuesta."}
+# Rutas que el agente puede tocar (comas). '.' = todo el proyecto. Después de cada
+# iteración se miran los archivos que git ve cambiados: lo que se salga corta el bucle (S3).
+ALLOWED_PATHS=${6:-"."}
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+POLICY_SCRIPT="$SCRIPT_DIR/ralph-policy.js"
 
 # Colores para la salida
 GREEN='\033[0;32m'
@@ -43,6 +49,20 @@ if [ "$is_allowed" = false ]; then
     exit 1
 fi
 
+# === SECURITY GATE: rutas (S3) ===
+# El loop no puede meter al agente en una jaula, así que la guarda es mirar qué
+# cambió después de cada iteración. Sin node (que corre la política) no se corre.
+if ! command -v node >/dev/null 2>&1 || [ ! -f "$POLICY_SCRIPT" ]; then
+    echo -e "${RED}🔴 [SEGURIDAD] Falta node o ralph-policy.js: no puedo vigilar las rutas (S3).${NC}"
+    exit 1
+fi
+case "$TASK_FILE" in
+    /*|*".."*)
+        echo -e "${RED}🔴 [SEGURIDAD] El archivo de tareas queda fuera del proyecto: $TASK_FILE${NC}"
+        exit 1 ;;
+esac
+echo -e " 🛡️  Allowlist de rutas: $ALLOWED_PATHS"
+
 if [ ! -f "$TASK_FILE" ]; then
     echo -e "${YELLOW}⚠️ [ADVERTENCIA] No se encontró el archivo '$TASK_FILE'. Creando uno básico...${NC}"
     cat <<EOT > "$TASK_FILE"
@@ -52,6 +72,10 @@ if [ ! -f "$TASK_FILE" ]; then
 - [ ] Tarea 2: Implementar mejoras básicas
 EOT
 fi
+
+BASELINE="$(mktemp "${TMPDIR:-/tmp}/ralph-baseline-XXXXXX")"
+node "$POLICY_SCRIPT" snapshot --out "$BASELINE"
+trap 'rm -f "$BASELINE"' EXIT
 
 has_pending_tasks() {
     local file=$1
@@ -79,6 +103,14 @@ while [ $iteration -le $MAX_ITERATIONS ]; do
     exit_code=$?
     
     echo -e "\n${GRAY}🔄 Agente finalizó la ejecución con código de salida: $exit_code${NC}"
+
+    # Guarda de rutas (S3)
+    if ! violaciones=$(node "$POLICY_SCRIPT" check --baseline "$BASELINE" --allow "$ALLOWED_PATHS" 2>&1); then
+        echo -e "\n${RED}🔴 [SEGURIDAD] El agente tocó rutas no permitidas. Bucle detenido.${NC}"
+        echo -e "${YELLOW}$violaciones${NC}"
+        echo -e "${YELLOW}   Allowlist: $ALLOWED_PATHS (ampliala con el 6º argumento)${NC}"
+        exit 3
+    fi
 
     if [ $iteration -eq $MAX_ITERATIONS ]; then
         echo -e "${YELLOW}⏹️ [LÍMITE] Se alcanzó el número máximo de iteraciones ($MAX_ITERATIONS).${NC}"
