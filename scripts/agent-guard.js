@@ -60,9 +60,10 @@ function pareceRuta(tok) {
 }
 
 // Nombres que no pueden aparecer en un bash autónomo ni disfrazados. La pasada
-// es sobre el comando entero y sin comillas, y matchea por substring (no exige
-// barra ni fin de línea): así caen el `rm$IFS.opencode`, el `.openco""de` y la
-// variable `f=.opencode; rm $f/...`, donde el nombre real queda escrito igual.
+// es sobre el comando entero, sin comillas ni corchetes/llaves, y matchea por
+// substring (no exige barra ni fin de línea): así caen el `rm$IFS.opencode`, el
+// `.openco""de`, la variable `f=.opencode; rm $f/...` y el glob `.[o]pencode`,
+// donde el nombre real queda escrito igual salvo por los metacaracteres.
 const PROTEGIDOS = [
   /\.opencode/i,
   /\.githooks/i,
@@ -75,6 +76,8 @@ const PROTEGIDOS = [
   /agent-guard\.js/i,
   /autonomia\.js/i,
   /ralph-loop\.(ps1|sh)/i,
+  /(^|[\s"'/\\])(credentials|secrets?)\.(json|ya?ml|txt)/i,
+  /\.(key|pem|pfx|p12)\b/i,
   /\bnode_modules\b/i,
   /(^|[\s"'/\\])\.env(\b|\.)/i,
 ];
@@ -82,13 +85,13 @@ const PROTEGIDOS = [
 function revisarComando(raiz, comando, allow) {
   const cmd = String(comando || '').trim();
   if (!cmd) return { ok: true };
-  const sinComillas = cmd.replace(/["']/g, '');
+  const sinComillas = cmd.replace(/["'\[\]{}]/g, '');
   for (const re of PROTEGIDOS) {
     if (re.test(sinComillas)) return { ok: false, motivo: 'bash nombra una ruta protegida' };
   }
   for (const tok of tokenizaComando(cmd)) {
     if (!pareceRuta(tok)) continue;
-    if (/[*?]/.test(tok)) return { ok: false, motivo: `bash usa glob sobre "${tok}"` };
+    if (/[*?\[\]{}]/.test(tok)) return { ok: false, motivo: `bash usa glob sobre "${tok}"` };
     const r = revisar(raiz, tok, allow);
     if (!r.ok) return { ok: false, motivo: `bash toca "${tok}": ${r.motivo}` };
   }

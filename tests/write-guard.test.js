@@ -99,6 +99,10 @@ test('revisarComando frena el bash que toca la jaula o borra el repo (E44)', () 
   check(!guard.revisarComando(dir, 'GIT CLEAN -fd').ok, 'git clean en mayúscula debería bloquear (E50)');
   check(!guard.revisarComando(dir, 'Set-Content scripts/ralph-loop.ps1 "x"').ok, 'reescribir el runner debería bloquear (E51)');
   check(!guard.revisarComando(dir, 'echo x >> .gitignore').ok, 'cegar la 2ª capa con .gitignore debería bloquear (E52)');
+  check(!guard.revisarComando(dir, 'rm .[o]pencode/state/autonomo').ok, 'la clase de caracteres no debería esquivar (E55)');
+  check(!guard.revisarComando(dir, 'rm .{opencode,}/state/autonomo').ok, 'el brace expansion no debería esquivar (E55)');
+  check(!guard.revisarComando(dir, 'cat id_rsa.key').ok, 'una clave .key debería bloquear (E55)');
+  check(!guard.revisarComando(dir, 'rm credentials.json').ok, 'credentials.json debería bloquear (E55)');
 });
 
 test('el CLI de autonomía prende, consulta y apaga', () => {

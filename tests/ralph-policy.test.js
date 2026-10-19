@@ -91,6 +91,7 @@ test('el CLI rechaza un baseline manipulado (E53)', () => {
   check(corre('snapshot', '--cwd', dir, '--out', base, '--secret', 's3').status === 0, 'snapshot debería salir 0');
   check(fs.readFileSync(base, 'utf8').startsWith('#sig '), 'el baseline debería quedar firmado');
   check(corre('check', '--cwd', dir, '--baseline', base, '--secret', 's3').status === 0, 'sin tocar debería pasar');
+  check(corre('check', '--cwd', dir, '--baseline', base, '--secret', '').status === 1, 'clave vacía debería cortar (E57)');
   fs.appendFileSync(base, 'scripts/evil.js\n');
   check(corre('check', '--cwd', dir, '--baseline', base, '--secret', 's3').status === 1, 'manipulado debería cortar');
 });

@@ -100,9 +100,10 @@ function vigilar(baseline, allow, archivos) {
   return { nuevos, violaciones };
 }
 
-// Firma HMAC del baseline. El secreto lo genera el loop en memoria y lo pasa por
-// argv (nunca por env ni por disco), así el agente que corre al lado no lo ve y
-// no puede agregarse rutas cambiadas para zafar de la vigilancia (E53).
+// Firma HMAC del baseline. La clave la genera el loop en memoria y la pasa por
+// argv al snapshot/check, nunca por env ni por disco. El agente no la hereda,
+// pero ojo: vive en el argv del proceso node transitorio, así que un proceso
+// persistente del mismo usuario podría observarla — sigue siendo best-effort (E53).
 function firmar(contenido, secret) {
   return crypto.createHmac('sha256', String(secret || '')).update(String(contenido || '')).digest('hex');
 }
@@ -146,7 +147,9 @@ if (require.main === module) {
     let cuerpo = contenido;
     const firma = contenido.match(/^#sig ([0-9a-f]+)\n/);
     if (firma) cuerpo = contenido.slice(firma[0].length);
-    if (secret && (!firma || firmar(cuerpo, secret) !== firma[1])) {
+    // Si el loop pasó --secret (aunque venga vacío), la firma es obligatoria y
+    // tiene que validar: un baseline sin firmar, vaciado o editado corta cerrado.
+    if (secret !== undefined && (!secret || !firma || firmar(cuerpo, secret) !== firma[1])) {
       console.error('BLOQUEADO baseline: firma ausente o inválida (posible manipulación).');
       process.exit(1);
     }
