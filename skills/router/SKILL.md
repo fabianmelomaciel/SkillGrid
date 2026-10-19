@@ -12,22 +12,22 @@ token_estimate: { input: 800, output: 400 }
 # Skill Router (router)
 
 ## When to Use
-Use at the start of any conversation or task when you need to load specialized agÃ©ntic skills dynamically based on the user's request. This prevents bloating the initial context window with all 43 skills.
+Use at the start of any conversation or task when you need to load specialized agentic skills dynamically based on the user's request. This prevents bloating the initial context window with all the skills in the catalog.
 
 ## Workflow
 
-1.  **Read Catalog:** If not already loaded, read `catalog-lite.json` (or `catalog.json` / `skills/index.json`) in the project root or active configuration directory.
-2.  **Match Task:** Match the user's request to the single most specific skill in the catalog. Matches are 1-to-1 and never cascade â€” loading one skill must never auto-load another:
-    *   *Security / Secrets scan, general SAST/OWASP audit* â†’ `auditor-de-seguridad` (default) or `cyber-neo` (only if the user names it or needs its specific toolchain â€” Semgrep/Trivy/Gitleaks/Nuclei). Never run both for the same scope; they overlap heavily on SCA/secrets.
-    *   *Dependency/lockfile/CVE/license audit specifically* â†’ `auditor-de-seguridad` (fase Dependency & Supply Chain)
-    *   *Writing / AI editing* â†’ `humanizer` / `gestor-documental`
-    *   *SEO / CTR audits* â†’ `auditor-de-marketing`
-    *   *CI/CD / Docker config* â†’ `agente-devops`
-    *   *Token/API cost, resource efficiency* â†’ `optimizador-finops`
-    *   *Architecture consensus* â†’ `agente-ideas`
-    *   *Performance / Web Vitals* â†’ `performance-profiler`
+1.  **Read Catalog:** If not already loaded, read `catalog-lite.json` in the project root or active configuration directory. It carries name, category, risk and `cost_tier` for every skill — no need to open `catalog.json` or `skills/index.json`.
+2.  **Match Task:** Match the user's request to the single most specific skill in the catalog. Matches are 1-to-1 and never cascade — loading one skill must never auto-load another:
+    *   *Security / Secrets scan, general SAST/OWASP audit* → `auditor-de-seguridad` (default) or `cyber-neo` (only if the user names it or needs its specific toolchain — Semgrep/Trivy/Gitleaks/Nuclei). Never run both for the same scope; they overlap heavily on SCA/secrets.
+    *   *Dependency/lockfile/CVE/license audit specifically* → `auditor-de-seguridad` (fase Dependency & Supply Chain)
+    *   *Writing / AI editing* → `humanizer` / `gestor-documental`
+    *   *SEO / CTR audits* → `auditor-de-marketing`
+    *   *CI/CD / Docker config* → `agente-devops`
+    *   *Token/API cost, resource efficiency* → `optimizador-finops`
+    *   *Architecture consensus* → `agente-ideas`
+    *   *Performance / Web Vitals* → `performance-profiler`
 3.  **Lazy Load Skill:** Load the selected skill's rules by reading its instructions file (e.g., `skills/<skill-name>/SKILL.md`) using `read` or `view`.
-3.5 **Cost gate before loading:** Once the candidate skill is picked, check its `cost_tier` in `skills/index.json`:
+3.5 **Cost gate before loading:** Once the candidate skill is picked, check its `cost_tier` in `catalog-lite.json`:
     *   On a keyword tie between two skills, prefer the one with `cost_tier: low`.
     *   If the session budget is nearly exhausted (<2K tokens left), do not load `cost_tier: high` — pick the low/medium alternative or answer without the skill.
     *   `risk_level: critical` beats `cost_tier`: never demote or skip a security-critical skill to save tokens; the user asked for an audit, the audit runs.
@@ -35,7 +35,7 @@ Use at the start of any conversation or task when you need to load specialized a
 4.  **Execute:** Proceed with the loaded skill's specific workflow.
 
 ## Tools
-- `read`/`glob`/`grep` â€” explore code and read skill files
+- `read`/`glob`/`grep` — explore code and read skill files
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 

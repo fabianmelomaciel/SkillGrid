@@ -63,5 +63,24 @@ test('el catálogo lite sigue siendo la fuente liviana para el router', () => {
   check(liteSize < fullSize, 'catalog-lite debe ser más chico que catalog.json');
 });
 
+test('el catálogo lite trae el cost_tier de cada skill', () => {
+  // El router consulta el cost_tier para no cargar una skill cara; si el lite
+  // no lo trae, tiene que abrir skills/index.json (24KB) por un solo campo.
+  const lite = JSON.parse(fs.readFileSync(path.join(ROOT, 'catalog-lite.json'), 'utf8'));
+  const sinCosto = (lite.skills || []).filter((s) => !['low', 'medium', 'high'].includes(s.cost_tier));
+  check(sinCosto.length === 0, `skills sin cost_tier en el lite: ${sinCosto.map((s) => s.name).join(', ')}`);
+  const index = JSON.parse(fs.readFileSync(INDEX, 'utf8'));
+  const desalineados = (lite.skills || [])
+    .filter((s) => index.skills[s.name] && index.skills[s.name].cost_tier !== s.cost_tier)
+    .map((s) => s.name);
+  check(desalineados.length === 0, `cost_tier desalineado con el índice: ${desalineados.join(', ')}`);
+});
+
+test('el router lee el cost_tier del lite, no del índice pesado', () => {
+  check(routerBody.includes('catalog-lite.json'), 'el router debería leer el catálogo lite');
+  const leeIndice = /cost_tier[^.]*in `skills\/index\.json`/i.test(routerBody);
+  check(!leeIndice, 'el router todavía manda a buscar el cost_tier en skills/index.json');
+});
+
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);

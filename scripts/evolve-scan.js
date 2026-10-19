@@ -53,12 +53,19 @@ function areaDe(archivo) {
 // Filas de Abiertas y Cerradas. Las archivadas quedan afuera: ya perdieron el texto.
 function filasDelLedger(texto) {
   const filas = [];
+  const citasArchivadas = new Set();
   let seccion = '';
   for (const linea of texto.split(/\r?\n/)) {
     const h = linea.match(/^##\s+(.+)$/);
     if (h) { seccion = h[1].trim(); continue; }
     if (seccion !== 'Abiertas' && seccion !== 'Cerradas') continue;
-    if (!linea.startsWith('- ') || linea.includes('| archivadas')) continue;
+    if (!linea.startsWith('- ')) continue;
+    if (linea.includes('| archivadas')) {
+      // La fila comprimida perdió el texto pero puede conservar las citas: si
+      // el archivo aparece ahí, ya se cerró y no hay que volver a proponerlo.
+      for (const m of linea.matchAll(RX_ARCHIVO)) citasArchivadas.add(m[0]);
+      continue;
+    }
     const c = linea.slice(2).split('|').map((x) => x.trim());
     filas.push({
       seccion,
@@ -72,6 +79,7 @@ function filasDelLedger(texto) {
       evidenciaCierre: c[7] || '',
     });
   }
+  filas.citasArchivadas = citasArchivadas;
   return filas;
 }
 
@@ -83,6 +91,7 @@ function archivosCitados(filas) {
       for (const m of campo.matchAll(RX_ARCHIVO)) citados.add(m[0]);
     }
   }
+  for (const m of (filas.citasArchivadas || [])) citados.add(m);
   return citados;
 }
 
@@ -182,23 +191,36 @@ function leerPaquete() {
   try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).files || []; } catch { return []; }
 }
 
-function textoDeTests() {
+// El texto donde se busca si un archivo está cubierto. No alcanza con tests/:
+// los checkers del gate viven en scripts/ (remote-install.ps1 lo cubre
+// check-remote-install-pin.js y el escáner lo reportaba como hueco).
+function textoDeCobertura() {
   let texto = '';
-  try {
-    const dir = path.join(ROOT, 'tests');
-    for (const f of fs.readdirSync(dir)) if (f.endsWith('.js')) texto += fs.readFileSync(path.join(dir, f), 'utf8');
-  } catch {
-    // sin tests: todas las candidatas quedan como "sin test"
+  for (const dir of ['tests', 'scripts']) {
+    let archivos = [];
+    try {
+      archivos = fs.readdirSync(path.join(ROOT, dir));
+    } catch {
+      continue; // sin esa carpeta no hay nada que mirar
+    }
+    for (const f of archivos) {
+      if (!f.endsWith('.js')) continue;
+      try {
+        texto += fs.readFileSync(path.join(ROOT, dir, f), 'utf8');
+      } catch {
+        // archivo que no se puede leer
+      }
+    }
   }
   return texto;
 }
 
 function armarContexto() {
   const files = leerPaquete();
-  const tests = textoDeTests();
+  const cobertura = textoDeCobertura();
   return {
     enPaquete: (a) => viajaEnPaquete(a, files),
-    tieneTest: (a) => tests.includes(path.basename(a)),
+    tieneTest: (a) => cobertura.includes(path.basename(a)),
   };
 }
 
@@ -242,4 +264,4 @@ function main(argv) {
 
 if (require.main === module) main(process.argv.slice(2));
 
-module.exports = { esRuido, areaDe, filasDelLedger, archivosCitados, candidatos, armarBorrador, esZonaSensible, viajaEnPaquete, puntuarCandidato, priorizarCandidatos, correr, escribirBorrador };
+module.exports = { esRuido, areaDe, filasDelLedger, archivosCitados, candidatos, armarBorrador, esZonaSensible, viajaEnPaquete, puntuarCandidato, priorizarCandidatos, correr, escribirBorrador, textoDeCobertura, armarContexto };

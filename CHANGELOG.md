@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Auto-derivación ON con la escritura autónoma cableada (E43)**: el write-path del agente de ideas deja de descansar en prosa. El plugin `.opencode/plugins/write-guard.js` mete cada `write`/`edit` por `scripts/agent-guard.js` → `ralph-policy` (allowlist + DENY, guardas auto-protegidas) cuando el modo autónomo está armado. Switch: `node scripts/autonomia.js on|off|status` (o `SKILLGRID_AUTONOMO=1`). Desarmado, vuelve el gate manual del CEO. Test: `tests/write-guard.test.js`.
+- **`cost_tier` en `catalog-lite.json`**: el router lee el catálogo liviano (7KB) en vez de `skills/index.json` (24KB) para decidir si carga una skill cara — unos 5k tokens menos por ruteo.
+
+### Fixed
+- **El chequeo de dependencias no spawnea más las 14 tools**: `npm test` baja de 30s a 21s. Antes se ejecutaba `<tool> --version` por cada dependencia y la salida se descartaba; ahora se pregunta por el binario en el PATH, y el chequeo fino (que además contrasta la versión con el pin, hasta ahora decorativo) quedó detrás de `--check-versions`. Detectó semgrep, trivy y nuclei desalineados con el pin.
+- **Doble mojibake en el router**: las flechas y los acentos de las reglas de ruteo llegaban al modelo como `â†’` y `Ã©`. También se fue el conteo de skills congelado en 43.
+- **El escáner de evolución mira `scripts/` además de `tests/`**: los checkers del gate viven en `scripts/`, así que `remote-install.ps1` salía como hueco aunque lo cubre `check-remote-install-pin.js`.
+- **Las filas comprimidas del ledger conservan sus citas**: al comprimir las cerradas viejas en una línea se perdían las referencias, y el escáner volvía a proponer lo ya cerrado. Nuevo `npm run evolve:mark` para cerrar el ciclo.
+- **El `postinstall` del paquete npm ya no ejecuta `graphify`**: corría un binario resuelto por PATH en la máquina de quien instala (npm mete `node_modules/.bin` al frente, así que un homónimo de otra dependencia se ejecutaba con esos permisos) y pagaba ~10s. Ahora sólo corre en el repo del dev, que es el único con `graphify-out/`: el consumidor paga 45ms.
+
+### Security
+- **5 huecos de la jaula de autonomía documentados (E59-E63)**: el ADS `::$DATA` de Windows pasa la comparación de rutas, el marcador se resuelve contra el cwd del IDE (una sesión en un subdirectorio queda desarmada), la guarda de bash sólo lee texto y la concatenación de strings la esquiva, `git commit --no-verify` y `git stash -u` lavan el diff de la 2ª capa, y los validadores del gate son escribibles. Los archivos de la jaula están en su propia DENY: corregirlos exige desarmar el modo.
 
 ## [1.23.0] - 2026-10-18
 

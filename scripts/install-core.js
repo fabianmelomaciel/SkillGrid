@@ -186,19 +186,89 @@ function installSkills(targetDir, sourceDir, platform, profile) {
   return installed;
 }
 
-function checkDependencies() {
-  log("Dependency check", "ok");
-  for (const dep of DEPENDENCIES) {
+// El chequeo corría en cada `npm test` y en cada commit, y catorce spawns de
+// `--version` costaban 15s de los 30s de la suite. Ahora se pregunta por el
+// binario en el PATH, que es instantáneo; el chequeo fino queda detrás de
+// --check-versions y además contrasta la versión con el pin, que hasta ahora
+// era un dato decorativo.
+//
+// Los stubs de WindowsApps (python3.exe) son un alias, no un archivo: hay que
+// mirar el directorio, no.statSync del nombre. Y la extensión importa: en
+// Windows el ejecutable casi nunca se llama sin su .exe.
+const PATHEXT = process.platform === "win32"
+  ? (process.env.PATHEXT || ".COM;.EXE;.BAT;.CMD").split(";").filter(Boolean).map((e) => e.toLowerCase())
+  : [""];
+
+function ejecutablesEnPath() {
+  const encontrados = new Set();
+  const dirs = (process.env.PATH || "").split(path.delimiter).filter(Boolean);
+  for (const dir of dirs) {
+    let entradas = [];
     try {
-      const cmd = dep.name === "pip-audit"
-        ? "python -m pip_audit --version"
-        : `${dep.name} --version`;
-      execSync(cmd, { stdio: "ignore", windowsHide: true });
-      log(`${dep.name} (${dep.desc}): installed`, "ok");
+      entradas = fs.readdirSync(dir);
     } catch {
+      continue; // directorio del PATH que no existe o no se puede leer
+    }
+    for (const e of entradas) {
+      const ext = path.extname(e).toLowerCase();
+      if (!PATHEXT.includes(ext)) continue;
+      encontrados.add((ext ? e.slice(0, -ext.length) : e).toLowerCase());
+    }
+  }
+  return encontrados;
+}
+
+function estaEnPath(nombre, cache) {
+  const set = cache || ejecutablesEnPath();
+  return set.has(String(nombre).toLowerCase());
+}
+
+// La versión se pide por shell porque en Windows npm y checkov son .cmd o
+// scripts sin extensión: sin shell no corren. Con timeout, porque una tool
+// colgada no puede colgar el chequeo. El 2>&1 junta stderr, que es donde
+// nucleus y semgrep escriben la versión.
+function versionDe(dep) {
+  const cmd = dep.name === "pip-audit"
+    ? "python -m pip_audit --version"
+    : `${dep.name} --version`;
+  try {
+    const salida = execSync(`${cmd} 2>&1`, {
+      encoding: "utf-8",
+      windowsHide: true,
+      timeout: 15000,
+    });
+    const m = String(salida).match(/\d+\.\d+(?:\.\d+)?/);
+    return m ? m[0] : null;
+  } catch (e) {
+    const salida = String(e.stdout || "");
+    const m = salida.match(/\d+\.\d+(?:\.\d+)?/);
+    return m ? m[0] : null;
+  }
+}
+
+function checkDependencies(opts = {}) {
+  log("Dependency check", "ok");
+  const cache = ejecutablesEnPath();
+  for (const dep of DEPENDENCIES) {
+    if (!estaEnPath(dep.name, cache)) {
       const level = dep.severity === "high" ? "err" : "warn";
       log(`${dep.name} (${dep.desc}): missing`, level);
+      continue;
     }
+    if (!opts.checkVersions) {
+      log(`${dep.name} (${dep.desc}): installed`, "ok");
+      continue;
+    }
+    const version = versionDe(dep);
+    if (!version) {
+      log(`${dep.name} (${dep.desc}): installed, version ilegible`, "warn");
+      continue;
+    }
+    if (dep.pin && !version.startsWith(dep.pin.split(".").slice(0, 2).join("."))) {
+      log(`${dep.name} (${dep.desc}): ${version} — el pin dice ${dep.pin}`, "warn");
+      continue;
+    }
+    log(`${dep.name} (${dep.desc}): ${version}`, "ok");
   }
 }
 
@@ -349,6 +419,7 @@ function main() {
     else if (args[i] === "--generate-codex") opts.generateCodex = true;
     else if (args[i] === "--platform" && args[i + 1]) opts.platform = args[++i];
     else if (args[i] === "--deps-only") opts.depsOnly = true;
+    else if (args[i] === "--check-versions") opts.checkVersions = true;
     else if (args[i] === "--detect-only") opts.detectOnly = true;
 
     else if (args[i] === "--help" || args[i] === "-h") { printHelp(); return; }
@@ -365,9 +436,9 @@ function main() {
 
   console.log("\n=== SkillGrid Installer Core ===\n");
 
-  if (opts.depsOnly) { checkDependencies(); return; }
+  if (opts.depsOnly) { checkDependencies(opts); return; }
 
-  checkDependencies();
+  checkDependencies(opts);
 
   if (opts.project) {
     setupGitIgnores(path.resolve(opts.project));
@@ -415,6 +486,7 @@ Usage:
   node scripts/install-core.js --profile minimal        Install by profile
   node scripts/install-core.js --platform opencode      Override platform detection
   node scripts/install-core.js --deps-only              Check dependencies only
+  node scripts/install-core.js --deps-only --check-versions   Same, plus the version against the pin
   node scripts/install-core.js --install-codegraph      Auto-install CodeGraph
   node scripts/install-core.js --detect-only            Print "Detectado: ..." preview and exit
 `);
@@ -427,4 +499,5 @@ module.exports = {
   parseFrontmatter, normalizePlatform, loadProfileSkills,
   detectPlatforms, checkDependencies, setupGitIgnores,
   installSkills, installCore: main,
+  estaEnPath, ejecutablesEnPath, versionDe,
 };

@@ -49,6 +49,20 @@ test('filasDelLedger lee abiertas y cerradas y saltea archivadas', () => {
   check(filas[1].seccion === 'Cerradas' && filas[1].evidenciaCierre === 'a/b.js:3', 'la cerrada mal');
 });
 
+test('la fila comprimida sigue citando lo que cerró', () => {
+  // Al comprimir las cerradas viejas en una línea, el texto se pierde pero las
+  // citas quedan: sin esto el escáner volvía a proponer lo ya resuelto.
+  const texto = [
+    '## Cerradas', '',
+    '- E1..E3 | archivadas 2026-01-01 — viejo, scripts/malo.js:12, tests/x.test.js',
+  ].join('\n');
+  const filas = scan.filasDelLedger(texto);
+  check(filas.length === 0, 'la archivada no es una fila');
+  const citados = scan.archivosCitados(filas);
+  check(citados.has('scripts/malo.js'), `no sacó la cita de la comprimida: ${[...citados].join(', ')}`);
+  check(citados.has('tests/x.test.js'), 'no sacó el test citado en la comprimida');
+});
+
 test('archivosCitados saca archivo:línea, test suelto y rutas con punto inicial', () => {
   const filas = [
     { evidencia: 'scripts/install-tasks.js:146', evidenciaCierre: '' },
@@ -115,6 +129,19 @@ test('el script corre y sale 0 (--stdout, sin efectos)', () => {
   const salida = execFileSync(process.execPath, [SCRIPT, '--stdout'], { encoding: 'utf8' });
   check(/Candidatas de evolución/.test(salida), `salida inesperada: ${salida.slice(0, 120)}`);
   check(/## Abiertas/.test(salida), 'faltan las abiertas');
+});
+
+test('la cobertura mira tests/ y scripts/, no sólo tests/', () => {
+  // Los checkers del gate viven en scripts/: remote-install.ps1 lo cubre
+  // check-remote-install-pin.js y el escáner lo reportaba como hueco.
+  const ctx = scan.armarContexto();
+  check(ctx.tieneTest('remote-install.ps1'), 'remote-install.ps1 está cubierto por scripts/check-remote-install-pin.js');
+  check(ctx.tieneTest('scripts/install-core.js'), 'install-core.js tiene su test');
+  // el nombre se arma por partes: escrito entero, el basename aparecería en el
+  // propio test —que es parte del corpus— y la señal lo daría por cubierto
+  const relleno = 'z'.repeat(7);
+  const nombre = `${relleno}.md`;
+  check(!ctx.tieneTest(`skills/lo-que-no-existe/${nombre}`), 'un archivo sin cubrir no debería contar como cubierto');
 });
 
 // Modela la inclusión de npm: `scripts/` mete la carpeta, `!...` la saca de vuelta.

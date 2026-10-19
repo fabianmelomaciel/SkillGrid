@@ -184,6 +184,9 @@ function run() {
 
       // Generate catalog-lite.json automatically
       try {
+        // cost_tier va en el lite: el router lo consulta para decidir si carga
+        // una skill cara, y antes tenía que abrir skills/index.json (24KB)
+        // por un solo campo. El lite es la fuente liviana.
         const liteCatalog = {
           version: catalog.version,
           generated: catalog.generated,
@@ -192,7 +195,8 @@ function run() {
             name: s.name,
             status: s.status,
             risk_level: s.risk_level,
-            category: s.category
+            category: s.category,
+            cost_tier: (updatedSkills[s.name] || {}).cost_tier || 'low'
           }))
         };
         fs.writeFileSync(

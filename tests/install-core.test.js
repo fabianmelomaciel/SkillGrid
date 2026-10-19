@@ -5,6 +5,7 @@ const {
   DEPENDENCIES, CODE_IGNORES,
   parseFrontmatter, normalizePlatform, loadProfileSkills,
   detectPlatforms, checkDependencies, setupGitIgnores,
+  estaEnPath, ejecutablesEnPath, versionDe,
 } = require('../scripts/install-core.js');
 
 const ROOT = path.join(__dirname, '..');
@@ -113,11 +114,40 @@ test('cli --deps-only exits cleanly', () => {
   check(out.includes('node'), 'should check node');
 });
 
+test('el chequeo de dependencias no spawnea una tool por dependencia', () => {
+  // El '--version' de cada tool costaba 15s de los 30s de la suite y la salida
+  // se descartaba: se preguntaba por el binario en el PATH, que es gratis.
+  const t0 = Date.now();
+  checkDependencies();
+  const ms = Date.now() - t0;
+  check(ms < 5000, `el chequeo tardó ${ms}ms: sigue spawneando las tools`);
+});
+
+test('el chequeo de versiones opcional compara contra el pin', () => {
+  // Con las 14 tools el chequeo cuesta ~15s: para el test alcanza con una.
+  // Se verifica la lectura de la versión y el contraste con el pin, que antes
+  // no se comparaba nunca aunque el pin estuviera escrito.
+  const version = versionDe({ name: 'git' });
+  check(/^\d+\.\d+/.test(version), `no se pudo leer la versión de git: ${version}`);
+  const pin = DEPENDENCIES.find((d) => d.name === 'git');
+  check(!pin.pin, 'git no está pineado: el contraste no aplica');
+  const conPin = versionDe({ name: 'pip-audit' });
+  check(conPin === null || conPin.startsWith('2.10'), `pip-audit pineado en 2.10.1, salió ${conPin}`);
+});
+
+test('estaEnPath encuentra lo que está en el PATH y no lo que no', () => {
+  const cache = ejecutablesEnPath();
+  check(estaEnPath('node', cache), 'node debería estar en el PATH');
+  check(estaEnPath('NODE', cache), 'la comparación no debería distinguir mayúsculas');
+  check(!estaEnPath('definitivamente-no-existe-este-binario-xyz', cache), 'no debería inventarse un binario');
+});
+
 test('cli --help prints usage', () => {
   const out = execSync('node scripts/install-core.js --help', { cwd: ROOT, encoding: 'utf-8', timeout: 10000 });
   check(out.includes('Usage:'), 'should show usage');
   check(out.includes('--target'), 'should mention --target');
   check(out.includes('--profile'), 'should mention --profile');
+  check(out.includes('--check-versions'), 'should mention --check-versions');
 });
 
 test('setupGitIgnores: creates exclusions in temp dir', () => {
