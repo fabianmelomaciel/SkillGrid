@@ -104,7 +104,7 @@ Upon receiving the 3 proposals:
 - El CEO es autoridad final: **corta**, no solo aprueba. Sin su OK explícito no se ejecuta ni se publica nada — nada de `push`, `tag` ni `npm publish` desde acá.
 - Topes duros: profundidad de cascada ≤2, una ronda de subagentes por sesión, corte al superar `SKILLGRID_MAX_TOKENS_PER_SESSION` (default 50000). No hay loops de re-despacho.
 - Ingesta de skills/MCP de terceros: exige `node scripts/scan-third-party.js` con exit 0 **y** revisión humana antes de adaptar cualquier cosa. Sin auto-install ni red.
-- Escritura autónoma de archivos: **cableada, no prosa**. Con el modo armado, el plugin `write-guard` mete cada `write`/`edit` por `scripts/agent-guard.js` → `ralph-policy` (allowlist + DENY, y las propias guardas se auto-protegen). El switch es `node scripts/autonomia.js on|off|status`.
+- Escritura autónoma de archivos: **cableada, no prosa**. Con el modo armado, el plugin `write-guard` mete cada `write`/`edit` por `scripts/agent-guard.js` → `ralph-policy` (allowlist + DENY, y las propias guardas se auto-protegen). El switch es `node scripts/autonomia.js on|off|status`: `status` es de sólo lectura y el agente puede correrlo; `on`/`off` no — la jaula se abre desde afuera, nunca desde adentro.
 - Memoria auto-escrita: esquema cerrado (campos fijos, una sola línea, sin texto libre ejecutable) + saneo al escribir.
 
 ## Session Handoff (MANDATORY — printed to the CEO, in Spanish, at close)

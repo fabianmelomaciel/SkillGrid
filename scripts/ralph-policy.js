@@ -26,12 +26,20 @@ const DENY = [
   { motivo: 'ralph-policy.js (la propia guarda)', test: (p) => p === 'scripts/ralph-policy.js' },
   { motivo: 'agent-guard.js (la guarda del write-path)', test: (p) => p === 'scripts/agent-guard.js' },
   { motivo: 'autonomia.js (el switch del modo autónomo)', test: (p) => p === 'scripts/autonomia.js' },
-  // Quien *aplica* la política también es jaula: si el agente reescribe el
-  // runner del bucle, la puerta queda abierta para la próxima corrida (E51).
+  // Quien *aplica* la política también es jaula: si el agente desatendido
+  // reescribe el runner del bucle, la puerta queda abierta para la próxima
+  // corrida (E51).
   { motivo: 'ralph-loop (el runner del bucle)', test: (p) => p === 'scripts/ralph-loop.ps1' || p === 'scripts/ralph-loop.sh' },
   // Un patrón nuevo en .gitignore saca archivos del radar de `git ls-files
   // --others`, que es la fuente de la 2ª capa del Ralph Loop (E52).
   { motivo: '.gitignore/.gitattributes (cegarían la 2ª capa)', test: (p) => p === '.gitignore' || p === '.gitattributes' },
+  // Los validadores del gate son la medida de si el propio código pasa: si el
+  // agente puede reescribirlos, puede hacer pasar cualquier cosa (E63). Con
+  // ellos fuera, tocar el gate exige que un humano lo haga.
+  { motivo: 'check-evolution.js (valida el ledger)', test: (p) => p === 'scripts/check-evolution.js' },
+  { motivo: 'validate-skills.js (valida las skills)', test: (p) => p === 'scripts/validate-skills.js' },
+  { motivo: 'los tests de la propia jaula', test: (p) => p === 'tests/write-guard.test.js' || p === 'tests/ralph-policy.test.js' },
+  { motivo: 'el test del validador del ledger', test: (p) => p === 'tests/check-evolution.test.js' },
 ];
 
 function basename(p) {
@@ -42,8 +50,19 @@ function basename(p) {
 // Todo a minúscula: en Windows el filesystem no distingue mayúsculas, así que
 // `.OPENCODE` es el mismo archivo que `.opencode` — sin esto, la denylist se
 // esquiva cambiando el case (E44).
+//
+// Además se corta el sufijo de alternate data stream: en NTFS
+// `scripts/ralph-policy.js::$DATA` ES el mismo archivo que
+// `scripts/ralph-policy.js`, pero como string no lo era y la comparación de
+// rutas lo dejaba pasar (E59). La letra de unidad ("C:/x") se respeta: el
+// "dos puntos" va en la segunda posición y ahí no hay stream alterno.
 function normalizar(rel) {
-  return String(rel || '').replace(/\\/g, '/').replace(/^\.\//, '').replace(/\/+$/, '').toLowerCase();
+  return String(rel || '')
+    .replace(/\\/g, '/')
+    .replace(/^\.\//, '')
+    .replace(/\/+$/, '')
+    .replace(/(^|\/)([^/:]+):[^/]*$/, '$1$2')
+    .toLowerCase();
 }
 
 function dentroDeAlguna(rel, allow) {

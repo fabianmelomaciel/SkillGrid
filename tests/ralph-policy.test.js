@@ -28,6 +28,30 @@ test('normalizar unifica separadores y saca el ./ y la barra final', () => {
   check(pol.normalizar('docs/') === 'docs', 'no sacó la barra final');
 });
 
+test('normalizar corta el alternate data stream de Windows (E59)', () => {
+  // En NTFS `archivo::$DATA` es el mismo archivo que `archivo`: como string no
+  // lo era, y la comparación de rutas lo dejaba pasar.
+  check(pol.normalizar('scripts/ralph-policy.js::$DATA') === 'scripts/ralph-policy.js', 'no cortó el ADS');
+  check(pol.normalizar('scripts/ralph-policy.js:flujo') === 'scripts/ralph-policy.js', 'no cortó el ADS con nombre');
+  check(pol.normalizar('.opencode/state/autonomo::$DATA') === '.opencode/state/autonomo', 'no cortó el ADS del marcador');
+  // la letra de unidad se respeta: "C:/x" no es un ADS
+  check(pol.normalizar('C:/Users/x') === 'c:/users/x', 'rompió la letra de unidad');
+});
+
+test('el ADS de una ruta protegida no la esquiva (E59)', () => {
+  check(!pol.permitido('scripts/ralph-policy.js::$DATA', ['.']).ok, 'el ADS de la guarda pasó');
+  check(!pol.permitido('scripts/agent-guard.js::$DATA', ['.']).ok, 'el ADS del write-guard pasó');
+  check(!pol.permitido('.opencode/state/autonomo::$DATA', ['.']).ok, 'el ADS del marcador pasó');
+});
+
+test('los validadores del gate están en la deny-list (E63)', () => {
+  check(!pol.permitido('scripts/check-evolution.js', ['.']).ok, 'el validador del ledger debería bloquear');
+  check(!pol.permitido('scripts/validate-skills.js', ['.']).ok, 'el validador de skills debería bloquear');
+  check(!pol.permitido('tests/write-guard.test.js', ['.']).ok, 'el test de la jaula debería bloquear');
+  check(!pol.permitido('tests/ralph-policy.test.js', ['.']).ok, 'el test de la política debería bloquear');
+  check(!pol.permitido('tests/check-evolution.test.js', ['.']).ok, 'el test del validador debería bloquear');
+});
+
 test('permitido deja pasar lo común y bloquea la denylist', () => {
   check(pol.permitido('docs/a.md', ['.']).ok, 'docs/a.md debería pasar');
   check(!pol.permitido('.git/config', ['.']).ok, '.git debería bloquear');

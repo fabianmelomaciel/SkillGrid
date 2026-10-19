@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **El `postinstall` del paquete npm ya no ejecuta `graphify`**: corría un binario resuelto por PATH en la máquina de quien instala (npm mete `node_modules/.bin` al frente, así que un homónimo de otra dependencia se ejecutaba con esos permisos) y pagaba ~10s. Ahora sólo corre en el repo del dev, que es el único con `graphify-out/`: el consumidor paga 45ms.
 
 ### Security
-- **5 huecos de la jaula de autonomía documentados (E59-E63)**: el ADS `::$DATA` de Windows pasa la comparación de rutas, el marcador se resuelve contra el cwd del IDE (una sesión en un subdirectorio queda desarmada), la guarda de bash sólo lee texto y la concatenación de strings la esquiva, `git commit --no-verify` y `git stash -u` lavan el diff de la 2ª capa, y los validadores del gate son escribibles. Los archivos de la jaula están en su propia DENY: corregirlos exige desarmar el modo.
+- **5 huecos de la jaula de autonomía cerrados (E59-E63)**: el ADS `::$DATA` de Windows ya no esquiva la comparación de rutas (en NTFS `archivo::$DATA` es el mismo archivo), el marcador se busca hasta la raíz del repo (abrir el repo en un subdirectorio ya no deja la jaula desarmada), la concatenación de strings en runtime se resuelve antes de mirar los nombres protegidos, `git commit --no-verify` y `git stash` ya no lavan el diff de la 2ª capa, y los validadores del gate (`check-evolution.js`, `validate-skills.js` y sus tests) no son escribibles desde adentro. `node scripts/autonomia.js status` queda permitido — es de sólo lectura y el agente lo necesita para decidir si auto-despacha; `on`/`off` siguen bloqueados: la jaula se abre desde afuera.
 
 ## [1.23.0] - 2026-10-18
 

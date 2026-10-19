@@ -52,6 +52,16 @@ test('el marcador en disco arma la guarda', () => {
   check(guard.armado(dir, {}) === true, 'el marcador no armó la guarda');
 });
 
+test('el marcador en la raíz del repo arma la jaula desde un subdirectorio (E60)', () => {
+  const dir = carpeta();
+  const marca = path.join(dir, guard.MARCA);
+  fs.mkdirSync(path.dirname(marca), { recursive: true });
+  fs.writeFileSync(marca, 'x\n');
+  const sub = path.join(dir, 'skills', 'router');
+  fs.mkdirSync(sub, { recursive: true });
+  check(guard.armado(sub, {}) === true, 'abrir el repo en un subdirectorio desarmaba la jaula');
+});
+
 test('revisar deja pasar una skill y bloquea lo sensible', () => {
   const dir = carpeta();
   check(guard.revisar(dir, 'skills/x/SKILL.md').ok, 'una skill debería pasar');
@@ -61,6 +71,24 @@ test('revisar deja pasar una skill y bloquea lo sensible', () => {
   check(!guard.revisar(dir, '.thirdparty-ignore.json').ok, 'la whitelist del scanner debería bloquear');
   check(!guard.revisar(dir, 'scripts/ralph-policy.js').ok, 'la propia guarda debería bloquear');
   check(!guard.revisar(dir, '.env').ok, '.env debería bloquear');
+});
+
+test('el alternate data stream de Windows no esquiva la deny-list (E59)', () => {
+  const dir = carpeta();
+  // En NTFS `archivo::$DATA` ES el mismo archivo que `archivo`.
+  check(!guard.revisar(dir, 'scripts/ralph-policy.js::$DATA').ok, 'el ADS de la guarda pasó');
+  check(!guard.revisar(dir, 'scripts/agent-guard.js::$DATA').ok, 'el ADS del write-guard pasó');
+  check(!guard.revisar(dir, '.opencode/state/autonomo:$DATA').ok, 'el ADS del marcador pasó');
+  check(!guard.revisar(dir, 'scripts/ralph-policy.js:flujo').ok, 'un ADS con nombre propio pasó');
+});
+
+test('los validadores del gate no son escribibles desde adentro (E63)', () => {
+  const dir = carpeta();
+  check(!guard.revisar(dir, 'scripts/check-evolution.js').ok, 'el validador del ledger debería bloquear');
+  check(!guard.revisar(dir, 'scripts/validate-skills.js').ok, 'el validador de skills debería bloquear');
+  check(!guard.revisar(dir, 'tests/write-guard.test.js').ok, 'el test de la jaula debería bloquear');
+  check(!guard.revisar(dir, 'tests/ralph-policy.test.js').ok, 'el test de la política debería bloquear');
+  check(!guard.revisar(dir, 'tests/check-evolution.test.js').ok, 'el test del validador debería bloquear');
 });
 
 test('revisar normaliza rutas absolutas y bloquea las que se salen', () => {
@@ -103,6 +131,29 @@ test('revisarComando frena el bash que toca la jaula o borra el repo (E44)', () 
   check(!guard.revisarComando(dir, 'rm .{opencode,}/state/autonomo').ok, 'el brace expansion no debería esquivar (E55)');
   check(!guard.revisarComando(dir, 'cat id_rsa.key').ok, 'una clave .key debería bloquear (E55)');
   check(!guard.revisarComando(dir, 'rm credentials.json').ok, 'credentials.json debería bloquear (E55)');
+});
+
+test('la concatenación de strings no esquiva la denylist (E61)', () => {
+  const dir = carpeta();
+  check(!guard.revisarComando(dir, `node -e "require('fs').rmSync('.open'+'code/state/autonomo')"`).ok, 'la concatenación de literales pasó');
+  check(!guard.revisarComando(dir, `node -e "require('fs').writeFileSync('scripts/ralph-'+'policy.js','x')"`).ok, 'la concatenación sobre la guarda pasó');
+  check(!guard.revisarComando(dir, `echo ".git"+"ignore" > .gitignore`).ok, 'la concatenación sobre .gitignore pasó');
+});
+
+test('el commit sin hooks y el stash no lavan el diff (E62)', () => {
+  const dir = carpeta();
+  check(!guard.revisarComando(dir, 'git commit --no-verify -m x').ok, 'commit --no-verify debería bloquear');
+  check(!guard.revisarComando(dir, 'git stash -u').ok, 'git stash debería bloquear');
+  check(guard.revisarComando(dir, 'git commit -m "mensaje"').ok, 'un commit normal debería pasar');
+  check(guard.revisarComando(dir, 'git stash list').ok, 'stash list sólo lee: debería pasar');
+});
+
+test('consultar el estado del modo es de sólo lectura y está permitido', () => {
+  const dir = carpeta();
+  check(guard.revisarComando(dir, 'node scripts/autonomia.js status').ok, 'status debería pasar');
+  check(guard.revisarComando(dir, 'node ./scripts/autonomia.js status').ok, 'status con ./ debería pasar');
+  check(!guard.revisarComando(dir, 'node scripts/autonomia.js off').ok, 'apagar la jaula desde adentro debería bloquear');
+  check(!guard.revisarComando(dir, 'node scripts/autonomia.js on').ok, 'prender la jaula desde adentro debería bloquear');
 });
 
 test('el CLI de autonomía prende, consulta y apaga', () => {
