@@ -6,16 +6,18 @@
 
 *44 skills · memoria persistente · auto-auditoría · 4 IDEs · hasta −90% de tokens · gate en cada commit*
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-6366f1?style=flat-square)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-44-22c55e?style=flat-square)](catalog.json)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b?style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
-[![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
+[![License: MIT](https://img.shields.io/badge/license-MIT-b6f36b?style=flat-square&color=0a1206&logo=github)](LICENSE)
+[![Skills](https://img.shields.io/badge/skills-44-b6f36b?style=flat-square&color=0a1206)](catalog.json)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-b6f36b?style=flat-square&color=0a1206)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
+[![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github&color=b6f36b)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/ci.yml)
 [![Security Pentest](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/pentest.yml?branch=main&label=Security%20Pentest&style=flat-square&color=dc2626)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/pentest.yml)
 
-**[🇬🇧 English](#-english) · [🇪🇸 Español](#-español) · [⚡ Install](#-install) · [🗺️ Catalog](#-catalog) · [📄 Changelog](CHANGELOG.md)**
+</div>
 
-⭐ **[Dale una estrella / Star the repo](https://github.com/fabianmelomaciel/SkillGrid/stargazers)** — helps others find it.
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/assets/hero-skillgrid.svg" width="900" alt="SkillGrid: un comando y tu agente de IA queda con disciplina" />
 
 </div>
 
@@ -237,6 +239,12 @@ SkillGrid audita su propio código con un pipeline de CI dedicado (`.github/work
 *   Guards del pipeline (`no_new_skips`, `no_deleted_tests`) inspirados en **[intrepideai/donegate](https://github.com/intrepideai/donegate)**.
 
 ---
+
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/assets/star-card.svg" width="620" alt="SkillGrid en GitHub" />
+
+</div>
 
 ## 📄 Licencia / License
 

@@ -259,6 +259,8 @@ You MUST check off every item before completing image direction:
 
 ---
 
+> **Galería de diseños:** `skills/shared/galeria-disenos.md` — los tres patrones que ya tenemos (landing con halo, tarjeta de papel, star card) y el procedimiento para tomar uno nuevo: captura a PNG, tokens fuera, ficha escrita.
+
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 
 > Modules: `skills/shared/modules-footer.md`

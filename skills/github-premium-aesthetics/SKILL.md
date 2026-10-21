@@ -231,3 +231,5 @@ Invoked via tool call with skill descriptor. Return structured output matching t
 [platform:claude-code]
 ### Platform Invocation
 Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.
+
+> **Galería de diseños:** `skills/shared/galeria-disenos.md` — los tres patrones que ya tenemos (landing con halo, tarjeta de papel, star card) y el procedimiento para tomar uno nuevo: captura a PNG, tokens fuera, ficha escrita.
