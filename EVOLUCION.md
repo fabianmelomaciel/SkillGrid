@@ -27,9 +27,8 @@ Cómo se usa:
 
 ## Abiertas
 
-- E77 | efectividad | La jaula de autonomía no deja escribir fuera del repo y su switch (`scripts/autonomia.js`) está en la deny-list, así que un trabajo que sale del proyecto (mover o renombrar un repo hermano) quedó esperando a que el humano lo abriera; el agente no tiene forma de pedirlo solo | P2 | 2026-10-21 | scripts/agent-guard.js:22
-
 ## Cerradas
+- E77 | efectividad | La jaula de autonomía no deja escribir fuera del repo y su switch (`scripts/autonomia.js`) resolvía el marcador contra el cwd: desde un subdirectorio armaba un marcador que la guarda nunca mira (la guarda sube hasta la raíz), así que la jaula quedaba armada y el humano creía que la había abierto | P2 | 2026-10-21 | scripts/agent-guard.js:22 | cerrado 2026-10-21 | scripts/autonomia.js:18, tests/autonomia.test.js:75
 - E81 | efectividad | El ledger citaba como evidencia un test de otro proyecto (`../kraken/...`), así que SkillGrid quedó atado a un repo que no es suyo y el paquete no era portable | P2 | 2026-10-21 | EVOLUCION.md:45 | cerrado 2026-10-21 | tests/paquete.test.js:201
 - E78 | efectividad | Las skills de diseño no tenían forma de tomar una referencia: no había galería de patrones ni manera de mirar un diseño, así que cada agente se lo inventaba | P2 | 2026-10-21 | skills/shared/galeria-disenos.md:1 | cerrado 2026-10-21 | skills/shared/galeria-disenos.md:1
 - E79 | docs | Los README se veían como un documento plano: GitHub no renderiza CSS y el repo no tenía un solo asset, así que el proyecto no se veía como producto | P2 | 2026-10-21 | assets/hero-skillgrid.svg:1 | cerrado 2026-10-21 | assets/hero-skillgrid.svg:1
