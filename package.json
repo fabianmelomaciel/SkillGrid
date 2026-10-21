@@ -28,6 +28,7 @@
     "scripts/",
     "!scripts/evolve-scan.js",
     "!scripts/evolve.js",
+    "!scripts/design-scout.js",
     "commands/",
     "docs/",
     "models.json",

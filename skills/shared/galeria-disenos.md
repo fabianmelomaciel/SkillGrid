@@ -12,10 +12,13 @@ estudiar uno nuevo cuando el CEO manda una captura o una URL.
 
 1. **La URL la da el humano**, o va en una allowlist de dominios. Nunca lo que
    sea: sin lista, el capturador pega a loopback o a la red interna.
-2. **Capturá a PNG** — Edge/Chrome headless, cero dependencias:
-   `msedge --headless --disable-gpu --screenshot=captura.png --window-size=1200,800 "URL"`
-   O `@playwright/mcp` con `--allow-domains` (ver `skills/playwright-testing/SKILL.md`).
-   Nunca bajes browsers desde un script: es una confirmación explícita del humano.
+2. **Capturá a PNG** — con el script del repo, que ya trae las guardas:
+   `node scripts/design-scout.js --allow ejemplo.com "https://ejemplo.com"`
+   (`--out` para el destino, `--allow-list` para una lista de hosts). El
+   script usa Edge o Chrome headless, cero dependencias, y **corta** loopback,
+   redes privadas y link-local aunque le des permiso. Un `file://` local no
+   pide permiso. Nunca bajes browsers desde un script: es una confirmación
+   explícita del humano.
 3. **Mirá el PNG** (el agente lee imágenes) y extraé los tokens:
    - **paleta**: `magick captura.png -colors 8 -unique-colors txt:`
    - **tipografía**: familia, escala, peso, tracking (el tracking es lo que
@@ -44,9 +47,10 @@ inclinado.
 | acento | `#b6f36b` para lo vivo: botón, estado, foco |
 | tipografía | mono para lo que la máquina dice, sans para lo que el humano lee |
 
-Está en `assets/hero-skillgrid.svg` (el repo de SkillGrid) y es el esqueleto de
-cualquier hero de landing. Lo que NO se copia: el nombre, el logo ni el texto
-de otro producto. La forma es libre; la marca es de otro.
+Está en `assets/hero-skillgrid.svg` (el repo de SkillGrid) y `assets/hero-rules.svg`
+(el de las reglas por lenguaje). Son el esqueleto de cualquier hero de landing.
+Lo que NO se copia: el nombre, el logo ni el texto de otro producto. La forma es
+libre; la marca es de otro.
 
 ### B · Tarjeta de papel
 
