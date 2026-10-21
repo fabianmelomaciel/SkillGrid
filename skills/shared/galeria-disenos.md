@@ -1,5 +1,8 @@
 # Galería de diseños y cómo tomar uno de referencia
 
+> **Dónde está:** en el repo, `skills/shared/galeria-disenos.md`; en el IDE,
+> junto a las skills: `<carpeta de skills>/shared/galeria-disenos.md`.
+
 Los agentes de diseño no inventan: miran. Esta es la referencia viva del
 proyecto — los patrones que ya sabemos aplicar, y el procedimiento para
 estudiar uno nuevo cuando el CEO manda una captura o una URL.

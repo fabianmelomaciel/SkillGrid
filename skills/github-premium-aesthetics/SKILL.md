@@ -4,7 +4,7 @@ description: "Implements cutting-edge GitHub/Vercel-inspired UI patterns includi
 category: design
 status: stable
 risk_level: safe
-token_estimate: { input: 2300, output: 676 }
+token_estimate: { input: 2359, output: 676 }
 ---
 
 ## Core
@@ -14,6 +14,8 @@ token_estimate: { input: 2300, output: 676 }
 ## When to Use
 
 Use this skill when designing or refactoring frontends where visual quality must look premium, modern, and distinct from typical AI-generated interfaces. It specializes in integrating custom GitHub/Vercel/Linear style components, Bento grids, mesh gradients, keyboard HUDs, and advanced CSS physics.
+
+> **Galería de diseños:** `skills/shared/galeria-disenos.md` — los tres patrones que ya tenemos (landing con halo, tarjeta de papel, star card) y el procedimiento para tomar uno nuevo: captura a PNG, tokens fuera, ficha escrita.
 
 ## Workflow
 
@@ -231,5 +233,3 @@ Invoked via tool call with skill descriptor. Return structured output matching t
 [platform:claude-code]
 ### Platform Invocation
 Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.
-
-> **Galería de diseños:** `skills/shared/galeria-disenos.md` — los tres patrones que ya tenemos (landing con halo, tarjeta de papel, star card) y el procedimiento para tomar uno nuevo: captura a PNG, tokens fuera, ficha escrita.

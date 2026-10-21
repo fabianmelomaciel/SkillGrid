@@ -1,5 +1,5 @@
 {
-  "version": "1.2.45",
+  "version": "1.2.46",
   "generated": "2026-10-21",
   "summary": {
     "total": 44,
@@ -160,7 +160,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 3436,
+        "input": 3494,
         "output": 1864
       },
       "cost_tier": "medium",
@@ -216,7 +216,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 2230,
+        "input": 2286,
         "output": 710
       },
       "cost_tier": "low",
@@ -287,7 +287,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 2300,
+        "input": 2359,
         "output": 676
       },
       "cost_tier": "low",

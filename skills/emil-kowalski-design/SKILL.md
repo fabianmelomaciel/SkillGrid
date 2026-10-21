@@ -4,7 +4,7 @@ description: Use when building, reviewing, or auditing any UI component to apply
 category: design
 status: stable
 risk_level: safe
-token_estimate: { input: 2230, output: 710 }
+token_estimate: { input: 2286, output: 710 }
 ---
 
 ## Core

@@ -178,9 +178,9 @@ Genera reglas optimizadas dentro de tu proyecto:
 
 | Skill | Para qué | ~Tokens |
 |---|---|---:|
-| `creativo-visual` | Visual Creative Director for AI image generation and optimization. Translates basic… | 3436 |
-| `emil-kowalski-design` | Use when building, reviewing, or auditing any UI component to apply Emil Kowalski's… | 2230 |
-| `github-premium-aesthetics` | Implements cutting-edge GitHub/Vercel-inspired UI patterns including Bento grids,… | 2300 |
+| `creativo-visual` | Visual Creative Director for AI image generation and optimization. Translates basic… | 3494 |
+| `emil-kowalski-design` | Use when building, reviewing, or auditing any UI component to apply Emil Kowalski's… | 2286 |
+| `github-premium-aesthetics` | Implements cutting-edge GitHub/Vercel-inspired UI patterns including Bento grids,… | 2359 |
 
 ### 🤖 Agentes Especializados (12 Agents)
 
