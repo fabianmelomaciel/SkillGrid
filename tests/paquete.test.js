@@ -198,6 +198,46 @@ console.log('\nTesting paquete...\n');
     check(!rotos.length, `no existen: ${rotos.join(', ')}`);
   });
 
+  await test('el repo no depende de nada de afuera', async () => {
+    // Un repo que se para solo: ningun archivo trakeado puede apuntar a algo
+    // que exista fuera de la raiz. Un ejemplo de docs ("../../../etc/passwd")
+    // no cuenta: lo que importa es que exista.
+    let salida = '';
+    try {
+      salida = execFileSync('git', ['ls-files'], { cwd: ROOT, encoding: 'utf8' });
+    } catch (e) {
+      if (e && e.stderr && /not a git repository/i.test(e.stderr.toString())) {
+        console.log('        (sin git: se saltea la comprobación)');
+        return;
+      }
+      throw e;
+    }
+    const fuera = [];
+    const padre = path.dirname(ROOT);
+    const casa = [process.env.USERPROFILE, process.env.HOME].filter(Boolean);
+    for (const rel of salida.split('\n').map((l) => l.trim()).filter(Boolean)) {
+      let texto = '';
+      try { texto = fs.readFileSync(path.join(ROOT, rel), 'utf8'); } catch { continue; }
+      const base = path.dirname(path.join(ROOT, rel));
+      const candidatos = new Set();
+      for (const m of texto.matchAll(/(\.\.[/\\][A-Za-z0-9_.\/-]+)/g)) candidatos.add(m[1]);
+      for (const m of texto.matchAll(/([A-Za-z]:\\[^"'<>\s|]+)/g)) candidatos.add(m[1]);
+      for (const c of casa) if (texto.includes(c)) candidatos.add(c);
+      for (const c of candidatos) {
+        const abs = path.resolve(base, c);
+        const relativo = path.relative(ROOT, abs);
+        if (!relativo.startsWith('..') && !path.isAbsolute(relativo)) continue; // queda adentro
+        if (!fs.existsSync(abs)) continue;                                       // no existe: es un ejemplo
+        // lo que importa: otro proyecto del mismo workspace o tu carpeta personal
+        const enWorkspace = abs === padre || abs.startsWith(padre + path.sep);
+        const enCasa = casa.some((h) => abs === h || abs.startsWith(h + path.sep));
+        if (!enWorkspace && !enCasa) continue;   // una ruta conocida (c:\laragon) no es dependencia
+        fuera.push(`${rel}: ${c}`);
+      }
+    }
+    check(!fuera.length, `apunta afuera: ${fuera.slice(0, 5).join(' | ')}`);
+  });
+
   console.log(`\n${passed} passed, ${failed} failed\n`);
   if (failed > 0) process.exit(1);
 })();
