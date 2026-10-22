@@ -16,6 +16,19 @@ Una sola respuesta "no" alcanza para descartar:
 4. **¿La protección no existe, o existe y el scanner no la vio?** Antes de reportar, buscá el middleware, el escape, el parámetro de la query o el permiso que ya lo cubre.
 5. **¿El impacto se puede explicar sin "podría"?** Si no podés nombrar qué se pierde —datos, sesión, ejecución, plata—, no es un hallazgo.
 
+### 1b. Confianza (1–10)
+
+Cada hallazgo lleva un score justificado en una línea:
+
+| Confianza | `validation_status` | Acción |
+|---|---|---|
+| 9–10 | `confirmed` | PoC reproducible + impacto demostrado |
+| 8 | `confirmed` | Camino completo verificado y PoC mínimo reproducible |
+| 5–7 | `needs-validation` | Hay camino pero falta PoC o contexto |
+| 1–4 | `discarded` | Patrón sin impacto, código muerto o protección existente |
+
+Regla dura: **confianza <8 nunca se reporta como `confirmed`**.
+
 ### 2. Filtro por modo
 
 - **Auditoría completa:** las 12 categorías siguen en alcance. No descartes algo solo porque es de rate limiting, DoS o validación de input: acá son categorías explícitas y necesitan la misma evidencia que el resto.
@@ -28,11 +41,24 @@ Cada hallazgo confirmado lleva:
 - `archivo:línea` o request reproducible (método, ruta, payload y respuesta).
 - El fragmento justo, no el archivo entero.
 - `validation_status`: `confirmed` (lo reprodujiste), `needs-validation` (hay camino pero falta el PoC) o `discarded` (con motivo).
+- `confidence`: score 1–10 justificado (ver §1b).
+- `estado`: `abierto` | `corregido` | `riesgo_aceptado`; `retest`: fecha + comando/pasos o `pendiente`.
 - Placeholders obligatorios: `[cookie_sesion]`, `[email_usuario]`, `[token]`, `[api_key]`, `[ip_interna]`. Nunca copies valores reales de cookies, PII, secretos ni rutas absolutas del usuario al JSON, al HTML ni al informe.
 
 ### 4. Severidad anclada
 
 Un vector CVSS v3.1 y su score por hallazgo, más la justificación en una línea. Si no podés armar el vector, la severidad es una opinión: marcala `needs-validation` en vez de inventar un número.
+
+### 4b. Pre-Severity Gate (critical/high)
+
+Antes de asignar `critical` o `high`, respondé:
+
+1. ¿El impacto es demostrado o solo "podría"?
+2. ¿El atacante controla el input y alcanza el sink en este contexto?
+3. ¿La protección existente (middleware, escape, permiso) ya lo cubre?
+4. ¿El alcance real está dentro del scope y del entorno autorizado?
+
+Si alguna respuesta deja duda → bajá a `medium` o `needs-validation`; nunca infles severidad.
 
 ### 5. Modo diff
 

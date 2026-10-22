@@ -137,7 +137,7 @@ NO FALSE POSITIVES: If the scanner script produces a finding about a pattern tha
 
 ### Finding Gate (obligatorio)
 
-Antes de escribir el informe, todo hallazgo pasa por `skills/shared/finding-gate.md`: cinco preguntas de descarte, filtro según modo (auditoría completa o diff), evidencia mínima con placeholders y vector CVSS v3.1. El gate descarta o deja `needs-validation`; nunca maquilla un hallazgo como confirmado. Los descartes se cuentan en `discarded` y se explican en una línea, para que el informe muestre qué se revisó y qué quedó afuera.
+Antes de escribir el informe, todo hallazgo pasa por `skills/shared/finding-gate.md`: cinco preguntas de descarte, confianza 1–10 (`<8` nunca es `confirmed`), Pre-Severity Gate para `critical`/`high`, filtro según modo (auditoría completa o diff), evidencia mínima con placeholders y vector CVSS v3.1. El gate descarta o deja `needs-validation`; nunca maquilla un hallazgo como confirmado. Los descartes se cuentan en `discarded` y se explican en una línea, para que el informe muestre qué se revisó y qué quedó afuera.
 
 Si el pedido es revisar un diff y no el repo entero, usá el modo diff del gate: solo archivos cambiados y líneas tocadas.
 

@@ -29,6 +29,9 @@ test('el gate compartido existe y tiene las cinco preguntas', () => {
   check(/\[email_usuario\]/.test(t), 'faltan los placeholders de evidencia');
   check(/git diff --name-only/.test(t), 'falta el modo diff');
   check(/needs-validation/.test(t), 'falta el estado needs-validation');
+  check(/confidence/i.test(t), 'falta el score de confianza');
+  check(/Pre-Severity Gate/i.test(t), 'falta el Pre-Severity Gate');
+  check(/retest/i.test(t), 'falta el campo retest');
 });
 
 test('los auditores referencian el gate compartido', () => {
@@ -47,6 +50,8 @@ test('external-repos atribuye las tres fuentes y marca lo que quedó afuera', ()
   const t = leer(REPOS);
   for (const repo of ['claude-code-security-review', 'Claude-BugHunter', 'Claude-Red']) check(t.includes(repo), `falta ${repo}`);
   check(/MIT/.test(t), 'falta la licencia');
+  check(/CC BY 4\.0/.test(t), 'falta la licencia CC BY 4.0 de BugHunter');
+  check(/Consensys/.test(t), 'falta Consensys (sin licencia)');
   check(/Qué quedó afuera/.test(t), 'falta la lista de lo que NO se tomó');
 });
 

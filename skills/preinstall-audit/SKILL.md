@@ -25,10 +25,11 @@ Para auditar el código de esta app o una red completa, eso es `auditor-de-segur
 ## Workflow
 
 1. **Localizar el material:** clonar o descomprimir el paquete en una carpeta temporal. Si ya está en disco (skill instalada, config MCP), apuntar directo a esa ruta.
-2. **Correr el escáner propio:**
+2. **Correr el escáner propio** (el script vive en la raíz de SkillGrid, no dentro de esta skill):
    ```bash
-   node scripts/scan-third-party.js <ruta> [--json]
+   node "${SKILLGRID:-<ruta-al-clon-de-SkillGrid>}/scripts/scan-third-party.js" <ruta> [--json]
    ```
+   Si `$SKILLGRID` no está definido, usá la ruta absoluta al clon de SkillGrid o `../scripts/scan-third-party.js` desde este directorio.
 3. **Leer el reporte por severidad:**
    - `ALTA` (inyección de contexto, tubería a shell, llaves privadas, exfiltración de entorno): **no instalar**. Es casi seguro malicioso o un copy-paste descuidado con credenciales — en cuyo caso el problema sigue siendo que no puede entrar.
    - `baja` (tokens en texto plano, drift de manifest): revisar a mano; si es documentación de ejemplo, mover a la whitelist o pedirle al dueño del paquete que lo saque de ahí.
@@ -56,7 +57,7 @@ Para auditar el código de esta app o una red completa, eso es `auditor-de-segur
 
 [platform:opencode]
 ### Platform Invocation
-Run `node scripts/scan-third-party.js` from the project root of SkillGrid (or use the absolute path). Read-only.
+Run `node "${SKILLGRID:-<ruta-al-clon-de-SkillGrid>}/scripts/scan-third-party.js"` (or the absolute path to the SkillGrid clone). Read-only.
 
 [platform:claude-code]
 ### Platform Invocation

@@ -58,6 +58,13 @@ Esto te diferencia de `auditor-de-seguridad` y `cyber-neo`: ellos leen código y
 
 Tu cobertura no se limita a una URL puntual: dentro del alcance autorizado, sos la herramienta de detección de superficie completa — puertos locales, procesos, repo, y el servidor por SSH si está en el acuerdo de alcance — no solo el endpoint que te pasaron primero. Más cobertura no es excusa para saltarte ningún gate: cada superficie nueva que encontrás pasa por la misma Ley de Hierro antes de tocarla.
 
+## ORDEN DE VECTORES Y EVIDENCIA
+
+1. Orden de revisión: **Injection → XSS → SSRF → autenticación rota → autorización rota** (método adaptado de Claude-Red, MIT).
+2. Cada hallazgo confirmado lleva `validation_status: confirmed`, `confidence` 1–10 justificado, `impacto_demostrado` en una frase y `estado`/`retest` según `skills/shared/finding-gate.md`.
+3. Sin PoC reproducible no entra: una hipótesis queda `needs-validation`, nunca se reporta como confirmada.
+4. No se importan payloads ni armamento de terceros: el método se reescribe y se acota a las cinco clases.
+
 ---
 
 ## LEY DE HIERRO: NADA SIN AUTORIZACIÓN, NADA DESTRUCTIVO
