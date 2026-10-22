@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.25.0] - 2026-10-22
+
+### Added
+- **Pisos de seguridad por runtime en una sola fuente**: `skills/shared/runtime-floors.json` guarda el mínimo parcheado de PHP (8.5.12, 8.4.27, 8.3.36, 8.2.35), Node (22, 24) y Python (3.13, 3.14, 3.15) con su EOL, su origen y la fecha del relevamiento. `scripts/sync-floors.js` los inyecta en `rules/php/security.md`, `rules/typescript/security.md`, `rules/python/security.md` y en el checklist del auditor, así que ningún número se copia a mano: `npm run floors` regenera y `--check` sale con error si quedó desfasado. Test: `tests/runtime-floors.test.js`.
+- **La regla de PHP separa "parcheado" de "seguro"**: piso por rama, por qué 8.5.11 no alcanza (los RCE críticos CVE-2026-109618 y CVE-2026-109619 recién salen en 8.5.12), y que la versión se lea del host (SAPI) y nunca de `composer.json` ni del `php -v` local. Laragon 8.5.12 queda en el piso; el plan de Hostinger sirve 8.5.11 y sigue expuesto hasta que el host actualice.
+
+### Security
+- **El dato de los pisos no se pudre en silencio**: `tests/runtime-floors.test.js` falla si el piso de una rama baja del mínimo conocido, si el JSON quedó desfasado de las rules o del checklist, o si el relevamiento tiene más de 45 días (el TTL corta en el gate local; en CI avisa, porque el release exige el gate local).
+- **El repo deja de pedir runtimes sin parches**: `engines` pasa a `node >= 22` y `.node-version` a 22 — Node 20 quedó EOL el 2026-04-30 y Node 18 el 2025-04-30. Los workflows de CI siguen pineando 20 (E85): los tiene que tocar un humano, porque la jaula protege los workflows.
+
+### Fixed
+- **La regla de PHP ya no manda exponer `phpinfo()`**: el checklist del auditor marca `/phpinfo/` como endpoint expuesto y la rule lo recommendaba como forma de leer la versión. Ahora se lee del panel del host o de una consola en el servidor, y sin evidencia el runtime queda `unverified`, que es un hallazgo y no un sello de "safe".
+
 ## [1.24.0] - 2026-10-19
 
 ### Added

@@ -1,0 +1,33 @@
+{
+  "checked_at": "2026-10-22",
+  "ttl_days": 45,
+  "runtimes": {
+    "php": {
+      "label": "PHP",
+      "source": "https://endoflife.date/api/php.json",
+      "supported": [
+        { "line": "8.5", "floor": "8.5.12", "eol": "2029-12-31", "cves": ["CVE-2026-109618", "CVE-2026-109619"] },
+        { "line": "8.4", "floor": "8.4.27", "eol": "2028-12-31" },
+        { "line": "8.3", "floor": "8.3.36", "eol": "2027-12-31" },
+        { "line": "8.2", "floor": "8.2.35", "eol": "2026-12-31" }
+      ]
+    },
+    "node": {
+      "label": "Node.js",
+      "source": "https://endoflife.date/api/node.json",
+      "supported": [
+        { "line": "22", "eol": "2027-04-30" },
+        { "line": "24", "eol": "2028-04-30" }
+      ]
+    },
+    "python": {
+      "label": "Python",
+      "source": "https://endoflife.date/api/python.json",
+      "supported": [
+        { "line": "3.13", "eol": "2029-10-31" },
+        { "line": "3.14", "eol": "2030-10-31" },
+        { "line": "3.15", "eol": "2031-10-31" }
+      ]
+    }
+  }
+}

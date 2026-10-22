@@ -112,6 +112,11 @@ Detailed check items per category. Reference these from the main SKILL.md during
   - **nginx/Apache**: directory listing disabled, no exposed .git/.env, proper SSL config, rate limiting configured
   - **Cloud (AWS/GCP/Azure)**: S3 buckets not public, IAM least privilege, security groups restricted, no overly permissive roles, CloudTrail/audit logging enabled, encryption enabled on storage, no default VPC with 0.0.0.0/0
   - **Debug/prod separation**: debug mode off in production, no exposed /debug, /status, /phpinfo(), /actuator endpoints
+  - **PHP runtime**: host runtime (web SAPI) at or above the patched floor, read from the host and never from `composer.json`; 8.5.11 sits below the floor (CVE-2026-109618 / CVE-2026-109619); an unverified runtime is a finding, not a pass
+    <!-- floors:start php -->
+    - Patched floors per branch: 8.5: 8.5.12 (EOL 2029-12-31), 8.4: 8.4.27 (EOL 2028-12-31), 8.3: 8.3.36 (EOL 2027-12-31), 8.2: 8.2.35 (EOL 2026-12-31).
+    - Source: https://endoflife.date/api/php.json, checked 2026-10-22.
+    <!-- floors:end -->
   - **Terraform/Infra-as-Code**: state file not exposed, no hardcoded secrets in .tf, remote state with encryption, plan reviewed before apply
 
 ## Database Security

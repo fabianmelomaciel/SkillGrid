@@ -74,8 +74,8 @@ console.log('\nTesting paquete...\n');
     check(/^MIT$/.test(pkg.license), pkg.license);
   });
 
-  await test('engines pide node 18 o más', async () => {
-    check(/>=\s*18/.test(pkg.engines && pkg.engines.node), JSON.stringify(pkg.engines));
+  await test('engines pide node 22 o más (node 20 y 18 están EOL)', async () => {
+    check(/>=\s*22/.test(pkg.engines && pkg.engines.node), JSON.stringify(pkg.engines));
   });
 
   await test('la url del repositorio es la de origin', async () => {

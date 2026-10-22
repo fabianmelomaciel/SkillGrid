@@ -26,8 +26,12 @@ Cómo se usa:
 6. Evolución terminada y todo resuelto → instalar en el IDE local del equipo, commit y push a GitHub. Sin ese pase el fix no llega a ningún lado.
 
 ## Abiertas
+- E84 | seguridad | La política de runtime PHP no viaja en el paquete npm: `rules/` no está en `package.json` files, así que el consumidor de npm recibe la skill del auditor pero no la rule con el piso y el método de verificación | P2 | 2026-10-22 | package.json:26
+- E85 | seguridad | El repo corría Node 20, que quedó EOL el 2026-04-30, y los tres workflows de CI lo pinan: los jobs quedan sin parches hasta que un humano los toque, porque la jaula protege los workflows | P1 | 2026-10-22 | .github/workflows/ci.yml:34
 
 ## Cerradas
+- E83 | seguridad | Los pisos de runtime estaban duplicados a mano en tres archivos y sin vencimiento: cada parche nuevo de PHP (cada 27 días) dejaba el dato viejo sin que nada lo dijera, y el test daba verde con el piso vencido | P1 | 2026-10-22 | rules/php/security.md:14 | cerrado 2026-10-22 | skills/shared/runtime-floors.json:1, scripts/sync-floors.js:1, tests/runtime-floors.test.js:1
+- E82 | seguridad | Los proyectos no tenían forma de saber qué versión de PHP corre en el host ni si está parcheada: 8.5.11 (Hostinger) queda por debajo del piso de la rama 8.5 y los RCE críticos de oct-2026 quedaban abiertos sin que nada lo dijera | P1 | 2026-10-22 | rules/php/security.md:11 | cerrado 2026-10-22 | rules/php/security.md:14, tests/php-policy.test.js
 - E77 | efectividad | La jaula de autonomía no deja escribir fuera del repo y su switch (`scripts/autonomia.js`) resolvía el marcador contra el cwd: desde un subdirectorio armaba un marcador que la guarda nunca mira (la guarda sube hasta la raíz), así que la jaula quedaba armada y el humano creía que la había abierto | P2 | 2026-10-21 | scripts/agent-guard.js:22 | cerrado 2026-10-21 | scripts/autonomia.js:18, tests/autonomia.test.js:75
 - E81 | efectividad | El ledger citaba como evidencia un test de otro proyecto (`../kraken/...`), así que SkillGrid quedó atado a un repo que no es suyo y el paquete no era portable | P2 | 2026-10-21 | EVOLUCION.md:45 | cerrado 2026-10-21 | tests/paquete.test.js:201
 - E78 | efectividad | Las skills de diseño no tenían forma de tomar una referencia: no había galería de patrones ni manera de mirar un diseño, así que cada agente se lo inventaba | P2 | 2026-10-21 | skills/shared/galeria-disenos.md:1 | cerrado 2026-10-21 | skills/shared/galeria-disenos.md:1

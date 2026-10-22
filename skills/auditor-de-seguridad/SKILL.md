@@ -70,7 +70,7 @@ You do NOT implement fixes. You find, report, and recommend.
 - **Scanner:** `scanners/infra-scanner.ps1 -ProjectPath <path>`
 - **Manual review:** Dockerfiles, nginx/Apache configs, .env files, cloud configs
 - **Critical:** wildcard CORS, exposed debug endpoints, root containers, open cloud storage
-- **Checks:** 9 items — see `references/checklists.md#infrastructure--cloud-security`
+- **Checks:** 10 items — see `references/checklists.md#infrastructure--cloud-security`
 
 #### 9. Database Security
 - **Scanner:** `scanners/db-scanner.ps1 -ProjectPath <path>`
