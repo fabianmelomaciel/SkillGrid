@@ -1,0 +1,41 @@
+# Aviso de terceros
+
+SkillGrid (MIT, ver LICENSE) adapta métodos de estos repos. No se copiaron
+archivos textuales: lo que se tomó se reescribió y vive en
+`skills/shared/finding-gate.md` y en los checklists del auditor.
+
+## anthropics/claude-code-security-review
+
+https://github.com/anthropics/claude-code-security-review
+
+Licencia MIT. Se tomaron: la revisión acotada a diffs, el filtro de falsos
+positivos y la salida estructurada por hallazgo. El motor, el agente y el
+GitHub Action quedaron afuera.
+
+## elementalsouls/Claude-BugHunter
+
+https://github.com/elementalsouls/Claude-BugHunter
+
+Código bajo MIT; contenido bajo CC BY 4.0
+(https://creativecommons.org/licenses/by/4.0/). Se tomaron: las cinco
+preguntas de validación, el Pre-Severity Gate y la higiene de evidencia.
+El material derivado está parafraseado y modificado para este proyecto; no se
+copiaron archivos textuales. El armamento por clase y el CLI quedaron afuera.
+
+## SnailSploit/Claude-Red
+
+https://github.com/SnailSploit/Claude-Red
+
+Licencia MIT. Se tomaron: el orden de los vectores y el anclaje CVSS.
+Active Directory, C2, evasión de EDR, persistencia, post-explotación y
+desarrollo de exploits quedaron afuera.
+
+## Consensys/repo-security-review
+
+https://github.com/Consensys/repo-security-review
+
+Sin licencia declarada al 2026-10-22. Solo se tomó la idea general
+finder→judgment (quien encuentra no valida), reescrita en clean-room. No se
+copió texto, código ni fases.
+
+Los avisos de copyright y licencia de cada fuente se mantienen en este archivo.

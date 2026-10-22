@@ -6,6 +6,7 @@ const GATE = path.join(ROOT, 'skills', 'shared', 'finding-gate.md');
 const AUDITOR = path.join(ROOT, 'skills', 'auditor-de-seguridad', 'SKILL.md');
 const HACK = path.join(ROOT, 'skills', 'hack-audit', 'SKILL.md');
 const REPOS = path.join(ROOT, 'skills', 'auditor-de-seguridad', 'references', 'external-repos.md');
+const NOTICE = path.join(ROOT, 'NOTICE');
 
 let passed = 0;
 let failed = 0;
@@ -53,6 +54,15 @@ test('external-repos atribuye las tres fuentes y marca lo que quedó afuera', ()
   check(/CC BY 4\.0/.test(t), 'falta la licencia CC BY 4.0 de BugHunter');
   check(/Consensys/.test(t), 'falta Consensys (sin licencia)');
   check(/Qué quedó afuera/.test(t), 'falta la lista de lo que NO se tomó');
+});
+
+test('el NOTICE atribuye las fuentes y viaja en el paquete', () => {
+  check(fs.existsSync(NOTICE), 'falta NOTICE');
+  const t = leer(NOTICE);
+  for (const repo of ['claude-code-security-review', 'Claude-BugHunter', 'Claude-Red', 'Consensys/repo-security-review']) check(t.includes(repo), `falta ${repo} en NOTICE`);
+  check(/CC BY 4\.0/.test(t), 'falta la licencia CC BY 4.0');
+  check(/sin licencia declarada/i.test(t), 'falta la aclaración de Consensys');
+  check(require('../package.json').files.includes('NOTICE'), 'NOTICE no viaja en el paquete');
 });
 
 console.log(`\n${passed} passed, ${failed} failed\n`);

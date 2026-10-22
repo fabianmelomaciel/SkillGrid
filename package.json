@@ -42,7 +42,8 @@
     "audit.sh",
     "audit.ps1",
     "generate-report-from-json.ps1",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "NOTICE"
   ],
   "scripts": {
     "validate": "node scripts/validate-skills.js",

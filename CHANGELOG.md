@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Los auditores de seguridad validan antes de reportar**: `skills/shared/finding-gate.md` centraliza las cinco preguntas de descarte, el filtro de falsos positivos, la higiene de evidencia y el anclaje CVSS v3.1. `auditor-de-seguridad` y `hack-audit` lo aplican antes de emitir el informe; el JSON suma `validation_status`, `cvss` y `confidence`, y el modo diff acota la revisión a los cambios de la rama. Adaptado de Anthropic `claude-code-security-review`, `Claude-BugHunter` y `Claude-Red`, con atribución y sin importar el armamento ofensivo. Test: `tests/finding-gate.test.js`.
+- **La atribución viaja en un NOTICE**: `NOTICE` deja por escrito qué se tomó de cada repo, con su licencia (MIT, CC BY 4.0 para el contenido de BugHunter) y qué quedó afuera. El archivo entra en el paquete npm y un test lo exige.
 
 ### Security
 - **El escáner de terceros detecta inyección en español y payloads ofuscados**: `scripts/scan-third-party.js` suma reglas para instrucciones que pisan las previas, pedidos de ocultarle algo al usuario, `eval(atob(...))`/`FromBase64String`/`IEX` y caracteres Unicode invisibles. Las skills de seguridad declaran su alcance (`cyber-neo` no duplica las 12 categorías, `hack-audit` fija el orden de vectores) y `preinstall-audit` explica cómo invocar el escáner instalado. Tests: `tests/preinstall-audit.test.js`, `tests/finding-gate.test.js`.

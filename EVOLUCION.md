@@ -29,6 +29,7 @@ Cómo se usa:
 - E85 | seguridad | El repo corría Node 20, que quedó EOL el 2026-04-30, y los tres workflows de CI lo pinan: los jobs quedan sin parches hasta que un humano los toque, porque la jaula protege los workflows | P1 | 2026-10-22 | .github/workflows/ci.yml:34
 
 ## Cerradas
+- E88 | legal | El repo adaptaba métodos de repos MIT/CC BY 4.0 sin un NOTICE que fijara qué se tomó de cada uno y qué quedó afuera, y el paquete npm no lo llevaba | P2 | 2026-10-22 | NOTICE:1 | cerrado 2026-10-22 | NOTICE:1, tests/finding-gate.test.js:59
 - E87 | seguridad | El escáner de terceros no veía inyección de contexto en español, payloads ofuscados ni Unicode invisible, y las skills de seguridad no tenían límites de alcance entre sí | P2 | 2026-10-22 | scripts/scan-third-party.js:40 | cerrado 2026-10-22 | scripts/scan-third-party.js:40, tests/preinstall-audit.test.js:87
 - E86 | seguridad | Los auditores estáticos reportaban hallazgos sin un gate de verificación independiente, sin modo diff y con la higiene de evidencia viviendo solo en hack-audit | P2 | 2026-10-22 | skills/auditor-de-seguridad/SKILL.md:126 | cerrado 2026-10-22 | skills/shared/finding-gate.md:1, tests/finding-gate.test.js:1
 - E84 | seguridad | La política de runtime PHP no viajaba en el paquete npm: `rules/` no estaba en `package.json` files, así que el consumidor de npm recibía la skill del auditor pero no la rule con el piso y el método de verificación | P2 | 2026-10-22 | package.json:26 | cerrado 2026-10-22 | package.json:34, tests/paquete.test.js:118
