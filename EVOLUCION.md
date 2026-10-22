@@ -26,7 +26,7 @@ Cómo se usa:
 6. Evolución terminada y todo resuelto → instalar en el IDE local del equipo, commit y push a GitHub. Sin ese pase el fix no llega a ningún lado.
 
 ## Abiertas
-- E85 | seguridad | El repo corría Node 20, que quedó EOL el 2026-04-30, y los tres workflows de CI lo pinan: los jobs quedan sin parches hasta que un humano los toque, porque la jaula protege los workflows | P1 | 2026-10-22 | .github/workflows/ci.yml:34
+- E85 | seguridad | El repo corría Node 20, que quedó EOL el 2026-04-30, y los workflows de CI lo siguen pineando (ci.yml en los dos jobs y ci-md.yml): los jobs quedan sin parches hasta que un humano los toque, porque la jaula protege los workflows | P1 | 2026-10-22 | .github/workflows/ci.yml:34
 
 ## Cerradas
 - E88 | legal | El repo adaptaba métodos de repos MIT/CC BY 4.0 sin un NOTICE que fijara qué se tomó de cada uno y qué quedó afuera, y el paquete npm no lo llevaba | P2 | 2026-10-22 | NOTICE:1 | cerrado 2026-10-22 | NOTICE:1, tests/finding-gate.test.js:59
