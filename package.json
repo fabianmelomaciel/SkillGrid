@@ -1,6 +1,6 @@
 {
   "name": "@fabianmelomaciel/skillgrid",
-  "version": "1.25.0",
+  "version": "1.26.0",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -31,6 +31,7 @@
     "!scripts/design-scout.js",
     "commands/",
     "docs/",
+    "rules/",
     "models.json",
     "catalog.json",
     "catalog-lite.json",

@@ -115,6 +115,18 @@ console.log('\nTesting paquete...\n');
     check(!extras.length, `se colaron: ${extras.slice(0, 5).join(', ')}`);
   });
 
+  await test('el paquete lleva las rules con el piso de runtime (E84)', async () => {
+    const archivos = listarPaquete().map((p) => p.replace(/\\/g, '/'));
+    const requeridos = [
+      'rules/php/security.md',
+      'rules/typescript/security.md',
+      'rules/python/security.md',
+      'skills/shared/runtime-floors.json',
+    ];
+    const faltan = requeridos.filter((r) => !archivos.some((p) => p.endsWith(r)));
+    check(!faltan.length, `no viajan en el tarball: ${faltan.join(', ')}`);
+  });
+
   await test('el paquete trae el CHANGELOG', async () => {
     check(listarPaquete().includes('CHANGELOG.md'), 'no está el CHANGELOG');
   });

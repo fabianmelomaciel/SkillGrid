@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.26.0] - 2026-10-22
+
+### Fixed
+- **Las rules viajan en el paquete npm (E84)**: el consumidor de npm recibía la skill del auditor pero no las reglas con el piso de runtime, así que la política de PHP se quedaba en el repo. Ahora `rules/` y `skills/shared/runtime-floors.json` van en el tarball y hay un test que lo exige (`tests/paquete.test.js`).
+
 ## [1.25.0] - 2026-10-22
 
 ### Added
