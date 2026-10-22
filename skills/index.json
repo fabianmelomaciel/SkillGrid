@@ -1,5 +1,5 @@
 {
-  "version": "1.2.46",
+  "version": "1.2.47",
   "generated": "2026-10-22",
   "summary": {
     "total": 44,
@@ -90,7 +90,7 @@
       "status": "stable",
       "risk_level": "critical",
       "token_estimate": {
-        "input": 3435,
+        "input": 3752,
         "output": 1374
       },
       "cost_tier": "medium",
@@ -300,7 +300,7 @@
       "status": "beta",
       "risk_level": "critical",
       "token_estimate": {
-        "input": 5180,
+        "input": 5495,
         "output": 1600
       },
       "cost_tier": "high",

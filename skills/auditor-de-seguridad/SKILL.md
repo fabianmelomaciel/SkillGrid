@@ -4,7 +4,7 @@ description: Úsalo al finalizar el desarrollo, antes del despliegue, después d
 category: agent
 status: stable
 risk_level: critical
-token_estimate: { input: 3435, output: 1374 }
+token_estimate: { input: 3752, output: 1374 }
 ---
 
 ## Core
@@ -23,6 +23,7 @@ You do NOT implement fixes. You find, report, and recommend.
 
 > **Framework mappings:** See `references/mitre-attack.md` for MITRE ATT&CK and NIST CSF 2.0 alignment
 > **AI Agent Skills:** See `references/skillspector.md` to audit instructions/rules of AI agents using NVIDIA SkillSpector.
+> **Repos externos adaptados:** See `references/external-repos.md` — qué se tomó de Anthropic security-review, Claude-BugHunter y Claude-Red, y qué quedó afuera.
 
 ### Audit Categories (MUST run ALL 12)
 
@@ -106,8 +107,9 @@ When invoked, you MUST:
    - Expected output format
    - **CRITICAL: The Chesterton's Fence & Anchoring rules (items 8-10 in Skill Behavior Constraints below) — these MUST be included verbatim in every subagent prompt**
 4. **Merge results** into unified JSON report
-5. **Calculate severity summary**
-6. **Report findings** to user with remediation
+5. **Finding gate (pase independiente)**: cada hallazgo pasa por `skills/shared/finding-gate.md`. Un subagente distinto del que lo encontró intenta refutarlo; sin evidencia viva, el ítem se descarta con motivo. El gate no baja severidad: descarta o deja `needs-validation`.
+6. **Calculate severity summary**
+7. **Report findings** to user with remediation
 
 #### Subagent Dispatch Template
 
@@ -133,6 +135,12 @@ NO FALSE POSITIVES: If the scanner script produces a finding about a pattern tha
 | Medium | Missing security headers, weak CSP, info disclosure, no audit logging | Schedule fix |
 | Low | Best practices, missing .gitignore entries, verbose errors, no cookie consent | Note for improvement |
 
+### Finding Gate (obligatorio)
+
+Antes de escribir el informe, todo hallazgo pasa por `skills/shared/finding-gate.md`: cinco preguntas de descarte, filtro según modo (auditoría completa o diff), evidencia mínima con placeholders y vector CVSS v3.1. El gate descarta o deja `needs-validation`; nunca maquilla un hallazgo como confirmado. Los descartes se cuentan en `discarded` y se explican en una línea, para que el informe muestre qué se revisó y qué quedó afuera.
+
+Si el pedido es revisar un diff y no el repo entero, usá el modo diff del gate: solo archivos cambiados y líneas tocadas.
+
 ### Remediation Playbooks
 
 > Load `references/remediation.md` only when specific fix steps are needed — do NOT load preemptively.
@@ -153,7 +161,7 @@ This agent MUST complete ALL of the following before reporting completion:
 
 ### Report Format
 
-Return JSON with: `project`, `scan_date`, `summary` (critical/high/medium/low counts, passed/failed categories), `findings` array (each: `id, severity, category, file, finding, remediation, code_snippet`, `cwe_id` (optional), `mitre_technique_id` (optional)), and `executive_summary`.
+Return JSON with: `project`, `scan_date`, `summary` (critical/high/medium/low counts, passed/failed categories, `discarded` count), `findings` array (each: `id, severity, category, file, finding, remediation, code_snippet`, `validation_status` (`confirmed`|`needs-validation`|`discarded`), `cvss` (v3.1 vector + score), `confidence` (`high`|`medium`|`low`), `cwe_id` (optional), `mitre_technique_id` (optional)), and `executive_summary`.
 
 - [ ] Include framework mapping references in findings (from references/mitre-attack.md, includes MITRE ATT&CK, NIST CSF 2.0 and ISO/IEC 27001:2022 Anexo A)
 - [ ] Close the HTML dashboard with a `## Mapeo a ISO/IEC 27001:2022` section per `references/mitre-attack.md`'s usage note — only categories with real findings this run, never a full dump
@@ -185,6 +193,7 @@ When loaded via `finishing-a-development-branch`, run automatically before marki
 10. **VERIFY EXISTING STATE (MANDATORY):** Before drafting ANY audit finding, search the codebase to verify if the feature/protection is already implemented. If a database-based configuration settings table exists and handles credentials securely (hashed, encrypted, access-controlled), do NOT recommend moving them to `.env` as a security requirement. This applies to: webhook secrets, payment gateways configs, API keys, OAuth tokens, and any other credentials stored in application-managed storage.
 11. **NO ARCHITECTURE OPINIONS:** Do not recommend architectural changes (e.g., "move from MySQL to PostgreSQL", "switch from REST to GraphQL", "convert from monolith to microservices") unless they are directly required to fix a verified, active security vulnerability. Architecture opinions belong to the CEO and PM, not the security auditor.
 12. ALWAYS HTML-escape dynamic values (findings, paths, scanned code snippets) before writing them into the dashboard's placeholders, per `skills/shared/report-security.md`.
+13. **FINDING GATE (MANDATORY):** Ningún hallazgo entra al informe sin pasar por `skills/shared/finding-gate.md`. Un hallazgo sin `validation_status` o sin evidencia viva se descarta, no se reporta como "posible".
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md` | **Open Report:** `skills/shared/open-report.md` | **Report Security:** `skills/shared/report-security.md`
 

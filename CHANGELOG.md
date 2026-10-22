@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Los auditores de seguridad validan antes de reportar**: `skills/shared/finding-gate.md` centraliza las cinco preguntas de descarte, el filtro de falsos positivos, la higiene de evidencia y el anclaje CVSS v3.1. `auditor-de-seguridad` y `hack-audit` lo aplican antes de emitir el informe; el JSON suma `validation_status`, `cvss` y `confidence`, y el modo diff acota la revisión a los cambios de la rama. Adaptado de Anthropic `claude-code-security-review`, `Claude-BugHunter` y `Claude-Red`, con atribución y sin importar el armamento ofensivo. Test: `tests/finding-gate.test.js`.
+
 ## [1.26.0] - 2026-10-22
 
 ### Fixed

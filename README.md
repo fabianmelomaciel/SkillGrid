@@ -190,11 +190,11 @@ Genera reglas optimizadas dentro de tu proyecto:
 | `agente-ideas` | Úsalo cuando el CEO o otro agente plantea una decisión técnica compleja, ambigua o de… | 3376 |
 | `audit-loop` | Orquesta el bucle cerrado: auditar → corregir → re-auditar → iterar. Se activa como… | 2730 |
 | `auditor-de-marketing` | Úsalo para auditar el crecimiento del sitio web, SEO on-page, marcado de esquema,… | 3970 |
-| `auditor-de-seguridad` | Úsalo al finalizar el desarrollo, antes del despliegue, después de la generación de… | 3435 |
+| `auditor-de-seguridad` | Úsalo al finalizar el desarrollo, antes del despliegue, después de la generación de… | 3752 |
 | `cyber-neo` | Análisis integral de ciberseguridad para cualquier proyecto local. Escanea… | 4153 |
 | `execution-runtime` | Gestiona entornos de ejecución seguros y aislados (como Docker, WASM o microVMs) para… | 950 |
 | `gestor-documental` | Úsalo para diseñar, auditar, dar formato y validar documentos técnicos y científicos de… | 1738 |
-| `hack-audit` | Pentest autónomo con explotación real: mapea el código y toda la superficie local/de… | 5180 |
+| `hack-audit` | Pentest autónomo con explotación real: mapea el código y toda la superficie local/de… | 5495 |
 | `optimizador-finops` | Úsalo para auditar la utilización de recursos computacionales, la eficiencia de las APIs… | 1813 |
 | `project-manager` | Agente Project Manager. El CEO da la dirección; el PM planifica, delega, revisa y reporta. | 2800 |
 | `prompt-injection-guard` | Defiende contra ataques de inyección de prompts en aplicaciones potenciadas por IA.… | 2834 |

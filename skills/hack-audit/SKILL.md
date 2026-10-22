@@ -16,7 +16,7 @@ description: >
 category: agent
 status: beta
 risk_level: critical
-token_estimate: { input: 5180, output: 1600 }
+token_estimate: { input: 5495, output: 1600 }
 allowed-tools:
   - Read
   - Grep
@@ -192,6 +192,8 @@ Tratalo como una extensión de "Autenticación rota", con reglas propias — est
 ## FASE 5 — VALIDACIÓN
 
 Volvé a revisar cada ítem que sobrevivió la fase 4: ¿el PoC es reproducible solo con la evidencia guardada?, ¿cruza de verdad una frontera de confianza según el veredicto de la fase 2?, ¿es un efecto genuino y no un artefacto del entorno de test o un fixture? Descartá lo que no pase este filtro — tampoco va en el informe.
+
+Ese filtro es el mismo `skills/shared/finding-gate.md` que usa el auditor estático: cinco preguntas, evidencia mínima con placeholders y vector CVSS v3.1. Lo que no pasa se descarta con motivo; no se reporta como "posible".
 
 ---
 
