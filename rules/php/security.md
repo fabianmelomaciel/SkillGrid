@@ -23,6 +23,7 @@ paths:
   - `composer.json` `require.php` is a declared minimum, not the runtime, and `config.platform.php` does not change what the host runs.
   - No evidence of the host runtime means **unverified**, which is a finding — never "safe".
 - The runtime is upgraded in the hosting panel or by switching the PHP build, not by editing the repo.
+- **Gate before any work:** read the version from the serving SAPI (steps above) and compare it against the floor of that branch — part by part (8.5.12 ≥ 8.5.9 is true, `8.5.12` >= `8.5.9` as text is not). Without a verified, patched runtime: do not review, do not write code — the finding "runtime unverified" has priority over everything else and the review stops there. Floor data itself has a TTL; expired floor data is the same finding.
 - Since 8.5.11 the HTTP stream wrapper stops forwarding `Authorization`, `Cookie` and `Proxy-Authorization` to a different host on redirect: a new 401 after the upgrade is the upgrade, not a broken app.
 - Team baseline (2026-10-22): Laragon ships 8.5.12, at the floor; the shared Hostinger plan serves 8.5.11, below the floor — treat it as exposed until the host updates.
 

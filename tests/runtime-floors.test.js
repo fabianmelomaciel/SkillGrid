@@ -80,7 +80,7 @@ console.log('\nTesting runtime-floors...\n');
         console.log(`       (dato vencido hace ${edad - datos.ttl_days} días, saltado en CI)`);
         return;
       }
-      throw new Error(`el dato tiene ${edad} días y el ttl es ${datos.ttl_days}: refrescá runtime-floors.json`);
+      throw new Error(`el dato tiene ${edad} días y el ttl es ${datos.ttl_days}: ritual de pisos — node scripts/sync-floors.js --fetch (a scratch/, revisión humana + OK del CEO), actualizar skills/shared/runtime-floors.json (checked_at y floors, solo suben), mención CVE de rules/php/security.md si cambió el vector, npm run floors && npm test, npm run evolve + npm run evolve:mark`);
     }
   });
 

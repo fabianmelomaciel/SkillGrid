@@ -22,6 +22,10 @@ Regla dura: el ledger es solo del desarrollador, en dev — nunca se publica en 
 
 Cierre del ciclo: evolución terminada y todo resuelto → instalar en el IDE local del equipo, commit y push a GitHub.
 
+## pisos de runtime
+
+Antes de inspeccionar otro proyecto o generar código que corra sobre PHP/Node/Python, corré `node scripts/sync-floors.js --check`. Si el dato de `skills/shared/runtime-floors.json` venció (ttl 30 días), no arranca ningún trabajo: el ritual es `--fetch` (baja propuestas a `scratch/pisos-propuesta/`, nunca aplica solo), revisión humana + OK del CEO, subir pisos y `checked_at`, mención CVE de la rule si cambió el vector, `npm run floors && npm test`, y cerrar con `npm run evolve` + `evolve:mark`. Los pisos nunca bajan — lo vigila `tests/runtime-floors.test.js`.
+
 ## graphify
 
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
