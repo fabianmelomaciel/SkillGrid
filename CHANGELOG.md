@@ -7,11 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.27.0] - 2026-10-22
+
 ### Added
 - **Los auditores de seguridad validan antes de reportar**: `skills/shared/finding-gate.md` centraliza las cinco preguntas de descarte, el filtro de falsos positivos, la higiene de evidencia y el anclaje CVSS v3.1. `auditor-de-seguridad` y `hack-audit` lo aplican antes de emitir el informe; el JSON suma `validation_status`, `cvss` y `confidence`, y el modo diff acota la revisión a los cambios de la rama. Adaptado de Anthropic `claude-code-security-review`, `Claude-BugHunter` y `Claude-Red`, con atribución y sin importar el armamento ofensivo. Test: `tests/finding-gate.test.js`.
 - **La atribución viaja en un NOTICE**: `NOTICE` deja por escrito qué se tomó de cada repo, con su licencia (MIT, CC BY 4.0 para el contenido de BugHunter) y qué quedó afuera. El archivo entra en el paquete npm y un test lo exige.
 
 ### Security
+- **Los pisos de seguridad vencen solos y el fetch va con gate**: el TTL del relevamiento de runtimes baja de 45 a 30 días (el ciclo de parches de PHP es de 27) y `sync-floors.js --check` sale 1 si el dato está vencido y ya no inyecta pisos vencidos en las rules. El nuevo `--fetch` baja propuestas solo de las fuentes declaradas (allowlist, verificación anti-SSRF por DNS, redirects acotados al allowlist) a `scratch/pisos-propuesta/`, nunca aplica solo, y el ritual completo de refresco queda impreso en el error y documentado en `AGENTS.md`. Test: `tests/runtime-floors.test.js`.
+- **El runtime del host se verifica antes de trabajar**: `rules/php/security.md` agrega el gate pre-trabajo — leer la versión del SAPI que sirve, compararla por partes contra el piso y, sin verificación, frenar la revisión como hallazgo "runtime unverified". Frente a php2shell (CVE-2026-109618/109619), los pisos ya amarraban 8.5.12/8.4.27/8.3.36/8.2.35.
 - **El escáner de terceros detecta inyección en español y payloads ofuscados**: `scripts/scan-third-party.js` suma reglas para instrucciones que pisan las previas, pedidos de ocultarle algo al usuario, `eval(atob(...))`/`FromBase64String`/`IEX` y caracteres Unicode invisibles. Las skills de seguridad declaran su alcance (`cyber-neo` no duplica las 12 categorías, `hack-audit` fija el orden de vectores) y `preinstall-audit` explica cómo invocar el escáner instalado. Tests: `tests/preinstall-audit.test.js`, `tests/finding-gate.test.js`.
 
 ## [1.26.0] - 2026-10-22
