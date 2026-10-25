@@ -35,7 +35,7 @@
 - 📦 **Pick a profile** — install only the skills your team needs.
 
 ### ⚡ TL;DR
-- **44 skills, one command** — `/brainstorming`, `/agente-ideas`, `/auditor-de-seguridad`…
+- **44 skills, one slash away** — `/agente-ideas`, `/auditor-de-seguridad`, `/audit-loop`… and any skill with `@brainstorming`.
 - **Self-auditing** — its own gate + security on every PR.
 - **Memory + efficiency** — local `CODEX.md` + CodeGraph: up to **−90%** tokens per session.
 
@@ -47,7 +47,7 @@
 | **Cost** | Full context every task | ~1.4K tokens/session, −90% with CodeGraph |
 
 ### 🚀 First steps
-Once installed, just type a skill name in your agent: `/agente-ideas` (decide), `/auditor-de-seguridad` (audit), `/brainstorming` (design), `/audit-loop` (audit → fix → re-audit).
+Once installed, type `/agente-ideas` (decide), `/auditor-de-seguridad` (audit) or `/audit-loop` (audit → fix → re-audit). Skills load with `@brainstorming`, `@hack-audit` or their exact ID.
 
 ---
 
@@ -63,7 +63,7 @@ Once installed, just type a skill name in your agent: `/agente-ideas` (decide), 
 - 📦 **Elegí un perfil** — instalá solo las skills que tu equipo necesita.
 
 ### ⚡ TL;DR
-- **44 skills, un comando** — `/brainstorming`, `/agente-ideas`, `/auditor-de-seguridad`…
+- **44 skills, a un slash** — `/agente-ideas`, `/auditor-de-seguridad`, `/audit-loop`… y cualquier skill con `@brainstorming`.
 - **Se audita solo** — su propio gate + seguridad en cada PR.
 - **Memoria y eficiencia** — `CODEX.md` local + CodeGraph: hasta **−90%** de tokens por sesión.
 
@@ -75,7 +75,7 @@ Once installed, just type a skill name in your agent: `/agente-ideas` (decide), 
 | **Costo** | Contexto completo en cada tarea | ~1.4K tok/sesión, −90% con CodeGraph |
 
 ### 🚀 Primeros pasos
-Con las skills instaladas, escribí su nombre en tu agente: `/agente-ideas` (decidir), `/auditor-de-seguridad` (auditar), `/brainstorming` (diseñar), `/audit-loop` (auditar → corregir → re-auditar).
+Con las skills instaladas, escribí `/agente-ideas` (decidir), `/auditor-de-seguridad` (auditar) o `/audit-loop` (auditar → corregir → re-auditar). Las skills se cargan con `@brainstorming`, `@hack-audit` o el ID exacto.
 
 ---
 

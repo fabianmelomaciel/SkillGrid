@@ -130,6 +130,9 @@ const TASKS = {
   'generate-agents': (args) => {
     const [scriptDir, agentsDir, profileName] = args;
     const skillsDir = path.join(scriptDir, 'skills');
+    const commandsDir = path.join(path.dirname(agentsDir), 'commands');
+    fs.mkdirSync(agentsDir, { recursive: true });
+    fs.mkdirSync(commandsDir, { recursive: true });
     let allowed = null;
     if (profileName && profileName !== 'all') {
       try {
@@ -155,11 +158,24 @@ const TASKS = {
             if (lines[0] === '---') {
               const endIdx = lines.indexOf('---', 1);
               if (endIdx > 0) {
-                const fm = lines.slice(1, endIdx).join('\n');
+                const fmLines = lines.slice(1, endIdx);
+                const fm = fmLines.join('\n');
                 const n = fm.match(/^name:\s*(.+)$/m);
                 if (n) name = n[1].trim().replace(/^"(.*)"$/, '$1');
-                const m = fm.match(/description:\s*(?:["']?)([^"'\n]+)/);
-                if (m) desc = m[1].trim();
+                const dIdx = fmLines.findIndex((l) => /^description:\s*/.test(l));
+                if (dIdx >= 0) {
+                  const valor = fmLines[dIdx].replace(/^description:\s*/, '').trim();
+                  if (/^[>|][+-]?$/.test(valor)) {
+                    const partes = [];
+                    for (let i = dIdx + 1; i < fmLines.length; i++) {
+                      if (!/^\s+/.test(fmLines[i])) break;
+                      partes.push(fmLines[i].trim());
+                    }
+                    desc = partes.join(' ').trim();
+                  } else {
+                    desc = valor.replace(/^["'](.*)["']$/, '$1');
+                  }
+                }
                 const c = fm.match(/^category:\s*(.+)$/m);
                 if (c) category = c[1].trim();
                 body = lines.slice(endIdx + 1).join('\n').trim();
@@ -167,9 +183,12 @@ const TASKS = {
             }
             if (category !== 'agent') return;
             if (allowed && !allowed.has(name)) return;
-            const agentContent = `---\ndescription: ${desc}\nmode: subagent\npermission:\n  edit: deny\n  bash: deny\n---\n\n${body}`;
+            const descYaml = JSON.stringify(desc);
+            const agentContent = `---\ndescription: ${descYaml}\nmode: subagent\npermission:\n  edit: deny\n  bash: deny\n---\n\n${body}`;
             fs.writeFileSync(path.join(agentsDir, d.name + '.md'), agentContent, 'utf8');
-            console.log('  Agente: ' + d.name + '.md');
+            const commandContent = `---\ndescription: ${descYaml}\nagent: ${d.name}\nsubagent: false\n---\n\n$ARGUMENTS\n`;
+            fs.writeFileSync(path.join(commandsDir, d.name + '.md'), commandContent, 'utf8');
+            console.log('  Agente: ' + d.name + '.md (/' + d.name + ')');
           } else {
             scanForSkills(fullPath);
           }

@@ -64,6 +64,57 @@ test('commands/ y .opencode/commands/ están sincronizadas', () => {
   });
 });
 
+function generarAgentes(src, dest) {
+  return spawnSync(process.execPath, [SCRIPT, 'generate-agents', src, dest], { encoding: 'utf8' });
+}
+
+function agenteDePrueba(src, nombre, frontmatter) {
+  const dir = path.join(src, 'skills', nombre);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, 'SKILL.md'),
+    `---\nname: ${nombre}\n${frontmatter}\ncategory: agent\n---\n\nCuerpo del agente.\n`,
+    'utf8',
+  );
+}
+
+console.log('\nTesting generate-agents...\n');
+
+test('genera el agente y su comando /agente para abrirlo desde la TUI', () => {
+  const src = carpeta();
+  const dest = carpeta();
+  agenteDePrueba(src, 'prueba-agente', 'description: Un agente de prueba');
+
+  const r = generarAgentes(src, path.join(dest, 'agents'));
+  check(r.status === 0, `exit ${r.status}: ${(r.stderr || '').trim()}`);
+
+  const agente = path.join(dest, 'agents', 'prueba-agente.md');
+  const comando = path.join(dest, 'commands', 'prueba-agente.md');
+  check(fs.existsSync(agente), 'no generó el agente');
+  check(fs.existsSync(comando), 'no generó el comando');
+
+  const texto = fs.readFileSync(comando, 'utf8');
+  check(/^agent: prueba-agente$/m.test(texto), 'el comando no apunta al agente');
+  check(/^subagent: false$/m.test(texto), 'el comando no corre en la sesión actual');
+  check(texto.includes('$ARGUMENTS'), 'el comando no recibe argumentos');
+
+  const desc = texto.match(/^description: (.*)$/m);
+  check(desc, 'el comando no tiene descripción');
+  check(JSON.parse(desc[1]) === 'Un agente de prueba', 'la descripción no es YAML válido');
+});
+
+test('lee las descripciones multilínea sin dejarlas vacías', () => {
+  const src = carpeta();
+  const dest = carpeta();
+  agenteDePrueba(src, 'agente-multilinea', 'description: >\n  Primera parte\n  segunda parte');
+
+  const r = generarAgentes(src, path.join(dest, 'agents'));
+  check(r.status === 0, `exit ${r.status}: ${(r.stderr || '').trim()}`);
+
+  const texto = fs.readFileSync(path.join(dest, 'agents', 'agente-multilinea.md'), 'utf8');
+  check(texto.includes('"Primera parte segunda parte"'), 'perdió el texto de la descripción');
+});
+
 TEMP.forEach((dir) => fs.rmSync(dir, { recursive: true, force: true }));
 
 console.log(`\n${passed} passed, ${failed} failed\n`);

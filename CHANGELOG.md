@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Los agentes aparecen con `/` al instalar**: `scripts/install-tasks.js` ahora escribe un comando por agente en `~/.config/opencode/commands/`, así que `/agente-ideas`, `/auditor-de-seguridad` y el resto existen apenas termina la instalación. De paso el generador entiende descripciones multilínea (`description: >`) y ya no deja a `cyber-neo` y `hack-audit` sin descripción. Test: `tests/install-tasks.test.js`.
+- **El README separa agentes de skills**: los agentes se abren con `/agente-*` y las skills se cargan con `@skill-id`, que es lo que hace opencode V2.
+
 ## [1.27.0] - 2026-10-22
 
 ### Added
