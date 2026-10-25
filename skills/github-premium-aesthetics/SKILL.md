@@ -1,10 +1,10 @@
 ---
 name: github-premium-aesthetics
-description: "Implements cutting-edge GitHub/Vercel-inspired UI patterns including Bento grids, glowing borders, mesh gradients, fluid motion, View Transitions and scroll-driven animations."
+description: "Craft mechanics for premium surfaces — border glow, spring physics, the View Transitions ladder — applied to a visual direction that already exists. Picks no palette, no background and no layout: those come from the ficha in galeria-disenos.md. Use once the direction is decided, not to decide it."
 category: design
 status: stable
 risk_level: safe
-token_estimate: { input: 2359, output: 676 }
+token_estimate: { input: 1910, output: 470 }
 ---
 
 ## Core
@@ -13,26 +13,23 @@ token_estimate: { input: 2359, output: 676 }
 
 ## When to Use
 
-Use this skill when designing or refactoring frontends where visual quality must look premium, modern, and distinct from typical AI-generated interfaces. It specializes in integrating custom GitHub/Vercel/Linear style components, Bento grids, mesh gradients, keyboard HUDs, and advanced CSS physics.
+Use it once the visual direction is already chosen and the surface needs the craft layer: the border treatment, the spring, the transition between states, the scroll-linked detail. If nobody named a direction yet, this is the wrong file — the direction comes first, in `skills/emil-kowalski-design/SKILL.md` ("Dirección").
 
-> **Galería de diseños:** `skills/shared/galeria-disenos.md` — los tres patrones que ya tenemos (landing con halo, tarjeta de papel, star card) y el procedimiento para tomar uno nuevo: captura a PNG, tokens fuera, ficha escrita.
+> **La ficha manda.** Paleta, tipografía, radios y fondo salen de la ficha elegida en `skills/shared/galeria-disenos.md`. Sin ficha citada no se escribe CSS de identidad: se elige una de las tres o se pide una captura. Este archivo aporta la física, no el look.
 
 ## Workflow
 
-### Step 1: Analyze Stack & Aesthetic Goal
-First, identify the target framework (e.g. Next.js, Vite, Vanilla HTML) and select a layout archetype that guarantees a unique design footprint. Reject generic card lists and center-aligned templates.
+### Step 1: Analyze Stack
+Identify the target framework (Next.js, Vite, vanilla HTML). The archetype is not chosen here — the ficha already settled it; this step only decides how it gets built.
 
-### Step 2: Establish Layout and Mesh Backgrounds
-Create ambient depth by setting a dark base with radial mesh gradients and a noise SVG filter.
+### Step 2: Ambient Depth, Colours From the Ficha
+When the ficha asks for an ambient field, one radial at the accent plus a noise layer is enough. The base can be light — the violet/cyan/pink triad is the tell of generated UI, and it does not live in this file.
 
 ```css
-/* Premium Glassmorphic Mesh Background with Noise */
+/* Ambient field — --bg and --accent come from the ficha */
 .ambient-bg {
-  background-color: hsl(240, 10%, 3.9%);
-  background-image: 
-    radial-gradient(at 0% 0%, hsla(244, 47%, 53%, 0.15) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, hsla(180, 70%, 50%, 0.12) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, hsla(338, 70%, 50%, 0.08) 0px, transparent 50%);
+  background-color: var(--bg);
+  background-image: radial-gradient(at 0% 0%, color-mix(in oklab, var(--accent) 15%, transparent) 0px, transparent 50%);
   position: relative;
 }
 .ambient-bg::before {
@@ -45,22 +42,8 @@ Create ambient depth by setting a dark base with radial mesh gradients and a noi
 }
 ```
 
-### Step 3: Implement Unique Bento Grids
-Layout components in a Bento Grid format with varying column/row spans. Never repeat identical aspect ratios.
-
-```css
-.bento-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 1.5rem;
-}
-.bento-card-large { grid-column: span 8; grid-row: span 2; }
-.bento-card-medium { grid-column: span 4; grid-row: span 2; }
-.bento-card-small { grid-column: span 4; grid-row: span 1; }
-@media (max-width: 1024px) {
-  .bento-grid > * { grid-column: span 12 !important; }
-}
-```
+### Step 3: Bento Only If the Direction Says Bento
+It is one archetype out of five, not the house style. When the ficha says bento, no two cards share a proportion. When it says editorial, asymmetric or single-column, this step does not apply and the grid is whatever the ficha measured.
 
 ### Step 4: Add Interactive Border Glows (Skeuomorphic Borders)
 Implement modern 1px borders with hover-driven gradient glow effects that track mouse movement or simulate spotlighting.
@@ -68,18 +51,18 @@ Implement modern 1px borders with hover-driven gradient glow effects that track 
 ```css
 .glow-card {
   position: relative;
-  background: hsla(240, 6%, 10%, 0.6);
-  border: 1px solid hsla(240, 5%, 15%, 0.8);
-  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   overflow: hidden;
   backdrop-filter: blur(12px);
-  transition: border-color 0.3s ease;
+  transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .glow-card::before {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 12px;
+  border-radius: var(--radius);
   padding: 1px;
   background: linear-gradient(135deg, hsla(0, 0%, 100%, 0.1), transparent, hsla(0, 0%, 100%, 0.05));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -89,40 +72,34 @@ Implement modern 1px borders with hover-driven gradient glow effects that track 
   pointer-events: none;
 }
 .glow-card:hover {
-  border-color: hsla(244, 47%, 60%, 0.4);
+  border-color: color-mix(in oklab, var(--accent) 40%, transparent);
 }
 ```
 
-### Step 5: Incorporate Keyboard-First HUD & Command Palette
-Allow users to interact via command consoles (`Cmd+K` inputs) with minimalist shortcuts styling.
+### Step 5: A Command Palette Is a Product Decision
+A `⌘K` HUD ships when the product is keyboard-first, not to look premium. As decoration it is the most recognisable generated-UI tic.
 
-```html
-<!-- Mini HUD shortcut badge -->
-<div class="hud-badge">
-  <span class="text-xs text-neutral-400">Search</span>
-  <kbd class="ml-2 px-1.5 py-0.5 text-[10px] font-mono bg-neutral-800 border border-neutral-700 rounded text-neutral-300">⌘K</kbd>
-</div>
-```
-
-### Step 6: Fluid Typography & Math Scaling
-Always utilize CSS `clamp()` for headings to ensure text scale feels dynamic and scales perfectly.
+### Step 6: Fluid Typography, When the Scale Is Fluid
+`clamp()` when the ficha's scale is fluid. Tracking is a decision (editorial `-0.01em`, display `-0.04em`), not a constant — copying `-0.04em` everywhere is how two different brands end up with the same headline.
 
 ```css
 h1 {
   font-size: clamp(2.25rem, 5vw + 1rem, 4.5rem);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.1;
+  font-weight: var(--weight-display);
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-display);
 }
 ```
 
-### Step 7: Apply Physics-Based Spring Motions
-Ensure UI feels fast and premium with custom spring easing curves. Avoid browser default `ease` or linear values.
+Both `--weight-display` and `--tracking-display` come from the ficha. Hardcoding `800 / -0.04em` is how every landing ends up with the same headline.
+
+### Step 7: Spring Physics, Inside the Duration Rule
+Custom spring curves, never the browser defaults — and inside the 100–300ms window: a 350ms spring reads as sluggish.
 
 ```css
 /* Snappy entering motion */
 .panel-enter {
-  animation: spring-in 350ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: spring-in 240ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 @keyframes spring-in {
   from { opacity: 0; transform: translateY(12px) scale(0.98); }
@@ -143,65 +120,7 @@ Pick the first rung that fits; never jump to a library when CSS or a platform AP
 | 5 | **GSAP** | Intricate timelines, SVG morphing, path animation. Gratis desde Webflow pero licencia estándar (no-OSI): bien en sites de cliente, mal en herramientas que compitan con Webflow |
 | 6 | WebGL / Three.js | Solo cuando el proyecto pide 3D explícitamente |
 
-**View Transitions recipe (same-document):**
-
-```js
-// Feature-detect + reduced-motion: bajo reduce, swap instantáneo sin transición
-function transitionUpdate(updateDOM) {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches
-      || !document.startViewTransition) {
-    updateDOM();
-    return;
-  }
-  document.startViewTransition(updateDOM);
-}
-```
-
-```css
-.hero-media { view-transition-name: hero; }   /* único por nombre en la página */
-::view-transition-old(root) { animation: 150ms ease fade-out; }
-::view-transition-new(root) { animation: 250ms cubic-bezier(0.16, 1, 0.3, 1) fade-in; }
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none; }
-}
-```
-
-**Cross-document (MPA)** — progressive enhancement, Firefox todavía no:
-
-```css
-@view-transition { navigation: auto; }   /* ambos documentos deben opt-in */
-```
-
-**Scroll-driven recipe (progress bar):**
-
-```css
-.sg-progress {
-  position: fixed; inset-inline: 0; top: 0; height: 3px;
-  transform: scaleX(0); transform-origin: 0 50%;
-  background: hsla(244, 47%, 60%, 0.9);
-}
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .sg-progress {
-      animation: sg-grow linear both;
-      animation-timeline: scroll(root block);
-    }
-  }
-}
-@keyframes sg-grow { to { transform: scaleX(1); } }
-```
-
-**Overlay trio (tooltips/menús sin JS de animación):** Popover API + `@starting-style` + `transition-behavior: allow-discrete` — el enter anima desde el primer frame y el exit respeta `display: none` discreto:
-
-```css
-.tip {
-  opacity: 0;
-  transition: opacity 150ms cubic-bezier(0.16, 1, 0.3, 1),
-              overlay allow-discrete, display allow-discrete;
-}
-.tip:popover-open { opacity: 1; }
-@starting-style { .tip:popover-open { opacity: 0; } }
-```
+**Recipe guards** — feature-detect, `prefers-reduced-motion`, unique `view-transition-name`, `@supports (animation-timeline: …)`, Popover + `@starting-style` — are written once in `skills/emil-kowalski-design/SKILL.md` (Animation Rules). Read them there instead of keeping a second copy that drifts.
 
 ## Tools
 

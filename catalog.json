@@ -1,6 +1,6 @@
 {
   "version": "1.27.0",
-  "generated": "2026-10-23",
+  "generated": "2026-10-25",
   "summary": {
     "total": 44,
     "categories": {
@@ -145,7 +145,7 @@
     },
     {
       "name": "github-premium-aesthetics",
-      "description": "Implements cutting-edge GitHub/Vercel-inspired UI patterns including Bento grids, glowing borders, mesh gradients, fluid motion, View Transitions and scroll-driven animations.",
+      "description": "Craft mechanics for premium surfaces — border glow, spring physics, the View Transitions ladder — applied to a visual direction that already exists. Picks no palette, no background and no layout: those come from the ficha in galeria-disenos.md. Use once the direction is decided, not to decide it.",
       "category": "design",
       "status": "stable",
       "risk_level": "safe"

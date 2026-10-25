@@ -17,40 +17,28 @@ Do not ship generic template-looking UI. Frontend output should look intentional
 - Dashboard-by-numbers layouts with sidebar + cards + charts and no point of view
 - Default font stacks used without a deliberate reason
 
-### Required Qualities
+### The Floor
 
-Every meaningful frontend surface should demonstrate at least four of these:
+Uniformity is the tell: identical radii, identical gaps, one accent on grey. A surface clears this before anyone argues taste:
 
 1. Clear hierarchy through scale contrast
-2. Intentional rhythm in spacing, not uniform padding everywhere
-3. Depth or layering through overlap, shadows, surfaces, or motion
-4. Typography with character and a real pairing strategy
-5. Color used semantically, not just decoratively
-6. Hover, focus, and active states that feel designed
-7. Grid-breaking editorial or bento composition where appropriate
-8. Texture, grain, or atmosphere when it fits the visual direction
-9. Motion that clarifies flow instead of distracting from it
-10. Data visualization treated as part of the design system, not an afterthought
+2. Rhythm in spacing, not uniform padding everywhere
+3. Depth or layering where the direction asks for it
+4. Typography with a real pairing strategy
+5. Color doing a job, not decorating
+6. Hover, focus, and active states that were designed
+7. A composition that breaks its own grid exactly once
 
 ## Before Writing Frontend Code
 
-1. Pick a specific style direction. Avoid vague defaults like "clean minimal".
-2. Define a palette intentionally.
-3. Choose typography deliberately.
-4. Gather at least a small set of real references.
-5. Use ECC design/frontend skills where relevant.
+1. Write the five values of "Dirección" — `skills/emil-kowalski-design/SKILL.md`: typology, density, hierarchy, grid, voice.
+2. Pick the ficha: a captured reference with tokens, or one of the three in `skills/shared/galeria-disenos.md`. Name it.
+3. Palette, type and radii come from that ficha. If it has none, extract them first — inventing them is how the default comes back.
+4. Name the discard: the obvious option, and the banned pattern it matches above.
 
-## Worthwhile Style Directions
+## Style References Are Not a Menu
 
-- Editorial / magazine
-- Neo-brutalism
-- Glassmorphism with real depth
-- Dark luxury or light luxury with disciplined contrast
-- Bento layouts
-- Scrollytelling
-- 3D integration
-- Swiss / International
-- Retro-futurism
+Nine styles on a list is not a direction: whichever one the agent picks, the output is the average of the list. Bento, mesh gradients and glass are one house's patterns, not the house style.
 
 Do not default to dark mode automatically. Choose the visual direction the product actually wants.
 

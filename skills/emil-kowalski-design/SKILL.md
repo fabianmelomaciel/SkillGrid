@@ -25,6 +25,27 @@ You are applying the design philosophy of Emil Kowalski — the idea that **tast
 
 ---
 
+## 🎯 Dirección (before any CSS)
+
+A surface with no named direction converges to the average of the training data. Five values, written down before the first component:
+
+| axis | pick one |
+|---|---|
+| **typology** | 12-col bento · asymmetric 2-col · single-column editorial · masonry · full-bleed with overlay |
+| **density** | `gap:padding` ratio — 24:64 tight, 48:32 airy |
+| **hierarchy** | one dominant at 6.4rem, or three at 2.4rem — say which |
+| **grid** | respected, or broken at exactly one point |
+| **voice** | editorial serif · technical mono · neutral grotesque |
+
+Two checks on those numbers, not on the adjectives:
+
+- **Repetition veto:** at least 3 of the 5 differ from the last design recorded in `skills/shared/galeria-disenos.md`. Bento, halo and ⌘K are the defaults — they count as "same".
+- **One broken gesture:** at most two effects from the motion stack. Glow + halo + spring + palette at once is what makes it read as generated.
+
+If the five values can't be written, the direction isn't decided. Get a ficha or capture one. CSS first and direction named afterwards is how the average gets in.
+
+---
+
 ## Animation Rules (Non-Negotiable)
 
 | Rule | Requirement |
@@ -157,18 +178,16 @@ Run this on any UI component before marking work done:
 
 ---
 
-## Static Design Taste Gate
+## Design Gate — evidence, not checkboxes
 
-Animation aside, any visual output clears this before it's done:
+A tick means nothing: the model ticks its own boxes, and a page of ticks has shipped generic more than once. Before declaring UI done, produce:
 
-- [ ] Typography: no reflex default fonts; balanced headings in sentence case
-- [ ] Color: WCAG AA contrast (≥4.5:1); no neon gradients or default purple glow
-- [ ] Spacing/layout: 4px base scale; at most one uppercase eyebrow per section; one layout family per page
-- [ ] Polish: tinted shadows, no nested cards, no side-stripe borders or gradient text
-- [ ] Accessibility: 44×44px touch targets, `:focus-visible`, semantic tag hierarchy
-- [ ] Hero fits the initial viewport; positive brand palettes over neon fills
+1. **The ficha, cited.** Which pattern in `skills/shared/galeria-disenos.md` (or which capture), and the `file:line` where each applied token lives.
+2. **The discard.** The obvious option, named, plus the literal prohibited pattern it matches from `rules/web/design-quality.md` ("Banned Patterns"). "None" is a fail.
+3. **The five values** of "Dirección", with at least 3 differing from the last recorded design.
+4. **The built surface, captured** — not the mock. Contrast AA, 4px spacing, `:focus-visible`, 44px targets and one layout family per page still hold: they are the floor, not the proof.
 
-Any "no" → fix it before declaring completion.
+Tiered, so the gate doesn't become paperwork: a single component asks for 1 and 3. A new page or section asks for all four. If a gate gets skipped because it was too heavy, it is not a gate.
 
 ---
 
@@ -179,7 +198,7 @@ When reviewing your own work, ask:
 1. **Does this feel fast?** Interactions should feel instantaneous. If it feels slow, it is slow.
 2. **Is the animation communicating something?** Fade = appears. Scale from origin = grows from source. Slide = spatial context.
 3. **What happens on mobile/touch?** Hover effects must degrade gracefully.
-4. **Would this embarrass Stripe, Linear, or Vercel?** These are the taste benchmarks.
+4. **Side by side with the ficha, is this distinguishable?** If it reads like the same template with another accent, it failed. The benchmark is the reference — not the premium sites everyone already looks like.
 
 ---
 
@@ -192,7 +211,7 @@ After completing UI work, if you discovered:
 
 → Append a log entry to `CODEX.md` under `## 💻 Mission Logs & Tactical Learnings`.
 
-> **Galería de diseños:** `skills/shared/galeria-disenos.md` — los tres patrones que ya tenemos (landing con halo, tarjeta de papel, star card) y el procedimiento para tomar uno nuevo: captura a PNG, tokens fuera, ficha escrita.
+> **Galería de diseños:** `skills/shared/galeria-disenos.md` — las tres fichas (son forma, no identidad) y el procedimiento para tomar una nueva: captura a PNG, tokens fuera, ficha escrita. No es una nota al pie: el Design Gate la pide citada.
 
 > **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
 

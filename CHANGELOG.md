@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **El diseño dejó de salir siempre igual**: `github-premium-aesthetics` era un diseño, no una guía — traía paleta, fondo y receta fijos (mesh violeta, bento de 12 columnas, `⌘K`), así que todo lo que pasaba por ahí salía con la misma firma. Ahora solo aporta la física (glow, spring, escalera de motion) y la identidad la fija la ficha elegida. `emil-kowalski-design` suma el bloque **Dirección** con cinco valores numéricos y veto de repetición, y su gate pasó de tildes a evidencia: ficha citada con `archivo:línea`, descarte nombrado contra los patrones prohibidos y captura de lo construido. `design-quality.md` pierde el menú de nueve estilos y el "elegí 4 de 10". `project-manager` ya no rutea por "bento, mesh, glass". Test: `tests/design-genericity.test.js`.
+
 ### Fixed
 - **Los agentes aparecen con `/` al instalar**: `scripts/install-tasks.js` ahora escribe un comando por agente en `~/.config/opencode/commands/`, así que `/agente-ideas`, `/auditor-de-seguridad` y el resto existen apenas termina la instalación. De paso el generador entiende descripciones multilínea (`description: >`) y ya no deja a `cyber-neo` y `hack-audit` sin descripción. Test: `tests/install-tasks.test.js`.
 - **El README separa agentes de skills**: los agentes se abren con `/agente-*` y las skills se cargan con `@skill-id`, que es lo que hace opencode V2.

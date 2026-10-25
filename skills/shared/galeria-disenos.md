@@ -30,11 +30,18 @@ estudiar uno nuevo cuando el CEO manda una captura o una URL.
    - **ritmo**: grilla, espacios, alineación, dónde respira el conjunto
    - **luz**: dónde está el foco — un halo, un degradado, un resplandor. Es lo
      primero que hay que clonar: el foco define el ojo.
-4. **Anotá la ficha** (paleta + 3 reglas) en el README o en el informe. Si no
-   está escrita, el próximo agente la vuelve a adivinar.
+4. **Anotá la ficha** (paleta + 3 reglas + los cinco valores de dirección:
+   tipología, densidad, jerarquía, retícula, voz) en el README o en el informe.
+   Si no está escrita, el próximo agente la vuelve a adivinar.
 5. **Aplicá** y pasá el Taste Gate de `skills/emil-kowalski-design/SKILL.md`.
 
 ## Los tres patrones que ya tenemos
+
+> **Son forma, no identidad.** Nacieron para SkillGrid, así que sus colores son
+> de esta marca: el verde `#b6f36b` y el mostaza `#f5c518` no se copian a otro
+> proyecto. Lo que se reusa es la estructura — dónde está el foco, cuánto
+> respira, cómo se apila. Si el proyecto tiene marca, los colores son los suyos
+> y la ficha es otra.
 
 ### A · Landing oscuro con halo
 

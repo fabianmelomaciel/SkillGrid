@@ -72,7 +72,7 @@ Reference table only — none of these trigger automatically. Only delegate when
 - **auditor-de-seguridad** — SAST, secrets scan, dependency audit, infra review
 - **agente-ideas** — complex/ambiguous architecture decisions, consensus deliberation
 - **emil-kowalski-design** — premium frontend UI/UX (tipografía, color, espaciado, accesibilidad) + animación y perceived performance
-- **github-premium-aesthetics** — bento grids, mesh gradients, glassmorphism, fluid motion
+- **github-premium-aesthetics** — craft mechanics for premium surfaces (border glow, spring, View Transitions). Does not pick the look: the ficha does
 - **creativo-visual** — image generation, favicons, social cards, brand assets
 
 ## Frontend Design Intelligence (MANDATORY)
@@ -103,7 +103,7 @@ When design signals are detected, ALWAYS attach the corresponding design agent i
 | **Animation / interaction refactor** | `emil-kowalski-design` |
 | **Design refactor / "make it pretty"** | `emil-kowalski-design` |
 | **Image / favicon / social card generation** | `creativo-visual` |
-| **Premium visual section (bento, mesh, glass)** | `github-premium-aesthetics` |
+| **Premium surface, direction already chosen** | `emil-kowalski-design` + `github-premium-aesthetics` |
 
 ### Integration with CEO Workflow
 
