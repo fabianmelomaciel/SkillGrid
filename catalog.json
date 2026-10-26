@@ -1,11 +1,11 @@
 {
   "version": "1.27.0",
-  "generated": "2026-10-25",
+  "generated": "2026-10-26",
   "summary": {
-    "total": 44,
+    "total": 50,
     "categories": {
-      "core": 29,
-      "agent": 12,
+      "core": 30,
+      "agent": 17,
       "design": 3
     }
   },
@@ -159,7 +159,14 @@
     },
     {
       "name": "headroom",
-      "description": "Reduce el uso de tokens del LLM comprimiendo el contexto, logs, salidas de herramientas y archivos. Úsalo al tratar con contextos extensos, salidas de herramientas masivas o para optimizar el gasto de tokens del agente.",
+      "description": "Capa de optimización de contexto para agentes: reduce el uso de tokens (60-95%) comprimiendo salidas de herramientas, logs, RAG y archivos. Úsalo para 'ahorrar tokens', 'comprimir contexto', configurar el proxy de Headroom, usar MCP para recuperación (CCR) o activar el aprendizaje offline con 'headroom learn'.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "headroom-memory",
+      "description": "Gestión de memoria persistente multi-agente: permite guardar y buscar hechos, decisiones y convenciones que persisten entre sesiones y herramientas (Claude, Gemini, Codex). Úsalo para recordar arquitectura, preferencias del usuario o historial de depuración.",
       "category": "core",
       "status": "stable",
       "risk_level": "safe"
@@ -215,8 +222,43 @@
     },
     {
       "name": "ponytail",
-      "description": "Úsalo antes de escribir código nuevo para forzar la opción más chica posible (YAGNI, reuso, stdlib, one-liner) y recién como último recurso implementar desde cero. Reduce tokens de salida y código innecesario en tareas de feature/fix.",
+      "description": "Lazy senior dev mode: el cambio más chico que resuelve la tarea, y una respuesta que un humano ocupado entiende a la primera. Úsalo en cualquier tarea de código (escribir, arreglar, refactorizar, revisar, elegir dependencias) y cuando el usuario diga \\\"ponytail\\\", \\\"sé vago\\\", \\\"solución simple\\\", \\\"yagni\\\", o se queje de sobre-ingeniería o bloat. Niveles: lite, full (default), ultra.",
       "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "ponytail-audit",
+      "description": "Auditoría de calidad de todo un repo: bugs, huecos de seguridad, qué se rompe bajo carga real, lógica arriesgada sin tests, caminos lentos y qué borrar, fusionar o dividir. Clasificado, cada hallazgo explicado en español simple. Reporte de una sola vez, no cambia nada. Úsalo para \\\"auditá este codebase\\\", \\\"revisá todo el repo\\\", \\\"buscá bloat\\\", \\\"qué puedo borrar\\\", /ponytail-audit.",
+      "category": "agent",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "ponytail-debt",
+      "description": "Lista cada comentario `shortcut:` (y los viejos `ponytail:`) como un libro de deuda técnica. Reporte de una sola vez, no cambia nada. Úsalo para \\\"ponytail debt\\\", \\\"qué postergó ponytail\\\", \\\"listá los atajos\\\", /ponytail-debt.",
+      "category": "agent",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "ponytail-gain",
+      "description": "Muestra los ahorros medidos de ponytail (código, coste, velocidad) del benchmark. Visualización de una sola vez. Úsalo para /ponytail-gain, \\\"qué ahorra ponytail\\\", \\\"impacto de ponytail\\\".",
+      "category": "agent",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "ponytail-help",
+      "description": "Referencia rápida para los niveles, skills y comandos de ponytail. Visualización de una sola vez. Úsalo para /ponytail-help, \\\"ponytail help\\\", \\\"cómo uso ponytail\\\".",
+      "category": "agent",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "ponytail-review",
+      "description": "Revisión de calidad de un cambio: ¿es lógica la solución, es segura, aguanta carga real, la lógica arriesgada tiene tests, es rápida y hace falta cada línea? Lee el código conectado, no solo el diff. Cada hallazgo se explica en español simple. Úsalo para \\\"revisá esto\\\", \\\"code review\\\", \\\"revisá el último commit\\\", \\\"revisá mi PR\\\", \\\"¿está sobre-ingenierizado?\\\", /ponytail-review.",
+      "category": "agent",
       "status": "stable",
       "risk_level": "safe"
     },

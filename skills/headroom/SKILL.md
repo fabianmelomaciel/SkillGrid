@@ -1,74 +1,67 @@
 ---
 name: headroom
-description: Reduce el uso de tokens del LLM comprimiendo el contexto, logs, salidas de herramientas y archivos. Úsalo al tratar con contextos extensos, salidas de herramientas masivas o para optimizar el gasto de tokens del agente.
+description: "Capa de optimización de contexto para agentes: reduce el uso de tokens (60-95%) comprimiendo salidas de herramientas, logs, RAG y archivos. Úsalo para 'ahorrar tokens', 'comprimir contexto', configurar el proxy de Headroom, usar MCP para recuperación (CCR) o activar el aprendizaje offline con 'headroom learn'."
 category: core
 status: stable
 risk_level: safe
-token_estimate: { input: 869, output: 356 }
+token_estimate: { input: 840, output: 500 }
 ---
 
 ## Core
 
-# Headroom Agent
+# Headroom — Context Optimization Layer
 
-## When to Use
+Sos el experto en **Headroom**, la herramienta que optimiza el contexto del LLM para que el agente sea más rápido, barato y capaz de manejar sesiones largas sin chocar con el límite de tokens.
 
-Use this skill when you need to optimize agent token economy, manage massive tool outputs (such as large log files or directory trees), or configure the `headroom` context compression proxy or MCP server to prevent LLM context window bloating.
+## Cuándo usar
+
+- Cuando el contexto está muy cargado (logs largos, búsquedas masivas, archivos gigantes).
+- Cuando el usuario pide "ahorrar tokens" o "reducir costos".
+- Para configurar el proxy local, el servidor MCP o la memoria compartida entre agentes.
+- Para aplicar aprendizajes de sesiones fallidas mediante `headroom learn`.
+
+## Capacidades Principales
+
+1. **Proxy Transparente**: Intercepta llamadas al API y comprime el contenido antes de que llegue al modelo.
+2. **Compresión Reversible (CCR)**: Los originales se guardan localmente; el modelo puede pedir el texto completo con `headroom_retrieve` si lo necesita.
+3. **Headroom Learn**: Analiza sesiones pasadas y extrae reglas para `CLAUDE.md`, `AGENTS.md` o `MEMORY.md`.
+4. **Memoria Compartida**: Permite que distintos agentes (Claude, Gemini, Codex) compartan contexto comprimido.
 
 ## Workflow
 
-### Step 1: Verification and Setup
-Confirm if the `headroom` CLI is installed on the user's system:
+### 1. Instalación y Verificación
+Verificá si `headroom` está instalado. Si no, instalalo:
 ```bash
-# Check if headroom command is available
-headroom --version 2>/dev/null || pip install "headroom-ai[all]" || npm install -g headroom-ai
+# Recomendado: uv para aislamiento, o pip
+uv tool install "headroom-ai[all]" || pip install "headroom-ai[all]"
 ```
 
-### Step 2: Configuration
-Configure headroom strategies depending on the agent workflow:
-1. **As an MCP Server:** Add the playroom/headroom server to the agent config (e.g., `~/.claude/claude_desktop_config.json` or `.cursor/mcp.json`):
-   ```json
-   "headroom": {
-     "command": "npx",
-     "args": ["-y", "headroom-ai", "mcp", "start"],
-     "description": "Token compression and context management"
-   }
-   ```
-2. **As a Transparent Proxy:** Wrap the target agent execution:
-   ```bash
-   headroom proxy --port 8787
-   ```
-   Set `OPENAI_API_BASE=http://localhost:8787/v1` or use the wrapper:
-   ```bash
-   headroom wrap claude
-   ```
+### 2. Modos de Ejecución
+Elegí el modo según la herramienta:
+- **Wrapper (Recomendado)**: `headroom wrap [claude|codex|cursor|aider|opencode]`
+- **Proxy Manual**: `headroom proxy --port 8787` y configurar `BASE_URL` a `http://localhost:8787/v1`.
+- **MCP Server**: `headroom mcp install` para habilitar las herramientas `headroom_compress`, `headroom_retrieve` y `headroom_stats`.
 
-### Step 3: Compression Policies
-Ensure that critical system instructions and security files are exempt from compression:
-- Always exclude `.cursorrules`, `rules/`, and `.claude_profile` from the compression pipeline to prevent instruction drift.
-- Use `SmartCrusher` for structured JSON data and `CodeCompressor` for programming source code to retain syntactic correctness.
+### 3. Aprendizaje Offline (Headroom Learn)
+Después de un error o una sesión compleja, ejecutá:
+```bash
+headroom learn --apply --target AGENTS.md
+```
+Esto analiza los eventos de la sesión y propone mejoras estructurales en las reglas del agente.
 
-## Tools
+### 4. Recuperación de Contexto (CCR)
+Si ves un texto comprimido (marcado por Headroom) y necesitás el detalle exacto:
+- Usá la herramienta MCP `headroom_retrieve(hash="...")`.
 
-- `read` / `write` — inspect and write configurations
-- `bash` — verify headroom installation and configure the proxy
+## Reglas de Oro
+- **No comprimir reglas**: `.cursorrules`, `rules/`, `AGENTS.md` y archivos de instrucciones deben quedar fuera de la compresión para evitar "deriva de instrucciones".
+- **Prioridad de contenido**: JSON usa `SmartCrusher`, código usa `CodeCompressor` (AST-aware) y texto usa `Kompress-v2`.
 
-> **CodeGraph:** `skills/shared/codegraph-startup.md` | **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md` | **CODEX Learning Loop:** `skills/shared/codex-learning-loop.md`
+## Herramientas MCP
+- `headroom_compress`: Comprime contenido a pedido.
+- `headroom_retrieve`: Recupera el original por hash.
+- `headroom_stats`: Muestra cuánto se ha ahorrado en la sesión.
 
-## Modules
+> **Anti-Rationalization:** `skills/shared/anti-rationalization.md` | **Risk Assessment:** `skills/shared/risk-assessment.md` | **Verification Gate:** `skills/shared/verification-gate.md`
 
-[model:gemini-1.5-flash]
-### Enhanced Anti-Loop Guardrails
-Gemini models may exhibit looping behavior. If you detect repeating the same operation with identical results, stop immediately and report current state. Do not re-execute completed operations. Enforce strict output structure.
-
-[model:gemini-1.5-pro]
-### Enhanced Anti-Loop Guardrails
-Same as gemini-1.5-flash. If you detect repeating the same operation with identical results, stop and report current state.
-
-[platform:opencode]
-### Platform Invocation
-Invoked via tool call with skill descriptor. Return structured output matching the expected format. All file paths use forward slashes.
-
-[platform:claude-code]
-### Platform Invocation
-Available as CLAUDE.md-activated skill. Follow Claude Code tool conventions. All file paths use forward slashes.
+> Modules: `skills/shared/modules-footer.md`

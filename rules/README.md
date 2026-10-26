@@ -5,7 +5,7 @@
 ### Los estándares de tu proyecto, por lenguaje. · Your project's standards, per language.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-b6f36b?style=flat-square&color=0a1206&logo=github)](../LICENSE)
-[![Skills](https://img.shields.io/badge/skills-44-b6f36b?style=flat-square&color=0a1206)](../catalog.json)
+[![Skills](https://img.shields.io/badge/skills-50-b6f36b?style=flat-square&color=0a1206)](../catalog.json)
 [![SkillGrid](https://img.shields.io/badge/skillgrid-projects-b6f36b?style=flat-square&color=0a1206)](..)
 
 <img src="https://raw.githubusercontent.com/fabianmelomaciel/SkillGrid/main/assets/hero-rules.svg" width="820" alt="SkillGrid rules: los estándares de tu proyecto, para cada lenguaje" />

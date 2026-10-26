@@ -1,11 +1,11 @@
 {
   "version": "1.27.0",
-  "generated": "2026-10-25",
+  "generated": "2026-10-26",
   "summary": {
-    "total": 44,
+    "total": 50,
     "categories": {
-      "core": 29,
-      "agent": 12,
+      "core": 30,
+      "agent": 17,
       "design": 3
     }
   },
@@ -165,6 +165,13 @@
       "cost_tier": "low"
     },
     {
+      "name": "headroom-memory",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core",
+      "cost_tier": "low"
+    },
+    {
       "name": "humanizer",
       "status": "stable",
       "risk_level": "safe",
@@ -218,6 +225,41 @@
       "status": "stable",
       "risk_level": "safe",
       "category": "core",
+      "cost_tier": "low"
+    },
+    {
+      "name": "ponytail-audit",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "agent",
+      "cost_tier": "low"
+    },
+    {
+      "name": "ponytail-debt",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "agent",
+      "cost_tier": "low"
+    },
+    {
+      "name": "ponytail-gain",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "agent",
+      "cost_tier": "low"
+    },
+    {
+      "name": "ponytail-help",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "agent",
+      "cost_tier": "low"
+    },
+    {
+      "name": "ponytail-review",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "agent",
       "cost_tier": "low"
     },
     {

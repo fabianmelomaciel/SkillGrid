@@ -5,7 +5,7 @@
 // los dos fuera del repo. Es herramienta de dev, no viaja en el paquete.
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const LEDGER = path.join(ROOT, 'EVOLUCION.md');
@@ -97,6 +97,39 @@ function archivosCitados(filas) {
 
 function candidatos(archivos, citados) {
   return archivos.filter((a) => !esRuido(a) && !citados.has(a));
+}
+
+function buscarAtajos(cwd = ROOT) {
+  const out = [];
+  try {
+    // Sin shell: cmd.exe en Windows se come las comillas simples y trata los | como pipe
+    const hits = execFileSync('git', ['grep', '--no-index', '--exclude-standard', '-nE', '(#|//|/[*]) ?(shortcut|ponytail):'], { cwd, encoding: 'utf8', windowsHide: true });
+    for (const linea of hits.split(/\r?\n/)) {
+      if (!linea.trim()) continue;
+      const [archivo, num, ...resto] = linea.split(':');
+      if (esRuido(archivo)) continue;
+      const contenido = resto.join(':').trim();
+      out.push({ archivo, linea: num, contenido });
+    }
+  } catch {
+    // git grep falla si no hay hits, es normal
+  }
+  return out;
+}
+
+// Los atajos entran con puntaje alto, pero salteando los archivos que el ledger
+// ya cita: citados guarda el archivo solo, sin el :línea.
+function mezclarAtajos(cands, atajos, citados) {
+  for (const atajo of atajos) {
+    if (citados.has(atajo.archivo)) continue;
+    cands.push({
+      archivo: `${atajo.archivo}:${atajo.linea}`,
+      puntos: 10,
+      motivos: [`deuda técnica: ${atajo.contenido}`],
+    });
+  }
+  cands.sort((x, y) => y.puntos - x.puntos || x.archivo.localeCompare(y.archivo));
+  return cands;
 }
 
 // F2: priorizar barato y explicable — nada de magia ni de tokens. Tres señales:
@@ -232,8 +265,17 @@ function correr() {
   const base = baseDelDelta();
   const commits = head && base ? git(`log --oneline ${base}..${head}`).split('\n').filter(Boolean) : [];
   const delta = head && base ? git(`diff --name-only ${base} ${head}`).split('\n').filter(Boolean) : [];
-  const filas = fs.existsSync(LEDGER) ? filasDelLedger(fs.readFileSync(LEDGER, 'utf8')) : [];
-  const cands = priorizarCandidatos(candidatos(delta, archivosCitados(filas)), armarContexto());
+  const raw = fs.existsSync(LEDGER) ? fs.readFileSync(LEDGER, 'utf8') : '';
+  const filas = filasDelLedger(raw);
+  const citados = archivosCitados(filas);
+  
+  const candsRaw = candidatos(delta, citados);
+  const contexto = armarContexto();
+  const cands = priorizarCandidatos(candsRaw, contexto);
+
+  // F5: los atajos (shortcut:) son deuda técnica y candidatos a evolución.
+  mezclarAtajos(cands, buscarAtajos(), citados);
+
   const borrador = armarBorrador({ fecha, base, head, commits, delta, filas, cands });
   return { fecha, base, head, commits, delta, filas, cands, borrador };
 }
@@ -264,4 +306,4 @@ function main(argv) {
 
 if (require.main === module) main(process.argv.slice(2));
 
-module.exports = { esRuido, areaDe, filasDelLedger, archivosCitados, candidatos, armarBorrador, esZonaSensible, viajaEnPaquete, puntuarCandidato, priorizarCandidatos, correr, escribirBorrador, textoDeCobertura, armarContexto };
+module.exports = { esRuido, areaDe, filasDelLedger, archivosCitados, candidatos, armarBorrador, esZonaSensible, viajaEnPaquete, puntuarCandidato, priorizarCandidatos, buscarAtajos, mezclarAtajos, correr, escribirBorrador, textoDeCobertura, armarContexto };

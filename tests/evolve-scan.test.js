@@ -1,4 +1,5 @@
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const scan = require('../scripts/evolve-scan.js');
@@ -78,6 +79,35 @@ test('candidatos descarta lo citado y el ruido', () => {
   const archivos = ['scripts/evolve-scan.js', 'scripts/install-tasks.js', 'node_modules/x.js'];
   const cands = scan.candidatos(archivos, new Set(['scripts/install-tasks.js']));
   check(cands.length === 1 && cands[0] === 'scripts/evolve-scan.js', `salió ${JSON.stringify(cands)}`);
+});
+
+test('buscarAtajos levanta los shortcut: y no revienta sin ellos', () => {
+  // git grep sale con 1 cuando no hay hits: eso no es un error del escáner
+  const conMarca = fs.mkdtempSync(path.join(os.tmpdir(), 'atajos-'));
+  fs.writeFileSync(path.join(conMarca, 'nota.js'), '// shortcut: techo temporal, cuando llegue X\n');
+  const hits = scan.buscarAtajos(conMarca);
+  check(hits.length === 1, `esperaba 1 atajo, salieron ${hits.length}`);
+  check(hits[0].archivo === 'nota.js' && hits[0].linea === '1', `parseo raro: ${JSON.stringify(hits[0])}`);
+  check(/techo temporal/.test(hits[0].contenido), 'perdió el texto del atajo');
+
+  const limpio = fs.mkdtempSync(path.join(os.tmpdir(), 'atajos-vacio-'));
+  fs.writeFileSync(path.join(limpio, 'ok.js'), 'let a = 1;\n');
+  check(scan.buscarAtajos(limpio).length === 0, 'sin hits debería devolver la lista vacía');
+  fs.rmSync(conMarca, { recursive: true, force: true });
+  fs.rmSync(limpio, { recursive: true, force: true });
+});
+
+test('mezclarAtajos suma la deuda nueva y saltea lo ya citado', () => {
+  const cands = [{ archivo: 'scripts/viejo.js', puntos: 3, motivos: ['sin test'] }];
+  const atajos = [
+    { archivo: 'scripts/viejo.js', linea: '10', contenido: 'ya está en el ledger' },
+    { archivo: 'skills/nueva/SKILL.md', linea: '4', contenido: 'atajo sin disparador' },
+  ];
+  const out = scan.mezclarAtajos(cands, atajos, new Set(['scripts/viejo.js']));
+  check(out.length === 2, `esperaba 2 candidatas, salieron ${out.length}`);
+  check(!out.some((c) => c.archivo === 'scripts/viejo.js:10'), 'entró un atajo de un archivo ya citado');
+  check(out[0].archivo === 'skills/nueva/SKILL.md:4', 'la deuda nueva tendría que ir arriba por los 10 puntos');
+  check(/deuda técnica/.test(out[0].motivos[0]), 'falta el motivo');
 });
 
 test('armarBorrador arma las secciones y no promete escribir el ledger', () => {

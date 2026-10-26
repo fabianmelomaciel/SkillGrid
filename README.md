@@ -4,10 +4,10 @@
 
 ### Tu agente de IA, con **disciplina**. · Your AI agent, with **discipline**.
 
-*44 skills · memoria persistente · auto-auditoría · 4 IDEs · hasta −90% de tokens · gate en cada commit*
+*50 skills · memoria persistente · auto-auditoría · 4 IDEs · hasta −90% de tokens · gate en cada commit*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-b6f36b?style=flat-square&color=0a1206&logo=github)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-44-b6f36b?style=flat-square&color=0a1206)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-50-b6f36b?style=flat-square&color=0a1206)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-b6f36b?style=flat-square&color=0a1206)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github&color=b6f36b)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/ci.yml)
@@ -35,7 +35,7 @@
 - 📦 **Pick a profile** — install only the skills your team needs.
 
 ### ⚡ TL;DR
-- **44 skills, one slash away** — `/agente-ideas`, `/auditor-de-seguridad`, `/audit-loop`… and any skill with `@brainstorming`.
+- **50 skills, one slash away** — `/agente-ideas`, `/auditor-de-seguridad`, `/audit-loop`… and any skill with `@brainstorming`.
 - **Self-auditing** — its own gate + security on every PR.
 - **Memory + efficiency** — local `CODEX.md` + CodeGraph: up to **−90%** tokens per session.
 
@@ -63,7 +63,7 @@ Once installed, type `/agente-ideas` (decide), `/auditor-de-seguridad` (audit) o
 - 📦 **Elegí un perfil** — instalá solo las skills que tu equipo necesita.
 
 ### ⚡ TL;DR
-- **44 skills, a un slash** — `/agente-ideas`, `/auditor-de-seguridad`, `/audit-loop`… y cualquier skill con `@brainstorming`.
+- **50 skills, a un slash** — `/agente-ideas`, `/auditor-de-seguridad`, `/audit-loop`… y cualquier skill con `@brainstorming`.
 - **Se audita solo** — su propio gate + seguridad en cada PR.
 - **Memoria y eficiencia** — `CODEX.md` local + CodeGraph: hasta **−90%** de tokens por sesión.
 
@@ -81,7 +81,7 @@ Con las skills instaladas, escribí `/agente-ideas` (decidir), `/auditor-de-segu
 
 ## ⚡ Install
 
-Auto-detects **opencode, antigravity, Claude Code and Cursor** and configures them. Default profile: `all` (44 skills).
+Auto-detects **opencode, antigravity, Claude Code and Cursor** and configures them. Default profile: `all` (50 skills).
 
 ### Windows (PowerShell)
 ```powershell
@@ -135,12 +135,12 @@ Genera reglas optimizadas dentro de tu proyecto:
 ## 🗺️ Catalog
 
 <details open>
-<summary><strong>📚 Las 44 skills completas · All 44 skills</strong></summary>
+<summary><strong>📚 Las 50 skills completas · All 50 skills</strong></summary>
 
 <!-- catalog:begin -->
-*~Tokens = contexto que consume la skill al activarse (medido del frontmatter de cada `SKILL.md`). Las 44 completas, en [catalog.json](catalog.json).*
+*~Tokens = contexto que consume la skill al activarse (medido del frontmatter de cada `SKILL.md`). Las 50 completas, en [catalog.json](catalog.json).*
 
-### 🔧 Desarrollo Core (29 Skills)
+### 🔧 Desarrollo Core (30 Skills)
 
 | Skill | Para qué | ~Tokens |
 |---|---|---:|
@@ -153,14 +153,15 @@ Genera reglas optimizadas dentro de tu proyecto:
 | `dispatching-parallel-agents` | Use when facing 2+ independent tasks that can be worked on without shared state or… | 2012 |
 | `executing-plans` | Use when you have a written implementation plan to execute in a separate session with… | 748 |
 | `finishing-a-development-branch` | Use when implementation is complete, all tests pass, and you need to decide how to… | 2112 |
-| `headroom` | Reduce el uso de tokens del LLM comprimiendo el contexto, logs, salidas de herramientas… | 869 |
+| `headroom` | Capa de optimización de contexto para agentes: reduce el uso de tokens (60-95%)… | 840 |
+| `headroom-memory` | Gestión de memoria persistente multi-agente: permite guardar y buscar hechos, decisiones… | 600 |
 | `humanizer` | Remove signs of AI-generated writing from text. Use when editing or reviewing text to… | 2400 |
 | `incremental-implementation` | Delivers changes incrementally. Use when implementing any feature or change that touches… | 2491 |
 | `issue-triage` | Classifies open GitHub issues by heuristics (keywords, template matching) and proposes… | 597 |
 | `mcp-configurator` | Configura servidores del Protocolo de Contexto de Modelos (MCP) para extender las… | 2059 |
 | `performance-profiler` | Measure-first performance engineering. Use before merging features that touch UI, API… | 2169 |
 | `playwright-testing` | Use when designing, writing, debugging, or auditing Playwright E2E and component tests. | 1344 |
-| `ponytail` | Úsalo antes de escribir código nuevo para forzar la opción más chica posible (YAGNI,… | 467 |
+| `ponytail` | Lazy senior dev mode: el cambio más chico que resuelve la tarea, y una respuesta que un… | 1040 |
 | `preinstall-audit` | Audits third-party skills and MCP servers from disk before installing them — local… | 765 |
 | `receiving-code-review` | Use when receiving code review feedback, before implementing suggestions, especially if… | 1927 |
 | `requesting-code-review` | Use when completing tasks, implementing major features, or before merging to verify work… | 843 |
@@ -182,7 +183,7 @@ Genera reglas optimizadas dentro de tu proyecto:
 | `emil-kowalski-design` | Use when building, reviewing, or auditing any UI component to apply Emil Kowalski's… | 2286 |
 | `github-premium-aesthetics` | Craft mechanics for premium surfaces — border glow, spring physics, the View Transitions… | 1910 |
 
-### 🤖 Agentes Especializados (12 Agents)
+### 🤖 Agentes Especializados (17 Agents)
 
 | Skill | Para qué | ~Tokens |
 |---|---|---:|
@@ -196,6 +197,11 @@ Genera reglas optimizadas dentro de tu proyecto:
 | `gestor-documental` | Úsalo para diseñar, auditar, dar formato y validar documentos técnicos y científicos de… | 1738 |
 | `hack-audit` | Pentest autónomo con explotación real: mapea el código y toda la superficie local/de… | 5495 |
 | `optimizador-finops` | Úsalo para auditar la utilización de recursos computacionales, la eficiencia de las APIs… | 1813 |
+| `ponytail-audit` | Auditoría de calidad de todo un repo: bugs, huecos de seguridad, qué se rompe bajo carga… | 1580 |
+| `ponytail-debt` | Lista cada comentario `shortcut:` (y los viejos `ponytail:`) como un libro de deuda… | 590 |
+| `ponytail-gain` | Muestra los ahorros medidos de ponytail (código, coste, velocidad) del benchmark.… | 580 |
+| `ponytail-help` | Referencia rápida para los niveles, skills y comandos de ponytail. Visualización de una… | 660 |
+| `ponytail-review` | Revisión de calidad de un cambio: ¿es lógica la solución, es segura, aguanta carga real,… | 1500 |
 | `project-manager` | Agente Project Manager. El CEO da la dirección; el PM planifica, delega, revisa y reporta. | 2800 |
 | `prompt-injection-guard` | Defiende contra ataques de inyección de prompts en aplicaciones potenciadas por IA.… | 2834 |
 <!-- catalog:end -->
