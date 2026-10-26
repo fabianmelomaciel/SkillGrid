@@ -1,5 +1,5 @@
 {
-  "version": "1.2.53",
+  "version": "1.2.54",
   "generated": "2026-10-26",
   "summary": {
     "total": 50,
@@ -336,15 +336,15 @@
     },
     "humanizer": {
       "name": "humanizer",
-      "description": "Remove signs of AI-generated writing from text. Use when editing or reviewing text to make it sound more natural and human-written.",
+      "description": "Remove signs of AI-generated writing from text. Use when editing or reviewing text to make it sound more natural and human-written, or to strip AI watermarks by layer (invisible Unicode, C2PA/EXIF metadata, project artifacts) depending on the assistant in context.",
       "category": "core",
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 2400,
+        "input": 3100,
         "output": 800
       },
-      "cost_tier": "low",
+      "cost_tier": "medium",
       "invokes": []
     },
     "incremental-implementation": {

@@ -176,7 +176,7 @@
       "status": "stable",
       "risk_level": "safe",
       "category": "core",
-      "cost_tier": "low"
+      "cost_tier": "medium"
     },
     {
       "name": "incremental-implementation",

@@ -155,7 +155,7 @@ Genera reglas optimizadas dentro de tu proyecto:
 | `finishing-a-development-branch` | Use when implementation is complete, all tests pass, and you need to decide how to… | 2112 |
 | `headroom` | Capa de optimización de contexto para agentes: reduce el uso de tokens (60-95%)… | 840 |
 | `headroom-memory` | Gestión de memoria persistente multi-agente: permite guardar y buscar hechos, decisiones… | 600 |
-| `humanizer` | Remove signs of AI-generated writing from text. Use when editing or reviewing text to… | 2400 |
+| `humanizer` | Remove signs of AI-generated writing from text. Use when editing or reviewing text to… | 3100 |
 | `incremental-implementation` | Delivers changes incrementally. Use when implementing any feature or change that touches… | 2491 |
 | `issue-triage` | Classifies open GitHub issues by heuristics (keywords, template matching) and proposes… | 597 |
 | `mcp-configurator` | Configura servidores del Protocolo de Contexto de Modelos (MCP) para extender las… | 2059 |
