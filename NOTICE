@@ -39,3 +39,15 @@ finder→judgment (quien encuentra no valida), reescrita en clean-room. No se
 copió texto, código ni fases.
 
 Los avisos de copyright y licencia de cada fuente se mantienen en este archivo.
+
+## anthropics/skills — webapp-testing
+
+https://github.com/anthropics/skills/tree/main/skills/webapp-testing
+
+Licencia Apache-2.0 (el texto completo vive en la carpeta de esa skill del repo de origen). Se tomaron: el árbol de decisión estático/dinámico, el patrón de reconocimiento antes de actuar, la espera por `networkidle`, el ciclo de vida del servidor y la captura de consola y screenshots. Los scripts (`with_server.py`, `examples/*.py`) y el `LICENSE.txt` no se copiaron: la skill adaptada describe el método y deja el helper upstream como referencia.
+
+## 1Password/SCAM — security-awareness
+
+https://github.com/1Password/SCAM
+
+Licencia MIT. Se tomaron: la verificación de dominio antes de navegar, las señales de ingeniería social y el manejo de credenciales como canal controlado. El benchmark, sus escenarios y el CLI quedaron afuera.

@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Los agentes aparecen con `/` al instalar**: `scripts/install-tasks.js` ahora escribe un comando por agente en `~/.config/opencode/commands/`, así que `/agente-ideas`, `/auditor-de-seguridad` y el resto existen apenas termina la instalación. De paso el generador entiende descripciones multilínea (`description: >`) y ya no deja a `cyber-neo` y `hack-audit` sin descripción. Test: `tests/install-tasks.test.js`.
 - **El README separa agentes de skills**: los agentes se abren con `/agente-*` y las skills se cargan con `@skill-id`, que es lo que hace opencode V2.
 
+## [1.28.0] - 2026-10-31
+
+### Added
+- **Dos skills nuevas: `webapp-testing` y `security-awareness`**: `webapp-testing` trae el bucle de Playwright nativo para probar una app local (árbol de decisión estático/dinámico, ciclo de vida del servidor, reconocimiento antes de actuar, consola y capturas), adaptado de Anthropic (Apache-2.0) y separado de `playwright-testing`, que queda para las suites Node/TS. `security-awareness` enseña a verificar el dominio antes de navegar, tratar las credenciales como canal controlado y detectar ingeniería social, adaptado de 1Password SCAM (MIT). Ambas pasaron `scan-third-party.js` con 0 hallazgos. Atribución en `NOTICE`.
+
 ## [1.27.0] - 2026-10-22
 
 ### Added

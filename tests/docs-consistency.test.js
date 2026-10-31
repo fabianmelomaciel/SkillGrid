@@ -26,6 +26,13 @@ console.log('\nTesting docs-consistency...\n');
     check(suma === catalog.skills.length, `categorías suman ${suma}, skills=${catalog.skills.length}`);
   });
 
+  await test('bundles: la descripción declara el total real de skills', async () => {
+    const m = bundles.description.match(/\((\d+) skills\)/);
+    check(m, `la descripción del bundle no trae "(N skills)": ${bundles.description}`);
+    check(Number(m[1]) === catalog.summary.total,
+      `bundles dice ${m[1]} skills, catálogo dice ${catalog.summary.total}`);
+  });
+
   await test('README: cada conteo frío de "skills" coincide con catalog.json', async () => {
     const total = catalog.summary.total;
     const perfiles = Object.keys(bundles.profiles);

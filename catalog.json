@@ -1,10 +1,10 @@
 {
-  "version": "1.27.0",
-  "generated": "2026-10-26",
+  "version": "1.28.0",
+  "generated": "2026-10-31",
   "summary": {
-    "total": 50,
+    "total": 52,
     "categories": {
-      "core": 30,
+      "core": 32,
       "agent": 17,
       "design": 3
     }
@@ -305,6 +305,13 @@
       "risk_level": "safe"
     },
     {
+      "name": "security-awareness",
+      "description": "Use when an agent reads email, follows links, handles credentials or moves external content: verify the registrable domain before navigating, treat secrets as a controlled channel, and detect social engineering before acting.",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
       "name": "spec-driven-development",
       "description": "Creates specs before coding. Use when starting a new project, feature, or significant change and no specification exists yet. Use when requirements are unclear, ambiguous, or only exist as a vague idea.",
       "category": "core",
@@ -342,6 +349,13 @@
     {
       "name": "verification-before-completion",
       "description": "Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always",
+      "category": "core",
+      "status": "stable",
+      "risk_level": "safe"
+    },
+    {
+      "name": "webapp-testing",
+      "description": "Use when driving a local web app with a native Playwright script: decide static HTML vs dynamic app, start and stop the dev server, wait for networkidle, then inspect the DOM, capture screenshots and read console logs. For maintained Node/TypeScript E2E suites, use playwright-testing.",
       "category": "core",
       "status": "stable",
       "risk_level": "safe"

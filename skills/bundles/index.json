@@ -1,6 +1,6 @@
 {
   "version": "1.2.0",
-  "description": "Role-based skill bundles for SkillGrid (43 skills). Use these when setting up a new user or project.",
+  "description": "Role-based skill bundles for SkillGrid (52 skills). Use these when setting up a new user or project.",
   "bundles": {
     "core": {
       "label": "Core Development",
@@ -23,12 +23,14 @@
         "receiving-code-review",
         "requesting-code-review",
         "router",
+        "security-awareness",
         "spec-driven-development",
         "subagent-driven-development",
         "systematic-debugging",
         "test-driven-development",
         "using-git-worktrees",
         "verification-before-completion",
+        "webapp-testing",
         "writing-plans",
         "writing-skills"
       ]
@@ -44,7 +46,8 @@
         "execution-runtime",
         "hack-audit",
         "optimizador-finops",
-        "prompt-injection-guard"
+        "prompt-injection-guard",
+        "security-awareness"
       ]
     },
     "design": {
@@ -64,7 +67,8 @@
         "playwright-testing",
         "test-driven-development",
         "systematic-debugging",
-        "verification-before-completion"
+        "verification-before-completion",
+        "webapp-testing"
       ]
     },
     "management": {
@@ -189,12 +193,14 @@
         "receiving-code-review",
         "requesting-code-review",
         "router",
+        "security-awareness",
         "spec-driven-development",
         "subagent-driven-development",
         "systematic-debugging",
         "test-driven-development",
         "using-git-worktrees",
         "verification-before-completion",
+        "webapp-testing",
         "writing-plans",
         "writing-skills"
       ]
@@ -206,7 +212,8 @@
         "playwright-testing",
         "test-driven-development",
         "systematic-debugging",
-        "verification-before-completion"
+        "verification-before-completion",
+        "webapp-testing"
       ]
     }
   }

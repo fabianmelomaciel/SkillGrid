@@ -1,10 +1,10 @@
 {
-  "version": "1.27.0",
-  "generated": "2026-10-26",
+  "version": "1.28.0",
+  "generated": "2026-10-31",
   "summary": {
-    "total": 50,
+    "total": 52,
     "categories": {
-      "core": 30,
+      "core": 32,
       "agent": 17,
       "design": 3
     }
@@ -305,6 +305,13 @@
       "cost_tier": "low"
     },
     {
+      "name": "security-awareness",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core",
+      "cost_tier": "low"
+    },
+    {
       "name": "spec-driven-development",
       "status": "stable",
       "risk_level": "safe",
@@ -341,6 +348,13 @@
     },
     {
       "name": "verification-before-completion",
+      "status": "stable",
+      "risk_level": "safe",
+      "category": "core",
+      "cost_tier": "low"
+    },
+    {
+      "name": "webapp-testing",
       "status": "stable",
       "risk_level": "safe",
       "category": "core",

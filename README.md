@@ -4,10 +4,10 @@
 
 ### Tu agente de IA, con **disciplina**. · Your AI agent, with **discipline**.
 
-*50 skills · memoria persistente · auto-auditoría · 4 IDEs · hasta −90% de tokens · gate en cada commit*
+*52 skills · memoria persistente · auto-auditoría · 4 IDEs · hasta −90% de tokens · gate en cada commit*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-b6f36b?style=flat-square&color=0a1206&logo=github)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-50-b6f36b?style=flat-square&color=0a1206)](catalog.json)
+[![Skills](https://img.shields.io/badge/skills-52-b6f36b?style=flat-square&color=0a1206)](catalog.json)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-b6f36b?style=flat-square&color=0a1206)](https://github.com/fabianmelomaciel/SkillGrid/pulls)
 [![GitHub stars](https://img.shields.io/github/stars/fabianmelomaciel/SkillGrid?style=flat-square&logo=github&color=b6f36b)](https://github.com/fabianmelomaciel/SkillGrid/stargazers)
 [![CI](https://img.shields.io/github/actions/workflow/status/fabianmelomaciel/SkillGrid/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/fabianmelomaciel/SkillGrid/actions/workflows/ci.yml)
@@ -32,10 +32,11 @@
 - 🧠 **Persistent memory** — a local `CODEX.md` the agent writes and re-reads, so you never re-explain your project.
 - 🧭 **Tracked evolution** — every bug becomes a row in `EVOLUCION.md` with evidence; the gate won't close it without proof.
 - 🛡️ **Security built-in** — a 5-job pentest pipeline runs on every PR (secrets, SAST, SCA, IaC, supply chain).
+- 🧠 **Security-aware behavior** — checks the domain before navigating and keeps credentials out of the context.
 - 📦 **Pick a profile** — install only the skills your team needs.
 
 ### ⚡ TL;DR
-- **50 skills, one slash away** — `/agente-ideas`, `/auditor-de-seguridad`, `/audit-loop`… and any skill with `@brainstorming`.
+- **52 skills, one slash away** — `/agente-ideas`, `/auditor-de-seguridad`, `/audit-loop`… and any skill with `@brainstorming`.
 - **Self-auditing** — its own gate + security on every PR.
 - **Memory + efficiency** — local `CODEX.md` + CodeGraph: up to **−90%** tokens per session.
 
@@ -60,10 +61,11 @@ Once installed, type `/agente-ideas` (decide), `/auditor-de-seguridad` (audit) o
 - 🧠 **Memoria persistente** — un `CODEX.md` local que el agente escribe y relee, para no repetirte el contexto de tu proyecto.
 - 🧭 **Evolución con evidencia** — cada error queda como fila en `EVOLUCION.md`; el gate no deja cerrarla sin prueba.
 - 🛡️ **Seguridad incorporada** — pipeline de pentest de 5 jobs en cada PR (secretos, SAST, SCA, IaC, supply chain).
+- 🧠 **Conducta con conciencia de seguridad** — verifica el dominio antes de navegar y mantiene las credenciales fuera del contexto.
 - 📦 **Elegí un perfil** — instalá solo las skills que tu equipo necesita.
 
 ### ⚡ TL;DR
-- **50 skills, a un slash** — `/agente-ideas`, `/auditor-de-seguridad`, `/audit-loop`… y cualquier skill con `@brainstorming`.
+- **52 skills, a un slash** — `/agente-ideas`, `/auditor-de-seguridad`, `/audit-loop`… y cualquier skill con `@brainstorming`.
 - **Se audita solo** — su propio gate + seguridad en cada PR.
 - **Memoria y eficiencia** — `CODEX.md` local + CodeGraph: hasta **−90%** de tokens por sesión.
 
@@ -81,7 +83,7 @@ Con las skills instaladas, escribí `/agente-ideas` (decidir), `/auditor-de-segu
 
 ## ⚡ Install
 
-Auto-detects **opencode, antigravity, Claude Code and Cursor** and configures them. Default profile: `all` (50 skills).
+Auto-detects **opencode, antigravity, Claude Code and Cursor** and configures them. Default profile: `all` (52 skills).
 
 ### Windows (PowerShell)
 ```powershell
@@ -112,8 +114,8 @@ npm install @fabianmelomaciel/skillgrid
 *   `minimal`: solo gates mínimos de seguridad (6 skills, ~14K tokens).
 *   `standard`: flujo de desarrollo del día a día (16 skills, ~36K tokens).
 *   `superpowers`: metodología completa de desarrollo (22 skills, ~45K tokens).
-*   `testing`: enfocado en QA: E2E, TDD y debugging (4 skills, ~8K tokens).
-*   `strict`: suite completa con todos los auditores activos (43 skills, ~94K tokens).
+*   `testing`: enfocado en QA: E2E, TDD y debugging (5 skills, ~8K tokens).
+*   `strict`: suite completa con todos los auditores activos (45 skills, ~94K tokens).
 
 ```bash
 ./install.sh --profile standard      # Bash
@@ -135,12 +137,12 @@ Genera reglas optimizadas dentro de tu proyecto:
 ## 🗺️ Catalog
 
 <details open>
-<summary><strong>📚 Las 50 skills completas · All 50 skills</strong></summary>
+<summary><strong>📚 Las 52 skills completas · All 52 skills</strong></summary>
 
 <!-- catalog:begin -->
-*~Tokens = contexto que consume la skill al activarse (medido del frontmatter de cada `SKILL.md`). Las 50 completas, en [catalog.json](catalog.json).*
+*~Tokens = contexto que consume la skill al activarse (medido del frontmatter de cada `SKILL.md`). Las 52 completas, en [catalog.json](catalog.json).*
 
-### 🔧 Desarrollo Core (30 Skills)
+### 🔧 Desarrollo Core (32 Skills)
 
 | Skill | Para qué | ~Tokens |
 |---|---|---:|
@@ -166,12 +168,14 @@ Genera reglas optimizadas dentro de tu proyecto:
 | `receiving-code-review` | Use when receiving code review feedback, before implementing suggestions, especially if… | 1927 |
 | `requesting-code-review` | Use when completing tasks, implementing major features, or before merging to verify work… | 843 |
 | `router` | Dynamically load specific skills based on the user request by querying catalog-lite.json… | 800 |
+| `security-awareness` | Use when an agent reads email, follows links, handles credentials or moves external… | 1099 |
 | `spec-driven-development` | Creates specs before coding. Use when starting a new project, feature, or significant… | 2206 |
 | `subagent-driven-development` | Use when executing implementation plans with independent tasks in the current session | 3480 |
 | `systematic-debugging` | Use when encountering any bug, test failure, or unexpected behavior, before proposing… | 2955 |
 | `test-driven-development` | Use when implementing any feature or bugfix, before writing implementation code | 2444 |
 | `using-git-worktrees` | Use when starting feature work that needs isolation from current workspace or before… | 2343 |
 | `verification-before-completion` | Use when about to claim work is complete, fixed, or passing, before committing or… | 1586 |
+| `webapp-testing` | Use when driving a local web app with a native Playwright script: decide static HTML vs… | 1097 |
 | `writing-plans` | Use when you have a spec or requirements for a multi-step task, before touching code | 1870 |
 | `writing-skills` | Use when creating new skills, editing existing skills, or verifying skills work before… | 2751 |
 
@@ -242,6 +246,7 @@ SkillGrid audita su propio código con un pipeline de CI dedicado (`.github/work
 ## 🙏 Atribución / Attribution
 
 *   Las skills con `category: core` adaptan skills públicos de **[Anthropic](https://github.com/anthropics)** (`brainstorming`, `systematic-debugging`, `test-driven-development`, `writing-plans`…). Detalle en [CONTRIBUTING.md](CONTRIBUTING.md).
+*   `webapp-testing` adapta el método de **[anthropics/skills](https://github.com/anthropics/skills)** (Apache-2.0) y `security-awareness` el de **[1Password/SCAM](https://github.com/1Password/SCAM)** (MIT). Detalle en [NOTICE](NOTICE).
 *   Guards del pipeline (`no_new_skips`, `no_deleted_tests`) inspirados en **[intrepideai/donegate](https://github.com/intrepideai/donegate)**.
 
 ---

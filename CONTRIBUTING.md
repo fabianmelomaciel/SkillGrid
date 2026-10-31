@@ -35,6 +35,7 @@ Ambos deben pasar sin errores.
 
 - Los skills con `category: core` en el frontmatter son principalmente adaptaciones de skills públicos de Anthropic (brainstorming, systematic-debugging, test-driven-development, writing-plans, etc.). Al modificarlos, evaluá si el cambio corresponde upstream o es específico de SkillGrid.
 - El resto de `skills/` (router, ponytail, agente-ideas, auditor-de-seguridad, cyber-neo, optimizador-finops, etc.) es autoría original de SkillGrid.
+- `webapp-testing` adapta el método de [anthropics/skills](https://github.com/anthropics/skills) (Apache-2.0) y `security-awareness` el de [1Password/SCAM](https://github.com/1Password/SCAM) (MIT). Atribución completa en [NOTICE](NOTICE).
 
 ## Convenciones para skills
 
