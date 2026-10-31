@@ -156,7 +156,7 @@
     },
     "strict": {
       "label": "Full Suite + Auditors",
-      "description": "Everything including all agents (43 skills, ~94K tokens)",
+      "description": "Everything including all agents (45 skills, ~94K tokens)",
       "skills": [
         "a2a-orchestrator",
         "agente-devops",
@@ -207,7 +207,7 @@
     },
     "testing": {
       "label": "QA & Testing",
-      "description": "E2E, TDD and debugging skills (4 skills, ~8K tokens)",
+      "description": "E2E, TDD and debugging skills (5 skills, ~8K tokens)",
       "skills": [
         "playwright-testing",
         "test-driven-development",
