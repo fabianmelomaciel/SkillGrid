@@ -51,6 +51,13 @@ PATTERNS=(
 STAGED=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null)
 if [ -z "$STAGED" ]; then exit 0; fi
 
+# Copias "Conflicted copy" del cliente de sync de la nube (E98): son snapshots
+# viejos; committerlas revierte una release ya publicada (caso del 2026-10-31)
+if ! node "$(dirname "$0")/../scripts/check-conflicted-copy.js"; then
+  echo -e "${RED}[pre-commit] BLOCKED — archivos 'Conflicted copy' stageados (E98).${NC}"
+  exit 1
+fi
+
 for file in $STAGED; do
   [ -f "$file" ] || continue
   # Skip binary and known-safe files
