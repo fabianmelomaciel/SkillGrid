@@ -1,6 +1,6 @@
 {
-  "version": "1.2.55",
-  "generated": "2026-10-31",
+  "version": "1.2.56",
+  "generated": "2026-11-02",
   "summary": {
     "total": 52,
     "categories": {
@@ -478,7 +478,7 @@
       "status": "stable",
       "risk_level": "safe",
       "token_estimate": {
-        "input": 580,
+        "input": 700,
         "output": 200
       },
       "cost_tier": "low",

@@ -203,7 +203,7 @@ Genera reglas optimizadas dentro de tu proyecto:
 | `optimizador-finops` | Úsalo para auditar la utilización de recursos computacionales, la eficiencia de las APIs… | 1813 |
 | `ponytail-audit` | Auditoría de calidad de todo un repo: bugs, huecos de seguridad, qué se rompe bajo carga… | 1580 |
 | `ponytail-debt` | Lista cada comentario `shortcut:` (y los viejos `ponytail:`) como un libro de deuda… | 590 |
-| `ponytail-gain` | Muestra los ahorros medidos de ponytail (código, coste, velocidad) del benchmark.… | 580 |
+| `ponytail-gain` | Muestra los ahorros medidos de ponytail (código, coste, velocidad) del benchmark.… | 700 |
 | `ponytail-help` | Referencia rápida para los niveles, skills y comandos de ponytail. Visualización de una… | 660 |
 | `ponytail-review` | Revisión de calidad de un cambio: ¿es lógica la solución, es segura, aguanta carga real,… | 1500 |
 | `project-manager` | Agente Project Manager. El CEO da la dirección; el PM planifica, delega, revisa y reporta. | 2800 |

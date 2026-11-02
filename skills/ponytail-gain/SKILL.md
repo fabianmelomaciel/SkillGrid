@@ -4,7 +4,7 @@ description: "Muestra los ahorros medidos de ponytail (código, coste, velocidad
 category: agent
 status: stable
 risk_level: safe
-token_estimate: { input: 580, output: 200 }
+token_estimate: { input: 700, output: 200 }
 ---
 
 ## Core
@@ -14,6 +14,10 @@ token_estimate: { input: 580, output: 200 }
 Mostrá este marcador cuando se invoque. De una sola vez: NO cambies de modo, ni escribas archivos flag, ni persistas nada.
 
 Las cifras son del benchmark agentic publicado de Ponytail 5: Claude Code headless (Opus 5.5, esfuerzo default) en 39 tareas (tickets de features en un repo real FastAPI + React, bug fixes, casos de seguridad y privacidad, apps chicas), 5 ejecuciones cada una, contra el mismo agente sin el skill. Cada cifra es la media geométrica de las medianas por tarea. Son medidas, no computadas del repo actual.
+
+## Fuente
+
+Cifras citadas por el CEO del benchmark agentic publicado de Ponytail 5 (registrado el 2026-10-26). El repo no trae el benchmark como fixture ni herramienta para re-medirlo: este dato NO es verificable desde acá. Si la fuente deja de existir o los números cambian sin contraste, la tarjeta queda como invención — en ese caso sacarla del catálogo en vez de seguir mostrando cifras. Lo vigila tests/ponytail-gain-source.test.js.
 
 ## Marcador
 
