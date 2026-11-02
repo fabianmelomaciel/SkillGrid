@@ -28,6 +28,7 @@ Cómo se usa:
 ## Abiertas
 - E92 | efectividad | Integrar las recomendaciones de `headroom learn` directamente en el ledger de evolución: los aprendizajes offline quedan en AGENTS.md pero no se rastrean como hitos del proyecto | P2 | 2026-10-26 | scripts/headroom-learn-sync.js (propuesto)
 - E93 | efectividad | ponytail-gain publica cifras de benchmark (39 tareas, Opus 5.5, -53% de líneas) en una skill que viaja en el paquete, sin fuente verificable dentro del repo: si el dato se cae o no se confirma, nada lo detecta | P3 | 2026-10-26 | skills/ponytail-gain/SKILL.md:16
+- E98 | efectividad | El cliente de sync de la nube regenera los archivos "Conflicted copy ... from ASUS" (20 el 2026-11-02, ya borrados con respaldo en scratch/rollback-2026-10-31/previos-borrado-2026-11-02) y nada del repo lo bloquea: un git add -A los committería y las dos de skills/ viajarían en el paquete npm por package.json files (mismas ranas que el susto del 2026-10-31) | P2 | 2026-11-02 | package.json:26
 
 ## Cerradas
 - E97 | docs | Las descripciones por perfil de `skills/bundles/index.json` quedaron viejas: `strict` declaraba 43 skills contra una lista de 45 y `testing` 4 contra 5, y el test del gate solo validaba la descripción global del archivo | P3 | 2026-10-31 | skills/bundles/index.json:159 | cerrado 2026-10-31 | skills/bundles/index.json:159, tests/docs-consistency.test.js:36
