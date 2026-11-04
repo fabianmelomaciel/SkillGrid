@@ -26,7 +26,7 @@ Cómo se usa:
 6. Evolución terminada y todo resuelto → instalar en el IDE local del equipo, commit y push a GitHub. Sin ese pase el fix no llega a ningún lado.
 
 ## Abiertas
-- E99 | ops | El registro npm sigue en 1.22.0 (verificado 2026-11-02 y 2026-11-04) mientras el repo ya va por la 1.28.0: 6 releases sin publicar, el usuario que instala hoy se lleva versiones sin los pisos de runtime ni las skills nuevas; bloqueante: el token de ~/.npmrc está muerto (npm whoami → E401, publish → E404, log en scratch/publish-e99.log) y el re-login web + OTP solo puede hacerlos el CEO | P1 | 2026-11-02 | scripts/publish-with-otp.js:1
+- E99 | ops | El registro npm sigue en 1.22.0 (verificado 2026-11-02 y 2026-11-04) mientras el repo ya va por la 1.28.0: 6 releases sin publicar, el usuario que instala hoy se lleva versiones sin los pisos de runtime ni las skills nuevas; el token de ~/.npmrc está muerto (npm whoami → E401, publish → E404, log en scratch/publish-e99.log) y el publish está EN PAUSA por decisión del CEO (2026-11-04: "no suba a npm") — se reactiva sólo con GO explícito + login web del CEO + OTP | P1 | 2026-11-02 | scripts/publish-with-otp.js:1
 
 ## Cerradas
 - E93 | efectividad | ponytail-gain publica cifras de benchmark (39 tareas, Opus 5.5, -53% de líneas) en una skill que viaja en el paquete, sin fuente verificable dentro del repo: si el dato se cae o no se confirma, nada lo detecta | P3 | 2026-10-26 | skills/ponytail-gain/SKILL.md:16 | cerrado 2026-11-02 | skills/ponytail-gain/SKILL.md:18, tests/ponytail-gain-source.test.js:1
