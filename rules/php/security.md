@@ -13,7 +13,7 @@ paths:
 - A vulnerable runtime voids every other control here: check the patch level before reviewing anything else.
 <!-- floors:start php -->
 - Patched floors per branch: 8.5: 8.5.12 (EOL 2029-12-31), 8.4: 8.4.27 (EOL 2028-12-31), 8.3: 8.3.36 (EOL 2027-12-31), 8.2: 8.2.35 (EOL 2026-12-31).
-- Source: https://endoflife.date/api/php.json, checked 2026-10-22.
+- Source: https://endoflife.date/api/php.json, checked 2026-11-04.
 <!-- floors:end -->
 - **8.5.11 is below the 8.5 floor.** It shipped 11 CVE fixes on 2026-09-24, but the two critical unauthenticated RCEs of 2026-10-21 (CVE-2026-109618 memory corruption on OOM, CVE-2026-109619 stale global state, CVSS 9.2) only land in 8.5.12. A host on 8.5.11 is still exposed, and with `mod_php` on Apache the RCE needs no authentication.
 - The advisory list lives at https://www.php.net/releases/ — the floor above is the release that carries the fixes.

@@ -115,7 +115,7 @@ Detailed check items per category. Reference these from the main SKILL.md during
   - **PHP runtime**: host runtime (web SAPI) at or above the patched floor, read from the host and never from `composer.json`; 8.5.11 sits below the floor (CVE-2026-109618 / CVE-2026-109619); an unverified runtime is a finding, not a pass
     <!-- floors:start php -->
     - Patched floors per branch: 8.5: 8.5.12 (EOL 2029-12-31), 8.4: 8.4.27 (EOL 2028-12-31), 8.3: 8.3.36 (EOL 2027-12-31), 8.2: 8.2.35 (EOL 2026-12-31).
-    - Source: https://endoflife.date/api/php.json, checked 2026-10-22.
+    - Source: https://endoflife.date/api/php.json, checked 2026-11-04.
     <!-- floors:end -->
   - **Terraform/Infra-as-Code**: state file not exposed, no hardcoded secrets in .tf, remote state with encryption, plan reviewed before apply
 
