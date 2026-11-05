@@ -7,26 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.29.0] - 2026-11-05
+
 ### Added
 - **`install-core --verify` comprueba la instalación, no sólo que el instalador salió con 0**: compara las skills del perfil contra el destino real y da PASS/FAIL por plataforma (`--verify` auto-detecta; `--verify --target <dir>` apunta a una ruta). Compara nombres, no hashes, porque `merge-skill.js` transforma el `SKILL.md` por plataforma. Control negativo en `tests/install-core.test.js`.
 
 ### Changed
 - **`status: stable` ahora significa algo (E100)**: el campo describe la madurez del contenido, no el comportamiento del agente. `stable` = pasó el gate estructural (`npm run validate` + `tests/skills.test.js`: frontmatter, `## Core` no vacío, etiquetas válidas de `## Modules`, dos protocolos compartidos y `token_estimate` dentro del 20%). Lo que trae script o gate se sigue probando aparte con un control negativo. Definición en `skills/writing-skills/SKILL.md:140` y `CONTRIBUTING.md:44`.
 - **Qué no es SkillGrid**: el README suma una sección corta — no es sandbox, no es producto de seguridad, los tests cubren el paquete y no se publican métricas inventadas. El `finding-gate` fija la misma norma: lo que no se midió se dice "no medido" con el motivo, nunca 0, y sin denominador no hay porcentaje.
-- **La fuente de ponytail-gain queda a la vista (E93)**: la skill confiesa que su benchmark (39 tareas, Opus 5.5) no es verificable desde el repo, lleva la fecha en que se registró y la regla de retiro — si la fuente se cae, la tarjeta sale del catálogo en vez de seguir mostrando cifras. Vigila `tests/ponytail-gain-source.test.js`.
-- **El diseño dejó de salir siempre igual**: `github-premium-aesthetics` era un diseño, no una guía — traía paleta, fondo y receta fijos (mesh violeta, bento de 12 columnas, `⌘K`), así que todo lo que pasaba por ahí salía con la misma firma. Ahora solo aporta la física (glow, spring, escalera de motion) y la identidad la fija la ficha elegida. `emil-kowalski-design` suma el bloque **Dirección** con cinco valores numéricos y veto de repetición, y su gate pasó de tildes a evidencia: ficha citada con `archivo:línea`, descarte nombrado contra los patrones prohibidos y captura de lo construido. `design-quality.md` pierde el menú de nueve estilos y el "elegí 4 de 10". `project-manager` ya no rutea por "bento, mesh, glass". Test: `tests/design-genericity.test.js`.
 
 ### Fixed
 - **El gate de hallazgos ya tiene un control negativo propio**: `tests/finding-gate.test.js` validaba la prosa, pero no que el filtro rechace un hallazgo que no puede sostener. Ahora un fixture roto (confianza baja, sin `archivo:línea`, sin CVSS o con un secreto crudo) tiene que fallar en vez de entrar al informe.
-- **Los aprendizajes de headroom ya llegan al ledger (E92)**: `scripts/headroom-learn-sync.js` difea `AGENTS.md` contra HEAD, saca las reglas que dejó `headroom learn` y las deja como hitos propuestos en `scratch/evolucion-candidatas.md` — propone y no registra, mismo patrón que el escáner de evolución. Dev-only, no viaja en el paquete. Test: `tests/headroom-learn-sync.test.js`.
-- **El pre-commit bloquea las copias "Conflicted copy" del sync de la nube**: el cliente de sync deja regenerando snapshots viejos con nombre `(Conflicted copy ... from HOST)` y nada del repo frenaba un `git add -A` de committerlos (mismo motivo del susto del 2026-10-31). El hook de pre-commit manda los stageados por `scripts/check-conflicted-copy.js` antes del escaneo de secretos y corta si alguno trae el patrón. Tests: `tests/check-conflicted-copy.test.js` (en `npm test` y en `npm run gate`).
-- **Los agentes aparecen con `/` al instalar**: `scripts/install-tasks.js` ahora escribe un comando por agente en `~/.config/opencode/commands/`, así que `/agente-ideas`, `/auditor-de-seguridad` y el resto existen apenas termina la instalación. De paso el generador entiende descripciones multilínea (`description: >`) y ya no deja a `cyber-neo` y `hack-audit` sin descripción. Test: `tests/install-tasks.test.js`.
-- **El README separa agentes de skills**: los agentes se abren con `/agente-*` y las skills se cargan con `@skill-id`, que es lo que hace opencode V2.
 
 ## [1.28.0] - 2026-10-31
 
 ### Added
 - **Dos skills nuevas: `webapp-testing` y `security-awareness`**: `webapp-testing` trae el bucle de Playwright nativo para probar una app local (árbol de decisión estático/dinámico, ciclo de vida del servidor, reconocimiento antes de actuar, consola y capturas), adaptado de Anthropic (Apache-2.0) y separado de `playwright-testing`, que queda para las suites Node/TS. `security-awareness` enseña a verificar el dominio antes de navegar, tratar las credenciales como canal controlado y detectar ingeniería social, adaptado de 1Password SCAM (MIT). Ambas pasaron `scan-third-party.js` con 0 hallazgos. Atribución en `NOTICE`.
+
+### Changed
+- **La fuente de ponytail-gain queda a la vista (E93)**: la skill confiesa que su benchmark (39 tareas, Opus 5.5) no es verificable desde el repo, lleva la fecha en que se registró y la regla de retiro — si la fuente se cae, la tarjeta sale del catálogo en vez de seguir mostrando cifras. Vigila `tests/ponytail-gain-source.test.js`.
+- **El diseño dejó de salir siempre igual**: `github-premium-aesthetics` era un diseño, no una guía — traía paleta, fondo y receta fijos (mesh violeta, bento de 12 columnas, `⌘K`), así que todo lo que pasaba por ahí salía con la misma firma. Ahora solo aporta la física (glow, spring, escalera de motion) y la identidad la fija la ficha elegida. `emil-kowalski-design` suma el bloque **Dirección** con cinco valores numéricos y veto de repetición, y su gate pasó de tildes a evidencia: ficha citada con `archivo:línea`, descarte nombrado contra los patrones prohibidos y captura de lo construido. `design-quality.md` pierde el menú de nueve estilos y el "elegí 4 de 10". `project-manager` ya no rutea por "bento, mesh, glass". Test: `tests/design-genericity.test.js`.
+
+### Fixed
+- **Los aprendizajes de headroom ya llegan al ledger (E92)**: `scripts/headroom-learn-sync.js` difea `AGENTS.md` contra HEAD, saca las reglas que dejó `headroom learn` y las deja como hitos propuestos en `scratch/evolucion-candidatas.md` — propone y no registra, mismo patrón que el escáner de evolución. Dev-only, no viaja en el paquete. Test: `tests/headroom-learn-sync.test.js`.
+- **El pre-commit bloquea las copias "Conflicted copy" del sync de la nube**: el cliente de sync deja regenerando snapshots viejos con nombre `(Conflicted copy ... from HOST)` y nada del repo frenaba un `git add -A` de committerlos (mismo motivo del susto del 2026-10-31). El hook de pre-commit manda los stageados por `scripts/check-conflicted-copy.js` antes del escaneo de secretos y corta si alguno trae el patrón. Tests: `tests/check-conflicted-copy.test.js` (en `npm test` y en `npm run gate`).
+- **Los agentes aparecen con `/` al instalar**: `scripts/install-tasks.js` ahora escribe un comando por agente en `~/.config/opencode/commands/`, así que `/agente-ideas`, `/auditor-de-seguridad` y el resto existen apenas termina la instalación. De paso el generador entiende descripciones multilínea (`description: >`) y ya no deja a `cyber-neo` y `hack-audit` sin descripción. Test: `tests/install-tasks.test.js`.
+- **El README separa agentes de skills**: los agentes se abren con `/agente-*` y las skills se cargan con `@skill-id`, que es lo que hace opencode V2.
 
 ## [1.27.0] - 2026-10-22
 
