@@ -74,3 +74,7 @@ Solo entran los archivos cambiados y las líneas tocadas; el contexto se lee par
 ### Qué se hace con lo descartado
 
 Descartar no es bajar la severidad. El ítem sale del informe con el motivo anotado en `discarded` y se cuenta en `DISCARDED_COUNT`. No se esconde ni se deja como "posible": si el motivo es que falta evidencia, queda `needs-validation` y se dice qué falta para cerrarlo.
+
+### 6. Lo que no se midió no es 0
+
+Si una métrica no se midió, se escribe "no medido" y el motivo. Nunca 0: un cero inventado se lee como "no encontramos nada" y pesa más que no tener el dato. Tampoco se suma a un denominador que no existe; si falta el denominador, el porcentaje no está y no se publica.
