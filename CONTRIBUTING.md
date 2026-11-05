@@ -41,6 +41,7 @@ Ambos deben pasar sin errores.
 
 - Todo skill vive en `skills/<nombre>/`, sin subcarpetas por categoría. La taxonomía la da `category:` en el frontmatter, no la carpeta física (`scripts/lib/walk-skills.js` recorre cualquier profundidad, así que la carpeta no aporta nada al tooling).
 - **YAML frontmatter obligatorio** con campos: `name`, `description`, `category`, `status`, `risk_level`
+- **`status` describe la madurez del contenido, no el comportamiento**: `stable` = pasó el gate estructural (`npm run validate` + `tests/skills.test.js`: frontmatter, `## Core` no vacío, etiquetas válidas de `## Modules`, al menos dos protocolos compartidos y `token_estimate` dentro del 20% del tamaño real). No promete resultados en todos los modelos; si la skill trae un script o un gate, eso se prueba aparte con un control negativo. La tabla completa está en `skills/writing-skills/SKILL.md`
 - Secciones: `## Core` (contenido principal), `## Modules` (footers con etiquetas `[model:*]` / `[platform:*]`)
 - Referenciar protocolos compartidos: `anti-rationalization.md`, `risk-assessment.md`, `verification-gate.md`, `codegraph-startup.md`, `codex-learning-loop.md`
 - Si tu skill dispara un falso positivo en `skillspector-scan` (esperable en skills de seguridad que documentan patrones de ataque como referencia), agregá una regla puntual a `.skillspector/<tu-skill>.yaml` con el `id` y `path` exactos — no silencies de más

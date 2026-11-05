@@ -137,6 +137,22 @@ What goes wrong + fixes
 Concrete results
 ```
 
+## The `status` Field
+
+`status` describes how mature the skill's content is. It is not a promise about what an agent will do with it.
+
+| Value | Means |
+|:---|:---|
+| `stable` | The file passed the package's structural gate: required frontmatter, non-empty `## Core`, valid `## Modules` labels, at least two shared protocol references, and a `token_estimate` within 20% of the real size. |
+| `beta` | Usable, still changing. |
+| `experimental` | Proof of concept; expect gaps. |
+| `draft` | Incomplete, not ready for anyone else. |
+| `deprecated` | Kept for compatibility; a replacement exists. |
+
+`stable` does **not** mean the skill produces a given result on every model. That is a separate claim and it has to be earned: if the skill ships a script, a scanner or a gate, test it with a negative control — break the input on purpose and require the failure. A check that never fails proves nothing.
+
+SkillGrid applies this gate with `npm run validate` and `tests/skills.test.js`. Those tests cover the package; they say nothing about the project where the skill is used.
+
 ## Claude Search Optimization (CSO)
 
 **Critical for discovery:** Future Claude needs to FIND your skill
