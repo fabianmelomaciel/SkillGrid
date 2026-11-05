@@ -26,7 +26,7 @@ Cómo se usa:
 6. Evolución terminada y todo resuelto → instalar en el IDE local del equipo, commit y push a GitHub. Sin ese pase el fix no llega a ningún lado.
 
 ## Abiertas
-- E99 | ops | El registro npm sigue en 1.22.0 (verificado 2026-11-02 y 2026-11-04) mientras el repo ya va por la 1.28.0: 6 releases sin publicar, el usuario que instala hoy se lleva versiones sin los pisos de runtime ni las skills nuevas; el token de ~/.npmrc está muerto (npm whoami → E401, publish → E404, log en scratch/publish-e99.log) y el publish está EN PAUSA por decisión del CEO (2026-11-04: "no suba a npm") — se reactiva sólo con GO explícito + login web del CEO + OTP | P1 | 2026-11-02 | scripts/publish-with-otp.js:1
+- E99 | ops | El registro npm sigue en 1.22.0 (verificado 2026-11-02, 2026-11-04 y 2026-11-05) mientras el repo ya va por la 1.29.0: 7 releases sin publicar, el usuario que instala hoy se lleva versiones sin los pisos de runtime ni las skills nuevas; el token de ~/.npmrc está muerto (npm whoami → E401, publish → E404, log en scratch/publish-e99.log) y el publish está EN PAUSA por decisión del CEO (2026-11-04: "no suba a npm") — se reactiva sólo con GO explícito + login web del CEO + OTP | P1 | 2026-11-02 | scripts/publish-with-otp.js:1
 
 ## Cerradas
 - E100 | efectividad | 49 skills declaraban `status: stable` y `validate-skills.js` sólo validaba que el valor fuera legal, así que la etiqueta no significaba nada: o se bajaban 49 a `beta` o se definía qué se gana con `stable` | P2 | 2026-11-05 | scripts/validate-skills.js:41 | cerrado 2026-11-05 | skills/writing-skills/SKILL.md:140, CONTRIBUTING.md:44, tests/skills.test.js:201
