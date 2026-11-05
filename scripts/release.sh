@@ -20,8 +20,12 @@ if ! echo "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
   exit 1
 fi
 
-# Check working tree is clean
-if ! git diff --quiet HEAD; then
+# Check working tree is clean. La única excepción es CHANGELOG.md: la sección de
+# la versión nueva tiene que existir antes de correr esto, pero sólo pasa
+# paquete.test.js después del bump, así que se commitea junto con el release.
+# `git diff --quiet` ignora los untracked, y un archivo suelto se colaría en el
+# commit con el git add -A de abajo.
+if [ -n "$(git status --porcelain -- . ':!CHANGELOG.md')" ]; then
   echo "Error: working tree is not clean. Commit or stash changes first."
   exit 1
 fi
@@ -33,21 +37,21 @@ if ! grep -q "## \[$VERSION\]" CHANGELOG.md; then
   exit 1
 fi
 
-# Never tag a broken release
-echo "Running validation and tests..."
-npm run validate
-npm test
-
 # Update version in package.json. Node does this (not jq) because node is already
 # a hard requirement of this whole toolchain, while jq is not preinstalled on
-# macOS or most Windows setups.
+# macOS or most Windows setups. package-lock carries the same version: si no se
+# bumpea acá queda en la versión anterior y nadie lo nota hasta un npm ci.
 node -e "
   const fs = require('fs');
+  const write = (file, obj) => fs.writeFileSync(file, JSON.stringify(obj, null, 2) + '\n');
   const p = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
   p.version = '$VERSION';
-  fs.writeFileSync('package.json', JSON.stringify(p, null, 2) + '\n');
+  write('package.json', p);
+  const lock = JSON.parse(fs.readFileSync('package-lock.json', 'utf-8'));
+  lock.version = '$VERSION';
+  if (lock.packages && lock.packages['']) lock.packages[''].version = '$VERSION';
+  write('package-lock.json', lock);
 "
-git add package.json
 
 # Keep remote installer pinned tags in sync with the release. Los instaladores
 # pinean por variable (PINNED_TAG / $pinnedTag), no por un literal --branch v...,
@@ -65,11 +69,20 @@ node -e '
   upd("remote-install.sh", /^PINNED_TAG="v[\d.]+"$/m);
   upd("remote-install.ps1", /^\$pinnedTag = "v[\d.]+"$/m);
 ' "$TAG"
-git add remote-install.sh remote-install.ps1
 
-# catalog.json / catalog-lite.json / skills/index.json embed package.json's version
+# catalog.json / catalog-lite.json / skills/index.json embed package.json's
+# version, así que se regeneran después del bump.
 node scripts/generate-catalog.js
-git add catalog.json catalog-lite.json skills/index.json
+
+# Never tag a broken release. Los tests corren DESPUÉS del bump: paquete.test.js
+# exige que package.json, catalog.json y la última sección del CHANGELOG coincidan,
+# así que validar antes del bump da rojo con el release a medio hacer.
+echo "Running validation and tests..."
+npm run validate
+npm test
+
+# El árbol arrancó limpio y lo único modificado es lo que tocó este script.
+git add -A
 
 # Commit before tagging — an annotated tag on an empty commit would point at the
 # PREVIOUS release and ship none of the bump above.
