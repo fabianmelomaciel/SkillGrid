@@ -186,6 +186,48 @@ function installSkills(targetDir, sourceDir, platform, profile) {
   return installed;
 }
 
+function verifyInstall(targetDir, platform, profile) {
+  const absTarget = path.resolve(targetDir);
+  const isSkillRoot = absTarget.toLowerCase().endsWith(path.sep + "skills");
+  const skillsRoot = isSkillRoot ? absTarget : path.join(absTarget, "skills");
+  const profileSkills = loadProfileSkills(profile);
+  const faltan = [];
+  let esperadas = 0;
+  let encontradas = 0;
+
+  for (const sf of walkSkillFiles(path.join(ROOT, "skills"))) {
+    const fm = parseFrontmatter(sf);
+    const name = fm && fm.name ? fm.name : path.basename(path.dirname(sf));
+    if (name === "template") continue;
+    if (profileSkills && !profileSkills.has(name)) continue;
+
+    esperadas++;
+    const safeName = path.basename(path.normalize(name));
+    const destPath = path.resolve(skillsRoot, safeName);
+    // Mismo corte que installSkills: un nombre que resuelve fuera del destino
+    // no se instaló y tampoco se puede verificar.
+    if (destPath !== skillsRoot && !destPath.startsWith(skillsRoot + path.sep)) {
+      faltan.push(`${name} (resuelve fuera del destino)`);
+      continue;
+    }
+    if (fs.existsSync(path.join(destPath, "SKILL.md"))) encontradas++;
+    else faltan.push(name);
+  }
+
+  for (const special of ["shared", "bundles"]) {
+    const src = path.join(ROOT, "skills", special);
+    if (fs.existsSync(src) && !fs.existsSync(path.join(skillsRoot, special))) {
+      faltan.push(`${special}/`);
+    }
+  }
+
+  const ok = faltan.length === 0;
+  log(`Verificación (${platform || "generic"}): ${encontradas}/${esperadas} skills`, ok ? "ok" : "err");
+  for (const f of faltan.slice(0, 10)) log(`falta: ${f}`, "err");
+  if (faltan.length > 10) log(`... y ${faltan.length - 10} más`, "err");
+  return { ok, esperadas, encontradas, faltan };
+}
+
 // El chequeo corría en cada `npm test` y en cada commit, y catorce spawns de
 // `--version` costaban 15s de los 30s de la suite. Ahora se pregunta por el
 // binario en el PATH, que es instantáneo; el chequeo fino queda detrás de
@@ -419,6 +461,7 @@ function main() {
     else if (args[i] === "--generate-codex") opts.generateCodex = true;
     else if (args[i] === "--platform" && args[i + 1]) opts.platform = args[++i];
     else if (args[i] === "--deps-only") opts.depsOnly = true;
+    else if (args[i] === "--verify") opts.verify = true;
     else if (args[i] === "--check-versions") opts.checkVersions = true;
     else if (args[i] === "--detect-only") opts.detectOnly = true;
 
@@ -437,6 +480,22 @@ function main() {
   console.log("\n=== SkillGrid Installer Core ===\n");
 
   if (opts.depsOnly) { checkDependencies(opts); return; }
+
+  if (opts.verify) {
+    if (opts.target) {
+      process.exit(verifyInstall(opts.target, opts.platform, opts.profile).ok ? 0 : 1);
+    }
+    const detected = detectPlatforms();
+    if (detected.length === 0) {
+      const fallback = path.join(require("os").homedir(), ".skillgrid");
+      process.exit(verifyInstall(fallback, "", opts.profile).ok ? 0 : 1);
+    }
+    let ok = true;
+    for (const p of detected) {
+      ok = verifyInstall(p.path, p.name, opts.profile).ok && ok;
+    }
+    process.exit(ok ? 0 : 1);
+  }
 
   checkDependencies(opts);
 
@@ -487,6 +546,8 @@ Usage:
   node scripts/install-core.js --platform opencode      Override platform detection
   node scripts/install-core.js --deps-only              Check dependencies only
   node scripts/install-core.js --deps-only --check-versions   Same, plus the version against the pin
+  node scripts/install-core.js --verify                  Check an existing install (auto-detect)
+  node scripts/install-core.js --verify --target <dir>   Check an existing install at a custom path
   node scripts/install-core.js --install-codegraph      Auto-install CodeGraph
   node scripts/install-core.js --detect-only            Print "Detectado: ..." preview and exit
 `);
@@ -499,5 +560,6 @@ module.exports = {
   parseFrontmatter, normalizePlatform, loadProfileSkills,
   detectPlatforms, checkDependencies, setupGitIgnores,
   installSkills, installCore: main,
+  verifyInstall,
   estaEnPath, ejecutablesEnPath, versionDe,
 };

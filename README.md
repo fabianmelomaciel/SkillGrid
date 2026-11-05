@@ -232,6 +232,15 @@ SkillGrid audita su propio código con un pipeline de CI dedicado (`.github/work
 
 ---
 
+## 🚫 Qué no es / What this is not
+
+*   **No es un sandbox / Not a sandbox.** Las skills son instrucciones para tu agente; no aíslan el código que el agente ejecuta. Para eso usá contenedores o una VM.
+*   **No es un producto de seguridad / Not a security product.** Los auditores ordenan y filtran hallazgos; no reemplazan un pentest autorizado ni una revisión humana.
+*   **Los tests validan el paquete / Tests cover this package.** Verifican las skills, el catálogo y los instaladores de SkillGrid, no el proyecto donde las usás.
+*   **Sin métricas inventadas / No invented metrics.** Lo que no se midió se dice "no medido", no 0.
+
+---
+
 ## ❓ FAQ
 
 *   **Requisitos / Requirements?** — Node.js ≥ 18 y git. Nada más: las skills son texto.

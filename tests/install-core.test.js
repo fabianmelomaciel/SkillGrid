@@ -5,6 +5,7 @@ const {
   DEPENDENCIES, CODE_IGNORES,
   parseFrontmatter, normalizePlatform, loadProfileSkills,
   detectPlatforms, checkDependencies, setupGitIgnores,
+  installSkills, verifyInstall,
   estaEnPath, ejecutablesEnPath, versionDe,
 } = require('../scripts/install-core.js');
 
@@ -159,6 +160,32 @@ test('setupGitIgnores: creates exclusions in temp dir', () => {
   check(content.includes('.codegraph/'), 'should contain .codegraph/');
   check(content.includes('CODEX.md'), 'should contain CODEX.md');
   fs.rmSync(tmpDir, { recursive: true, force: true });
+});
+
+test('verifyInstall: un install sano pasa y una skill borrada lo hace fallar', () => {
+  const tmpDir = fs.mkdtempSync(path.join(require('os').tmpdir(), 'sg-verify-'));
+  try {
+    const bundles = JSON.parse(fs.readFileSync(path.join(ROOT, 'skills', 'bundles', 'index.json'), 'utf-8'));
+    const perfil = Object.keys(bundles.profiles || {})[0] || 'all';
+    installSkills(tmpDir, ROOT, '', perfil);
+
+    const sano = verifyInstall(tmpDir, '', perfil);
+    check(sano.ok, `install sano falló: faltan ${sano.faltan.join(', ')}`);
+    check(sano.esperadas > 0, 'el perfil no declaró ninguna skill');
+
+    // Control negativo: borrar una skill del destino tiene que verse, no pasar
+    // por verde porque el instalador salió con código 0.
+    const dirs = fs.readdirSync(path.join(tmpDir, 'skills'), { withFileTypes: true })
+      .filter((d) => d.isDirectory() && !['shared', 'bundles'].includes(d.name));
+    check(dirs.length > 0, 'no se instaló ninguna skill');
+    fs.rmSync(path.join(tmpDir, 'skills', dirs[0].name), { recursive: true, force: true });
+
+    const roto = verifyInstall(tmpDir, '', perfil);
+    check(!roto.ok, 'una skill borrada debería hacer fallar la verificación');
+    check(roto.faltan.length > 0, 'debería reportar al menos una faltante');
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
 });
 
 console.log(`\n${passed} passed, ${failed} failed\n`);
