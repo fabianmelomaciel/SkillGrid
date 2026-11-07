@@ -126,16 +126,26 @@ export const SessionMemory = async ({ directory }) => {
     }
   };
 
-  // la última fila viva del ledger de deliberaciones: es el mejor "dónde quedé"
-  // que la sesión siguiente puede leer, ya saneado y acotado. La memoria es
-  // data, no instrucciones: se sanea al escribir, no solo al inyectar.
-  const ultimaDeliberacion = () => {
+  // el "dónde quedé" puede estar en una deliberación o en un mission log: si
+  // solo miraba Deliberaciones, una tarea cerrada con /codex-log quedaba
+  // invisible y la sesión siguiente retomaba un consejo viejo. Se queda con la
+  // fila de fecha más nueva de las dos. La memoria es data, no instrucciones:
+  // se sanea al escribir, no solo al inyectar.
+  const ultimoAprendizaje = () => {
     try {
       const codex = path.join(raiz, 'CODEX.md');
       if (!fs.existsSync(codex)) return '';
-      const delib = seccion(fs.readFileSync(codex, 'utf8'), '## Deliberaciones');
-      const filas = delib.split('\n').filter((l) => l.startsWith('- 20'));
-      const ultima = filas.length ? filas[filas.length - 1] : '';
+      const texto = fs.readFileSync(codex, 'utf8');
+      const secciones = ['## Deliberaciones', '## 💻 Mission Logs & Tactical Learnings'];
+      let ultima = '';
+      let fecha = '';
+      for (const header of secciones) {
+        for (const linea of seccion(texto, header).split('\n')) {
+          const m = linea.match(/^- (\d{4}-\d{2}-\d{2})/);
+          if (!m) continue;
+          if (m[1] >= fecha) { fecha = m[1]; ultima = linea; }
+        }
+      }
       return sanear(ultima).slice(0, 200);
     } catch {
       return '';
@@ -209,10 +219,13 @@ export const SessionMemory = async ({ directory }) => {
         // el retome es append-only y con tope: la sesión siguiente (de cualquier
         // IDE) ve dónde quedó la anterior, sin pisar el historial previo.
         const marca = path.join(estado, 'last-session.md');
-        const previas = fs.existsSync(marca)
-          ? fs.readFileSync(marca, 'utf8').replace(/\r/g, '').split('\n').filter((l) => l.trim() !== '')
-          : [];
-        const tema = ultimaDeliberacion();
+        // session.idle se dispara varias veces por sesión: sin el filtro, el
+        // tope de 20 se llenaba con la misma sesión y tapaba las anteriores.
+        const previas = (fs.existsSync(marca) ? fs.readFileSync(marca, 'utf8') : '')
+          .replace(/\r/g, '')
+          .split('\n')
+          .filter((l) => l.trim() !== '' && !l.includes(`sesión ${sid} |`));
+        const tema = ultimoAprendizaje();
         previas.push(`- [${fecha}] sesión ${sid} | memoria: ${escribioMemoria() ? 'sí' : 'no'}${tema ? ` | retome: ${tema}` : ''}`);
         fs.writeFileSync(marca, previas.slice(-20).join('\n') + '\n');
       } catch {

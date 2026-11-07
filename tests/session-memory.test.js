@@ -120,6 +120,47 @@ console.log('\nTesting session-memory plugin...\n');
     check(texto.includes('fila nueva abierta'), 'no trajo la última deliberación como retome');
   });
 
+  await test('session.idle repetido deja una sola línea por sesión', async () => {
+    const raiz = carpeta();
+    const estado = path.join(raiz, '.opencode', 'state');
+    fs.mkdirSync(estado, { recursive: true });
+    const marca = path.join(estado, 'last-session.md');
+    fs.writeFileSync(marca, [
+      '- [2026-10-17 10:00] sesión s1 | memoria: sí',
+      '- [2026-10-17 10:05] sesión s1 | memoria: sí',
+      '- [2026-10-17 10:10] sesión s2 | memoria: sí',
+      '',
+    ].join('\n'));
+    const plugin = await SessionMemory({ directory: raiz });
+    await plugin.event({ event: { type: 'session.idle', properties: { sessionID: 's1' } } });
+    const texto = fs.readFileSync(marca, 'utf8');
+    const propias = texto.split('\n').filter((l) => l.includes('sesión s1'));
+    check(propias.length === 1, `quedaron ${propias.length} líneas de la misma sesión`);
+    check(texto.includes('sesión s2'), 'borró la sesión anterior');
+  });
+
+  await test('el retome cae al último mission log cuando no hay deliberación más nueva', async () => {
+    const raiz = carpeta();
+    fs.writeFileSync(path.join(raiz, 'CODEX.md'), [
+      '# CODEX', '',
+      '## 💻 Mission Logs & Tactical Learnings', '',
+      '- 2026-10-17 - consejo viejo - detalle',
+      '- 2026-11-05 - cierre normal — el breadcrumb guarda lo hecho',
+      '',
+      '## Deliberaciones', '',
+      '- 2026-10-18 | fila vieja | 1o A | x.js:1 | estado: resuelto',
+      '',
+    ].join('\n'));
+    const estado = path.join(raiz, '.opencode', 'state');
+    fs.mkdirSync(estado, { recursive: true });
+    const marca = path.join(estado, 'last-session.md');
+    const plugin = await SessionMemory({ directory: raiz });
+    await plugin.event({ event: { type: 'session.idle', properties: { sessionID: 's9' } } });
+    const texto = fs.readFileSync(marca, 'utf8');
+    check(texto.includes('cierre normal'), 'no trajo el mission log más nuevo');
+    check(!texto.includes('fila vieja'), 'se quedó con la deliberación vieja');
+  });
+
   await test('otro tipo de evento se ignora', async () => {
     const raiz = carpeta();
     const plugin = await SessionMemory({ directory: raiz });

@@ -6,6 +6,14 @@ Read `.agents/VOICE.md` before writing any code comment. All comments must sound
 
 Read `.agents/AGENTS.md` before implementing anything. No AI signatures, no obvious comments, names humanas.
 
+## memoria y cierre de sesión
+
+Al arrancar, leé solo esto y en este orden: `CODEX.md`, `## Abiertas` de `EVOLUCION.md`, `.opencode/state/last-session.md` (retome) y el plan abierto si existe. Si querés una sola salida, `npm run estado` resume rama, sucios, último commit, abiertas, última memoria y plan. Para preguntas de código, `graphify query` antes de abrir archivos: el subgrafo cuesta una fracción de un grep amplio.
+
+Automatizá cuando un paso se repita dos veces o cueste más de ~2K tokens: si es determinista va a `scripts/` con test y entrada npm; si es una lectura que ya existe, se referencia el archivo en vez de copiar el contenido. La automatización es del dev: no se publica en el paquete salvo que el consumidor la necesite.
+
+Al cerrar una tarea o la sesión va un solo pase, sin re-leer: `npm run evolve` (métricas) → mover filas de `EVOLUCION.md` → una línea con `/codex-log` → handoff. Una fuente por dato: el breadcrumb no se reescribe a mano y no se duplica el resumen en dos archivos.
+
 ## env preflight
 
 Antes de tocar cualquier archivo del proyecto, corré el preflight: rama y estado de git, `.gitignore`, `.git/info/exclude`, `git check-ignore -v` por destino y drift (`git ls-files -ci --exclude-standard`). El detalle está en `skills/shared/env-preflight.md`. Sin la línea de GO no se escribe nada — si el entorno es ambiguo, se asume producción y solo se lee.
